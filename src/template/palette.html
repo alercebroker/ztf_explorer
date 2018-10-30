@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+	<div class="col-3" name="components">
+		<ul class="list-group list-group-flush" style="position:fixed; padding-top: 10px;">
+			<li class="list-group-item disabled"><a class="text-muted" href="#logos">ALeRCE logo</a></li>
+			<li class="list-group-item disabled"><a class="text-muted" href="#typo">Typography</a></li>
+			<li class="list-group-item"><a href="#text">Text & Links</a></li>
+			<li class="list-group-item"><a href="#background">Backgrounds</a></li>
+			<li class="list-group-item"><a href="#buttons">Buttons</a></li>
+			<li class="list-group-item"><a href="#alerts">Alerts</a></li>
+		</ul>
+	</div>
+	<div class="col-9" name="body">
+		<div class="container-fluid">
+			<h1 class="display-2">CSS color palette</h1>
+			<h4 class="text-muted">Credits and stuff</h4>
+			<div id="logos">
+				<h2>Logo versions</h2>
+				<div class="row justify-content-around align-middle">
+					<div class="col">
+						<div class="bg-light text-center" style="padding: 5px;">
+							<img class="img-fluid w-auto rounded" src="{% static 'alerce_logo_rgb_01.png' %}" style="width: 300px;">
+						</div>
+						<p class="small text-secondary text-center">Logotype - Light background<p>
+					</div>
+					<div class="col">
+						<div class="bg-light text-center" style="padding: 5px;">
+							<img class="img-fluid w-auto rounded" src="{% static 'alerce_url_min.png' %}" style="width: 300px;">
+						</div>
+						<p class="small text-secondary text-center">URL logotype - Light background<p>
+					</div>
+					<div class="col">
+						<div class="bg-dark text-center" style="padding: 5px;">
+							<img class="img-fluid w-auto rounded" src="{% static 'fullAlerceWHITE.png' %}" style="width: 300px;">
+						</div>
+						<p class="small text-secondary text-center">Logotype - Dark background<p>
+					</div>
+				</div>
+				<div class="row justify-content-around align-middle">
+					<div class="col">
+						<div class="bg-light text-center" style="padding: 5px;">
+							<img class="img-fluid w-auto rounded" src="{% static 'img/footerAlerce.png' %}" style="width: 300px;">
+						</div>
+						<p class="small text-secondary text-center"> Logo - Light background<p>
+					</div>
+					<div class="col">
+						<div class="bg-secondary text-center" style="padding: 5px;">
+							<img class="img-fluid w-auto rounded" src="{% static 'img/footerAlerce.png' %}" style="width: 300px;">
+						</div>
+						<p class="small text-secondary text-center"> Logo - Secondary background<p>
+					</div>
+					<div class="col">
+						<div class="bg-secondary text-center" style="padding: 5px;">
+							<img class="img-fluid w-auto rounded" src="{% static 'img/footerAlerceWhite.png' %}" style="width: 300px;">
+						</div>
+						<p class="small text-secondary text-center"> Logo - Secondary background<p>
+					</div>
+					<div class="col">
+						<div class="bg-dark text-center" style="padding: 5px;">
+							<img class="img-fluid w-auto rounded" src="{% static 'img/footerAlerceWhite.png' %}" style="width: 300px;">
+						</div>
+						<p class="small text-secondary text-center"> Logo - Dark background<p>
+					</div>
+				</div>
+			</div>
+			<div id="typo"></div>
+			<div id="text">
+				<div class="row">
+					<div class="col">
+						<h2>Text classes  <code>.text-xxx</code></h2>
+						<hr>
+						<p class="text-default">.text-default</p>
+						<p class="text-primary">.text-primary</p>
+						<p class="text-secondary">.text-secondary</p>
+						<p class="text-success">.text-success</p>
+						<p class="text-danger">.text-danger</p>
+						<p class="text-warning">.text-warning</p>
+						<p class="text-info">.text-info</p>
+						<p class="text-light bg-dark">.text-light</p>
+						<p class="text-dark">.text-dark</p>
+						<p class="text-muted">.text-muted</p>
+						<p class="text-white bg-dark">.text-white</p>
+					</div>
+					<div class="col">
+						<h2>Link classes  <code>.text-xxx</code></h2>
+						<hr>
+						<p><a href="#" class="text-default">Default link</a></p>
+						<p><a href="#" class="text-primary">Primary link</a></p>
+						<p><a href="#" class="text-secondary">Secondary link</a></p>
+						<p><a href="#" class="text-success">Success link</a></p>
+						<p><a href="#" class="text-danger">Danger link</a></p>
+						<p><a href="#" class="text-warning">Warning link</a></p>
+						<p><a href="#" class="text-info">Info link</a></p>
+						<p><a href="#" class="text-light bg-dark">Light link</a></p>
+						<p><a href="#" class="text-dark">Dark link</a></p>
+						<p><a href="#" class="text-muted">Muted link</a></p>
+						<p><a href="#" class="text-white bg-dark">White link</a></p>
+					</div>
+				</div>
+			</div>
+			<hr>
+			<div id="background">
+				<h2>Backgroung classes  <code>.bg-xxx</code></h2>
+				<div class="row justify-content-between">
+					<div class="p-3 mb-2 bg-default">.bg-default</div>
+					<div class="p-3 mb-2 bg-primary text-white">.bg-primary</div>
+					<div class="p-3 mb-2 bg-secondary text-white">.bg-secondary</div>
+					<div class="p-3 mb-2 bg-success text-white">.bg-success</div>
+					<div class="p-3 mb-2 bg-danger text-white">.bg-danger</div>
+					<div class="p-3 mb-2 bg-warning text-dark">.bg-warning</div>
+					<div class="p-3 mb-2 bg-info text-white">.bg-info</div>
+					<div class="p-3 mb-2 bg-light text-dark">.bg-light</div>
+					<div class="p-3 mb-2 bg-dark text-white">.bg-dark</div>
+					<div class="p-3 mb-2 bg-white text-dark">.bg-white</div>
+				</div>
+			</div>
+			<hr>
+			<div id="buttons">
+				<h2>Button classes <code>.btn-xxx</code></h2>
+				<div  class="row justify-content-between">
+					<button type="button" class="btn btn-default">Default</button>
+					<button type="button" class="btn btn-primary">Primary</button>
+					<button type="button" class="btn btn-secondary">Secondary</button>
+					<button type="button" class="btn btn-success">Success</button>
+					<button type="button" class="btn btn-danger">Danger</button>
+					<button type="button" class="btn btn-warning">Warning</button>
+					<button type="button" class="btn btn-info">Info</button>
+					<button type="button" class="btn btn-light">Light</button>
+					<button type="button" class="btn btn-dark">Dark</button>
+					<button type="button" class="btn btn-link">Link</button>
+				</div>
+			</div>
+			<hr>
+			<div id="alerts">
+				<h2>Alert classes <code>.alert-xxx</code></h2>
+				<div >
+					<div class="alert alert-primary" role="alert">
+					  This is a <b>primary</b> alert—check it out!
+					</div>
+					<div class="alert alert-secondary" role="alert">
+					  This is a <b>secondary</b> alert—check it out!
+					</div>
+					<div class="alert alert-success" role="alert">
+					  This is a <b>success</b> alert—check it out!
+					</div>
+					<div class="alert alert-danger" role="alert">
+					  This is a <b>danger</b> alert—check it out!
+					</div>
+					<div class="alert alert-warning" role="alert">
+					  This is a <b>warning</b> alert—check it out!
+					</div>
+					<div class="alert alert-info" role="alert">
+					  This is a <b>info</b> alert—check it out!
+					</div>
+					<div class="alert alert-light" role="alert">
+					  This is a <b>light</b> alert—check it out!
+					</div>
+					<div class="alert alert-dark" role="alert">
+					  This is a <b>dark</b> alert—check it out!
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

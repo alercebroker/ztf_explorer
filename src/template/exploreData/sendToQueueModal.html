@@ -1,0 +1,26 @@
+{% block send_to_queue %}
+<!-- Modal -->
+<div class="modal fade" id="sendToQueueModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Send to queue</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Your search is to expensive to process online.
+                <br>
+                Send your search to the queue nad you'll be notified when is ready.
+                <br>
+                You can also modify your wearch parameters and try again.
+
+                <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Modify Search</button>
+                <button type="button" class="btn btn-primary">Queue</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

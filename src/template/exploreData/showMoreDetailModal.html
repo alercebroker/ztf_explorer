@@ -1,0 +1,127 @@
+{% block show_more_detail %}
+<!-- show more detail modal -->
+<div class="modal fade" id="showMoreModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Select columns to show</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- <div class="modal-body">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-all" checked="false">
+                    <label class="form-check-label" for="col-all">All</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-oid" checked="true">
+                    <label class="form-check-label" for="col-oid">Object ID</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-class" checked="true">
+                    <label class="form-check-label" for="col-class">Class</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-pclass" checked="true">
+                    <label class="form-check-label" for="col-pclass">Probability of class</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-ext">
+                    <label class="form-check-label" for="col-ext">Content on exterior catalog</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-period">
+                    <label class="form-check-label" for="col-period">Period</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-nobs" checked="true">
+                    <label class="form-check-label" for="col-nobs">Number of observations (alerts)</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-meang" checked="true">
+                    <label class="form-check-label" for="col-meang">Mean Magnitude Green</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-meanr">
+                    <label class="form-check-label" for="col-meanr">Mean Magnitude Red</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-ming">
+                    <label class="form-check-label" for="col-ming">Minimum Magnitude Green</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-minr">
+                    <label class="form-check-label" for="col-minr">Minimum Magnitude Red</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-maxg">
+                    <label class="form-check-label" for="col-maxg">Maximum Magnitude Green</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-maxr">
+                    <label class="form-check-label" for="col-maxr">Maximum Magnitude Red</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-rmsg">
+                    <label class="form-check-label" for="col-rmsg">RMS Green</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-rmsr">
+                    <label class="form-check-label" for="col-rmsr">RMS Red</label>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-lastmagg">
+                    <label class="form-check-label" for="col-lastmagg">Last magnitud Green</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-lastmagr">
+                    <label class="form-check-label" for="col-lastmagr">Last magnitud Red</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-firstmagg">
+                    <label class="form-check-label" for="col-firstmagg">First magnitud Green</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-firstmagr">
+                    <label class="form-check-label" for="col-firstmagr">First magnitud Red</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-slope">
+                    <label class="form-check-label" for="col-slope">Slope</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-firstJD">
+                    <label class="form-check-label" for="col-firstJD">First alert date(J)</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-lastJD">
+                    <label class="form-check-label" for="col-lastJD">Last alert date(J)</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input" id="col-deltaJD">
+                    <label class="form-check-label" for="col-deltaJD">Delta on alert dates(J)</label>
+                </div>
+
+            </div> -->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="col-all">
+                            <label class="form-check-label" for="col-all">All</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="columns-list"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close-columns-modal">Close</button>
+                <button type="button" class="btn btn-primary" id="change-columns-btn">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

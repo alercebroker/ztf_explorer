@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="row mt-5">
+    <div class="col-3">
+        {% include 'exploreData/searchOptions.html' %}
+    </div>
+    <div class="col-9">
+        <div class="card">
+            <div class="tab-content" id="myTabContent">
+                <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="data-tab" data-toggle="tab" href="#data" role="tab" aria-controls="data" aria-selected="true">Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="histogram-tab" data-toggle="tab" href="#histogram" role="tab" aria-controls="histogram" aria-selected="false">Histogram</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="scatter-tab" data-toggle="tab" href="#scatter" role="tab" aria-controls="scatter" aria-selected="false">Scatter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="spatial-tab" data-toggle="tab" href="#spatial" role="tab" aria-controls="spatial" aria-selected="true">Spatial Distribution</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="sankey-tab" data-toggle="tab" href="#sankey" role="tab" aria-controls="sankey" aria-selected="false">Sankey</a>
+                    </li>
+                </ul>
+                {% include 'exploreData/tabData.html' %}
+                {% include 'exploreData/tabHistogram.html' %}
+                {% include 'exploreData/tabScatter.html' %}
+                {% include 'exploreData/tabSpatialDistribution.html' %}
+                {% include 'exploreData/tabSankey.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/columns-config.js' %}"></script>
+<script src="{% static 'js/searchOptions.js' %}"></script>
+<script src="{% static 'js/julianDates.js' %}"></script>
+<script src="{% static 'js/exploreData.js' %}"></script>
+{% endblock scripts %}
