@@ -1,13 +1,13 @@
 <template>
-	<div class="AboutUs">
-		<h1>About US</h1>
+	<div class="suscribeModal">
+		<h1>suscribeModal</h1>
 	</div>
 </template>
 
 <script>
 
 export default {
-  name: 'AboutUs',
+  name: 'suscribeModal',
   props: {
 
   }
