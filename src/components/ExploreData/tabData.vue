@@ -1,11 +1,13 @@
 <template>
-		<h1>About US</h1>
+	<div class="tabData">
+		<h1>tabData</h1>
+	</div>
 </template>
 
 <script>
 
 export default {
-  name: 'About',
+  name: 'tabData',
   props: {
 
   }

@@ -1,11 +1,13 @@
 <template>
-		<h1>About US</h1>
+	<div class="tabScatter">
+		<h1>tabScatter</h1>
+	</div>
 </template>
 
 <script>
 
 export default {
-  name: 'About',
+  name: 'tabScatter',
   props: {
 
   }

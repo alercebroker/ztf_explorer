@@ -6,13 +6,11 @@
 		</button>
 		<div class="collapse navbar-collapse " id="navbarSupportedContent">
 			<ul class="navbar-nav mx-auto ">
+
 				<li class="nav-item">
 					<router-link to="/" class="nav-link">
 						<h3>Explore Data</h3>
 					</router-link>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link disabled" href="#">|</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link disabled" href="#">

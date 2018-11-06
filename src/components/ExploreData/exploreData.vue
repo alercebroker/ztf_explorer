@@ -1,15 +1,23 @@
 <template>
-	<div class="exploreData">
-		<h1>Explore data</h1>
-	</div>
+    <div>
+        <b-row mt="5">
+          <b-col md="3" offset="1">
+              <searchOptions/>
+          </b-col>
+        </b-row>
+    </div>
 </template>
 
 <script>
 
+import searchOptions from './searchOptions.vue'
 export default {
-  name: 'ExploreData',
+  name: 'exploreData',
   props: {
 
+  },
+  components: {
+    searchOptions,
   }
 }
 </script>
