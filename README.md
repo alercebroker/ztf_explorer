@@ -33,6 +33,12 @@ Lok for this updates:
 ./vue-npm/$ git clone http://gitlab.dim.uchile.cl/AlerceFrontEnd/vue-proj.git
 ./vue-npm/$ cd vue-proj
 
+## if you have window
+#delete folder node_modules
+# npm install vue --save
+# npm install -g @vue/cli
+
+
 ## add url handler
 ./vue-npm/vue-proj/$ sudo yarn add vue-router
 ## Run server

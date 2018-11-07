@@ -3,20 +3,23 @@ import Router from 'vue-router'
 import AboutUs from './components/AboutUs/AboutUs.vue'
 import ExploreData from "./components/ExploreData/exploreData.vue"
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
+    mode:"history",
   routes: [
   {
     path:'/',
-    name:'exploreData',
-    components: {
-      ExploreData,
-    }
+    name:'home',
+    component:
+        ExploreData
+
   },
-  {
+    {
     path:'/aboutUs',
     name:'aboutUs',
-    component: {AboutUs,}
+    component:
+        AboutUs
+
   }]
 })
