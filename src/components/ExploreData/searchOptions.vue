@@ -1,5 +1,6 @@
 <template>
 	<div class="searchOptions">
+		<!-- <b-form v-on:submit.prevent="onQuerySubmit"> -->
 		<b-card no-body header-tag="header">
 			<h2 slot="header" class="mb-6">Search Options</h2>
 			<b-card-body>
@@ -749,28 +750,28 @@
 						<div name="coordinates">
 							<b-card-body>
 								<br>
-	              <h2>Coordinates</h2>
+								<h2>Coordinates</h2>
 								<b-card no-body>
 									<b-tabs card>
 										<b-tab title="Single">
 											<b-container>
 												<b-row class="align-middle">
-			                  	<b-col md="6">RA <small class="text-muted">(deg)</small></b-col>
-			                    	<b-col md="6">
-															<b-form-input size="sm" id="RA"></b-form-input>
-			                      </b-col>
-			                  </b-row>
-			                  <b-row class="align-middle">
-			                  	<b-col md="6">DEC <small class="text-muted">(deg)</small></b-col>
-			                    	<b-col md="6">
-															<b-form-input size="sm" id="DEC"></b-form-input>
-			                      </b-col>
-			                  </b-row>
-			                  <b-row class="align-middle">
-			                  	<b-col md="6">RS <small class="text-muted">(deg)</small></b-col>
-			                    <b-col md="6">
+													<b-col md="6">RA <small class="text-muted">(deg)</small></b-col>
+													<b-col md="6">
+														<b-form-input size="sm" id="RA"></b-form-input>
+													</b-col>
+												</b-row>
+												<b-row class="align-middle">
+													<b-col md="6">DEC <small class="text-muted">(deg)</small></b-col>
+													<b-col md="6">
+														<b-form-input size="sm" id="DEC"></b-form-input>
+													</b-col>
+												</b-row>
+												<b-row class="align-middle">
+													<b-col md="6">RS <small class="text-muted">(deg)</small></b-col>
+													<b-col md="6">
 														<b-form-input size="sm" id="RS"></b-form-input>
-			                    </b-col>
+													</b-col>
 												</b-row>
 											</b-container>
 										</b-tab>
@@ -778,14 +779,14 @@
 											<b-container>
 												<b-row class="align-middle">
 													<b-form-file v-model="file" placeholder="Choose a file..."></b-form-file>
-	 		                  	<b-alert show class="small">.txt file, format: "RA,DEC,RS\n"</b-alert>
-	 										 	</b-row>
+													<b-alert show class="small">.txt file, format: "RA,DEC,RS\n"</b-alert>
+												</b-row>
 											</b-container>
 										</b-tab>
 									</b-tabs>
 								</b-card>
 							</b-card-body>
-            </div>
+						</div>
 						<b-container>
 							<b-row class="text-center">
 								<b-col>
@@ -793,23 +794,23 @@
 										Show SQL
 									</b-btn>
 								</b-col>
-	        		</b-row>
-	        		<b-collapse id="SQL">
-	            	<br>
-	            	<b-jumbotron>
-	                <pre><code>SELECT * FROM TABLE WHERE COLUMN = 1</code></pre>
-	            	</b-jumbotron>
-	        		</b-collapse>
-	        		<br>
-	        		<b-row class="text-center">
+							</b-row>
+							<b-collapse id="SQL">
+								<br>
+								<b-jumbotron>
+									<pre><code>SELECT * FROM TABLE WHERE COLUMN = 1</code></pre>
+								</b-jumbotron>
+							</b-collapse>
+							<br>
+							<b-row class="text-center">
 								<b-col>
 									<b-btn variant="primary" size="lg" block id="searchbtn">
 										SEARCH
 									</b-btn>
 								</b-col>
-	        		</b-row>
-	        		<br>
-	        		<b-row>
+							</b-row>
+							<br>
+							<b-row>
 								<b-col class="text-center">
 									<b-btn variant="secondary" size="sm" id="searchbtn"> <!-- data-target="#saveSearchModal" -->
 										Save search
@@ -820,12 +821,13 @@
 										Subscribe
 									</b-btn>
 								</b-col>
-	        		</b-row>
+							</b-row>
 						</b-container>
 					</b-collapse>
 				</b-card-group>
 			</b-card-body>
 		</b-card>
+	<!-- </b-form> -->
 	</div>
 </template>
 
@@ -836,6 +838,9 @@ export default {
 	data(){
 		return{
 			anyBand: false,
+			queryParameters: {
+				oid: '',
+			},
 		}
 	},
 	methods : {

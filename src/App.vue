@@ -1,13 +1,14 @@
 <template>
   <div id="app">
     <Header/>
-    <router-view/>
+    <router-view>
+    </router-view>
     <br/><br/>
-    <b-row mt="5">
+    <!-- <b-row mt="5">
       <b-col md="4">
-          <searchOptions/>
+        <searchOptions/>
       </b-col>
-    </b-row>
+    </b-row> -->
     <br/><br/>
     <Footer class="footer fixed-bottom"/>
   </div>
@@ -16,12 +17,14 @@
 <script>
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
+import searchOptions from './components/ExploreData/searchOptions.vue'
 
 export default {
   name: 'App',
   components: {
-    Header ,
+    Header,
     Footer,
+    searchOptions,
   }
 }
 </script>
