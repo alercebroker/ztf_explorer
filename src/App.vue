@@ -4,7 +4,7 @@
     <router-view/>
     <br/><br/>
     <b-row mt="5">
-      <b-col md="3" offset="1">
+      <b-col md="4">
           <searchOptions/>
       </b-col>
     </b-row>
