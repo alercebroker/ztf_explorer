@@ -709,10 +709,10 @@
 										</b-row>
 										<b-row class="align-middle" name="firstJD">
 											<b-col>
-												<b-form-input size="sm" id="firstjd"></b-form-input>
+												<b-form-input size="sm" id="firstjd" v-model="queryParameters.dates.firstjd" @change="jdToGregorian(queryParameters.dates.firstjd, 'first')"></b-form-input>
 											</b-col>
 											<b-col>
-												<b-form-input size="sm" id="datepickerfirst" name="firstJD" type="date"></b-form-input>
+												<b-form-input size="sm" id="datepickerfirst" name="firstJD" type="date" v-model="firstGreg"></b-form-input>
 											</b-col>
 										</b-row>
 										<br>
@@ -723,10 +723,10 @@
 										</b-row>
 										<b-row class="align-middle" name="lastJD">
 											<b-col>
-												<b-form-input size="sm" id="lastjd"></b-form-input>
+												<b-form-input size="sm" id="lastjd" v-model="queryParameters.dates.lastjd"></b-form-input>
 											</b-col>
 											<b-col>
-												<b-form-input size="sm" id="datepickerlast" name="lastJD" type="date"></b-form-input>
+												<b-form-input size="sm" id="datepickerlast" name="lastJD" type="date" v-model="lastGreg"></b-form-input>
 											</b-col>
 
 										</b-row>
@@ -840,6 +840,8 @@ export default {
 	data(){
 		return{
 			anyBand: false,
+			firstGreg: null,
+			lastGreg: null,
 			queryParameters: {
 				oid: null,
 				class: null,
@@ -856,9 +858,35 @@ export default {
 					min:null,
 					max:null
 				},
-				ext: null
+				ext: null,
+				dates:{
+					firstjd: null,
+					lastjd: null,
+					deltajd: {
+						min: null,
+						max: null,
+					}
+				}
 			},
 		}
+	},
+	computed:{
+		firstjd(){
+			return this.queryParameters.dates.firstjd
+		}
+	},
+	watch:{
+		firstGreg: function(oldGreg, newGreg){
+			this.queryParameters.dates.firstjd = "Hola Pablo!";
+		},
+		lastGreg: function(oldGrag, newGreg){
+			this.queryParameters.dates.lastjd = "Mira como va la votacion";
+		},
+		firstjd(){
+			if(this.firstGreg !== "1994-05-23")
+				this.firstGreg = "1994-05-23";
+		}
+
 	},
 	methods : {
 		toggleAnyBand(){
@@ -873,11 +901,47 @@ export default {
 				else if (val == null) delete obj[key]
 			})
 		},
-		onSubmitQuery() {
+		onSubmitQuery(){
 			let queryToSubmit = this._.cloneDeep(this.queryParameters);
 			this.removeEmpty(queryToSubmit);
       alert(JSON.stringify(queryToSubmit));
     },
+		jdToGregorian(jdDate){
+			// const y = 4716;
+	    // const v = 3;
+	    // const j = 1401;
+	    // const u =  5;
+	    // const m =  2;
+	    // const s =  153;
+	    // const n = 12;
+	    // const w =  2;
+	    // const r =  4;
+	    // const B =  274277;
+	    // const p =  1461;
+	    // const C =  -38;
+			//
+			// var f = jdDate + j + Math.floor((Math.floor((4 * JD + B) / 146097) * 3) / 4) + C;
+			// var e = r * f + v;
+			// var g = Math.floor((e % p) / r);
+			// var h = u * g + w;
+			//
+			// var D = Math.floor((h % s) / u) + 1;
+			// var M = ((Math.floor(h / s) + m) % n) + 1;
+			// var Y = Math.floor(e / p) - y + Math.floor((n + m - M) / n) ;
+			//
+			// var day = ("0" + D).slice(-2);
+			// var month = ("0" + M ).slice(-2);
+			// var year = ("000" + Y ).slice(-4);
+			//
+			// var today = year + "-" + month + "-" + day;
+
+			// if(greg === 'first') this.firstGreg = jdDate;
+			// else if(greg === 'last') this.lastGreg = jdDate;
+			return;
+		},
+		gregorianToJd(){
+
+		}
 	},
 	props: {
 
