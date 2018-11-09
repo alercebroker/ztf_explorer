@@ -833,12 +833,15 @@
 	</div>
 </template>
 
+
 <script>
 
 export default {
-	name: 'searchOptions',
+	name: 'searchtOptions',
 	data(){
 		return{
+		    flagFirst:false,
+			flagLast:false,
 			anyBand: false,
 			firstGreg: null,
 			lastGreg: null,
@@ -873,22 +876,83 @@ export default {
 	computed:{
 		firstjd(){
 			return this.queryParameters.dates.firstjd
-		}
+		},
+		lastjd(){
+		    return this.queryParameters.dates.lastjd
+        }
 	},
 	watch:{
-		firstGreg: function(oldGreg, newGreg){
-			this.queryParameters.dates.firstjd = "Hola Pablo!";
+		firstGreg: function(newGreg){
+		    if(!this.flagFirst) {
+		        this.flagFirst = true;
+		        this.queryParameters.dates.firstjd = this.gregorianToJd(newGreg);
+			} else {
+		        this.flagFirst = false;
+			}
+
 		},
-		lastGreg: function(oldGrag, newGreg){
-			this.queryParameters.dates.lastjd = "Mira como va la votacion";
+		lastGreg: function(newGreg){
+			if(!this.flagLast) {
+		        this.flagLast = true;
+		        this.queryParameters.dates.lastjd = this.gregorianToJd(newGreg);
+			} else {
+		        this.flagLast = false;
+			}
 		},
 		firstjd(){
-			if(this.firstGreg !== "1994-05-23")
-				this.firstGreg = "1994-05-23";
+		    if(!this.flagFirst) {
+		        this.flagFirst = true;
+		        this.firstGreg = this.jdToGregorian(this.queryParameters.dates.firstjd);
+			} else {
+		        this.flagFirst = false;
+			}
+		},
+		lastjd(val){
+		    if(!this.flagLast) {
+		        this.flagLast = true;
+		        this.lastGreg = this.jdToGregorian(this.queryParameters.dates.lastjd);
+			} else {
+		        this.flagLast = false;
+			}
 		}
 
 	},
 	methods : {
+	    jdToGregorian(JD){
+	        const y = 4716;
+			const v = 3;
+			const j = 1401;
+			const u =  5;
+			const m =  2;
+			const s =  153;
+			const n = 12;
+			const w =  2;
+			const r =  4;
+			const B =  274277;
+			const p =  1461;
+			const C =  -38;
+	        var f = JD*1.0 + j + Math.floor((Math.floor((4 * JD*1.0 + B) / 146097) * 3) / 4) + C;
+			var e = r * f + v;
+			var g = Math.floor((e % p) / r);
+			var h = u * g + w;
+			var D = Math.floor((h % s) / u) + 1;
+			var M = ((Math.floor(h / s) + m) % n) + 1;
+			var Y = Math.floor(e / p) - y + Math.floor((n + m - M) / n) ;
+
+			var day = ("0" + D).slice(-2);
+			var month = ("0" + M ).slice(-2);
+			var year = ("000" + Y ).slice(-4);
+
+
+			var today = year + "-" + month + "-" + day;
+			return today;
+		},
+		gregorianToJd(gDate){
+	        var dateObj = new Date(gDate);
+			var julianDate = dateObj / 86400000 + 2440587.5;
+			return julianDate;
+		},
+
 		toggleAnyBand(){
 			this.anyBand = !this.anyBand;
 		},
@@ -906,42 +970,8 @@ export default {
 			this.removeEmpty(queryToSubmit);
       alert(JSON.stringify(queryToSubmit));
     },
-		jdToGregorian(jdDate){
-			// const y = 4716;
-	    // const v = 3;
-	    // const j = 1401;
-	    // const u =  5;
-	    // const m =  2;
-	    // const s =  153;
-	    // const n = 12;
-	    // const w =  2;
-	    // const r =  4;
-	    // const B =  274277;
-	    // const p =  1461;
-	    // const C =  -38;
-			//
-			// var f = jdDate + j + Math.floor((Math.floor((4 * JD + B) / 146097) * 3) / 4) + C;
-			// var e = r * f + v;
-			// var g = Math.floor((e % p) / r);
-			// var h = u * g + w;
-			//
-			// var D = Math.floor((h % s) / u) + 1;
-			// var M = ((Math.floor(h / s) + m) % n) + 1;
-			// var Y = Math.floor(e / p) - y + Math.floor((n + m - M) / n) ;
-			//
-			// var day = ("0" + D).slice(-2);
-			// var month = ("0" + M ).slice(-2);
-			// var year = ("000" + Y ).slice(-4);
-			//
-			// var today = year + "-" + month + "-" + day;
 
-			// if(greg === 'first') this.firstGreg = jdDate;
-			// else if(greg === 'last') this.lastGreg = jdDate;
-			return;
-		},
-		gregorianToJd(){
 
-		}
 	},
 	props: {
 
