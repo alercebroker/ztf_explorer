@@ -55,7 +55,7 @@
 													<label>Min</label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="minnobs" v-model="queryParameters.nobs.min">
+													<input class="form-control form-control-sm" id="minnobs" type="number" min="0" v-model="queryParameters.nobs.min">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -65,7 +65,7 @@
 													<label>Max</label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="maxnobs" v-model="queryParameters.nobs.max">
+													<input class="form-control form-control-sm" id="maxnobs" type="number" :min="queryParameters.nobs.min " v-model="queryParameters.nobs.max">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -81,7 +81,7 @@
 													<label>Min <small class="text-muted">(%)</small></label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="minpclass" v-model="queryParameters.classp.min">
+													<input class="form-control form-control-sm" id="minpclass" type="number" min="0" v-model="queryParameters.classp.min">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -91,7 +91,7 @@
 													<label>Max <small class="text-muted">(%)</small></label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="maxpclass" v-model="queryParameters.classp.max">
+													<input class="form-control form-control-sm" id="maxpclass" type="number" :min="queryParameters.classp.min" max="100" v-model="queryParameters.classp.max">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -108,7 +108,7 @@
 													<label>Min <small class="text-muted">(days)</small></label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="minperiod" v-model="queryParameters.period.min">
+													<input class="form-control form-control-sm" id="minperiod" min="0" type="number" v-model.number="queryParameters.period.min">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -118,7 +118,7 @@
 													<label>Max <small class="text-muted">(days)</small></label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="maxperiod" v-model="queryParameters.period.max">
+													<input class="form-control form-control-sm" :min="queryParameters.period.min" type="number" id="maxperiod" v-model="queryParameters.period.max">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -167,79 +167,7 @@
 										<b-card no-body id="magnitudTab">
 
 											<b-tabs card v-show="anyBand">
-												<b-tab>
-													<template slot="title">
-														<strong>Any Band</strong>
-													</template>
-													<b-row class="align-middle">
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="minAny">Min</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="minAny"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="maxAny">Max</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="maxAny"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-													</b-row>
-													<hr>
-													<b-row class="align-middle">
-														<b-col md="4" class="text-center small">min</b-col>
-														<b-col md="4" class="text-center"> </b-col>
-														<b-col md="4" class="text-center small">max</b-col>
-													</b-row>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minSlopeAny"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> slope </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxSlopeAny"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minMeanAny"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> mean </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxMeanAny"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<div class="row align-middle">
-														<div class="col-4">
-															<b-form-input size="sm" id="minRmsAny"></b-form-input>
-														</div>
-														<div class="col-4 text-center"> RMS </div>
-														<div class="col-4">
-															<b-form-input size="sm" id="maxRmsAny"></b-form-input>
-														</div>
-													</div>
-
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minLastmagU"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> last magn. </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxLastmagU"></b-form-input>
-														</b-col>
-													</b-row>
-												</b-tab>
+												<tabBand></tabBand>
 											</b-tabs>
 
 											<b-tabs card v-show="!anyBand">
@@ -835,9 +763,12 @@
 
 
 <script>
-
+import tabBand from './tabBand.vue'
 export default {
 	name: 'searchtOptions',
+	components: {
+    tabBand,
+  },
 	data(){
 		return{
 		    flagFirst:false,
@@ -868,6 +799,12 @@ export default {
 					deltajd: {
 						min: null,
 						max: null,
+					}
+				},
+				band: {
+				    any:{
+				        min:null,
+				        max:null,
 					}
 				}
 			},
