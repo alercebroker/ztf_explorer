@@ -9,6 +9,12 @@ Lok for this updates:
 - npm@6.4.1
 - yarn@1.10.1
 
+## How to install dependencies and run development server
+
+- Clone the repo: $ git clone http://gitlab.dim.uchile.cl/AlerceFrontEnd/vue-proj.git
+- Install dependencies: $ yarn
+- Run server: $ yarn serve
+
 ## How it was build
 ```sh
 ./$ node -v
