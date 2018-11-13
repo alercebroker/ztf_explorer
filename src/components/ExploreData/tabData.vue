@@ -1,6 +1,6 @@
 <template>
-	<div class="tabData">
-		<h1>tabData</h1>
+	<div>
+		<b-table striped hover :items="result" :fields="fields"></b-table>
 	</div>
 </template>
 
@@ -8,8 +8,32 @@
 
 export default {
   name: 'tabData',
-  props: {
-
-  }
+  props: ["result"],
+	data(){
+		return  {
+            fields: [
+				{
+				  key: 'pclass',
+				  sortable: true,
+					label: 'PClass'
+				},
+				{
+				  key: 'oid',
+				  sortable: false,
+					label: 'Object ID'
+				},
+				{
+				  key: 'oid',
+				  sortable: false,
+					label: 'Object ID'
+				},
+				{
+				  key: 'nobs',
+				  sortable: false,
+					label: '# Obs'
+				}
+			  ],
+		    }
+        },
 }
 </script>

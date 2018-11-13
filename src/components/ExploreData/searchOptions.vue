@@ -167,7 +167,12 @@
 										<b-card no-body id="magnitudTab">
 
 											<b-tabs card v-show="anyBand">
-												<tabBand></tabBand>
+												<b-tab>
+													<template slot="title">
+            											<strong>Any Band</strong>
+													</template>
+													<tabBand :band="queryParameters.band.any"></tabBand>
+												</b-tab>
 											</b-tabs>
 
 											<b-tabs card v-show="!anyBand">
@@ -175,74 +180,7 @@
 												<!-- #### U TAB #### -->
 
 												<b-tab title="u" disabled>
-													<b-row class="align-middle">
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="minU">Min</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="minU"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="maxU">Max</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="maxU"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-													</b-row>
-													<hr>
-													<b-row class="align-middle">
-														<b-col md="4" class="text-center small">min</b-col>
-														<b-col md="4" class="text-center"> </b-col>
-														<b-col md="4" class="text-center small">max</b-col>
-													</b-row>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minSlopeU"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> slope </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxSlopeU"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minMeanU"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> mean </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxMeanU"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minRmsU"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> RMS </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxRmsU"></b-form-input>
-														</b-col>
-													</b-row>
-
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minLastmagU"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> last magn. </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxLastmagU"></b-form-input>
-														</b-col>
-													</b-row>
+													<tabBand :band="queryParameters.band.u"></tabBand>
 												</b-tab>
 
 												<!-- #### END U TAB #### -->
@@ -250,73 +188,7 @@
 												<!-- #### G TAB #### -->
 
 												<b-tab title="g" active>
-													<b-row class="align-middle">
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="minG">Min</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="minG"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="maxG">Max</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="maxG"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-													</b-row>
-													<hr>
-													<b-row class="align-middle">
-														<b-col md="4" class="text-center small">min</b-col>
-														<b-col md="4" class="text-center"> </b-col>
-														<b-col md="4" class="text-center small">max</b-col>
-													</b-row>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minSlopeG"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> slope </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxSlopeG"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minMeanG"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> mean </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxMeanG"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minRmsG"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> RMS </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxRmsG"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minLastmagG"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> last magn. </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxLastmagG"></b-form-input>
-														</b-col>
-													</b-row>
+													<tabBand :band="queryParameters.band.g"></tabBand>
 												</b-tab>
 
 												<!-- #### END G TAB #### -->
@@ -324,292 +196,28 @@
 												<!-- #### R TAB #### -->
 
 												<b-tab title="r">
-													<b-row class="align-middle">
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="minR">Min</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="minR"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="maxR">Max</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="maxR"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-													</b-row>
-													<hr>
-													<b-row class="align-middle">
-														<b-col md="4" class="text-center small">min</b-col>
-														<b-col md="4" class="text-center"> </b-col>
-														<b-col md="4" class="text-center small">max</b-col>
-													</b-row>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minSlopeR"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> slope </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxSlopeR"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minMeanR"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> mean </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxMeanR"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minRmsR"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> RMS </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxRmsR"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minLastmagR"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> last magn. </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxLastmagR"></b-form-input>
-														</b-col>
-													</b-row>
+													<tabBand :band="queryParameters.band.r"></tabBand>
 												</b-tab>
 												<!-- #### END R TAB #### -->
 
 												<!-- #### I TAB #### -->
 
 												<b-tab title="i" disabled>
-													<b-row class="align-middle">
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="minI">Min</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="minI"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="maxI">Max</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="maxI"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-													</b-row>
-													<hr>
-													<b-row class="align-middle">
-														<b-col md="4" class="text-center small">min</b-col>
-														<b-col md="4" class="text-center"> </b-col>
-														<b-col md="4" class="text-center small">max</b-col>
-													</b-row>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minSlopeI"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> slope </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxSlopeI"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minMeanI"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> mean </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxMeanI"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minRmsI"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> RMS </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxRmsI"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minLastmagI"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> last magn. </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxLastmagI"></b-form-input>
-														</b-col>
-													</b-row>
+													<tabBand :band="queryParameters.band.i"></tabBand>
 												</b-tab>
 												<!-- #### END I TAB #### -->
 
 												<!-- #### Z TAB #### -->
 
 												<b-tab title="z" disabled>
-													<b-row class="align-middle">
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="minZ">Min</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="minZ"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="maxZ">Max</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="maxZ"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-													</b-row>
-													<hr>
-													<b-row class="align-middle">
-														<b-col md="4" class="text-center small">min</b-col>
-														<b-col md="4" class="text-center"> </b-col>
-														<b-col md="4" class="text-center small">max</b-col>
-													</b-row>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minSlopeZ"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> slope </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxSlopeZ"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minMeanZ"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> mean </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxMeanZ"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minRmsZ"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> RMS </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxRmsZ"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minLastmagZ"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> last magn. </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxLastmagZ"></b-form-input>
-														</b-col>
-													</b-row>
+													<tabBand :band="queryParameters.band.z"></tabBand>
 												</b-tab>
 												<!-- #### END Z TAB #### -->
 
 												<!-- #### Y TAB #### -->
 
 												<b-tab title="y" disabled>
-													<b-row class="align-middle">
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="minY">Min</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="minY"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-														<b-col md="6">
-															<b-row>
-																<b-col md="4" class="text-right">
-																	<label for="maxY">Max</label>
-																</b-col>
-																<b-col md="8" class="text-left">
-																	<b-form-input size="sm" id="maxY"></b-form-input>
-																</b-col>
-															</b-row>
-														</b-col>
-													</b-row>
-													<hr>
-													<b-row class="align-middle">
-														<b-col md="4" class="text-center small">min</b-col>
-														<b-col md="4" class="text-center"> </b-col>
-														<b-col md="4" class="text-center small">max</b-col>
-													</b-row>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minSlopeY"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> slope </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxSlopeY"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minMeanY"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> mean </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxMeanY"></b-form-input>
-														</b-col>
-													</b-row>
-													<br>
-													<div class="row align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minRmsY"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> RMS </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxRmsY"></b-form-input>
-														</b-col>
-													</div>
-													<br>
-													<b-row class="align-middle">
-														<b-col md="4">
-															<b-form-input size="sm" id="minLastmagY"></b-form-input>
-														</b-col>
-														<b-col md="4" class="text-center"> last magn. </b-col>
-														<b-col md="4">
-															<b-form-input size="sm" id="maxLastmagY"></b-form-input>
-														</b-col>
-													</b-row>
+													<tabBand :band="queryParameters.band.y"></tabBand>
 												</b-tab>
 												<!-- #### END Y TAB #### -->
 											</b-tabs>
@@ -766,6 +374,7 @@
 import tabBand from './tabBand.vue'
 export default {
 	name: 'searchtOptions',
+	props: ['params'],
 	components: {
     tabBand,
   },
@@ -802,11 +411,147 @@ export default {
 					}
 				},
 				band: {
-				    any:{
-				        min:null,
-				        max:null,
-					}
-				}
+                    any: {
+                        min: null,
+                        max: null,
+                        slope: {
+                            min: null,
+                            max: null,
+                        },
+                        mean: {
+                            min: null,
+                            max: null,
+                        },
+                        rms: {
+                            min: null,
+                            max: null,
+                        },
+                        lastmag: {
+                            min: null,
+                            max: null,
+                        }
+                    },
+					u: {
+                        min: null,
+                        max: null,
+                        slope: {
+                            min: null,
+                            max: null,
+                        },
+                        mean: {
+                            min: null,
+                            max: null,
+                        },
+                        rms: {
+                            min: null,
+                            max: null,
+                        },
+                        lastmag: {
+                            min: null,
+                            max: null,
+                        }
+                    },
+					g: {
+                        min: null,
+                        max: null,
+                        slope: {
+                            min: null,
+                            max: null,
+                        },
+                        mean: {
+                            min: null,
+                            max: null,
+                        },
+                        rms: {
+                            min: null,
+                            max: null,
+                        },
+                        lastmag: {
+                            min: null,
+                            max: null,
+                        }
+                    },
+					r: {
+                        min: null,
+                        max: null,
+                        slope: {
+                            min: null,
+                            max: null,
+                        },
+                        mean: {
+                            min: null,
+                            max: null,
+                        },
+                        rms: {
+                            min: null,
+                            max: null,
+                        },
+                        lastmag: {
+                            min: null,
+                            max: null,
+                        }
+                    },
+					i: {
+                        min: null,
+                        max: null,
+                        slope: {
+                            min: null,
+                            max: null,
+                        },
+                        mean: {
+                            min: null,
+                            max: null,
+                        },
+                        rms: {
+                            min: null,
+                            max: null,
+                        },
+                        lastmag: {
+                            min: null,
+                            max: null,
+                        }
+                    },
+					z: {
+                        min: null,
+                        max: null,
+                        slope: {
+                            min: null,
+                            max: null,
+                        },
+                        mean: {
+                            min: null,
+                            max: null,
+                        },
+                        rms: {
+                            min: null,
+                            max: null,
+                        },
+                        lastmag: {
+                            min: null,
+                            max: null,
+                        }
+                    },
+					y: {
+                        min: null,
+                        max: null,
+                        slope: {
+                            min: null,
+                            max: null,
+                        },
+                        mean: {
+                            min: null,
+                            max: null,
+                        },
+                        rms: {
+                            min: null,
+                            max: null,
+                        },
+                        lastmag: {
+                            min: null,
+                            max: null,
+                        }
+                    },
+                }
 			},
 		}
 	},
@@ -905,14 +650,12 @@ export default {
 		onSubmitQuery(){
 			let queryToSubmit = this._.cloneDeep(this.queryParameters);
 			this.removeEmpty(queryToSubmit);
-      alert(JSON.stringify(queryToSubmit));
-    },
+			this.$emit("update:params",queryToSubmit);
+
+    	},
 
 
 	},
-	props: {
-
-	}
 }
 </script>
 
