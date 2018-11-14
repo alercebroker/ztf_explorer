@@ -324,43 +324,46 @@
 									</b-card>
 								</b-card-body>
 							</div>
-							<b-container>
-								<b-row class="text-center">
-									<b-col>
-										<b-button variant="outline-secondary" v-b-toggle="'SQL'">
-											Show SQL
-										</b-button>
-									</b-col>
-								</b-row>
-								<b-collapse id="SQL">
-									<br>
-									<b-jumbotron>
-										<pre><code>SELECT * FROM TABLE WHERE COLUMN = 1</code></pre>
-									</b-jumbotron>
-								</b-collapse>
-								<br>
-								<b-row class="text-center">
-									<b-col>
-										<b-button type="submit" variant="primary" size="lg" block id="searchbtn">
-											SEARCH
-										</b-button>
-									</b-col>
-								</b-row>
-								<br>
-								<b-row>
-									<b-col class="text-center">
-										<b-button variant="secondary" size="sm" id="searchbtn"> <!-- data-target="#saveSearchModal" -->
-											Save search
-										</b-button>
-									</b-col>
-									<b-col class="text-center">
-										<b-button variant="warning" size="sm"> <!-- data-target="#subscribeModal" -->
-											Subscribe
-										</b-button>
-									</b-col>
-								</b-row>
-							</b-container>
 						</b-collapse>
+					</b-card-group>
+					</br>
+					<b-card-group>
+						<b-container>
+							<b-row class="text-center">
+								<b-col>
+									<b-button variant="outline-secondary" v-b-toggle="'SQL'">
+										Show SQL
+									</b-button>
+								</b-col>
+							</b-row>
+							<b-collapse id="SQL">
+								<br>
+								<b-jumbotron>
+									<pre><code>SELECT * FROM TABLE WHERE COLUMN = 1</code></pre>
+								</b-jumbotron>
+							</b-collapse>
+							<br>
+							<b-row class="text-center">
+								<b-col>
+									<b-button type="submit" variant="primary" size="lg" block id="searchbtn">
+										SEARCH
+									</b-button>
+								</b-col>
+							</b-row>
+							<br>
+							<b-row>
+								<b-col class="text-center">
+									<b-button variant="secondary" size="sm" id="searchbtn"> <!-- data-target="#saveSearchModal" -->
+										Save search
+									</b-button>
+								</b-col>
+								<b-col class="text-center">
+									<b-button variant="warning" size="sm"> <!-- data-target="#subscribeModal" -->
+										Subscribe
+									</b-button>
+								</b-col>
+							</b-row>
+						</b-container>
 					</b-card-group>
 				</b-form>
 			</b-card-body>

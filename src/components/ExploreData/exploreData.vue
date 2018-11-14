@@ -2,11 +2,11 @@
     <div>
       <b-row mt="5">
         <b-col md="4">
-            <searchOptions :params.sync="params"/>
+          <searchOptions :params.sync="params"/>
         </b-col>
-          <b-col md="8">
-            <tabResult :params="params"/>
-          </b-col>
+        <b-col md="8">
+          <tabResult :params="params"/>
+        </b-col>
       </b-row>
     </div>
 </template>
