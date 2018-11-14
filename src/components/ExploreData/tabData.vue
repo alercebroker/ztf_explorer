@@ -40,7 +40,7 @@ export default {
         return {
             allSelected: false,
             indeterminate: false,
-            selected: [], // TODO: must contain default columns
+            selected: ['nobs','oid','pclass'], // TODO: must contain default columns
             options: [ //TODO: change values and text
                 {text: 'Object ID', value: {
                         key: 'oid',
