@@ -1,10 +1,10 @@
 <template>
 	<footer class="footer fixed">
-		<div class="container-fluid bg-light " id="footer" style="padding-top: 5px; padding-bottom: 5px;">
+		<div class="container-fluid bg-light " id="footer" style="padding-top: 3px; padding-bottom: 3px;">
 			<div></div>
 			<div class="row">
 				<div class="col-2 align-text-bottom">
-					<p class="small text-muted"><a class="text-muted" href="#">About Us</a></p>
+					<p class="small text-muted"><router-link to="/AboutUs" class="text-muted">About Us</router-link></p>
 				</div>
 				<div class="col-10" name="logos">
 					<div class="row align-middle">
