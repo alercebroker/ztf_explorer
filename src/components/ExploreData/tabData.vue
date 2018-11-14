@@ -1,5 +1,12 @@
 <template>
-	<div>
+	<div v-if="error">
+		<h4>Error conecting to our servers</h4>
+	</div>
+	<div v-else-if="result.status === 204">
+		<h4>Your query did not return any results</h4>
+	</div>
+	<div v-else-if="result.status === 200">
+
         <b-btn class="mb-3" v-b-modal.showDetails>Show more details</b-btn>
 
         <b-modal id="showDetails" >
@@ -10,8 +17,7 @@
                                      :indeterminate="indeterminate"
                                      aria-describedby="options"
                                      aria-controls="options"
-                                     @change="toggleAll"
-                    >
+                                     @change="toggleAll">
                         {{ allSelected ? 'Un-select All' : 'Select All' }}
                     </b-form-checkbox>
                 </template>
@@ -26,8 +32,17 @@
             </b-form-group>
 
         </b-modal>
-
-        <b-table striped hover :items="result" :fields="selected"></b-table>
+		<small><strong>Note: this is a random sample from your query result set</strong></small>
+        <b-table striped hover :items="result.data.results" :fields="selected"></b-table>
+	</div>
+	<div v-else-if="result.status === 400">
+		<h4>There is an error with your query</h4>
+	</div>
+	<div v-else-if="result.data.length === 0">
+		<h4>Your search results will be displayed here</h4>
+	</div>
+	<div v-else>
+		<h4>Opps! there was a problem with our servers</h4>
 	</div>
 </template>
 
@@ -35,7 +50,7 @@
 
 export default {
     name: 'tabData',
-    props: ["result"],
+    props: ["result", "error"],
     data() {
         return {
             allSelected: false,

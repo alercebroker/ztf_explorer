@@ -7,22 +7,22 @@
 						<b-tabs card>
 
 							<b-tab title="Data">
-								<tabData :result="result"></tabData>
+								<tabData :result="result" :error="error"></tabData>
 							</b-tab>
 
-							<b-tab title="Histogram" >
+							<b-tab title="Histogram" :disabled="result.data.length == 0 ? true : false">
 								<tabHistogram :result="result"></tabHistogram>
 							</b-tab>
 
-                            <b-tab title="Scatter" >
+                            <b-tab title="Scatter" :disabled="result.data.length == 0 ? true : false">
 								<tabScatter :result="result"></tabScatter>
 							</b-tab>
 
-                            <b-tab title="Spatial Distribution" >
+                            <b-tab title="Spatial Distribution" :disabled="result.data.length == 0 ? true : false">
 								<tabSpatialDistribution :result="result"></tabSpatialDistribution>
 							</b-tab>
 
-                            <b-tab title="Sankey" >
+                            <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
 								<tabSankey :result="result"></tabSankey>
 							</b-tab>
 
@@ -49,19 +49,26 @@ export default {
     },
     data(){
         return  {
-            result : []
+            result : {
+                data : ""
+            },
+            error : null
         }
     },
     methods : {
     },
     watch: {
         params: function (newVal, oldVal) { // watch it
-            let self = this;
             this.$http.post('/v1/query',{
                 query_parameters: newVal
             })
             .then((result_query) => {
-                self.result = result_query.data.results
+                this.result = result_query
+                this.error = null
+                console.log(this.result)
+            })
+            .catch((error) => {
+                this.error = error
             })
         }
 
