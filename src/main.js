@@ -3,6 +3,7 @@ import App from './App.vue'
 import Router from 'vue-router'
 import router from './router'
 import VueLodash from 'vue-lodash'
+import axios from 'axios'
 
 import BootstrapVue from 'bootstrap-vue'
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -10,7 +11,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css"
 
 
 Vue.config.productionTip = false;
-
+Vue.prototype.$http = axios;
 
 Vue.use(Router);
 Vue.use(BootstrapVue);
