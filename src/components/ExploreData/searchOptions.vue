@@ -128,7 +128,7 @@
 								<b-row class="align-middle" name="ext">
 									<b-col md="12" class="form-check">
 										<b-form-group>
-											<b-form-checkbox plain stacked id="ext" v-model="queryParameters.filters.ext">Has Crossmatch</b-form-checkbox>
+											<b-form-checkbox plain stacked id="ext" v-model="queryParameters.filters.ext" value="1" :unchecked-value="null">Has Crossmatch</b-form-checkbox>
 										</b-form-group>
 										<!-- <input type="checkbox" class="form-check-input" id="ext">
 										<label class="form-check-label" for="ext">Has Crossmatch</label> -->
@@ -654,6 +654,7 @@ export default {
 		},
 		onSubmitQuery(){
 			let queryToSubmit = this._.cloneDeep(this.queryParameters);
+			console.log(queryToSubmit);
 			this.removeEmpty(queryToSubmit);
 			this.$emit("update:params",queryToSubmit);
 
