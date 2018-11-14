@@ -580,6 +580,9 @@ export default {
 	            .then((result_query) => {
 	                this.currentQuery = result_query.data;
 	            })
+				.catch((error) => {
+					console.log(error);
+				})
 			},
 			deep: true
 		},
