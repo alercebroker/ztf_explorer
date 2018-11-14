@@ -81,7 +81,7 @@
 													<label>Min <small class="text-muted">(%)</small></label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="minpclass" type="number" min="0" v-model="queryParameters.filters.classp.min">
+													<input class="form-control form-control-sm" id="minpclass" type="number" min="0" v-model="queryParameters.filters.pclass.min">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -91,7 +91,7 @@
 													<label>Max <small class="text-muted">(%)</small></label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="maxpclass" type="number" :min="queryParameters.filters.classp.min" max="100" v-model="queryParameters.filters.classp.max">
+													<input class="form-control form-control-sm" id="maxpclass" type="number" :min="queryParameters.filters.pclass.min" max="100" v-model="queryParameters.filters.pclass.max">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -398,7 +398,7 @@ export default {
 						min: null,
 						max: null,
 					},
-					classp:{
+					pclass:{
 						min: null,
 						max: null
 					},
