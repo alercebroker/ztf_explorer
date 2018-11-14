@@ -78,20 +78,20 @@
 										<b-col md="6">
 											<b-row>
 												<b-col md="4" class="text-left">
-													<label>Min <small class="text-muted">(%)</small></label>
+													<label>Min</label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="minpclass" type="number" min="0" v-model="queryParameters.filters.pclass.min">
+													<input class="form-control form-control-sm" id="minpclass" type="number" step="0.0001" min="0" v-model="queryParameters.filters.pclass.min">
 												</b-col>
 											</b-row>
 										</b-col>
 										<b-col md="6">
 											<b-row>
 												<b-col md="4" class="text-left">
-													<label>Max <small class="text-muted">(%)</small></label>
+													<label>Max</label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="maxpclass" type="number" :min="queryParameters.filters.pclass.min" max="100" v-model="queryParameters.filters.pclass.max">
+													<input class="form-control form-control-sm" id="maxpclass" type="number" step="0.0001" :min="queryParameters.filters.pclass.min" max="1" v-model="queryParameters.filters.pclass.max">
 												</b-col>
 											</b-row>
 										</b-col>
