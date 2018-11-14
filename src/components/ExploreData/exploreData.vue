@@ -12,29 +12,28 @@
 </template>
 
 <script>
-
 import searchOptions from './searchOptions.vue'
 import tabResult from './tabResult.vue'
 export default {
-  name: 'exploreData',
-  props: {
+    name: 'exploreData',
+    props: {
 
-  },
-  components: {
-    searchOptions,
-      tabResult
-  },
+    },
+    components: {
+        searchOptions,
+        tabResult
+    },
     data(){
-		return  {
-		        params : {}
-		    }
-        },
+        return  {
+            params : {}
+        }
+    },
     methods: {
-      update(value) {
-          alert("ble");
-          console.log(value);
-          this.params = value;
-      }
+        update(value) {
+            alert("ble");
+            console.log(value);
+            this.params = value;
+        }
 
     }
 }
