@@ -57,8 +57,7 @@ export default {
     watch: {
         params: function (newVal, oldVal) { // watch it
             let self = this;
-            const baseURI = 'https://api-alerce-test.herokuapp.com/v1/query';
-            this.$http.post(baseURI,{
+            this.$http.post('/v1/query',{
                 query_parameters: newVal
             })
             .then((result_query) => {

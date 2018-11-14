@@ -339,7 +339,7 @@
 					<b-collapse id="SQL">
 						<br>
 						<b-jumbotron>
-							<pre><code>SELECT * FROM TABLE WHERE COLUMN = 1</code></pre>
+							<pre><code>{{currentQuery}}</code></pre>
 						</b-jumbotron>
 					</b-collapse>
 					<br>
@@ -383,6 +383,7 @@ export default {
 	},
 	data(){
 		return{
+			currentQuery: "SELECT * FROM TABLE",
 			flagFirst:false,
 			flagLast:false,
 			anyBand: false,
@@ -569,6 +570,19 @@ export default {
 		}
 	},
 	watch:{
+		queryParameters: {
+			handler: function(newVal, oldVal) {
+				let queryToSubmit = this._.cloneDeep(newVal);
+				this.removeEmpty(queryToSubmit);
+	            this.$http.post('/v1/get_sql',{
+	                query_parameters: queryToSubmit
+	            })
+	            .then((result_query) => {
+	                this.currentQuery = result_query.data;
+	            })
+			},
+			deep: true
+		},
 		firstGreg: function(newGreg){
 			if(!this.flagFirst) {
 				this.flagFirst = true;
@@ -649,7 +663,7 @@ export default {
 					this.removeEmpty(val);
 					if (Object.keys(val).length === 0) delete obj[key];
 				}
-				else if (val == null) delete obj[key]
+				else if (val == null || val == "") delete obj[key]
 			})
 		},
 		onSubmitQuery(){
