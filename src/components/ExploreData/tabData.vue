@@ -1,9 +1,13 @@
 <template>
 	<div v-if="error">
-		<h4>Error conecting to our servers</h4>
+		<b-alert show variant="danger">
+			Error conecting to our servers
+		</b-alert>
 	</div>
 	<div v-else-if="result.status === 204">
-		<h4>Your query did not return any results</h4>
+		<b-alert show variant="warning">
+			Your query did not return any results
+		</b-alert>
 	</div>
 	<div v-else-if="result.status === 200">
 
@@ -36,13 +40,19 @@
         <b-table striped hover :items="result.data.results" :fields="selected"></b-table>
 	</div>
 	<div v-else-if="result.status === 400">
-		<h4>There is an error with your query</h4>
+		<b-alert show variant="warning">
+			There is an error with your query
+		</b-alert>
 	</div>
 	<div v-else-if="result.data.length === 0">
-		<h4>Your search results will be displayed here</h4>
+		<b-alert variant="info" show>
+			Your search results will be displayed here
+		</b-alert>
 	</div>
 	<div v-else>
-		<h4>Opps! there was a problem with our servers</h4>
+		<b-alert variant="danger" show>
+			Opps! there was a problem with our servers
+		</b-alert>
 	</div>
 </template>
 
