@@ -37,8 +37,9 @@
 
         </b-modal>
 		    <small><strong>Note: this is a random sample from your query result set</strong></small>
+        <div v-show="selected.length">
         <b-table striped hover :items="result.data.results" :fields="selected" @row-clicked="showObjectDetails"></b-table>
-
+        </div>
         <b-modal ref="objDetailsModal" class="modal-fullscreen" id="objDetailsModal" title="Object Details">
             <b-container fluid>
                 <b-row>
@@ -114,7 +115,19 @@ export default {
       showModal: false,
       allSelected: false,
       indeterminate: false,
-      selected: ["nobs", "oid", "pclass"], // TODO: must contain default columns
+      selected: [{
+            key: "oid",
+            sortable: false,
+            label: "Object ID"
+          },{
+            key: "nobs",
+            sortable: false,
+            label: "# Obs"
+          },{
+            key: "pclass",
+            sortable: false,
+            label: "Probability on class"
+          }], // TODO: must contain default columns
       options: [
         //TODO: change values and text
         {
