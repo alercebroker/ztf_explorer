@@ -2,10 +2,10 @@
     <div>
       <b-row mt="5">
         <b-col md="4">
-          <searchOptions :params.sync="params"/>
+          <searchOptions :params.sync="params" :loading="loading"/>
         </b-col>
         <b-col md="8">
-          <tabResult :params="params"/>
+          <tabResult :loading.sync="loading" :params="params"/>
         </b-col>
       </b-row>
     </div>
@@ -25,7 +25,8 @@ export default {
     },
     data(){
         return  {
-            params : {}
+            params : {},
+            loading : false,
         }
     },
     methods: {
