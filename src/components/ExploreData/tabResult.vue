@@ -43,7 +43,7 @@ import tabSankey from './tabSankey.vue'
 import tabSpatialDistribution from './tabSpatialDistribution.vue'
 export default {
     name: "tabResult",
-    props: ['params'],
+    props: ['params', 'loading'],
     components: {
         tabData,tabScatter,tabHistogram,tabSankey,tabSpatialDistribution
     },
@@ -59,18 +59,21 @@ export default {
     },
     watch: {
         params: function (newVal, oldVal) { // watch it
+            this.$emit("update:loading",true);
             this.$http.post('/v1/query',{
                 query_parameters: newVal
             })
             .then((result_query) => {
+                this.$emit("update:loading",false);
                 this.result = result_query
                 this.error = null
                 console.log(this.result)
             })
             .catch((error) => {
+                this.$emit("update:loading",false);
                 this.error = error
             })
-        }
+        },
 
     }
 

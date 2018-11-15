@@ -2,10 +2,10 @@
     <div>
       <b-row>
         <b-col cols="4">
-          <searchOptions :params.sync="params"/>
+          <searchOptions :params.sync="params" :loading="loading"/>
         </b-col>
         <b-col cols="8">
-          <tabResult :params="params"/>
+          <tabResult :loading.sync="loading" :params="params"/>
         </b-col>
       </b-row>
     </div>
@@ -15,21 +15,27 @@
 import searchOptions from "./searchOptions.vue";
 import tabResult from "./tabResult.vue";
 export default {
-  name: "exploreData",
-  props: {},
-  components: {
-    searchOptions,
-    tabResult
-  },
-  data() {
-    return {
-      params: {}
-    };
-  },
-  methods: {
-    update(value) {
-      alert("ble");
-      this.params = value;
+    name: 'exploreData',
+    props: {
+
+    },
+    components: {
+        searchOptions,
+        tabResult
+    },
+    data(){
+        return  {
+            params : {},
+            loading : false,
+        }
+    },
+    methods: {
+        update(value) {
+            alert("ble");
+            console.log(value);
+            this.params = value;
+        }
+
     }
   }
 };
