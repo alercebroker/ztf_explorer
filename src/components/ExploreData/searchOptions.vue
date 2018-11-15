@@ -326,7 +326,7 @@
 						</div>
 					</b-collapse>
 				</b-card-group>
-			</br>
+			<br>
 			<b-card-group>
 				<b-container>
 					<b-row class="text-center">
@@ -670,8 +670,7 @@ export default {
 			})
 		},
 		onSubmitQuery(){
-			let queryToSubmit = this._.cloneDeep(this.queryParameters);
-			console.log(queryToSubmit);
+			let queryToSubmit = this._.cloneDeep(this.queryParameters);			
 			this.removeEmpty(queryToSubmit);
 			this.$emit("update:params",queryToSubmit);
 
