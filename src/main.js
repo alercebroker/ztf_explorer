@@ -9,7 +9,8 @@ import BootstrapVue from 'bootstrap-vue'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 
-axios.defaults.baseURL = 'https://api-alerce-test.herokuapp.com';
+// axios.defaults.baseURL = 'https://api-alerce-test.herokuapp.com';
+axios.defaults.baseURL = 'http://gawa-app03.mat.uc.cl:8084';
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = axios;
@@ -19,8 +20,10 @@ Vue.use(BootstrapVue);
 Vue.use(VueLodash);
 
 new Vue({
-    el     : '#app',
+    el: '#app',
     router,
-    components: { app: App },
-    render : h => h('app')
+    components: {
+        app: App
+    },
+    render: h => h('app')
 });
