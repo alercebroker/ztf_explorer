@@ -248,4 +248,8 @@ export default {
 ul > li {
   list-style: none;
 }
+
+table tr {
+  cursor: pointer;
+}
 </style>
