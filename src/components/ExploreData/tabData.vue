@@ -40,7 +40,163 @@
 
         <div v-show="selected.length">
             <b-table striped hover :items="result.data.results" :fields="selected"
-                     @row-clicked="showObjectDetails"></b-table>
+                     @row-clicked="showObjectDetails">
+                <template slot="class" slot-scope="data">
+                     <!--TODO: change classes-->
+                    <div v-if="data.value===1">
+                        class
+                    </div>
+                    <div v-if="data.value===2">
+                        class
+                    </div>
+                    <div v-if="data.value===3">
+                        class
+                    </div>
+                    <div v-if="data.value===4">
+                        class
+                    </div>
+                    <div v-if="data.value===5">
+                        class
+                    </div>
+                    <div v-if="data.value===6">
+                        class
+                    </div>
+                    <div v-if="data.value===7">
+                        class
+                    </div>
+                    <div v-if="data.value===8">
+                        class
+                    </div>
+                    <div v-if="data.value===9">
+                        class
+                    </div>
+                    <div v-if="data.value===10">
+                        class
+                    </div>
+
+                </template>
+                <template slot="pclass" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="period" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="firstmagg" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="lastmagg" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="firstmagr" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="lastmagr" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="maxg" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="ming" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="maxr" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="minr" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="meang" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="meanr" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="mediang" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="medianr" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="rmsg" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="rmsr" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="slope" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="firstjd" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="lastjd" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="deltajd" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="rmsdec" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="rmsra" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="meanra" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+                <template slot="meandec" slot-scope="data">
+                    <div v-if="data.value!=NAN">
+                        {{data.value.toFixed(5)}}
+                    </div>
+                </template>
+            </b-table>
+
         </div>
 
         <b-modal ref="objDetailsModal" class="modal-fullscreen" id="objDetailsModal" title="Object Details">
@@ -293,7 +449,7 @@
                         text: "First MJD",
                         value: {
                             key: "firstjd",
-                            label: "Fisrt MJD"
+                            label: "First MJD"
                         }
                     },
                     {
