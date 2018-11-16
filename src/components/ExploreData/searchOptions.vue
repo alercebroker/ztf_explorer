@@ -36,7 +36,7 @@
 									<b-row class="align-middle">
 										<b-col md="5"><label for="subclass"><b>Subclass</b></label></b-col>
 										<b-col md="7">
-											<select class="form-control form-control-sm" id="subclass" v-model="queryParameters.filters.subclass">
+											<select class="form-control form-control-sm" id="subclass" v-model="queryParameters.filters.subclass" disabled>
 												<option value="" selected>All</option>
 												<option value="1">Star</option>
 												<option value="2">Supernova</option>
@@ -309,8 +309,10 @@
 														</b-col>
 													</b-row>
 												</b-container>
+
 											</b-tab>
-											<b-tab title="List">
+
+											<b-tab title="List" disabled>
 												<b-container>
 													<b-row class="align-middle">
 														<b-form-file placeholder="Choose a file..."></b-form-file>
@@ -351,12 +353,12 @@
 							<br>
 							<b-row>
 								<b-col class="text-center">
-									<b-button variant="secondary" size="sm" id="searchbtn"> <!-- data-target="#saveSearchModal" -->
+									<b-button variant="secondary" size="sm" id="searchbtn" disabled> <!-- data-target="#saveSearchModal" -->
 										Save search
 									</b-button>
 								</b-col>
 								<b-col class="text-center">
-									<b-button variant="warning" size="sm"> <!-- data-target="#subscribeModal" -->
+									<b-button variant="warning" size="sm" disabled> <!-- data-target="#subscribeModal" -->
 										Subscribe
 									</b-button>
 								</b-col>

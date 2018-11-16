@@ -13,6 +13,9 @@
 					</router-link>
 				</li>
 				<li class="nav-item">
+					<a class="nav-link disabled" href="#">|</a>
+				</li>
+				<li class="nav-item">
 					<a class="nav-link disabled" href="#">
 						<h3>User Account</h3>
 					</a>
