@@ -66,17 +66,22 @@
                         </b-row>
                     </b-col>
                     <b-col>
-                        Curva de luz
+                        <!-- Curva de luz -->
                     </b-col>
                 </b-row>
                 <b-row>
                     <b-col>
-                        Stamps
+                        <!-- Stamps -->
+						<img src="" alt="" id="image">
                     </b-col>
                 </b-row>            
                 <b-row>
-                    <b-col>Visibility Plot</b-col>
-                    <b-col>Periodogram</b-col>
+                    <b-col>
+                      	<!-- Visibility Plot -->
+                    </b-col>
+                    <b-col>
+						<!-- Periodogram -->
+					</b-col>
                 </b-row>
             </b-container>
             <div slot="modal-footer">
@@ -115,19 +120,23 @@ export default {
       showModal: false,
       allSelected: false,
       indeterminate: false,
-      selected: [{
-            key: "oid",
-            sortable: false,
-            label: "Object ID"
-          },{
-            key: "nobs",
-            sortable: false,
-            label: "# Obs"
-          },{
-            key: "pclass",
-            sortable: false,
-            label: "Probability on class"
-          }], // TODO: must contain default columns
+      selected: [
+        {
+          key: "oid",
+          sortable: false,
+          label: "Object ID"
+        },
+        {
+          key: "nobs",
+          sortable: false,
+          label: "# Obs"
+        },
+        {
+          key: "pclass",
+          sortable: false,
+          label: "Probability on class"
+        }
+      ], // TODO: must contain default columns
       options: [
         //TODO: change values and text
         {
@@ -211,6 +220,45 @@ export default {
 
           this.details = obj;
         });
+
+      this.$http
+        .post("/v2/query_alerts", {
+          oid: item.oid
+        })
+        .then(result => {
+          let taskId = result.data["task-id"];
+          this.getObjectStamps(taskId);
+        });
+    },
+    getObjectStamps(taskId) {
+      this.$http
+        .post("/v2/query_result", {
+          "task-id": taskId
+        })
+        .then(result => {
+          let state = result.data.state;
+          if (state == "PENDING") {
+            this.getObjectStamps(result.data["task-id"]);
+          } else {
+            console.log(result);
+            result.data.result.forEach((val, ind) => {
+			  val contiene 3 valores, cada uno representando la stamp correspondiente
+			  el valor viene en hexadecimal, hay que pasarlo a binario para luego transformarlo a un blob
+			  pero, aun no se sabe cual es el formato de la imagen, y falta un paso de la conversion en binario
+			  ya que para armar el blob, al parecer tienen que estar en base64
+              var arrayBufferView = btoa(
+                parseInt(val.difs, 16)
+                  .toString(2)
+                  .padStart(8, "0")
+              );
+              var blob = new Blob([arrayBufferView], { type: "image/bmp" });
+              var urlCreator = window.URL || window.webkitURL;
+              var imageUrl = urlCreator.createObjectURL(blob);
+              var img = document.querySelector("#image");
+              img.src = imageUrl;
+            });
+          }
+        });
     },
     closeObjectModal: function(event) {
       this.$refs.objDetailsModal.hide();
@@ -264,5 +312,9 @@ ul > li {
 
 table tr {
   cursor: pointer;
+}
+
+#image {
+  width: 300px;
 }
 </style>
