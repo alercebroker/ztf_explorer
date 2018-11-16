@@ -324,7 +324,7 @@
 							</div>
 						</b-collapse>
 					</b-card-group>
-					</br>
+					<br>
 					<b-card-group>
 						<b-container>
 							<b-row class="text-center">
@@ -628,8 +628,9 @@ export default {
 
 	},
 	methods : {
-		jdToGregorian(JD){
-			const y = 4716;
+		jdToGregorian(MJD){
+		    var JD = MJD + 2400000.5;
+            const y = 4716;
 			const v = 3;
 			const j = 1401;
 			const u =  5;
@@ -641,7 +642,7 @@ export default {
 			const B =  274277;
 			const p =  1461;
 			const C =  -38;
-			var f = JD*1.0 + j + Math.floor((Math.floor((4 * JD*1.0 + B) / 146097) * 3) / 4) + C;
+			var f = JD + j + Math.floor((Math.floor((4 * JD + B) / 146097) * 3) / 4) + C;
 			var e = r * f + v;
 			var g = Math.floor((e % p) / r);
 			var h = u * g + w;
@@ -653,14 +654,16 @@ export default {
 			var month = ("0" + M ).slice(-2);
 			var year = ("000" + Y ).slice(-4);
 
-
 			var today = year + "-" + month + "-" + day;
+
 			return today;
 		},
 		gregorianToJd(gDate){
+		    //MJD = JD − 2400000.5
 			var dateObj = new Date(gDate);
-			var julianDate = dateObj / 86400000 + 2440587.5;
-			return julianDate;
+			var mjulianDate = dateObj / 86400000 + 40588;
+
+			return mjulianDate;
 		},
 
 		toggleAnyBand(){
