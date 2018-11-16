@@ -10,9 +10,10 @@
 		</b-alert>
 	</div>
 	<div v-else-if="result.status === 200">
-
-        <b-btn class="mb-3" v-b-modal.showDetails>Show more details</b-btn>
-
+        <div class="row">
+            <b-btn class="mb-3 col-4" v-b-modal.showDetails>Show more details</b-btn>
+            <b-btn class="mb-3 offset-5 col-3" v-b-modal.showDownloadModal>Download</b-btn>
+        </div>
         <b-modal id="showDetails" >
             <b-form-group>
                 <template slot="label">
@@ -34,7 +35,6 @@
                                        aria-label="Individual options"
                 ></b-form-checkbox-group>
             </b-form-group>
-
         </b-modal>
 		    <small><strong>Note: this is a random sample from your query result set</strong></small>
         <div v-show="selected.length">
@@ -83,6 +83,11 @@
               <b-btn v-on:click="closeObjectModal">Close</b-btn>
             </div>            
         </b-modal>
+        <b-modal id="showDownloadModal" title="Download Objects">
+            <download-modal :loading.sync="load" :query="query_sql"></download-modal>
+            <div slot="modal-footer">
+            </div>
+        </b-modal>
 	</div>
 	<div v-else-if="result.status === 400">
 		<b-alert show variant="warning">
@@ -102,12 +107,16 @@
 </template>
 
 <script>
-// import objectDetails from "./objectDetails.vue";
+ import downloadModal from "./downloadModal.vue";
+ import DownloadModal from "./downloadModal";
 export default {
   name: "tabData",
-  props: ["result", "error"],
+    components: {DownloadModal},
+    props: ["result", "error","query_sql","loading"],
+    component: [downloadModal],
   data() {
     return {
+        load: this.loading,
       details: {},
       defaultProp: {},
       allDetails: false,
@@ -212,6 +221,12 @@ export default {
           this.details = obj;
         });
     },
+      showDownload(item, index, event) {
+      this.$refs.downloadModal.show();
+    },
+      closeDownloadModal: function(event) {
+      this.$refs.downloadModal.hide();
+    },
     closeObjectModal: function(event) {
       this.$refs.objDetailsModal.hide();
     },
@@ -238,8 +253,12 @@ export default {
         this.indeterminate = true;
         this.allSelected = false;
       }
+    },
+      load(newVal, oldVal) {
+      // Handle changes in individual flavour checkboxes
+      this.$emit("update:loading",newVal);
     }
-  }
+  },
 };
 </script>
 

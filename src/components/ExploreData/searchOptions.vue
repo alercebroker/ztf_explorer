@@ -365,9 +365,6 @@
 					</b-card-group>
 				</b-form>
 			</b-card-body>
-			<loading
-            	:show="loading" label="Searching...">
-        	</loading>
 		</b-card>
 	</div>
 </template>
@@ -375,18 +372,15 @@
 
 <script>
 import tabBand from './tabBand.vue'
-import loading from 'vue-full-loading'
-
 export default {
 	name: 'searchOptions',
-	props: ['params', 'loading'],
+	props: ['params', 'loading',"currentQueryParent"],
 	components: {
-		tabBand,
-		loading
+		tabBand
 	},
 	data(){
 		return{
-			currentQuery: "SELECT * FROM TABLE",
+			currentQuery: this.currentQueryParent,
 			flagFirst:false,
 			flagLast:false,
 			anyBand: false,
@@ -679,7 +673,7 @@ export default {
 			let queryToSubmit = this._.cloneDeep(this.queryParameters);			
 			this.removeEmpty(queryToSubmit);
 			this.$emit("update:params",queryToSubmit);
-
+			this.$emit("update:currentQueryParent",this.currentQuery);
 		},
 
 

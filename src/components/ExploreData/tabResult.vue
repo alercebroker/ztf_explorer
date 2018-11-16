@@ -7,7 +7,7 @@
 						<b-tabs card>
 
 							<b-tab title="Data">
-								<tabData :result="result" :error="error"></tabData>
+								<tabData :loading.sync="load" :result="result" :error="error" :query_sql="query_sql"></tabData>
 							</b-tab>
 
 							<b-tab title="Histogram" :disabled="result.data.length == 0 ? true : false">
@@ -43,12 +43,13 @@ import tabSankey from './tabSankey.vue'
 import tabSpatialDistribution from './tabSpatialDistribution.vue'
 export default {
     name: "tabResult",
-    props: ['params', 'loading'],
+    props: ['params', 'loading','query_sql'],
     components: {
         tabData,tabScatter,tabHistogram,tabSankey,tabSpatialDistribution
     },
     data(){
         return  {
+            load: this.loading,
             result : {
                 data : ""
             },
@@ -74,6 +75,11 @@ export default {
                 this.error = error
             })
         },
+
+      load(newVal, oldVal) {
+      // Handle changes in individual flavour checkboxes
+      this.$emit("update:loading",newVal);
+    }
 
     }
 
