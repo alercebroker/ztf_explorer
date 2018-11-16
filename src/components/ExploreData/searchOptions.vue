@@ -36,7 +36,7 @@
 									<b-row class="align-middle">
 										<b-col md="5"><label for="subclass"><b>Subclass</b></label></b-col>
 										<b-col md="7">
-											<select class="form-control form-control-sm" id="subclass" v-model="queryParameters.filters.subclass">
+											<select class="form-control form-control-sm" id="subclass" v-model="queryParameters.filters.subclass" disabled>
 												<option value="" selected>All</option>
 												<option value="1">Star</option>
 												<option value="2">Supernova</option>
@@ -309,8 +309,10 @@
 														</b-col>
 													</b-row>
 												</b-container>
+
 											</b-tab>
-											<b-tab title="List">
+
+											<b-tab title="List" disabled>
 												<b-container>
 													<b-row class="align-middle">
 														<b-form-file placeholder="Choose a file..."></b-form-file>
@@ -324,7 +326,7 @@
 							</div>
 						</b-collapse>
 					</b-card-group>
-					</br>
+					<br>
 					<b-card-group>
 						<b-container>
 							<b-row class="text-center">
@@ -351,12 +353,12 @@
 							<br>
 							<b-row>
 								<b-col class="text-center">
-									<b-button variant="secondary" size="sm" id="searchbtn"> <!-- data-target="#saveSearchModal" -->
+									<b-button variant="secondary" size="sm" id="searchbtn" disabled> <!-- data-target="#saveSearchModal" -->
 										Save search
 									</b-button>
 								</b-col>
 								<b-col class="text-center">
-									<b-button variant="warning" size="sm"> <!-- data-target="#subscribeModal" -->
+									<b-button variant="warning" size="sm" disabled> <!-- data-target="#subscribeModal" -->
 										Subscribe
 									</b-button>
 								</b-col>
@@ -622,8 +624,9 @@ export default {
 
 	},
 	methods : {
-		jdToGregorian(JD){
-			const y = 4716;
+		jdToGregorian(MJD){
+		    var JD = MJD + 2400000.5;
+            const y = 4716;
 			const v = 3;
 			const j = 1401;
 			const u =  5;
@@ -635,7 +638,7 @@ export default {
 			const B =  274277;
 			const p =  1461;
 			const C =  -38;
-			var f = JD*1.0 + j + Math.floor((Math.floor((4 * JD*1.0 + B) / 146097) * 3) / 4) + C;
+			var f = JD + j + Math.floor((Math.floor((4 * JD + B) / 146097) * 3) / 4) + C;
 			var e = r * f + v;
 			var g = Math.floor((e % p) / r);
 			var h = u * g + w;
@@ -647,14 +650,16 @@ export default {
 			var month = ("0" + M ).slice(-2);
 			var year = ("000" + Y ).slice(-4);
 
-
 			var today = year + "-" + month + "-" + day;
+
 			return today;
 		},
 		gregorianToJd(gDate){
+		    //MJD = JD − 2400000.5
 			var dateObj = new Date(gDate);
-			var julianDate = dateObj / 86400000 + 2440587.5;
-			return julianDate;
+			var mjulianDate = dateObj / 86400000 + 40588;
+
+			return mjulianDate;
 		},
 
 		toggleAnyBand(){
