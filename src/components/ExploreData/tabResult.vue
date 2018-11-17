@@ -62,9 +62,12 @@ export default {
     },
     watch: {
         params: function (newVal, oldVal) { // watch it
+            // ONLY FOR DEMO PURPOSES!! remove it afterwards
+            let simulate_slow_query = Math.random() < 0.5 ? 0 : 4;
             this.$emit("update:loading",true);
             this.$http.post('/v1/query',{
-                query_parameters: newVal
+                query_parameters: newVal,
+                sleep: simulate_slow_query
             })
             .then((result_query) => {
                 this.$emit("update:loading",false);
@@ -74,14 +77,14 @@ export default {
             })
             .catch((error) => {
                 this.$emit("update:loading",false);
-                this.error = error
+                this.result = error.response;
             })
         },
 
-      load(newVal, oldVal) {
-      // Handle changes in individual flavour checkboxes
-      this.$emit("update:loading",newVal);
-    }
+        load(newVal, oldVal) {
+            // Handle changes in individual flavour checkboxes
+            this.$emit("update:loading",newVal);
+        }
 
     }
 

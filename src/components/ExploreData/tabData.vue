@@ -6,7 +6,9 @@
 	</div>
 	<div v-else-if="result.status === 204">
 		<b-alert show variant="warning">
-			Your query did not return any results
+			<h3>Our position is correct but there is no Alderaan!</h3>
+			Sorry but your search did not return any results :( <br>
+			Try refining your Query
 		</b-alert>
 	</div>
 	<div v-else-if="result.status === 200">
@@ -207,7 +209,7 @@
                             <h4>Details</h4>
                         </b-row>
                         <b-row>
-                            <b-col>                            
+                            <b-col>
                                 <ul id="default-details">
                                 <li v-for="(value, key) in defaultProp" :key="key">
                                     <strong>{{key}}</strong>: {{ value }}
@@ -221,7 +223,7 @@
                             </b-col>
                         </b-row>
                         <b-row>
-                            <b-btn v-show="details != {}" variant="default" v-on:click="moreDetails">{{ showMoreBtn }}</b-btn>                            
+                            <b-btn v-show="details != {}" variant="default" v-on:click="moreDetails">{{ showMoreBtn }}</b-btn>
                         </b-row>
                     </b-col>
                     <b-col>
@@ -232,7 +234,7 @@
                     <b-col>
                         Stamps
                     </b-col>
-                </b-row>            
+                </b-row>
                 <b-row>
                     <b-col>Visibility Plot</b-col>
                     <b-col>Periodogram</b-col>
@@ -240,11 +242,6 @@
             </b-container>
             <div slot="modal-footer">
               <b-btn v-on:click="closeObjectModal">Close</b-btn>
-            </div>            
-        </b-modal>
-        <b-modal id="showDownloadModal" title="Download Objects">
-            <download-modal :loading.sync="load" :query="query_sql"></download-modal>
-            <div slot="modal-footer">
             </div>
         </b-modal>
 	</div>
@@ -256,6 +253,24 @@
 	<div v-else-if="result.data.length === 0">
 		<b-alert variant="info" show>
 			Your search results will be displayed here
+		</b-alert>
+	</div>
+	<div v-else-if="result.status === 504">
+		<b-alert variant="warning" show>
+			<b-container>
+				<b-row>
+					<h3>Opps!</h3>
+				</b-row>
+				<b-row>
+					It looks like your Query is too complex. You can try refining your Query or you can queue it and we will let you know when it's ready :)
+				</b-row>
+				<br>
+				<b-row>
+					<b-button variant="success" size="lg" id="queueQuery" disabled> <!-- data-target="#saveSearchModal" -->
+						Queue my Query
+					</b-button>
+				</b-row>
+			</b-container>
 		</b-alert>
 	</div>
 	<div v-else>
