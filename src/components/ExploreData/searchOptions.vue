@@ -51,7 +51,7 @@
 									<b-row class="align-middle">
 										<b-col md="6">
 											<b-row>
-												<b-col md="4" class="text-right">
+												<b-col md="4" class="text-left">
 													<label>Min</label>
 												</b-col>
 												<b-col md="8" class="text-left">
@@ -61,7 +61,7 @@
 										</b-col>
 										<b-col md="6">
 											<b-row>
-												<b-col md="4"  class="text-right">
+												<b-col md="4"  class="text-left">
 													<label>Max</label>
 												</b-col>
 												<b-col md="8" class="text-left">
@@ -339,7 +339,7 @@
 							<b-collapse id="SQL">
 								<br>
 								<b-jumbotron>
-									<pre><code>{{currentQuery}}</code></pre>
+									{{currentQuery}}
 								</b-jumbotron>
 							</b-collapse>
 							<br>
@@ -569,9 +569,6 @@ export default {
 		}
 	},
 	watch:{
-		loading: function(){
-			console.log("Now we are loading!")
-		},
 		queryParameters: {
 			handler: function(newVal, oldVal) {
 				let queryToSubmit = this._.cloneDeep(newVal);
@@ -675,7 +672,7 @@ export default {
 			})
 		},
 		onSubmitQuery(){
-			let queryToSubmit = this._.cloneDeep(this.queryParameters);			
+			let queryToSubmit = this._.cloneDeep(this.queryParameters);
 			this.removeEmpty(queryToSubmit);
 			this.$emit("update:params",queryToSubmit);
 			this.$emit("update:currentQueryParent",this.currentQuery);
