@@ -272,11 +272,11 @@
 										</b-row>
 										<b-row class="align-middle">
 											<b-col md="4">
-												<b-form-input size="sm" id="minjd"></b-form-input>
+												<b-form-input size="sm" id="minjd" v-model="queryParameters.dates.deltajd.min"></b-form-input>
 											</b-col>
 											<b-col md="4" class="text-center">delta <small class="text-muted">(days)</small></b-col>
 											<b-col md="4">
-												<b-form-input size="sm" id="maxjd"></b-form-input>
+												<b-form-input size="sm" id="maxjd" v-model="queryParameters.dates.deltajd.max"></b-form-input>
 											</b-col>
 										</b-row>
 									</b-card>
@@ -578,6 +578,7 @@ export default {
 				})
 				.then((result_query) => {
 					this.currentQuery = result_query.data;
+					console.log(this.currentQuery);
 				})
 				.catch((error) => {
 					console.log(error);
