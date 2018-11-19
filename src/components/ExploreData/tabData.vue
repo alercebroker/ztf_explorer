@@ -244,6 +244,11 @@
               <b-btn v-on:click="closeObjectModal">Close</b-btn>
             </div>
         </b-modal>
+		<b-modal id="showDownloadModal" title="Download Objects">
+            <download-modal :loading.sync="load" :query="query_sql"></download-modal>
+            <div slot="modal-footer">
+            </div>
+        </b-modal>
 	</div>
 	<div v-else-if="result.status === 400">
 		<b-alert show variant="warning">
