@@ -205,39 +205,67 @@
             <b-container fluid>
                 <b-row>
                     <b-col cols=4>
-                        <b-row>
-                            <h4>Details</h4>
-                        </b-row>
-                        <b-row>
-                            <b-col>
-                                <ul id="default-details">
-                                <li v-for="(value, key) in defaultProp" :key="key">
-                                    <strong>{{key}}</strong>: {{ value }}
-                                </li>
-                                </ul>
-                                <ul v-show="allDetails" id="more-details">
-                                <li v-for="(value, key) in details" :key="key">
-                                    <strong>{{key}}</strong>: {{ value }}
-                                </li>
-                                </ul>
-                            </b-col>
-                        </b-row>
-                        <b-row>
-                            <b-btn v-show="details != {}" variant="default" v-on:click="moreDetails">{{ showMoreBtn }}</b-btn>
-                        </b-row>
+						<b-card title="Details">							
+							<b-row>
+								<b-col id="details">                            
+									<ul id="default-details">
+									<li v-for="(value, key) in defaultProp" :key="key">
+										<strong>{{key}}</strong>: {{ value }}
+									</li>
+									</ul>
+									<ul v-show="allDetails" id="more-details">
+									<li v-for="(value, key) in details" :key="key">
+										<strong>{{key}}</strong>: {{ value }}
+									</li>
+									</ul>
+								</b-col>
+							</b-row>
+							<b-row>
+								<b-col>
+									<b-btn v-show="details != {}" variant="default" v-on:click="moreDetails">{{ showMoreBtn }}</b-btn>                            
+								</b-col>
+							</b-row>
+						</b-card>
                     </b-col>
                     <b-col>
-                        Light curve
+                        <!-- Curva de luz -->
+                        <b-card title="Light curve" class="h-100 align-middle">
+							<div class="text-center">
+								<p class="card-text">
+									No data to display yet
+								</p>
+							</div>
+                        </b-card>
                     </b-col>
                 </b-row>
-                <b-row>
+                <b-row class="mt-3">
                     <b-col>
-                        Stamps
+                        <!-- Stamps -->
+						<!-- <img src="" alt="" id="image"> -->
+						<b-card title="Stamps">
+							<div class="text-center">
+								No stamps to display
+							</div>
+						</b-card>
                     </b-col>
-                </b-row>
-                <b-row>
-                    <b-col>Visibility Plot</b-col>
-                    <b-col>Periodogram</b-col>
+                </b-row>            
+                <b-row class="mt-3">
+                    <b-col>
+                      	<!-- Visibility Plot -->
+						<b-card title="Visibility Plots">
+							<div class="text-center">
+								No plots to display
+							</div>
+						</b-card>
+                    </b-col>
+                    <b-col>
+						<!-- Periodogram -->
+						<b-card title="Periodogram">
+							<div class="text-center">
+								No periodogram to display
+							</div>
+						</b-card>
+					</b-col>
                 </b-row>
             </b-container>
             <div slot="modal-footer">
@@ -303,19 +331,23 @@ export default {
       showModal: false,
       allSelected: false,
       indeterminate: false,
-      selected: [{
-            key: "oid",
-            sortable: false,
-            label: "Object ID"
-          },{
-            key: "nobs",
-            sortable: false,
-            label: "# Obs"
-          },{
-            key: "pclass",
-            sortable: false,
-            label: "Probability on class"
-          }], // TODO: must contain default columns
+      selected: [
+        {
+          key: "oid",
+          sortable: false,
+          label: "Object ID"
+        },
+        {
+          key: "nobs",
+          sortable: false,
+          label: "# Obs"
+        },
+        {
+          key: "pclass",
+          sortable: false,
+          label: "Probability on class"
+        }
+      ], // TODO: must contain default columns
       options: [
         //TODO: change values and text
         {
@@ -399,6 +431,45 @@ export default {
 
           this.details = obj;
         });
+
+      this.$http
+        .post("/v2/query_alerts", {
+          oid: item.oid
+        })
+        .then(result => {
+          let taskId = result.data["task-id"];
+          this.getObjectStamps(taskId);
+        });
+    },
+    getObjectStamps(taskId) {
+      this.$http
+        .post("/v2/query_result", {
+          "task-id": taskId
+        })
+        .then(result => {
+          let state = result.data.state;
+          if (state == "PENDING") {
+            this.getObjectStamps(result.data["task-id"]);
+          } else {
+            console.log(result);
+            result.data.result.forEach((val, ind) => {
+              // val contiene 3 valores, cada uno representando la stamp correspondiente
+              // el valor viene en hexadecimal, hay que pasarlo a binario para luego transformarlo a un blob
+              // pero, aun no se sabe cual es el formato de la imagen, y falta un paso de la conversion en binario
+              // ya que para armar el blob, al parecer tienen que estar en base64
+              //   var arrayBufferView = btoa(
+              //     parseInt(val.difs, 16)
+              //       .toString(2)
+              //       .padStart(8, "0")
+              //   );
+              //   var blob = new Blob([arrayBufferView], { type: "image/bmp" });
+              //   var urlCreator = window.URL || window.webkitURL;
+              //   var imageUrl = urlCreator.createObjectURL(blob);
+              //   var img = document.querySelector("#image");
+              //   img.src = imageUrl;
+            });
+          }
+        });
     },
       showDownload(item, index, event) {
       this.$refs.downloadModal.show();
@@ -460,7 +531,16 @@ ul > li {
   list-style: none;
 }
 
-table tr {
+table > tbody tr {
   cursor: pointer;
+}
+
+#image {
+  width: 300px;
+}
+
+#details {
+  max-height: 200px;
+  overflow-y: auto;
 }
 </style>
