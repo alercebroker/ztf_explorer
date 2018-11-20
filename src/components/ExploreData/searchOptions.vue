@@ -1,6 +1,7 @@
 <template>
 	<div class="searchOptions">
 		<!-- <b-form v-on:submit.prevent="onQuerySubmit"> -->
+			<br/>
 		<b-card no-body header-tag="header">
 			<h2 slot="header" class="mb-6">Search Options</h2>
 			<b-card-body>
