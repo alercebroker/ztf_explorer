@@ -46,34 +46,34 @@
                 <template slot="class" slot-scope="data">
                      <!--TODO: change classes-->
                     <div v-if="data.value===1">
-                        class
+                        ceph
                     </div>
                     <div v-if="data.value===2">
-                        class
+                        eb
                     </div>
                     <div v-if="data.value===3">
-                        class
+                        rrLy
                     </div>
                     <div v-if="data.value===4">
-                        class
+                        dsc
                     </div>
                     <div v-if="data.value===5">
-                        class
+                        2pv
                     </div>
                     <div v-if="data.value===6">
-                        class
+                        snIa
                     </div>
                     <div v-if="data.value===7">
-                        class
+                        snII
                     </div>
                     <div v-if="data.value===8">
-                        class
+                        snIbc
                     </div>
                     <div v-if="data.value===9">
-                        class
+                        sln
                     </div>
                     <div v-if="data.value===10">
-                        class
+                        snIa-bg
                     </div>
 
                 </template>
