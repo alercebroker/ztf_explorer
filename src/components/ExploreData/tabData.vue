@@ -227,7 +227,7 @@
                         </b-row>
                     </b-col>
                     <b-col>
-                        Curva de luz
+                        Light curve
                     </b-col>
                 </b-row>
                 <b-row>
