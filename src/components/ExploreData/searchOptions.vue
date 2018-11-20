@@ -82,7 +82,7 @@
 													<label>Min</label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="minpclass" type="number" step="0.0001" min="0" v-model="queryParameters.filters.pclass.min" :disabled="loading">
+													<input class="form-control form-control-sm" id="minpclass" type="number" step="0.0001" min="0" max="1" v-model="queryParameters.filters.pclass.min" :disabled="loading">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -109,7 +109,7 @@
 													<label>Min <small class="text-muted">(days)</small></label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" id="minperiod" min="0" type="number" step="0.0001" v-model.number="queryParameters.filters.period.min" :disabled="loading">
+													<input class="form-control form-control-sm" id="minperiod" min="0" type="number" step="0.1" v-model.number="queryParameters.filters.period.min" :disabled="loading">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -119,7 +119,7 @@
 													<label>Max <small class="text-muted">(days)</small></label>
 												</b-col>
 												<b-col md="8" class="text-left">
-													<input class="form-control form-control-sm" :min="queryParameters.filters.period.min" type="number" step="0.0001" id="maxperiod" v-model="queryParameters.filters.period.max" :disabled="loading">
+													<input class="form-control form-control-sm" :min="queryParameters.filters.period.min" type="number" step="0.1" id="maxperiod" v-model="queryParameters.filters.period.max" :disabled="loading">
 												</b-col>
 											</b-row>
 										</b-col>
@@ -244,7 +244,7 @@
 										</b-row>
 										<b-row class="align-middle" name="firstJD">
 											<b-col>
-												<b-form-input size="sm" id="firstjd" v-model="queryParameters.dates.firstjd" @change="jdToGregorian(queryParameters.dates.firstjd, 'first')"></b-form-input>
+												<b-form-input size="sm" id="firstjd" v-model="queryParameters.dates.firstjd" ></b-form-input>
 											</b-col>
 											<b-col>
 												<b-form-input size="sm" id="datepickerfirst" name="firstJD" type="date" v-model="firstGreg"></b-form-input>
@@ -607,7 +607,9 @@ export default {
 		firstjd(){
 			if(!this.flagFirst) {
 				this.flagFirst = true;
+
 				this.firstGreg = this.jdToGregorian(this.queryParameters.dates.firstjd);
+
 			} else {
 				this.flagFirst = false;
 			}
@@ -624,7 +626,7 @@ export default {
 	},
 	methods : {
 		jdToGregorian(MJD){
-		    var JD = MJD + 2400000.5;
+		    var JD =  Number(MJD) + 2400000.5;
             const y = 4716;
 			const v = 3;
 			const j = 1401;
@@ -640,10 +642,13 @@ export default {
 			var f = JD + j + Math.floor((Math.floor((4 * JD + B) / 146097) * 3) / 4) + C;
 			var e = r * f + v;
 			var g = Math.floor((e % p) / r);
+
 			var h = u * g + w;
 			var D = Math.floor((h % s) / u) + 1;
 			var M = ((Math.floor(h / s) + m) % n) + 1;
 			var Y = Math.floor(e / p) - y + Math.floor((n + m - M) / n) ;
+
+
 
 			var day = ("0" + D).slice(-2);
 			var month = ("0" + M ).slice(-2);
