@@ -635,6 +635,7 @@ export default {
     queryParameters: {
       handler: function(newVal) {
         let queryToSubmit = this._.cloneDeep(newVal);
+        this.checkAnyBand(queryToSubmit);
         this.removeEmpty(queryToSubmit);
         this.$http
           .post("/v1/get_sql", {
@@ -647,6 +648,7 @@ export default {
       },
       deep: true
     },
+
     firstGreg: function(newGreg) {
       if (!this.flagFirst) {
         this.flagFirst = true;
@@ -682,6 +684,17 @@ export default {
     }
   },
   methods: {
+    checkAnyBand: function(queryToSubmit) {
+      if (this.anyBand) {
+        let any = queryToSubmit.bands.any;
+        queryToSubmit.bands = {};
+        queryToSubmit.bands.any = any;
+      } else {
+        let bands = queryToSubmit.bands;
+        delete bands.any;
+        queryToSubmit.bands = bands;
+      }
+    },
     jdToGregorian(MJD) {
       var JD = Number(MJD) + 2400000.5;
       const y = 4716;
@@ -721,16 +734,14 @@ export default {
 
       return mjulianDate;
     },
-
-    toggleAnyBand() {
-      this.anyBand = !this.anyBand;
-    },
     removeEmpty(obj) {
       Object.entries(obj).forEach(([key, val]) => {
         if (val && typeof val === "object") {
           this.removeEmpty(val);
           if (Object.keys(val).length === 0) delete obj[key];
-        } else if (val == null || val == "") delete obj[key];
+        } else {
+          if (val == null || val == "") delete obj[key];
+        }
       });
     },
     onSubmitQuery() {
