@@ -788,6 +788,7 @@ export default {
     },
     onSubmitQuery() {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
+			this.checkAnyBand(queryToSubmit);
       this.removeEmpty(queryToSubmit);
       this.$emit("update:params", queryToSubmit);
       this.$emit("update:currentQueryParent", this.currentQuery);
