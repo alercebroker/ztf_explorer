@@ -480,8 +480,14 @@ export default {
         },
         bands: {
           any: {
-            min: null,
-            max: null,
+            min: {
+            	min: null,
+            	max: null
+            },
+            max: {
+            	min: null,
+            	max: null
+            },
             slope: {
               min: null,
               max: null
@@ -500,8 +506,14 @@ export default {
             }
           },
           u: {
-            min: null,
-            max: null,
+            min: {
+            	min: null,
+            	max: null
+            },
+            max: {
+            	min: null,
+            	max: null
+            },
             slope: {
               min: null,
               max: null
@@ -520,8 +532,14 @@ export default {
             }
           },
           g: {
-            min: null,
-            max: null,
+            min: {
+            	min: null,
+            	max: null
+            },
+            max: {
+            	min: null,
+            	max: null
+            },
             slope: {
               min: null,
               max: null
@@ -540,8 +558,14 @@ export default {
             }
           },
           r: {
-            min: null,
-            max: null,
+            min: {
+            	min: null,
+            	max: null
+            },
+            max: {
+            	min: null,
+            	max: null
+            },
             slope: {
               min: null,
               max: null
@@ -560,8 +584,14 @@ export default {
             }
           },
           i: {
-            min: null,
-            max: null,
+            min: {
+            	min: null,
+            	max: null
+            },
+            max: {
+            	min: null,
+            	max: null
+            },
             slope: {
               min: null,
               max: null
@@ -580,8 +610,14 @@ export default {
             }
           },
           z: {
-            min: null,
-            max: null,
+            min: {
+            	min: null,
+            	max: null
+            },
+            max: {
+            	min: null,
+            	max: null
+            },
             slope: {
               min: null,
               max: null
@@ -600,8 +636,14 @@ export default {
             }
           },
           y: {
-            min: null,
-            max: null,
+            min: {
+            	min: null,
+            	max: null
+            },
+            max: {
+            	min: null,
+            	max: null
+            },
             slope: {
               min: null,
               max: null

@@ -1,35 +1,30 @@
 <template>
     <div>
         <b-row class="align-middle">
-            <b-col md="6">
-                <b-row>
-                    <b-col md="4" class="text-right">
-                        <label for="minAny">Min</label>
-                    </b-col>
-                    <b-col md="8" class="text-left">
-                        <b-form-input id="minAny" size="sm" type="number" v-model="band.min" min="0" :max="band.max"></b-form-input>
-                        <!-- <input class="form-control form-control-sm" v-model="band.min" min="0" type="number" :max="band.max" id="minAny"></input> -->
-                    </b-col>
-                </b-row>
-            </b-col>
-            <b-col md="6">
-                <b-row>
-                    <b-col md="4" class="text-right">
-                        <label for="maxAny">Max</label>
-                    </b-col>
-                    <b-col md="8" class="text-left">
-                        <b-form-input id="maxAny" size="sm" type="number" v-model="band.max" :min="band.min"></b-form-input>
-                        <!-- <input class="form-control form-control-sm" v-model="band.max" :min="band.min" type="number"  id="maxAny"></input> -->
-                    </b-col>
-                </b-row>
-            </b-col>
-        </b-row>
-        <hr>
-        <b-row class="align-middle">
             <b-col md="4" class="text-center small">min</b-col>
             <b-col md="4" class="text-center"> </b-col>
             <b-col md="4" class="text-center small">max</b-col>
+        </b-row><hr>
+        <b-row class="align-middle">
+            <b-col md="4">
+                <b-form-input id="minMinAny" size="sm" type="number" v-model="band.min.min" min="0" :max="band.min.max"></b-form-input>
+            </b-col>
+            <b-col md="4" class="text-center"> Min </b-col>
+            <b-col md="4">
+                <b-form-input id="maxMinAny" size="sm" type="number" v-model="band.min.max" :min="band.min.min"></b-form-input>
+            </b-col>
         </b-row>
+        <br>
+        <b-row class="align-middle">
+            <b-col md="4">
+                <b-form-input id="minMaxAny" size="sm" type="number" v-model="band.max.min" min="0" :max="band.max.max"></b-form-input>
+            </b-col>
+            <b-col md="4" class="text-center"> Max </b-col>
+            <b-col md="4">
+                <b-form-input id="maxMaxAny" size="sm" type="number" v-model="band.max.max" :min="band.max.min"></b-form-input>
+            </b-col>
+        </b-row> 
+        <br>
         <b-row class="align-middle">
             <b-col md="4">
                 <b-form-input id="minSlopeAny" size="sm" type="number" v-model="band.slope.min" min="0" :max="band.slope.max"></b-form-input>
