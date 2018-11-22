@@ -1,11 +1,21 @@
 <template>
 	<div class="tabHistogram">
-		<b-row> 
-			<b-col> 
+		<b-row align-h="around"> 
+			<b-col cols="4"> 
 				<b-form-group horizontal label="yAxis" label-for="yAxis">
 					<b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
 				</b-form-group>
 			</b-col>
+			<b-col cols="4"> 
+				<b-form-group horizontal label="nbins" label-for="nbins">
+					<b-form-input id="nbins" type="number" v-model="nbins"></b-form-input>
+				</b-form-group>
+			</b-col>
+		</b-row>
+		<b-row align-h="center">
+			<div id="histogram" style="min-width: 310px; height: 400px; max-width: 800px; margin: 0 auto">
+				<p> Histogram not aviable</p>
+			</div>
 		</b-row>
 	</div>
 </template>
@@ -16,6 +26,7 @@ export default {
   	name: 'tabHistogram',
   	data(){
 		return {
+			nbins: 10,
 			selected: null,
 			options: [
 				{ value: null, text: "Please select a variable" },
