@@ -18,16 +18,15 @@
 								<tabScatter :result="result"></tabScatter>
 							</b-tab>
 
-                            <!--
                             <b-tab title="Spatial Distribution" :disabled="result.data.length == 0 ? true : false">
 								<tabSpatialDistribution :result="result"></tabSpatialDistribution>
 							</b-tab>
-							-->
 
+                            <!--
                             <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
 								<tabSankey :result="result"></tabSankey>
 							</b-tab>
-
+                            -->
 
 						</b-tabs>
 					</b-card>
