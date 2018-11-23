@@ -481,12 +481,12 @@ export default {
         bands: {
           any: {
             min: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             max: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             slope: {
               min: null,
@@ -507,12 +507,12 @@ export default {
           },
           u: {
             min: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             max: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             slope: {
               min: null,
@@ -533,12 +533,12 @@ export default {
           },
           g: {
             min: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             max: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             slope: {
               min: null,
@@ -559,12 +559,12 @@ export default {
           },
           r: {
             min: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             max: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             slope: {
               min: null,
@@ -585,12 +585,12 @@ export default {
           },
           i: {
             min: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             max: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             slope: {
               min: null,
@@ -611,12 +611,12 @@ export default {
           },
           z: {
             min: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             max: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             slope: {
               min: null,
@@ -637,12 +637,12 @@ export default {
           },
           y: {
             min: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             max: {
-            	min: null,
-            	max: null
+              min: null,
+              max: null
             },
             slope: {
               min: null,
@@ -788,7 +788,7 @@ export default {
     },
     onSubmitQuery() {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
-			this.checkAnyBand(queryToSubmit);
+      this.checkAnyBand(queryToSubmit);
       this.removeEmpty(queryToSubmit);
       this.$emit("update:params", queryToSubmit);
       this.$emit("update:currentQueryParent", this.currentQuery);

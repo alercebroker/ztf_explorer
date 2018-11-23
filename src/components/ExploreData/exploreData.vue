@@ -1,19 +1,15 @@
 <template>
-    <div class="container-fluid">
-        <b-row>
-            <b-col cols="4">
-                <searchOptions
-                    :params.sync="params"
-                    :currentQueryParent.sync="query"
-                    :loading="loading"
-                />
-            </b-col>
-            <b-col cols="8">
-                <tabResult :loading.sync="loading" :params="params" :query_sql="query"/>
-            </b-col>
-            <loading :show="loading" label="Searching..."></loading>
-        </b-row>
-    </div>
+  <div class="container-fluid">
+    <b-row>
+      <b-col cols="4">
+        <searchOptions :params.sync="params" :currentQueryParent.sync="query" :loading="loading"/>
+      </b-col>
+      <b-col cols="8">
+        <tabResult :loading.sync="loading" :params="params" :query_sql="query"/>
+      </b-col>
+      <loading :show="loading" label="Searching..."></loading>
+    </b-row>
+  </div>
 </template>
 
 <script>
