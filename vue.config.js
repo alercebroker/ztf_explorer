@@ -1,4 +1,5 @@
 module.exports = {
     // options...
-    baseUrl: '/vue/'
+    baseUrl: process.env.NODE_ENV === 'production' ?
+        '/vue/' : '/'
 }
