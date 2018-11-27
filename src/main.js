@@ -7,8 +7,8 @@ import axios from 'axios'
 
 import HighchartsVue from 'highcharts-vue'
 import Highcharts from 'highcharts'
-import histoInit from 'highcharts/modules/histogram-bellcurve.js'
-import scatterInit from 'highcharts/modules/exporting.js'
+import histogramInit from 'highcharts/modules/histogram-bellcurve.js'
+import exportingInit from 'highcharts/modules/exporting.js' //scatter
 
 import BootstrapVue from 'bootstrap-vue'
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -24,8 +24,8 @@ Vue.use(Router);
 Vue.use(BootstrapVue);
 Vue.use(VueLodash);
 
-histoInit(Highcharts)
-scatterInit(Highcharts)
+histogramInit(Highcharts);
+exportingInit(Highcharts);
 Vue.use(HighchartsVue);
 
 new Vue({
