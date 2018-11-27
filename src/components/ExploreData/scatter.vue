@@ -68,14 +68,12 @@
 				    series: [{ //datos a plotear
         name: 'Estrella',
         color: 'rgba(223, 83, 83, .5)',
-        data: []
-
     },{ //datos a plotear
         name: 'Sol' ,
         color: 'rgba(0, 83, 83, .5)',
         data: []
-
     }],
+
 				    //end highcharts element
         		},
         	}
