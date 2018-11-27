@@ -13,7 +13,6 @@
                   :query_sql="query_sql"
                 ></tabData>
               </b-tab>
-
               <b-tab title="Histogram" :disabled="result.data.status == 200 ? false : true">
                 <tabHistogram :result="result" :currentQueryParent="query_sql"></tabHistogram>
               </b-tab>
