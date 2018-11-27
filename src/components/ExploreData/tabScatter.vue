@@ -13,19 +13,22 @@
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
-			<div id="scatter" style="min-width: 310px; height: 400px; max-width: 800px; margin: 0 auto">
-				<p> Scatter not aviable</p>
-			</div>
+			<scatter :data="results" :xVariable="optionsX" :yVariable="optionsY"></scatter>
 		</b-row>
 	</div>
 </template>
 
 <script>
-
+import scatter from "./scatter.vue";
 export default {
   	name: 'tabScatter',
+  	props: ["results", "currentQueryParent"],
+  	components: {
+  		scatter,
+  	},
   	data(){
 		return {
+			currentQuery: this.currentQueryParent,
 			selectedX: null,
 			selectedY: null,
 			optionsX: [

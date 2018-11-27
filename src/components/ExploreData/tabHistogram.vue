@@ -13,19 +13,23 @@
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
-			<div id="histogram" style="min-width: 310px; height: 400px; max-width: 800px; margin: 0 auto">
-				<p> Histogram not aviable</p>
-			</div>
+			<histogram :data="results" :xVariable="options" :nbins="nbins"></histogram>
 		</b-row>
 	</div>
 </template>
 
 <script>
+import histogram from "./histogram.vue";
 
 export default {
   	name: 'tabHistogram',
+  	props: ["results", "currentQueryParent"],
+  	components: {
+  		histogram
+  	},
   	data(){
 		return {
+			currentQuery: this.currentQueryParent,
 			nbins: 10,
 			selected: null,
 			options: [

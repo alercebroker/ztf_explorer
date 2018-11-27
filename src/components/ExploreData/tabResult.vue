@@ -11,11 +11,11 @@
 							</b-tab>
 
 							<b-tab title="Histogram" :disabled="result.data.length == 0 ? true : false">
-								<tabHistogram :result="result"></tabHistogram>
+								<tabHistogram :result="result" :currentQueryParent="query_sql"></tabHistogram>
 							</b-tab>
 
                             <b-tab title="Scatter" :disabled="result.data.length == 0 ? true : false">
-								<tabScatter :result="result"></tabScatter>
+								<tabScatter :result="result" :currentQueryParent="query_sql"></tabScatter>
 							</b-tab>
 
                             <b-tab title="Spatial Distribution" :disabled="result.data.length == 0 ? true : false">
