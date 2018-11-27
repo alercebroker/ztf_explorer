@@ -6,7 +6,6 @@
 			</b-col>
 		</b-row>
 	</div>
-
 </template>
 
 <script>
@@ -18,6 +17,7 @@
         	return{
         	    example : {data:[{oid:2,ming:2,maxg:20,sloper:8},{oid:3,ming:4,maxg:7,sloper:1},{oid:4,ming:15,maxg:3,sloper:24}]},
         	    arg : [true,true,true],
+
         		chartOptions:{
         			chart: {
 				        type: 'scatter',
