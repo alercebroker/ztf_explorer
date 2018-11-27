@@ -16,7 +16,7 @@
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
-			<scatter :data="results" :xVariable="optionsX" :yVariable="optionsY"></scatter>
+			<scatter :data="results" :xVariable="selectedX" :yVariable="selectedY"></scatter>
 		</b-row>
 	</div>
 </template>
