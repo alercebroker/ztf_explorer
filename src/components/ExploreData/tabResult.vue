@@ -14,7 +14,7 @@
 								<tabHistogram :result="result" :currentQueryParent="query_sql"></tabHistogram>
 							</b-tab>
 
-                            <b-tab title="Scatter" :disabled="result.data.length == 0 ? true : false">
+                            <b-tab title="Scatter">
 								<tabScatter :result="result" :currentQueryParent="query_sql"></tabScatter>
 							</b-tab>
 
