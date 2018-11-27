@@ -16,21 +16,21 @@
         	return{
         		chartOptions:{
         			title: {
-			        text: 'Highcharts Histogram'
+			        text: ''
 			    },
 			    xAxis: [{
-			        title: { text: 'Data' },
+			        title: { text: 'xAxis' },
 			        alignTicks: false
 			    }, {
-			        title: { text: 'Histogram' },
+			        title: { text: '' },
 			        alignTicks: false,
 			        opposite: true
 			    }],
 
 			    yAxis: [{
-			        title: { text: 'Data' }
+			        title: { text: 'Number of Observations' }
 			    }, {
-			        title: { text: 'Histogram' },
+			        title: { text: '' },
 			        opposite: true
 			    }],
 
