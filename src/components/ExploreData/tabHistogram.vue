@@ -16,7 +16,7 @@
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
-			<histogram :data="results" :xVariable="options" :nbins="nbins"></histogram>
+			<histogram :data="results" :xVariable="selected" :nbins="nbins"></histogram>
 		</b-row>
 	</div>
 </template>

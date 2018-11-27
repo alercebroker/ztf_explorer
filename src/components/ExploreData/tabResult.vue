@@ -10,11 +10,11 @@
 								<tabData :loading.sync="load" :result="result" :error="error" :query_sql="query_sql"></tabData>
 							</b-tab>
 
-							<b-tab title="Histogram" :disabled="result.data.length == 0 ? true : false">
+							<b-tab title="Histogram" >
 								<tabHistogram :result="result" :currentQueryParent="query_sql"></tabHistogram>
 							</b-tab>
 
-                            <b-tab title="Scatter">
+                            <b-tab title="Scatter" :disabled="result.data.length == 0 ? true : false">
 								<tabScatter :result="result" :currentQueryParent="query_sql"></tabScatter>
 							</b-tab>
 
