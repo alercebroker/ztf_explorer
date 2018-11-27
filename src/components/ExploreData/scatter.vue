@@ -7,8 +7,8 @@
 		</b-row>
 	</div>
 </template>
+
 <script>
-	
 	export default {
         name: "scatter",
         props: ['data', 'xVariable', 'yVariable'],
@@ -58,7 +58,7 @@
 				            }
 				        }
 				    },
-				    series: [{
+				    series: [{ //datos a plotear
         name: 'Female',
         color: 'rgba(223, 83, 83, .5)',
         data: [[161.2, 51.6], [167.5, 59.0], [159.5, 49.2], [157.0, 63.0], [155.8, 53.6],
