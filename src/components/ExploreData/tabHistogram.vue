@@ -11,6 +11,9 @@
 					<b-form-input id="nbins" type="number" v-model="nbins"></b-form-input>
 				</b-form-group>
 			</b-col>
+			<b-col cols="2">
+				<b-button variant="secondary" alt="Load and add another sample of data" disabled>More data</b-button>
+			</b-col>
 		</b-row>
 		<b-row align-h="center">
 			<histogram :data="results" :xVariable="options" :nbins="nbins"></histogram>

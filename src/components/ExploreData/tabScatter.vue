@@ -11,6 +11,9 @@
 					<b-form-select v-model="selectedY" :options="optionsY" id="yAxis"></b-form-select>
 				</b-form-group>
 			</b-col>
+			<b-col cols="2">
+				<b-button variant="secondary" alt="Load and add another sample of data" disabled>More data</b-button>
+			</b-col>
 		</b-row>
 		<b-row align-h="center">
 			<scatter :data="results" :xVariable="optionsX" :yVariable="optionsY"></scatter>
