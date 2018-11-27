@@ -6,9 +6,11 @@
 			</b-col>
 		</b-row>
 	</div>
+
 </template>
 
 <script>
+	
 	export default {
         name: "scatter",
         props: ['data', 'xVariable', 'yVariable'],
