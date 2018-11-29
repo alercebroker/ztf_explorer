@@ -252,6 +252,7 @@ export default {
   component: [downloadModal],
   data() {
     return {
+      interval: null,
       load: this.loading,
       details: {},
       defaultProp: {},
@@ -336,19 +337,13 @@ export default {
     toggleAll(checked) {
       this.selected = checked ? this.options.map(a => a.value).slice() : [];
     },
-    showObjectDetails(item) {
-      this.$refs.objDetailsModal.show();
-
+    getQueryResults: function(taskId) {
       this.$http
-        .post("/v2/query", {
-          query_parameters: {
-            filters: {
-              oid: item.oid
-            }
-          }
+        .post("/v2/result", {
+          "task-id": taskId,
         })
-        .then(result => {
-          let obj = result.data.results[0];
+        .then(response => {
+          let obj = response.data.result.object_details;
           this.defaultProp["oid"] = obj.oid;
           this.defaultProp["class"] = obj.class;
           this.defaultProp["pclass"] = obj.pclass;
@@ -360,16 +355,81 @@ export default {
           delete obj.period;
 
           this.details = obj;
+          this.result = response.data.result;
+          this.$emit("update:loading", false);
         });
+    },
+    queryTask(task_id) {
+      // let this = this;
+      this.$http
+        .post("/v2/query_status", {
+          "task-id": task_id
+        })
+        .then(
+          function(response) {
+            if (response.data.status == "SUCCESS") {
+              clearInterval(this.interval);
+              this.getQueryResults(task_id);
+            }
+            else {
+              console.log(response);
+              // this.result = result;
+              // this.$emit("update:loading", false);
+            }
+          }.bind(this)
+        )
+        .catch(function(error) {});
+    },
+    showObjectDetails(item) {
+      this.$emit("update:loading", true);
+      this.$refs.objDetailsModal.show();
 
       this.$http
         .post("/v2/query_alerts", {
           oid: item.oid
         })
-        .then(result => {
-          let taskId = result.data["task-id"];
-          this.getObjectStamps(taskId);
-        });
+        .then(
+          function(response) {
+              this.interval = setInterval(
+                this.queryTask,
+                2000,
+                response.data["task-id"]
+              );
+          }.bind(this)
+        )
+        .catch(function(error) {});
+
+      // this.$http
+      //   .post("/v2/query_alerts", {
+      //     query_parameters: {
+      //       filters: {
+      //         oid: item.oid
+      //       }
+      //     }
+      //   })
+      //   .then(result => {
+      //     let obj = result.data.results[0];
+      //     this.defaultProp["oid"] = obj.oid;
+      //     this.defaultProp["class"] = obj.class;
+      //     this.defaultProp["pclass"] = obj.pclass;
+      //     this.defaultProp["period"] = obj.period;
+      //
+      //     delete obj.oid;
+      //     delete obj.class;
+      //     delete obj.pclass;
+      //     delete obj.period;
+      //
+      //     this.details = obj;
+      //   });
+      //
+      // this.$http
+      //   .post("/v2/query_alerts", {
+      //     oid: item.oid
+      //   })
+      //   .then(result => {
+      //     let taskId = result.data["task-id"];
+      //     this.getObjectStamps(taskId);
+      //   });
     },
     getObjectStamps(taskId) {
       this.$http

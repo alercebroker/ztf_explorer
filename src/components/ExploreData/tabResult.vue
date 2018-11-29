@@ -69,26 +69,9 @@ export default {
     };
   },
   methods: {
-    checkQueryResults: function(taskId, sleepTime) {
-      this.$http
-        .post("/v2/query_status", {
-          "task-id": taskId
-        })
-        .then(response => {
-          let status = response.status;
-          if (status == "PENDING" || status == "STARTED") {
-            this.checkQueryResults(taskId, sleepTime + 500);
-          } else {
-            this.getQueryResults(taskId);
-          }
-        });
-      // .then(() => {
-      //   this.$emit("update:loading", false);
-      // });
-    },
     getQueryResults: function(taskId) {
       this.$http
-        .post("/v2/query_result", {
+        .post("/v2/paginated_result", {
           "task-id": taskId,
           "page-size": 100,
           "page-number": 1
