@@ -392,7 +392,7 @@ export default {
           function(response) {
               this.interval = setInterval(
                 this.queryTask,
-                2000,
+                500,
                 response.data["task-id"]
               );
           }.bind(this)

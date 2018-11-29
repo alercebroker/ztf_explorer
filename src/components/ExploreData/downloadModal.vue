@@ -21,10 +21,10 @@ export default {
     };
   },
   methods: {
-    queryTask(task_id) {
+    getQueryResults(task_id) {
       // let this = this;
       this.$http
-        .post("/v2/query_result", {
+        .post("/v2/result", {
           "task-id": task_id
         })
         .then(function(response) {
@@ -40,7 +40,28 @@ export default {
           ); //or any other extension
           document.body.appendChild(link);
           link.click();
+        }.bind(this))
+        .catch(function(error) {});
+    },
+    queryTask(task_id) {
+      // let this = this;
+      this.$http
+        .post("/v2/query_status", {
+          "task-id": task_id
         })
+        .then(
+          function(response) {
+            if (response.data.status == "SUCCESS") {
+              clearInterval(this.interval);
+              this.getQueryResults(task_id);
+            }
+            else {
+              console.log(response);
+              // this.result = result;
+              // this.$emit("update:loading", false);
+            }
+          }.bind(this)
+        )
         .catch(function(error) {});
     },
     download() {
@@ -53,10 +74,13 @@ export default {
           format: this.selected
         })
         .then(function(response) {
-          this.interval = setInterval(function() {
-            this.queryTask(response.data["task-id"]);
-          }, 2000);
-        })
+            this.interval = setInterval(
+              this.queryTask,
+              2000,
+              response.data["task-id"]
+            );
+          }.bind(this)
+        )
         .catch(function(error) {
           this.$emit("update:loading", false);
           this.load = false;
