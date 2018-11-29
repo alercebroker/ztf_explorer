@@ -16,7 +16,7 @@
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
-			<scatter :data="results" :xVariable="selectedX" :yVariable="selectedY"></scatter>
+			<scatter :data="results" :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
 		</b-row>
 	</div>
 </template>
@@ -85,8 +85,13 @@ export default {
 				{ text: "Sloper", value: "Sloper" },
 				{ text: "Firstmagr", value: "firstmagr" },
 				{ text: "Lastmagr", value: "lastmagr" },				
-			]
+			],
+			plotValues:[
+				[2 , 20],
+				[4 , 7],
+				[15 , 3],
+			],
 		}
-	}
+	},
 }
 </script>
