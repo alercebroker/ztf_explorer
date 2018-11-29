@@ -69,8 +69,14 @@
         	}
         },
         methods:{
-		  	redraw(){ //actualizar datos 
-		    	this.chartOptions.series[0].data = this.plotValues;
+		  	redraw(){ //add a series for object
+		  		// delete the previous series
+		  		this.chartOptions.series = [];
+		  		// add new series
+		  		this.chartOptions.series.push({
+		  			name:this.plotValues[0].oid, 
+		  			data:[this.plotValues[0].pair],
+		  		});
 		    },
 
 		},
