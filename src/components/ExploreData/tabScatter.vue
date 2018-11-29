@@ -16,7 +16,7 @@
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
-			<scatter :data="results" :xVariable="optionsX" :yVariable="optionsY"></scatter>
+			<scatter :results="results" :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
 		</b-row>
 	</div>
 </template>
@@ -85,8 +85,66 @@ export default {
 				{ text: "Sloper", value: "Sloper" },
 				{ text: "Firstmagr", value: "firstmagr" },
 				{ text: "Lastmagr", value: "lastmagr" },				
-			]
+			],
+			plotValues:[
+				{oid: 1, pair:[2 ,20]},
+				{oid: 2, pair:[4 , 7]},
+				{oid: 3, pair:[15 , 3]},
+			],
 		}
-	}
+	},
+	methods:{
+		getAxisData: function(axis,obj){
+    		var x = axis.title.text;
+    		if (x == "Nr. Obs"){
+    			return obj.nobs;
+    		} if (x == "Maxg"){
+    			return obj.maxg;
+    		} if (x == "Ming"){
+    			return obj.ming;
+    		} if (x == "Meang"){
+    			return obj.meang;
+    		} if (x == "Slopeg"){
+    			return obj.slopeg;
+    		} if (x == "Firstmagg"){
+    			return obj.firstmagg;
+    		} if (x == "Lastmagg"){
+    			return obj.lastmagg;
+    		} if (x == "Maxr"){
+    			return obj.maxr;
+    		} if (x == "Minr"){
+    			return obj.minr;
+    		} if (x == "Meanr"){
+    			return obj.meanr;
+    		} if (x == "Sloper"){
+    			return obj.sloper;
+    		} if (x == "Firstmagr"){
+    			return obj.firstmagr;
+    		} if (x == "Lastmagr"){
+    			return obj.lastmagr;
+    		} else {
+    			return null;
+    		}
+    	},
+    	setPlotValues: function(){ // TODO testear con querys
+    		this.results.forEach(obj => { 
+    			this.plotValues.push({
+    				oid: obj.oid,
+    				pair:[
+    					getAxisData(this.selectedX, obj),
+    					getAxisData(this.selectedY, obj),
+    					],
+    			});
+    		});
+    	},
+	},
+	watch: {
+		selectedX: function(newVal, oldVal) { // watch it
+                this.setPlotValues();
+        },
+        selectedY: function(newVal, oldVal) { // watch it
+                this.setPlotValues();
+        },
+	},
 }
 </script>
