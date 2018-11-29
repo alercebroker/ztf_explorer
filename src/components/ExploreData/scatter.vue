@@ -11,7 +11,7 @@
 <script>
 	export default {
         name: "scatter",
-        props: ['data','plotValues', 'xVariable', 'yVariable'],
+        props: ['results','plotValues', 'xVariable', 'yVariable'],
         data(){
         	return{
         	    arg : [true,true,true],
@@ -56,12 +56,15 @@
 				                        enabled: false
 				                    }
 				                }
-				            }
+				            },
+				            tooltip: {
+				            	headerFormat: 'OID: <b>{series.name}</b><br>',
+				            },
 				        }
 				    },
 			        series: [{ //datos a plotear
 				        name: 'Data',
-				        color: 'rgba(223, 83, 83, .5)',
+				        color: 'rgb(170, 9, 9)',
 				        data: []
 				    }],
 				    //end highcharts element
@@ -77,7 +80,7 @@
 		  			this.chartOptions.series.push({
 		  				name: obj.oid,
 		  				data: [obj.pair],
-		  				color: 'rgba(223, 83, 83, .5)',
+		  				color: 'rgba(223, 83, 83, 1)',
 		  			});
 		  		});
 		    },
