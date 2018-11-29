@@ -14,17 +14,17 @@
                 ></tabData>
               </b-tab>
 
-              <b-tab title="Histogram" :disabled="result.data.length == 0 ? true : false">
+              <b-tab title="Histogram" :disabled="result.data.status == 200 ? false : true">
                 <tabHistogram :result="result" :currentQueryParent="query_sql"></tabHistogram>
               </b-tab>
 
-              <b-tab title="Scatter" :disabled="result.data.length == 0 ? true : false">
+              <b-tab title="Scatter" :disabled="result.data.status == 200 ? false : true">
                 <tabScatter :result="result" :currentQueryParent="query_sql"></tabScatter>
               </b-tab>
 
               <b-tab
                 title="Spatial Distribution"
-                :disabled="result.data.length == 0 ? true : false"
+                :disabled="result.data.status == 200 ? false : true"
               >
                 <tabSpatialDistribution :result="result"></tabSpatialDistribution>
               </b-tab>
@@ -109,7 +109,16 @@ export default {
             if (response.data.status == "SUCCESS") {
               clearInterval(this.interval);
               this.getQueryResults(task_id);
-            } else {
+            }
+            else if(response.data.status == "TIMEDOUT"){
+              clearInterval(this.interval);
+              response.status = 504;
+              this.result = response;
+              this.$emit("update:loading", false);
+              //this.getQueryResults(task_id);
+            }
+            else {
+              console.log(result);
               this.result = result;
               this.$emit("update:loading", false);
             }
