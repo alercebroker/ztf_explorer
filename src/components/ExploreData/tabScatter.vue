@@ -87,9 +87,9 @@ export default {
 				{ text: "Lastmagr", value: "lastmagr" },				
 			],
 			plotValues:[
-				[2 , 20],
-				[4 , 7],
-				[15 , 3],
+				{oid: 1, pair:[2 ,20]},
+				{oid: 2, pair:[4 , 7]},
+				{oid: 3, pair:[15 , 3]},
 			],
 		}
 	},
