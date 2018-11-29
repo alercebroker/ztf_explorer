@@ -33,7 +33,6 @@ export default {
   },
   methods: {
     update(value) {
-      console.log(value);
       this.params = value;
     }
   }
