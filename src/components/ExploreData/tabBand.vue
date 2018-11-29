@@ -83,7 +83,3 @@
         props: ['band']
     }
 </script>
-
-<style scoped>
-
-</style>
