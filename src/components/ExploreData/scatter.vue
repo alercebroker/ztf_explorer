@@ -73,9 +73,12 @@
 		  		// delete the previous series
 		  		this.chartOptions.series = [];
 		  		// add new series
-		  		this.chartOptions.series.push({
-		  			name:this.plotValues[0].oid, 
-		  			data:[this.plotValues[0].pair],
+		  		this.plotValues.forEach(obj =>{
+		  			this.chartOptions.series.push({
+		  				name: obj.oid,
+		  				data: [obj.pair],
+		  				color: 'rgba(223, 83, 83, .5)',
+		  			});
 		  		});
 		    },
 
