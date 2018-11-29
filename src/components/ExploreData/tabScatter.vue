@@ -1,12 +1,12 @@
 <template>
 	<div class="tabScatter">
-		<b-row align-h="around"> 
-			<b-col cols="4"> 
+		<b-row align-h="around">
+			<b-col cols="4">
 				<b-form-group horizontal label="xAxis" label-for="xAxis">
 					<b-form-select v-model="selectedX" :options="optionsX" id="xAxis"></b-form-select>
 				</b-form-group>
 			</b-col>
-			<b-col cols="4"> 
+			<b-col cols="4">
 				<b-form-group horizontal label="yAxis" label-for="yAxis">
 					<b-form-select v-model="selectedY" :options="optionsY" id="yAxis"></b-form-select>
 				</b-form-group>
@@ -16,7 +16,7 @@
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
-			<scatter :results="results" :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
+			<scatter :results="result" :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
 		</b-row>
 	</div>
 </template>
@@ -25,7 +25,7 @@
 import scatter from "./scatter.vue";
 export default {
   	name: 'tabScatter',
-  	props: ["results", "currentQueryParent"],
+  	props: ["result", "currentQueryParent"],
   	components: {
   		scatter,
   	},
@@ -58,7 +58,7 @@ export default {
 				{ text: "Meanr", value: "Meanr" },
 				{ text: "Sloper", value: "Sloper" },
 				{ text: "Firstmagr", value: "firstmagr" },
-				{ text: "Lastmagr", value: "lastmagr" },				
+				{ text: "Lastmagr", value: "lastmagr" },
 			],
 			optionsY: [
 				{ value: null, text: "Please select a variable" },
@@ -84,7 +84,7 @@ export default {
 				{ text: "Meanr", value: "Meanr" },
 				{ text: "Sloper", value: "Sloper" },
 				{ text: "Firstmagr", value: "firstmagr" },
-				{ text: "Lastmagr", value: "lastmagr" },				
+				{ text: "Lastmagr", value: "lastmagr" },
 			],
 			plotValues:[
 				{oid: 1, pair:[2 ,20]},
@@ -127,7 +127,7 @@ export default {
     		}
     	},
     	setPlotValues: function(){ // TODO testear con querys
-    		this.results.forEach(obj => { 
+    		this.result.data.forEach(obj => {
     			this.plotValues.push({
     				oid: obj.oid,
     				pair:[
