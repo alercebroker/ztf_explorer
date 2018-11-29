@@ -16,7 +16,7 @@
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
-			<scatter :results="result" :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
+			<scatter :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
 		</b-row>
 	</div>
 </template>
@@ -43,9 +43,9 @@ export default {
 					disabled: true
 				},
 				{ text: "Maxg", value: "maxg" },
-				{ text: "Ming", value: "Ming" },
-				{ text: "Meang", value: "Meang" },
-				{ text: "Slopeg", value: "Slopeg" },
+				{ text: "Ming", value: "ming" },
+				{ text: "Meang", value: "meang" },
+				{ text: "Slopeg", value: "slopeg" },
 				{ text: "Firstmagg", value: "firstmagg" },
 				{ text: "Lastmagg", value: "lastmagg" },
 				{
@@ -54,9 +54,9 @@ export default {
 					disabled: true
 				},
 				{ text: "Maxr", value: "maxr" },
-				{ text: "Minr", value: "Minr" },
-				{ text: "Meanr", value: "Meanr" },
-				{ text: "Sloper", value: "Sloper" },
+				{ text: "Minr", value: "minr" },
+				{ text: "Meanr", value: "meanr" },
+				{ text: "Sloper", value: "sloper" },
 				{ text: "Firstmagr", value: "firstmagr" },
 				{ text: "Lastmagr", value: "lastmagr" },
 			],
@@ -69,9 +69,9 @@ export default {
 					disabled: true
 				},
 				{ text: "Maxg", value: "maxg" },
-				{ text: "Ming", value: "Ming" },
-				{ text: "Meang", value: "Meang" },
-				{ text: "Slopeg", value: "Slopeg" },
+				{ text: "Ming", value: "ming" },
+				{ text: "Meang", value: "meang" },
+				{ text: "Slopeg", value: "slopeg" },
 				{ text: "Firstmagg", value: "firstmagg" },
 				{ text: "Lastmagg", value: "lastmagg" },
 				{
@@ -80,9 +80,9 @@ export default {
 					disabled: true
 				},
 				{ text: "Maxr", value: "maxr" },
-				{ text: "Minr", value: "Minr" },
-				{ text: "Meanr", value: "Meanr" },
-				{ text: "Sloper", value: "Sloper" },
+				{ text: "Minr", value: "minr" },
+				{ text: "Meanr", value: "meanr" },
+				{ text: "Sloper", value: "sloper" },
 				{ text: "Firstmagr", value: "firstmagr" },
 				{ text: "Lastmagr", value: "lastmagr" },
 			],
@@ -95,46 +95,55 @@ export default {
 	},
 	methods:{
 		getAxisData: function(axis,obj){
-    		var x = axis.title.text;
-    		if (x == "Nr. Obs"){
-    			return obj.nobs;
-    		} if (x == "Maxg"){
-    			return obj.maxg;
-    		} if (x == "Ming"){
-    			return obj.ming;
-    		} if (x == "Meang"){
-    			return obj.meang;
-    		} if (x == "Slopeg"){
-    			return obj.slopeg;
-    		} if (x == "Firstmagg"){
-    			return obj.firstmagg;
-    		} if (x == "Lastmagg"){
-    			return obj.lastmagg;
-    		} if (x == "Maxr"){
-    			return obj.maxr;
-    		} if (x == "Minr"){
-    			return obj.minr;
-    		} if (x == "Meanr"){
-    			return obj.meanr;
-    		} if (x == "Sloper"){
-    			return obj.sloper;
-    		} if (x == "Firstmagr"){
-    			return obj.firstmagr;
-    		} if (x == "Lastmagr"){
-    			return obj.lastmagr;
-    		} else {
-    			return null;
-    		}
+    		var x = axis;
+    		if (obj != null){
+	    		if (x == "nobs"){
+	    			return obj.nobs;
+	    		} if (x == "maxg"){
+	    			return obj.maxg;
+	    		} if (x == "ming"){
+	    			return obj.ming;
+	    		} if (x == "meang"){
+	    			return obj.meang;
+	    		} if (x == "slopeg"){
+	    			return obj.slopeg;
+	    		} if (x == "firstmagg"){
+	    			return obj.firstmagg;
+	    		} if (x == "lastmagg"){
+	    			return obj.lastmagg;
+	    		} if (x == "maxr"){
+	    			return obj.maxr;
+	    		} if (x == "minr"){
+	    			return obj.minr;
+	    		} if (x == "meanr"){
+	    			return obj.meanr;
+	    		} if (x == "sloper"){
+	    			return obj.sloper;
+	    		} if (x == "firstmagr"){
+	    			return obj.firstmagr;
+	    		} if (x == "lastmagr"){
+	    			return obj.lastmagr;
+	    		} else {
+	    			return null;
+	    		}
+	    	} else {
+	    		return null;
+	    	}
     	},
     	setPlotValues: function(){ // TODO testear con querys
+    		//borrar datos anteriores
+    		this.plotValues=[];
+    		//agregar plotValues
     		this.result.data.forEach(obj => {
-    			this.plotValues.push({
-    				oid: obj.oid,
-    				pair:[
-    					getAxisData(this.selectedX, obj),
-    					getAxisData(this.selectedY, obj),
-    					],
-    			});
+    			if (this.getAxisData(this.selectedX, obj) != null && this.getAxisData(this.selectedY, obj) != null){
+	    			this.plotValues.push({
+	    				oid: obj.oid,
+	    				pair:[
+	    					this.getAxisData(this.selectedX, obj),
+	    					this.getAxisData(this.selectedY, obj),
+	    					],
+	    			});
+	    		};
     		});
     	},
 	},

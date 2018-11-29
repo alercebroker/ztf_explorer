@@ -11,7 +11,7 @@
 <script>
 	export default {
         name: "scatter",
-        props: ['results','plotValues', 'xVariable', 'yVariable'],
+        props: ['plotValues', 'xVariable', 'yVariable'],
         data(){
         	return{
         	    arg : [true,true,true],
