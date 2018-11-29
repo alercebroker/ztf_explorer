@@ -14,6 +14,9 @@ import BootstrapVue from 'bootstrap-vue'
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 
+import 'vue-awesome/icons'
+import Icon from 'vue-awesome/components/Icon'
+
 axios.defaults.baseURL = 'http://alerce.reuna.cl/vue-api';
 // axios.defaults.baseURL = 'http://gawa-app03.mat.uc.cl:8084';
 
@@ -27,6 +30,8 @@ Vue.use(VueLodash);
 histogramInit(Highcharts);
 exportingInit(Highcharts);
 Vue.use(HighchartsVue);
+
+Vue.component('v-icon', Icon)
 
 new Vue({
     el: '#app',

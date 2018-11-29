@@ -421,11 +421,19 @@
                 <b-container>
                   <b-row class="text-center">
                     <b-col>
-                      <b-button variant="outline-secondary" v-b-toggle="'SQL'">Show SQL</b-button>
+                      <b-button variant="outline-secondary" v-on:click="refreshSQL" v-b-toggle="'SQL'">Show SQL</b-button>
                     </b-col>
                   </b-row>
                   <b-collapse id="SQL" class="mt-3">
-                    <b-jumbotron>{{currentQuery}}</b-jumbotron>
+                    <b-jumbotron>
+                        <b-row style="position: absolute; top: 65px; right:55px">
+                            <b-button id="refreshSQL" v-on:click="refreshSQL">
+                                <v-icon name="redo"/></b-button>
+                        </b-row>
+                        <b-row>
+                            {{currentQuery}}
+                        </b-row>
+                    </b-jumbotron>
                   </b-collapse>
                   <b-row class="text-center my-4">
                     <b-col>
@@ -701,14 +709,6 @@ export default {
         let queryToSubmit = this._.cloneDeep(newVal);
         this.checkAnyBand(queryToSubmit);
         this.removeEmpty(queryToSubmit);
-        this.$http
-          .post("/v2/get_sql", {
-            "query-parameters": queryToSubmit
-          })
-          .then(result_query => {
-            this.currentQuery = result_query.data;
-          })
-          .catch(() => {});
       },
       deep: true
     },
@@ -748,6 +748,20 @@ export default {
     }
   },
   methods: {
+      refreshSQL: function (event) {
+          let queryToSubmit = this._.cloneDeep(this.queryParameters);
+          this.checkAnyBand(queryToSubmit);
+          this.removeEmpty(queryToSubmit);
+          this.$http
+              .post("/v1/get_sql", {
+                  query_parameters: queryToSubmit
+                              })
+              .then(result_query => {
+                  this.currentQuery = result_query.data;
+              })
+              .catch(() => {
+              });
+          },
     checkAnyBand: function(queryToSubmit) {
       if (this.anyBand) {
         let any = queryToSubmit.bands.any;
