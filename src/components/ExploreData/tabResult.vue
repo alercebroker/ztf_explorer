@@ -20,7 +20,6 @@
                 <b-tab title="Scatter">
     				<tabScatter :result="result" :currentQueryParent="query_sql"></tabScatter>
     			</b-tab>
-
               <b-tab
                 title="Spatial Distribution"
                 :disabled="result.data.status == 200 ? false : true"
