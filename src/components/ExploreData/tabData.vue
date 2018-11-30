@@ -280,56 +280,61 @@ export default {
       ], // TODO: must contain default columns
       options: [
         //TODO: change values and text
-        {
-          text: "Object ID",
-          value: {
-            key: "oid",
-            sortable: false,
-            label: "Object ID"
-          }
-        },
-        {
-          text: "Nobs",
-          value: {
-            key: "nobs",
-            sortable: false,
-            label: "# Obs"
-          }
-        },
-        {
-          text: "Pclass",
-          value: {
-            key: "pclass",
-            sortable: false,
-            label: "Probability on class"
-          }
-        },
-        { text: "Firstmagg", value: "firstmagg" },
-        { text: "FirstJd", value: "firstjd" },
-        { text: "Class", value: "class" },
-        { text: "LastJd", value: "lastjd" },
-        { text: "DeltaJd", value: "deltajd" },
-        { text: "Ext", value: "ext" },
-        { text: "Lastmagg", value: "lastmagg" },
-        { text: "Lastmagr", value: "lastmagr" },
-        { text: "Firstmagr", value: "firstmagr" },
-        { text: "Maxg", value: "maxg" },
-        { text: "Maxr", value: "maxr" },
-        { text: "Meandec", value: "meandec" },
-        { text: "Meang", value: "meang" },
-        { text: "Meanra", value: "meanra" },
-        { text: "Meanr", value: "meanr" },
-        { text: "Mediang", value: "mediang" },
-        { text: "Ming", value: "ming" },
-        { text: "Medianr", value: "medianr" },
-        { text: "Minr", value: "minr" },
-        { text: "Period", value: "period" },
-        { text: "Rmsg", value: "rmsg" },
-        { text: "Rmsdec", value: "rmsdec" },
-        { text: "Rmsr", value: "rmsr" },
-        { text: "Rmsra", value: "rmsra" },
-        { text: "Slopeg", value: "slopeg" },
-        { text: "Sloper", value: "sloper" }
+          {
+              text: "Object ID",
+              value: {
+                  key: "oid",
+                  sortable: false,
+                  label: "Object ID"
+              }
+          },
+          {
+              text: "Nobs",
+              value: {
+                  key: "nobs",
+                  sortable: false,
+                  label: "# Obs"
+              }
+          },
+          {
+              text: "Pclass",
+              value: {
+                  key: "pclass",
+                  sortable: false,
+                  label: "Probability on class"
+              }
+          },
+          { text: "Class", value: "class" },
+          { text: "Period", value: "period" },
+          { text: "Ext", value: "ext" },
+
+          { text: "Firstmagg", value: "firstmagg" },
+          { text: "Lastmagg", value: "lastmagg" },
+          { text: "Ming", value: "ming" },
+          { text: "Maxg", value: "maxg" },
+          { text: "Meang", value: "meang" },
+          { text: "Mediang", value: "mediang" },
+          { text: "Rmsg", value: "rmsg" },
+          { text: "Slopeg", value: "slopeg" },
+
+
+          { text: "Lastmagr", value: "lastmagr" },
+          { text: "Firstmagr", value: "firstmagr" },
+          { text: "Minr", value: "minr" },
+          { text: "Maxr", value: "maxr" },
+          { text: "Meanr", value: "meanr" },
+          { text: "Medianr", value: "medianr" },
+          { text: "Rmsr", value: "rmsr" },
+          { text: "Sloper", value: "sloper" },
+
+          { text: "FirstJd", value: "firstjd" },
+          { text: "LastJd", value: "lastjd" },
+          { text: "DeltaJd", value: "deltajd" },
+
+          { text: "Meandec", value: "meandec" },
+          { text: "Rmsdec", value: "rmsdec" },
+          { text: "Meanra", value: "meanra" },
+          { text: "Rmsra", value: "rmsra" }
       ]
     };
   },
