@@ -308,33 +308,44 @@ export default {
           { text: "Period", value: "period" },
           { text: "Ext", value: "ext" },
 
-          { text: "Firstmagg", value: "firstmagg" },
-          { text: "Lastmagg", value: "lastmagg" },
-          { text: "Ming", value: "ming" },
-          { text: "Maxg", value: "maxg" },
-          { text: "Meang", value: "meang" },
-          { text: "Mediang", value: "mediang" },
-          { text: "Rmsg", value: "rmsg" },
-          { text: "Slopeg", value: "slopeg" },
+          { text: "FirstMagG", value: "firstmagg" },
+          { text: "LastMagG", value: "lastmagg" },
+          { text: "MinG", value: "ming" },
+          { text: "MaxG", value: "maxg" },
+          { text: "MeanG", value: "meang" },
+          { text: "MedianG", value: "mediang" },
+          { text: "RmsG", value: "rmsg" },
+          { text: "SlopeG", value: "slopeg" },
 
 
-          { text: "Lastmagr", value: "lastmagr" },
-          { text: "Firstmagr", value: "firstmagr" },
-          { text: "Minr", value: "minr" },
-          { text: "Maxr", value: "maxr" },
-          { text: "Meanr", value: "meanr" },
-          { text: "Medianr", value: "medianr" },
-          { text: "Rmsr", value: "rmsr" },
-          { text: "Sloper", value: "sloper" },
+          { text: "LastMagR", value: "lastmagr" },
+          { text: "FirstMagR", value: "firstmagr" },
+          { text: "MinR", value: "minr" },
+          { text: "MaxR", value: "maxr" },
+          { text: "MeanR", value: "meanr" },
+          { text: "MedianR", value: "medianr" },
+          { text: "RmsR", value: "rmsr" },
+          { text: "SlopeR", value: "sloper" },
 
-          { text: "FirstJd", value: "firstjd" },
-          { text: "LastJd", value: "lastjd" },
-          { text: "DeltaJd", value: "deltajd" },
+          {
+              text: "FirstMJD",
+              value:{
+                  key:"firstjd" ,
+                  label:"FirstMJD"
+          }},
+          { text: "LastMJD", value: {
+                  key:"lastjd" ,
+                  label:"LastMJD"
+              }},
+          { text: "DeltaMJD", value:{
+              key:"deltajd" ,
+              label:"DeltaMJD"
+          } },
 
-          { text: "Meandec", value: "meandec" },
-          { text: "Rmsdec", value: "rmsdec" },
-          { text: "Meanra", value: "meanra" },
-          { text: "Rmsra", value: "rmsra" }
+          { text: "MeanDEC", value: "meandec" },
+          { text: "RmsDEC", value: "rmsdec" },
+          { text: "MeanRA", value: "meanra" },
+          { text: "RmsRA", value: "rmsra" }
       ]
     };
   },
