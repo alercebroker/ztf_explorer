@@ -135,6 +135,11 @@
         </template>
       </b-table>
     </div>
+    <b-row>
+      <b-col class="text-center">
+        <b-btn variant="primary" v-on:click="getMoreResults">Load more</b-btn>
+      </b-col>
+    </b-row>
     <b-modal
       ref="objDetailsModal"
       class="modal-fullscreen"
@@ -248,7 +253,16 @@ import DownloadModal from "./downloadModal";
 export default {
   name: "tabData",
   components: { DownloadModal },
-  props: ["result", "error", "query_sql", "loading"],
+  props: [
+    "result",
+    "error",
+    "query_sql",
+    "loading",
+    "pageNumber",
+    "numResults",
+    "getMoreObjects",
+    "taskId"
+  ],
   component: [downloadModal],
   data() {
     return {
@@ -334,13 +348,17 @@ export default {
     };
   },
   methods: {
+    getMoreResults() {
+      this.$emit("update:pageNumber", this.pageNumber + 1);
+      this.getMoreObjects(this.taskId);
+    },
     toggleAll(checked) {
       this.selected = checked ? this.options.map(a => a.value).slice() : [];
     },
     getQueryResults: function(taskId) {
       this.$http
         .post("/v2/result", {
-          "task-id": taskId,
+          "task-id": taskId
         })
         .then(response => {
           let obj = response.data.result.object_details;
@@ -370,8 +388,7 @@ export default {
             if (response.data.status == "SUCCESS") {
               clearInterval(this.interval);
               this.getQueryResults(task_id);
-            }
-            else {
+            } else {
               console.log(response);
               // this.result = result;
               // this.$emit("update:loading", false);
@@ -390,11 +407,11 @@ export default {
         })
         .then(
           function(response) {
-              this.interval = setInterval(
-                this.queryTask,
-                500,
-                response.data["task-id"]
-              );
+            this.interval = setInterval(
+              this.queryTask,
+              500,
+              response.data["task-id"]
+            );
           }.bind(this)
         )
         .catch(function(error) {});

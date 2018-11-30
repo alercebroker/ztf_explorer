@@ -11,27 +11,28 @@
                   :result="result"
                   :error="error"
                   :query_sql="query_sql"
+                  :pageNumber.sync="pageNumber"
+                  :getMoreObjects="getQueryResults"
+                  :taskId="taskId"
                 ></tabData>
               </b-tab>
 
               <b-tab title="Histogram" :disabled="result.data.status == 200 ? false : true">
                 <tabHistogram :result="result" :currentQueryParent="query_sql"></tabHistogram>
               </b-tab>
-                <b-tab title="Scatter">
-    				<tabScatter :result="result" :currentQueryParent="query_sql" :disabled="result.data.status == 200 ? false : true"></tabScatter>
-    			</b-tab>
+              <b-tab title="Scatter">
+                <tabScatter
+                  :result="result"
+                  :currentQueryParent="query_sql"
+                  :disabled="result.data.status == 200 ? false : true"
+                ></tabScatter>
+              </b-tab>
               <b-tab
                 title="Spatial Distribution"
                 :disabled="result.data.status == 200 ? false : true"
               >
                 <tabSpatialDistribution :result="result"></tabSpatialDistribution>
               </b-tab>
-
-              <!--
-                            <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
-								<tabSankey :result="result"></tabSankey>
-							</b-tab>
-              -->
             </b-tabs>
           </b-card>
         </transition>
@@ -60,10 +61,13 @@ export default {
     return {
       load: this.loading,
       result: {
-        data: ""
+        data: []
       },
       error: null,
-      interval: null
+      interval: null,
+      numResults: 10,
+      pageNumber: 1,
+      taskId: null
     };
   },
   methods: {
@@ -71,16 +75,21 @@ export default {
       this.$http
         .post("/v2/paginated_result", {
           "task-id": taskId,
-          "page-size": 100,
-          "page-number": 1
+          "page-size": this.numResults,
+          "page-number": this.pageNumber
         })
-        .then(results => {
-          this.result = results;
-          this.$emit("update:loading", false);
-        });
+        .then(
+          function(results) {
+            if (this.result.data.length <= 0) {
+              this.result = results;
+            } else {
+              this.result.data = this.result.data.concat(results.data);
+            }
+            this.$emit("update:loading", false);
+          }.bind(this)
+        );
     },
-    queryTask(task_id) {
-      // let this = this;
+    queryTask: function(task_id) {
       this.$http
         .post("/v2/query_status", {
           "task-id": task_id
@@ -89,17 +98,18 @@ export default {
           function(response) {
             if (response.data.status == "SUCCESS") {
               clearInterval(this.interval);
+              this.result = {
+                data: []
+              };
+              this.taskId = task_id;
+              this.pageNumber = 1;
               this.getQueryResults(task_id);
-            }
-            else if(response.data.status == "TIMEDOUT"){
+            } else if (response.data.status == "TIMEDOUT") {
               clearInterval(this.interval);
               response.status = 504;
               this.result = response;
               this.$emit("update:loading", false);
-              //this.getQueryResults(task_id);
-            }
-            else {
-              console.log(result);
+            } else {
               this.result = result;
               this.$emit("update:loading", false);
             }
@@ -109,23 +119,19 @@ export default {
     }
   },
   watch: {
-    params: function(newVal, oldVal) {
-      // watch it
-      // ONLY FOR DEMO PURPOSES!! remove it afterwards
-      //   let simulate_slow_query = Math.random() < 0.5 ? 0 : 4;
+    params: function(newVal) {
       this.$emit("update:loading", true);
+
       this.$http
         .post("/v2/query", {
           query_parameters: newVal
-          //   sleep: simulate_slow_query
         })
         .then(result_query => {
           this.interval = setInterval(
             this.queryTask,
-            2000,
+            500,
             result_query.data["task-id"]
           );
-          //   this.checkQueryResults(result_query.data["task-id"], 10000);
         })
         .catch(error => {
           this.$emit("update:loading", false);
@@ -133,7 +139,7 @@ export default {
         });
     },
 
-    load(newVal, oldVal) {
+    load(newVal) {
       // Handle changes in individual flavour checkboxes
       this.$emit("update:loading", newVal);
     }
