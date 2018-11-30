@@ -140,6 +140,7 @@
       class="modal-fullscreen"
       id="objDetailsModal"
       title="Object Details"
+      v-on:hidden="lessDetails"
     >
       <b-container fluid>
         <b-row>
@@ -486,6 +487,10 @@ export default {
     closeObjectModal: function() {
       this.$refs.objDetailsModal.hide();
     },
+      lessDetails: function(){
+          this.allDetails = false;
+          this.showMoreBtn = "Show more";
+      },
     moreDetails: function() {
       if (this.allDetails) {
         this.allDetails = false;
