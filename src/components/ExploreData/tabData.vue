@@ -349,6 +349,7 @@ export default {
   },
   methods: {
     getMoreResults() {
+      this.$emit("update:loading", true);
       this.$emit("update:pageNumber", this.pageNumber + 1);
       this.getMoreObjects(this.taskId);
     },
