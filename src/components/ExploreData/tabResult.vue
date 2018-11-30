@@ -48,7 +48,7 @@ import tabSankey from "./tabSankey.vue";
 import tabSpatialDistribution from "./tabSpatialDistribution.vue";
 export default {
   name: "tabResult",
-  props: ["params", "loading", "query_sql"],
+  props: ["params", "loading", "loading2", "query_sql"],
   components: {
     tabData,
     tabScatter,
@@ -76,7 +76,7 @@ export default {
         })
         .then(results => {
           this.result = results;
-          this.$emit("update:loading", false);
+          this.$emit("update:loading2", false);
         });
     },
     queryTask(task_id) {
@@ -95,13 +95,13 @@ export default {
               clearInterval(this.interval);
               response.status = 504;
               this.result = response;
-              this.$emit("update:loading", false);
+              this.$emit("update:loading2", false);
               //this.getQueryResults(task_id);
             }
             else {
               console.log(result);
               this.result = result;
-              this.$emit("update:loading", false);
+              this.$emit("update:loading2", false);
             }
           }.bind(this)
         )
@@ -113,7 +113,7 @@ export default {
       // watch it
       // ONLY FOR DEMO PURPOSES!! remove it afterwards
       //   let simulate_slow_query = Math.random() < 0.5 ? 0 : 4;
-      this.$emit("update:loading", true);
+      this.$emit("update:loading2", true);
       this.$http
         .post("/v2/query", {
           query_parameters: newVal
@@ -128,7 +128,7 @@ export default {
           //   this.checkQueryResults(result_query.data["task-id"], 10000);
         })
         .catch(error => {
-          this.$emit("update:loading", false);
+          this.$emit("update:loading2", false);
           this.result = error.response;
         });
     },
