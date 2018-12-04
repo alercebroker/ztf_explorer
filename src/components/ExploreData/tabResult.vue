@@ -16,16 +16,15 @@
                   :taskId="taskId"
                 ></tabData>
               </b-tab>
-
-              <b-tab title="Histogram" :disabled="result.data.status == 200 ? false : true">
-                <tabHistogram :result="result" :currentQueryParent="query_sql"></tabHistogram>
+              <b-tab title="Histogram" :disabled="result.data.length != 0 ? false : true">
+                <tabHistogram :results="result" :currentQueryParent="query_sql"></tabHistogram>
               </b-tab>
-              <b-tab title="Scatter">
-                <tabScatter
-                  :result="result"
-                  :currentQueryParent="query_sql"
-                  :disabled="result.data.status == 200 ? false : true"
-                ></tabScatter>
+                <b-tab title="Scatter" :disabled="result.data.length != 0 ? false : true">
+                    <tabScatter
+                      :result="result"
+                      :currentQueryParent="query_sql"
+                      :disabled="result.data.status == 200 ? false : true"
+                    ></tabScatter>
               </b-tab>
               <b-tab
                 title="Spatial Distribution"
@@ -33,6 +32,11 @@
               >
                 <tabSpatialDistribution :result="result"></tabSpatialDistribution>
               </b-tab>
+            <!--
+                            <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
+								<tabSankey :result="result"></tabSankey>
+							</b-tab>
+              -->
             </b-tabs>
           </b-card>
         </transition>
@@ -49,7 +53,7 @@ import tabSankey from "./tabSankey.vue";
 import tabSpatialDistribution from "./tabSpatialDistribution.vue";
 export default {
   name: "tabResult",
-  props: ["params", "loading", "query_sql"],
+  props: ["params", "loading", "loading2", "query_sql"],
   components: {
     tabData,
     tabScatter,
@@ -85,7 +89,9 @@ export default {
             } else {
               this.result.data = this.result.data.concat(results.data);
             }
-            this.$emit("update:loading", false);
+            this.$emit("update:loading2", false);
+            //this.$emit("update:loading2", false);
+
           }.bind(this)
         );
     },
@@ -108,10 +114,10 @@ export default {
               clearInterval(this.interval);
               response.status = 504;
               this.result = response;
-              this.$emit("update:loading", false);
+              this.$emit("update:loading2", false);
             } else {
               this.result = result;
-              this.$emit("update:loading", false);
+              this.$emit("update:loading2", false);
             }
           }.bind(this)
         )
@@ -119,22 +125,26 @@ export default {
     }
   },
   watch: {
-    params: function(newVal) {
-      this.$emit("update:loading", true);
-
+    params: function(newVal, oldVal) {
+      // watch it
+      // ONLY FOR DEMO PURPOSES!! remove it afterwards
+      //   let simulate_slow_query = Math.random() < 0.5 ? 0 : 4;
+      this.$emit("update:loading2", true);
       this.$http
         .post("/v2/query", {
           query_parameters: newVal
+          //   sleep: simulate_slow_query
         })
         .then(result_query => {
           this.interval = setInterval(
             this.queryTask,
-            500,
+            2000,
             result_query.data["task-id"]
           );
+          //   this.checkQueryResults(result_query.data["task-id"], 10000);
         })
         .catch(error => {
-          this.$emit("update:loading", false);
+          this.$emit("update:loading2", false);
           this.result = error.response;
         });
     },

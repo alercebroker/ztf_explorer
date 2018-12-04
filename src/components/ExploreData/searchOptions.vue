@@ -38,9 +38,17 @@
                   v-model="queryParameters.filters.class"
                 >
                   <option value selected>All</option>
-                  <option value="1">Star</option>
-                  <option value="2">Supernova</option>
-                  <option value="3">Variable Star</option>
+                  <option value="1">Cepheid</option>
+                  <option value="2">Eclipsing Binary</option>
+                  <option value="3">RR Lyrae</option>
+                  <option value="4">Delta Scuti</option>
+                  <option value="5">Long Period Variable</option>
+                  <option value="6">Supernova Ia</option>
+                  <option value="7">Supernova II</option>
+                  <option value="8">Supernova Ibc</option>
+                  <option value="9">Super luminous supernova</option>
+                  <option value="10">Supernova Iabg</option>
+                  <option value="11">Supernova IIn</option>
                 </select>
               </b-col>
             </b-row>

@@ -13,7 +13,7 @@
       <b-btn class="mb-3 col-4" v-b-modal.showDetails>Show more details</b-btn>
       <b-btn class="mb-3 offset-5 col-3" v-b-modal.showDownloadModal>Download</b-btn>
     </div>
-    <b-modal id="showDetails">
+    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close">
       <b-form-group>
         <template slot="label">
           <b>Choose your options:</b>
@@ -145,6 +145,7 @@
       class="modal-fullscreen"
       id="objDetailsModal"
       title="Object Details"
+      v-on:hidden="lessDetails"
     >
       <b-container fluid>
         <b-row>
@@ -266,6 +267,7 @@ export default {
   component: [downloadModal],
   data() {
     return {
+        superTrue: true,
       interval: null,
       load: this.loading,
       details: {},
@@ -294,56 +296,72 @@ export default {
       ], // TODO: must contain default columns
       options: [
         //TODO: change values and text
-        {
-          text: "Object ID",
-          value: {
-            key: "oid",
-            sortable: false,
-            label: "Object ID"
-          }
-        },
-        {
-          text: "Nobs",
-          value: {
-            key: "nobs",
-            sortable: false,
-            label: "# Obs"
-          }
-        },
-        {
-          text: "Pclass",
-          value: {
-            key: "pclass",
-            sortable: false,
-            label: "Probability on class"
-          }
-        },
-        { text: "Firstmagg", value: "firstmagg" },
-        { text: "FirstJd", value: "firstjd" },
-        { text: "Class", value: "class" },
-        { text: "LastJd", value: "lastjd" },
-        { text: "DeltaJd", value: "deltajd" },
-        { text: "Ext", value: "ext" },
-        { text: "Lastmagg", value: "lastmagg" },
-        { text: "Lastmagr", value: "lastmagr" },
-        { text: "Firstmagr", value: "firstmagr" },
-        { text: "Maxg", value: "maxg" },
-        { text: "Maxr", value: "maxr" },
-        { text: "Meandec", value: "meandec" },
-        { text: "Meang", value: "meang" },
-        { text: "Meanra", value: "meanra" },
-        { text: "Meanr", value: "meanr" },
-        { text: "Mediang", value: "mediang" },
-        { text: "Ming", value: "ming" },
-        { text: "Medianr", value: "medianr" },
-        { text: "Minr", value: "minr" },
-        { text: "Period", value: "period" },
-        { text: "Rmsg", value: "rmsg" },
-        { text: "Rmsdec", value: "rmsdec" },
-        { text: "Rmsr", value: "rmsr" },
-        { text: "Rmsra", value: "rmsra" },
-        { text: "Slopeg", value: "slopeg" },
-        { text: "Sloper", value: "sloper" }
+          {
+              text: "Object ID",
+              value: {
+                  key: "oid",
+                  sortable: false,
+                  label: "Object ID"
+              }
+          },
+          {
+              text: "Nobs",
+              value: {
+                  key: "nobs",
+                  sortable: false,
+                  label: "# Obs"
+              }
+          },
+          {
+              text: "Pclass",
+              value: {
+                  key: "pclass",
+                  sortable: false,
+                  label: "Probability on class"
+              }
+          },
+          { text: "Class", value: "class" },
+          { text: "Period", value: "period" },
+          { text: "Ext", value: "ext" },
+
+          { text: "FirstMagG", value: "firstmagg" },
+          { text: "LastMagG", value: "lastmagg" },
+          { text: "MinG", value: "ming" },
+          { text: "MaxG", value: "maxg" },
+          { text: "MeanG", value: "meang" },
+          { text: "MedianG", value: "mediang" },
+          { text: "RmsG", value: "rmsg" },
+          { text: "SlopeG", value: "slopeg" },
+
+
+          { text: "LastMagR", value: "lastmagr" },
+          { text: "FirstMagR", value: "firstmagr" },
+          { text: "MinR", value: "minr" },
+          { text: "MaxR", value: "maxr" },
+          { text: "MeanR", value: "meanr" },
+          { text: "MedianR", value: "medianr" },
+          { text: "RmsR", value: "rmsr" },
+          { text: "SlopeR", value: "sloper" },
+
+          {
+              text: "FirstMJD",
+              value:{
+                  key:"firstjd" ,
+                  label:"FirstMJD"
+          }},
+          { text: "LastMJD", value: {
+                  key:"lastjd" ,
+                  label:"LastMJD"
+              }},
+          { text: "DeltaMJD", value:{
+              key:"deltajd" ,
+              label:"DeltaMJD"
+          } },
+
+          { text: "MeanDEC", value: "meandec" },
+          { text: "RmsDEC", value: "rmsdec" },
+          { text: "MeanRA", value: "meanra" },
+          { text: "RmsRA", value: "rmsra" }
       ]
     };
   },
@@ -487,6 +505,10 @@ export default {
     closeObjectModal: function() {
       this.$refs.objDetailsModal.hide();
     },
+      lessDetails: function(){
+          this.allDetails = false;
+          this.showMoreBtn = "Show more";
+      },
     moreDetails: function() {
       if (this.allDetails) {
         this.allDetails = false;

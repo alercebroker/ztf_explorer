@@ -130,7 +130,7 @@ export default {
 	    		return null;
 	    	}
     	},
-    	setPlotValues: function(){ // TODO testear con querys
+    	setPlotValues: function(){
     		//borrar datos anteriores
     		this.plotValues=[];
     		//agregar plotValues
