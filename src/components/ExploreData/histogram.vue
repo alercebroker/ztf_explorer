@@ -20,7 +20,7 @@
 				        text: ''
 				    },
 				    xAxis: [{
-				        title: { text: 'xAxis' },
+				        title: { text: 'No real data, please select an axis option' },
 				        alignTicks: false
 				    }, {
 				        title: { text: '' },
@@ -38,7 +38,7 @@
 				    plotOptions:{
 				    	histogram:{
 				    		pointPadding: 0.05,
-				    		pointWidth: 30,
+				    		pointWidth: 20,
 				    		color:'#3C347E',
 				    	}
 				    },
