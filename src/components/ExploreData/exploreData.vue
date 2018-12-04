@@ -5,10 +5,10 @@
         <searchOptions :params.sync="params" :currentQueryParent.sync="query" :loading="loading"/>
       </b-col>
       <b-col cols="8">
-        <tabResult :loading2.sync="loading2" :loading.sync="loading" :params="params" :query_sql="query"/>
+        <tabResult :loading.sync="loading" :downloading.sync="downloading" :params="params" :query_sql="query"/>
       </b-col>
-      <loading :show="loading" label="Downloading..."></loading>
-      <loading :show="loading2" label="Searching..."></loading>
+      <loading :show="downloading" label="Downloading..."></loading>
+      <loading :show="loading" label="Searching..."></loading>
     </b-row>
   </div>
 </template>
@@ -30,7 +30,7 @@ export default {
       query: "SELECT * FROM objects",
       params: {},
       loading: false,
-        loading2: false
+        downloading: false
     };
   },
   methods: {

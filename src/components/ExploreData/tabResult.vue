@@ -8,6 +8,7 @@
               <b-tab title="Data">
                 <tabData
                   :loading.sync="load"
+                  :downloading.sync="download"
                   :result="result"
                   :error="error"
                   :query_sql="query_sql"
@@ -53,7 +54,7 @@ import tabSankey from "./tabSankey.vue";
 import tabSpatialDistribution from "./tabSpatialDistribution.vue";
 export default {
   name: "tabResult",
-  props: ["params", "loading", "loading2", "query_sql"],
+  props: ["params", "loading", "downloading", "query_sql"],
   components: {
     tabData,
     tabScatter,
@@ -63,7 +64,8 @@ export default {
   },
   data() {
     return {
-      load: this.loading,
+      download: this.downloading,
+        load:this.loading,
       result: {
         data: []
       },
@@ -89,8 +91,7 @@ export default {
             } else {
               this.result.data = this.result.data.concat(results.data);
             }
-            this.$emit("update:loading2", false);
-            //this.$emit("update:loading2", false);
+            this.$emit("update:loading", false);
 
           }.bind(this)
         );
@@ -114,10 +115,10 @@ export default {
               clearInterval(this.interval);
               response.status = 504;
               this.result = response;
-              this.$emit("update:loading2", false);
+              this.$emit("update:loading", false);
             } else {
               this.result = result;
-              this.$emit("update:loading2", false);
+              this.$emit("update:loading", false);
             }
           }.bind(this)
         )
@@ -129,7 +130,7 @@ export default {
       // watch it
       // ONLY FOR DEMO PURPOSES!! remove it afterwards
       //   let simulate_slow_query = Math.random() < 0.5 ? 0 : 4;
-      this.$emit("update:loading2", true);
+      this.$emit("update:loading", true);
       this.$http
         .post("/v2/query", {
           query_parameters: newVal
@@ -144,15 +145,19 @@ export default {
           //   this.checkQueryResults(result_query.data["task-id"], 10000);
         })
         .catch(error => {
-          this.$emit("update:loading2", false);
+          this.$emit("update:loading", false);
           this.result = error.response;
         });
     },
 
-    load(newVal) {
-      // Handle changes in individual flavour checkboxes
-      this.$emit("update:loading", newVal);
-    }
+      load(newVal) {
+          // Handle changes in individual flavour checkboxes
+          this.$emit("update:loading", newVal);
+      },
+      download(newVal) {
+          // Handle changes in individual flavour checkboxes
+          this.$emit("update:downloading", newVal);
+      }
   }
 };
 </script>

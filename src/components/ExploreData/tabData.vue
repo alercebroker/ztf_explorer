@@ -216,7 +216,7 @@
       </div>
     </b-modal>
     <b-modal id="showDownloadModal" title="Download Objects">
-      <download-modal :loading.sync="load" :query="query_sql"></download-modal>
+      <download-modal :downloading.sync="download" :query="query_sql"></download-modal>
       <div slot="modal-footer"></div>
     </b-modal>
   </div>
@@ -259,6 +259,7 @@ export default {
     "error",
     "query_sql",
     "loading",
+      "downloading",
     "pageNumber",
     "numResults",
     "getMoreObjects",
@@ -270,6 +271,7 @@ export default {
         superTrue: true,
       interval: null,
       load: this.loading,
+        download: this.downloading,
       details: {},
       defaultProp: {},
       allDetails: false,
@@ -536,7 +538,11 @@ export default {
     load(newVal) {
       // Handle changes in individual flavour checkboxes
       this.$emit("update:loading", newVal);
-    }
+    },
+      download(newVal) {
+          // Handle changes in individual flavour checkboxes
+          this.$emit("update:downloading", newVal);
+      }
   }
 };
 </script>

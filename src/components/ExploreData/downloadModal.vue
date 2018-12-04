@@ -4,18 +4,18 @@
     <div class="col-8">
       <b-form-select v-model="selected" :options="options" class="mb-3"/>
     </div>
-    <b-btn class="offset-8 col-3" @click="download">Download</b-btn>
+    <b-btn class="offset-8 col-3" @click="downloadData">Download</b-btn>
   </div>
 </template>
 
 <script>
 export default {
   name: "downloadModal",
-  props: ["query", "loading"],
+  props: ["query", "downloading"],
   data() {
     return {
       interval: null,
-      load: false,
+      download: false,
       selected: null,
       options: ["CSV", "FITS", "VOT"]
     };
@@ -29,9 +29,9 @@ export default {
         })
         .then(function(response) {
           let result = JSON.parse(response.data.result);
-          this.$emit("update:loading", false);
+          this.$emit("update:downloading", false);
 
-          this.load = false;
+          this.download = false;
           const link = document.createElement("a");
           link.href = result.url;
           link.setAttribute(
@@ -64,10 +64,10 @@ export default {
         )
         .catch(function(error) {});
     },
-    download() {
+    downloadData() {
       // let this = this;
-      this.$emit("update:loading", true);
-      this.load = true;
+      this.$emit("update:downloading", true);
+      this.download = true;
       this.$http
         .post("/v2/download", {
           q: this.query,
@@ -82,13 +82,13 @@ export default {
           }.bind(this)
         )
         .catch(function(error) {
-          this.$emit("update:loading", false);
-          this.load = false;
+          this.$emit("update:downloading", false);
+          this.download = false;
         });
     }
   },
   watch: {
-    load(val) {
+    download(val) {
       if (!val) {
         clearInterval(this.interval);
       }
