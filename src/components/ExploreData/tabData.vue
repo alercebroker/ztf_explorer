@@ -138,6 +138,7 @@
     <b-row>
       <b-col class="text-center">
         <b-btn variant="primary" v-on:click="getMoreResults">Load more</b-btn>
+        <!-- TODO: disable btn when there is no more data to load -->
       </b-col>
     </b-row>
     <b-modal
