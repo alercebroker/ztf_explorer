@@ -2,15 +2,15 @@
 	<div class="tabHistogram">
 		<b-row align-h="around"> 
 			<b-col cols="4"> 
-				<b-form-group horizontal label="yAxis" label-for="yAxis">
+				<b-form-group horizontal label="xAxis" label-for="yAxis">
 					<b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
 				</b-form-group>
 			</b-col>
-			<b-col cols="4"> 
+			<!--b-col cols="4"> 
 				<b-form-group horizontal label="nbins" label-for="nbins">
-					<b-form-input id="nbins" type="number" v-model="nbins"></b-form-input>
+					<b-form-input id="nbins" type="number" v-model="nbins" disabled></b-form-input>
 				</b-form-group>
-			</b-col>
+			</b-col-->
 			<b-col cols="2">
 				<b-button variant="secondary" alt="Load and add another sample of data" disabled>More data</b-button>
 			</b-col>
@@ -100,6 +100,12 @@ export default {
 	    			return obj.firstmagr;
 	    		} if (x == "lastmagr"){
 	    			return obj.lastmagr;
+	    		} if (x == "firstjd"){
+	    			return obj.firstjd;
+	    		} if (x == "lastjd"){
+	    			return obj.lastjd;
+	    		} if (x == "deltajd"){
+	    			return obj.deltajd;
 	    		} else {
 	    			return null;
 	    		}

@@ -37,9 +37,8 @@
 
 				    plotOptions:{
 				    	histogram:{
-				    		binsNumber: this.bins,
-				    		binWidth:undefined,
 				    		pointPadding: 0.05,
+				    		pointWidth: 30,
 				    		color:'#3C347E',
 				    	}
 				    },
@@ -73,6 +72,17 @@
 		  			this.chartOptions.series[1].data.push(obj.pair);
 		  		});
 		    },
+		    changeBins(n){
+	    		if (this.nbins == 1){
+	    			this.chartOptions.plotOptions.binsNumber='square-root';
+	    		} if (this.nbins == 2){
+	    			this.chartOptions.plotOptions.binsNumber='sturges';
+	    		}if (this.nbins == 3){
+	    			this.chartOptions.plotOptions.binsNumber='rice';
+	    		} else {
+	    			;
+	    		}
+		    },
         },
         watch: {
             xVariable: function(newVal, oldVal) { // if xVariable change
@@ -80,7 +90,7 @@
                 this.redraw();
 	        },
 	        nbins: function(newVal, oldVal) { // TODO
-	        	
+	        	this.changeBins(newVal);
 				this.redraw();
 	        },
 	        plotValues: function(newVal, oldVal) { // if plotValues change
