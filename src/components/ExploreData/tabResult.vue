@@ -25,8 +25,7 @@
               >
                 <tabSpatialDistribution :result="result"></tabSpatialDistribution>
               </b-tab>
-
-              <!--
+            <!--
                             <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
 								<tabSankey :result="result"></tabSankey>
 							</b-tab>
