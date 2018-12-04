@@ -17,11 +17,11 @@
                   :taskId="taskId"
                 ></tabData>
               </b-tab>
-              <b-tab title="Histogram" :disabled="result.data.length != 0 ? false : true">
-                <tabHistogram :results="result" :currentQueryParent="query_sql"></tabHistogram>
+              <b-tab title="Histogram" v-on:click="reDrawHist" :disabled="result.data.length != 0 ? false : true">
+                <tabHistogram ref="histogram" :results="result" :currentQueryParent="query_sql"></tabHistogram>
               </b-tab>
-                <b-tab title="Scatter" :disabled="result.data.length != 0 ? false : true">
-                    <tabScatter
+                <b-tab v-on:click="reDrawScat" title="Scatter" :disabled="result.data.length != 0 ? false : true">
+                    <tabScatter ref="scatter"
                       :result="result"
                       :currentQueryParent="query_sql"
                       :disabled="result.data.status == 200 ? false : true"
@@ -73,7 +73,7 @@ export default {
       interval: null,
       numResults: 10,
       pageNumber: 1,
-      taskId: null
+      taskId: null,
     };
   },
   methods: {
@@ -123,7 +123,15 @@ export default {
           }.bind(this)
         )
         .catch(function(error) {});
-    }
+    },
+      reDrawScat: function(){
+        this.$refs.scatter.setPlotValues();
+      },
+      reDrawHist: function() {
+          if(this.$refs.histogram.selected!=null) {
+              this.$refs.histogram.setPlotValues();
+          }
+      }
   },
   watch: {
     params: function(newVal, oldVal) {
