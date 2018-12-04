@@ -11,29 +11,38 @@
 <script>
 	export default {
         name: "histogram",
-        props: ['data', 'xVariable', 'nbins'],
+        props: ['plotValues', 'xVariable', 'nbins'],
         data(){
         	return{
+        		bins:0,
         		chartOptions:{
         			title: {
-			        text: ''
-			    },
-			    xAxis: [{
-			        title: { text: 'xAxis' },
-			        alignTicks: false
-			    }, {
-			        title: { text: '' },
-			        alignTicks: false,
-			        opposite: true
-			    }],
+				        text: ''
+				    },
+				    xAxis: [{
+				        title: { text: 'xAxis' },
+				        alignTicks: false
+				    }, {
+				        title: { text: '' },
+				        alignTicks: false,
+				        opposite: true
+				    }],
 
-			    yAxis: [{
-			        title: { text: 'Number of Observations' }
-			    }, {
-			        title: { text: '' },
-			        opposite: true
-			    }],
+				    yAxis: [{
+				        title: { text: 'Number of Objects' }
+				    }, {
+				        title: { text: '' },
+				        opposite: true
+				    }],
 
+				    plotOptions:{
+				    	histogram:{
+				    		binsNumber: this.bins,
+				    		binWidth:undefined,
+				    		pointPadding: 0.05,
+				    		color:'#3C347E',
+				    	}
+				    },
 			    series: [{
 			        name: 'Histogram',
 			        type: 'histogram',
@@ -48,11 +57,35 @@
 			        id: 's1',
 			        marker: {
 			            radius: 1.5
-			        }
+			        },
+			        visible: false,
 			    }]
 //end chartOptions
         		}
         	}
         },
+        methods:{
+        	redraw(){ //add a series for object
+		  		// delete the previous series
+		  		this.chartOptions.series[1].data = [];
+		  		// add new series
+		  		this.plotValues.forEach(obj =>{
+		  			this.chartOptions.series[1].data.push(obj.pair);
+		  		});
+		    },
+        },
+        watch: {
+            xVariable: function(newVal, oldVal) { // if xVariable change
+                this.chartOptions.xAxis[0].title.text = newVal;
+                this.redraw();
+	        },
+	        nbins: function(newVal, oldVal) { // TODO
+	        	
+				this.redraw();
+	        },
+	        plotValues: function(newVal, oldVal) { // if plotValues change
+				  this.redraw();
+	        }
+	    },
     }
 </script>

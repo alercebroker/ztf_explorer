@@ -13,7 +13,7 @@
       <b-btn class="mb-3 col-4" v-b-modal.showDetails>Show more details</b-btn>
       <b-btn class="mb-3 offset-5 col-3" v-b-modal.showDownloadModal>Download</b-btn>
     </div>
-    <b-modal id="showDetails" ok-only="1==1" ok-variant="secondary" ok-title="Close">
+    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close">
       <b-form-group>
         <template slot="label">
           <b>Choose your options:</b>
