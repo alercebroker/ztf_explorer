@@ -13,12 +13,11 @@
                   :query_sql="query_sql"
                 ></tabData>
               </b-tab>
-
-              <b-tab title="Histogram" :disabled="result.data.status == 200 ? false : true">
-                <tabHistogram :result="result" :currentQueryParent="query_sql"></tabHistogram>
+              <b-tab title="Histogram" :disabled="result.data.length != 0 ? false : true">
+                <tabHistogram :results="result" :currentQueryParent="query_sql"></tabHistogram>
               </b-tab>
-                <b-tab title="Scatter">
-    				<tabScatter :result="result" :currentQueryParent="query_sql" :disabled="result.data.status == 200 ? false : true"></tabScatter>
+                <b-tab title="Scatter" :disabled="result.data.length != 0 ? false : true">
+    				<tabScatter :result="result" :currentQueryParent="query_sql"></tabScatter>
     			</b-tab>
               <b-tab
                 title="Spatial Distribution"
@@ -26,8 +25,7 @@
               >
                 <tabSpatialDistribution :result="result"></tabSpatialDistribution>
               </b-tab>
-
-              <!--
+            <!--
                             <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
 								<tabSankey :result="result"></tabSankey>
 							</b-tab>

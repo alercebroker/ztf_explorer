@@ -62,11 +62,7 @@
 				            },
 				        }
 				    },
-			        series: [{ //datos a plotear
-				        name: 'Data',
-				        color: 'rgb(170, 9, 9)',
-				        data: []
-				    }],
+			        series: [],
 				    //end highcharts element
 				    },
         	}
@@ -80,7 +76,10 @@
 		  			this.chartOptions.series.push({
 		  				name: obj.oid,
 		  				data: [obj.pair],
-		  				color: 'rgba(223, 83, 83, 1)',
+		  				color: '#3C347E',
+		  				marker: {
+				            radius: 2
+				        },
 		  			});
 		  		});
 		    },
@@ -93,6 +92,9 @@
         },
         yVariable: function(newVal, oldVal) { // watch it
 			  this.chartOptions.yAxis.title.text = newVal;
+			  this.redraw();
+        },
+        plotValues: function(newVal, oldVal) { // watch it
 			  this.redraw();
         }
 		}
