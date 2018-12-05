@@ -402,7 +402,7 @@
                             <b-row class="align-middle">
                               <b-col md="6">
                                 RS
-                                <small class="text-muted">(deg)</small>
+                                <small class="text-muted">(arcsec)</small>
                               </b-col>
                               <b-col md="6">
                                 <b-form-input size="sm" id="RS" v-model="queryParameters.coordinates.rs"></b-form-input>
