@@ -23,11 +23,11 @@
             <b-col md="4">
                 <b-form-input id="maxMaxAny" size="sm" type="number" v-model="band.max.max" :min="band.max.min"></b-form-input>
             </b-col>
-        </b-row> 
+        </b-row>
         <br>
         <b-row class="align-middle">
             <b-col md="4">
-                <b-form-input id="minSlopeAny" size="sm" type="number" v-model="band.slope.min" min="0" :max="band.slope.max"></b-form-input>
+                <b-form-input id="minSlopeAny" size="sm" type="number" v-model="band.slope.min" :max="band.slope.max"></b-form-input>
                 <!-- <input class="form-control form-control-sm" v-model="band.slope.min" min="0" type="number" :max="band.slope.max" id="minSlopeAny"></input> -->
             </b-col>
             <b-col md="4" class="text-center"> slope </b-col>
