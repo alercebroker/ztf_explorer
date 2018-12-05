@@ -387,7 +387,12 @@
                                 <small class="text-muted">(deg)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="RA" v-model="queryParameters.coordinates.ra"></b-form-input>
+                                <b-form-input
+                                    size="sm"
+                                    id="RA"
+                                    v-model="queryParameters.coordinates.ra"
+                                    :required="coordSearch"
+                                    ></b-form-input>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -396,7 +401,11 @@
                                 <small class="text-muted">(deg)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="DEC" v-model="queryParameters.coordinates.dec"></b-form-input>
+                                <b-form-input
+                                size="sm"
+                                id="DEC"
+                                v-model="queryParameters.coordinates.dec"
+                                :required="coordSearch"></b-form-input>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -405,7 +414,11 @@
                                 <small class="text-muted">(arcsec)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="RS" v-model="queryParameters.coordinates.rs"></b-form-input>
+                                <b-form-input
+                                size="sm"
+                                id="RS"
+                                v-model="queryParameters.coordinates.rs"
+                                :required="coordSearch"></b-form-input>
                               </b-col>
                             </b-row>
                           </b-container>
@@ -489,6 +502,7 @@ export default {
       anyBand: false,
       firstGreg: null,
       lastGreg: null,
+      coordSearch: false,
       queryParameters: {
         filters: {
           oid: null,
@@ -699,12 +713,12 @@ export default {
               max: null
             }
           }
-      },
-      coordinates: {
+        },
+        coordinates: {
           ra: null,
           dec: null,
           rs: null
-      }
+        }
       }
     };
   },
@@ -717,6 +731,18 @@ export default {
     }
   },
   watch: {
+    'queryParameters.coordinates': {
+        handler: function(newVal){
+            let req = false;
+            for(let k in newVal){
+                if (newVal[k] != null && newVal[k] != ""){
+                    req = true;
+                }
+            }
+            this.coordSearch = req;
+        },
+        deep: true
+    },
     queryParameters: {
       handler: function(newVal) {
         let queryToSubmit = this._.cloneDeep(newVal);
