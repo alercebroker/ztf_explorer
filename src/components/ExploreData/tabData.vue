@@ -182,7 +182,7 @@
           <b-col>
             <!-- Curva de luz -->
             <b-card title="Light curve" class="h-100 align-middle">
-                <lightCurveFrame :alerts.sync="alerts" ref="lightCurveFrame"></lightCurveFrame>
+              <lightCurveFrame :alerts="alerts" ref="lightCurveFrame"></lightCurveFrame>
             </b-card>
           </b-col>
         </b-row>
@@ -254,13 +254,13 @@ import lightCurveFrame from "./lightCurveFrame";
 
 export default {
   name: "tabData",
-  components: { DownloadModal, lightCurveFrame  },
+  components: { DownloadModal, lightCurveFrame },
   props: [
     "result",
     "error",
     "query_sql",
     "loading",
-      "downloading",
+    "downloading",
     "pageNumber",
     "numResults",
     "getMoreObjects",
@@ -269,10 +269,10 @@ export default {
   component: [downloadModal, lightCurveFrame],
   data() {
     return {
-        superTrue: true,
+      superTrue: true,
       interval: null,
       load: this.loading,
-        download: this.downloading,
+      download: this.downloading,
       details: {},
       alerts: [],
       defaultProp: {},
@@ -281,6 +281,7 @@ export default {
       showModal: false,
       allSelected: false,
       indeterminate: false,
+      selectedObj: null,
       selected: [
         {
           key: "oid",
@@ -300,72 +301,78 @@ export default {
       ], // TODO: must contain default columns
       options: [
         //TODO: change values and text
-          {
-              text: "Object ID",
-              value: {
-                  key: "oid",
-                  sortable: false,
-                  label: "Object ID"
-              }
-          },
-          {
-              text: "Nobs",
-              value: {
-                  key: "nobs",
-                  sortable: false,
-                  label: "# Obs"
-              }
-          },
-          {
-              text: "Pclass",
-              value: {
-                  key: "pclass",
-                  sortable: false,
-                  label: "Probability on class"
-              }
-          },
-          { text: "Class", value: "class" },
-          { text: "Period", value: "period" },
-          { text: "Ext", value: "ext" },
+        {
+          text: "Object ID",
+          value: {
+            key: "oid",
+            sortable: false,
+            label: "Object ID"
+          }
+        },
+        {
+          text: "Nobs",
+          value: {
+            key: "nobs",
+            sortable: false,
+            label: "# Obs"
+          }
+        },
+        {
+          text: "Pclass",
+          value: {
+            key: "pclass",
+            sortable: false,
+            label: "Probability on class"
+          }
+        },
+        { text: "Class", value: "class" },
+        { text: "Period", value: "period" },
+        { text: "Ext", value: "ext" },
 
-          { text: "FirstMagG", value: "firstmagg" },
-          { text: "LastMagG", value: "lastmagg" },
-          { text: "MinG", value: "ming" },
-          { text: "MaxG", value: "maxg" },
-          { text: "MeanG", value: "meang" },
-          { text: "MedianG", value: "mediang" },
-          { text: "RmsG", value: "rmsg" },
-          { text: "SlopeG", value: "slopeg" },
+        { text: "FirstMagG", value: "firstmagg" },
+        { text: "LastMagG", value: "lastmagg" },
+        { text: "MinG", value: "ming" },
+        { text: "MaxG", value: "maxg" },
+        { text: "MeanG", value: "meang" },
+        { text: "MedianG", value: "mediang" },
+        { text: "RmsG", value: "rmsg" },
+        { text: "SlopeG", value: "slopeg" },
 
+        { text: "LastMagR", value: "lastmagr" },
+        { text: "FirstMagR", value: "firstmagr" },
+        { text: "MinR", value: "minr" },
+        { text: "MaxR", value: "maxr" },
+        { text: "MeanR", value: "meanr" },
+        { text: "MedianR", value: "medianr" },
+        { text: "RmsR", value: "rmsr" },
+        { text: "SlopeR", value: "sloper" },
 
-          { text: "LastMagR", value: "lastmagr" },
-          { text: "FirstMagR", value: "firstmagr" },
-          { text: "MinR", value: "minr" },
-          { text: "MaxR", value: "maxr" },
-          { text: "MeanR", value: "meanr" },
-          { text: "MedianR", value: "medianr" },
-          { text: "RmsR", value: "rmsr" },
-          { text: "SlopeR", value: "sloper" },
+        {
+          text: "FirstMJD",
+          value: {
+            key: "firstjd",
+            label: "FirstMJD"
+          }
+        },
+        {
+          text: "LastMJD",
+          value: {
+            key: "lastjd",
+            label: "LastMJD"
+          }
+        },
+        {
+          text: "DeltaMJD",
+          value: {
+            key: "deltajd",
+            label: "DeltaMJD"
+          }
+        },
 
-          {
-              text: "FirstMJD",
-              value:{
-                  key:"firstjd" ,
-                  label:"FirstMJD"
-          }},
-          { text: "LastMJD", value: {
-                  key:"lastjd" ,
-                  label:"LastMJD"
-              }},
-          { text: "DeltaMJD", value:{
-              key:"deltajd" ,
-              label:"DeltaMJD"
-          } },
-
-          { text: "MeanDEC", value: "meandec" },
-          { text: "RmsDEC", value: "rmsdec" },
-          { text: "MeanRA", value: "meanra" },
-          { text: "RmsRA", value: "rmsra" }
+        { text: "MeanDEC", value: "meandec" },
+        { text: "RmsDEC", value: "rmsdec" },
+        { text: "MeanRA", value: "meanra" },
+        { text: "RmsRA", value: "rmsra" }
       ]
     };
   },
@@ -383,31 +390,26 @@ export default {
         .post("/v2/result", {
           "task-id": taskId
         })
-        .then(function(response) {
-          let obj = response.data.result.object_details;
-          this.defaultProp["oid"] = obj.oid;
-          this.defaultProp["class"] = obj.class;
-          this.defaultProp["pclass"] = obj.pclass;
-          this.defaultProp["period"] = obj.period;
+        .then(
+          function(response) {
+            let obj = response.data.result.object_details;
+            this.alerts = response.data.result.alerts;
+            this.defaultProp["oid"] = obj.oid;
+            this.defaultProp["class"] = obj.class;
+            this.defaultProp["pclass"] = obj.pclass;
+            this.defaultProp["period"] = obj.period;
 
-          delete obj.oid;
-          delete obj.class;
-          delete obj.pclass;
-          delete obj.period;
+            delete obj.oid;
+            delete obj.class;
+            delete obj.pclass;
+            delete obj.period;
 
-          this.details = obj;
-          this.result = response.data.result;
+            this.details = obj;
 
-          this.alerts = response.data.result.alerts;
-
-          console.log('---');
-          console.log(this.alerts);
-          console.log('---');
-
-          this.redrawChart();        
-
-          this.$emit("update:loading", false);
-        }.bind(this));
+            this.$emit("update:loading", false);
+            this.$refs.lightCurveFrame.redrawLightCurveChart();
+          }.bind(this)
+        );
     },
     queryTask(task_id) {
       // let this = this;
@@ -422,8 +424,6 @@ export default {
               this.getQueryResults(task_id);
             } else {
               console.log(response);
-              // this.result = result;
-              // this.$emit("update:loading", false);
             }
           }.bind(this)
         )
@@ -432,6 +432,7 @@ export default {
     showObjectDetails(item) {
       this.$emit("update:loading", true);
       this.$refs.objDetailsModal.show();
+      this.selectedObj = item;
 
       this.$http
         .post("/v2/query_alerts", {
@@ -447,38 +448,6 @@ export default {
           }.bind(this)
         )
         .catch(function(error) {});
-
-      // this.$http
-      //   .post("/v2/query_alerts", {
-      //     query_parameters: {
-      //       filters: {
-      //         oid: item.oid
-      //       }
-      //     }
-      //   })
-      //   .then(result => {
-      //     let obj = result.data.results[0];
-      //     this.defaultProp["oid"] = obj.oid;
-      //     this.defaultProp["class"] = obj.class;
-      //     this.defaultProp["pclass"] = obj.pclass;
-      //     this.defaultProp["period"] = obj.period;
-      //
-      //     delete obj.oid;
-      //     delete obj.class;
-      //     delete obj.pclass;
-      //     delete obj.period;
-      //
-      //     this.details = obj;
-      //   });
-      //
-      // this.$http
-      //   .post("/v2/query_alerts", {
-      //     oid: item.oid
-      //   })
-      //   .then(result => {
-      //     let taskId = result.data["task-id"];
-      //     this.getObjectStamps(taskId);
-      //   });
     },
     getObjectStamps(taskId) {
       this.$http
@@ -490,22 +459,7 @@ export default {
           if (state == "PENDING") {
             this.getObjectStamps(result.data["task-id"]);
           } else {
-            result.data.result.forEach(() => {
-              // val contiene 3 valores, cada uno representando la stamp correspondiente
-              // el valor viene en hexadecimal, hay que pasarlo a binario para luego transformarlo a un blob
-              // pero, aun no se sabe cual es el formato de la imagen, y falta un paso de la conversion en binario
-              // ya que para armar el blob, al parecer tienen que estar en base64
-              //   var arrayBufferView = btoa(
-              //     parseInt(val.difs, 16)
-              //       .toString(2)
-              //       .padStart(8, "0")
-              //   );
-              //   var blob = new Blob([arrayBufferView], { type: "image/bmp" });
-              //   var urlCreator = window.URL || window.webkitURL;
-              //   var imageUrl = urlCreator.createObjectURL(blob);
-              //   var img = document.querySelector("#image");
-              //   img.src = imageUrl;
-            });
+            result.data.result.forEach(() => {});
           }
         });
     },
@@ -518,10 +472,10 @@ export default {
     closeObjectModal: function() {
       this.$refs.objDetailsModal.hide();
     },
-      lessDetails: function(){
-          this.allDetails = false;
-          this.showMoreBtn = "Show more";
-      },
+    lessDetails: function() {
+      this.allDetails = false;
+      this.showMoreBtn = "Show more";
+    },
     moreDetails: function() {
       if (this.allDetails) {
         this.allDetails = false;
@@ -530,12 +484,7 @@ export default {
         this.allDetails = true;
         this.showMoreBtn = "Show less";
       }
-    },
-
-    redrawChart: function() {
-        console.log("redraw the light curve frame");
-      this.$refs.lightCurveFrame.redrawLightCurveChart();
-    },
+    }
   },
   watch: {
     selected(newVal) {
@@ -555,10 +504,10 @@ export default {
       // Handle changes in individual flavour checkboxes
       this.$emit("update:loading", newVal);
     },
-      download(newVal) {
-          // Handle changes in individual flavour checkboxes
-          this.$emit("update:downloading", newVal);
-      }
+    download(newVal) {
+      // Handle changes in individual flavour checkboxes
+      this.$emit("update:downloading", newVal);
+    }
   }
 };
 </script>
