@@ -387,7 +387,7 @@
                                 <small class="text-muted">(deg)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="RA"></b-form-input>
+                                <b-form-input size="sm" id="RA" v-model="queryParameters.coordinates.ra"></b-form-input>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -396,7 +396,7 @@
                                 <small class="text-muted">(deg)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="DEC"></b-form-input>
+                                <b-form-input size="sm" id="DEC" v-model="queryParameters.coordinates.dec"></b-form-input>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -405,7 +405,7 @@
                                 <small class="text-muted">(deg)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="RS"></b-form-input>
+                                <b-form-input size="sm" id="RS" v-model="queryParameters.coordinates.rs"></b-form-input>
                               </b-col>
                             </b-row>
                           </b-container>
@@ -699,7 +699,12 @@ export default {
               max: null
             }
           }
-        }
+      },
+      coordinates: {
+          ra: null,
+          dec: null,
+          rs: null
+      }
       }
     };
   },
