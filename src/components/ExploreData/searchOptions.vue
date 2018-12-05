@@ -390,6 +390,8 @@
                                 <b-form-input
                                     size="sm"
                                     id="RA"
+                                    type="number"
+                                    step=0.00001
                                     v-model="queryParameters.coordinates.ra"
                                     :required="coordSearch"
                                     ></b-form-input>
@@ -404,6 +406,8 @@
                                 <b-form-input
                                 size="sm"
                                 id="DEC"
+                                type="number"
+                                step=0.00001
                                 v-model="queryParameters.coordinates.dec"
                                 :required="coordSearch"></b-form-input>
                               </b-col>
@@ -417,6 +421,8 @@
                                 <b-form-input
                                 size="sm"
                                 id="RS"
+                                type="number"
+                                step=0.00001
                                 v-model="queryParameters.coordinates.rs"
                                 :required="coordSearch"></b-form-input>
                               </b-col>
