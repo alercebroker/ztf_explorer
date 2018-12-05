@@ -407,7 +407,7 @@ export default {
             this.details = obj;
 
             this.$emit("update:loading", false);
-            this.$refs.lightCurveFrame.redrawLightCurveChart();
+            // this.$refs.lightCurveFrame.redrawLightCurveChart();
           }.bind(this)
         );
     },
@@ -499,6 +499,9 @@ export default {
         this.indeterminate = true;
         this.allSelected = false;
       }
+    },
+    alerts() {
+
     },
     load(newVal) {
       // Handle changes in individual flavour checkboxes

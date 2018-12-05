@@ -1,14 +1,7 @@
 <template>
   <div>
     <b-row align-h="center">
-      <lightCurve
-        ref="lightCurve"
-        :jdates="jdates"
-        :magrs="magrs"
-        :magrErrors="magrErrors"
-        :maggs="maggs"
-        :maggErrors="maggErrors"
-      ></lightCurve>
+      <lightCurve ref="lightCurve" :chartData="chartData"></lightCurve>
     </b-row>
   </div>
 </template>
@@ -24,38 +17,40 @@ export default {
   },
   data() {
     return {
-      magrs: [],
-      maggs: [],
-      magrErrors: [],
-      maggErrors: [],
-      jdates: []
+      chartData: {
+        magrs: [],
+        maggs: [],
+        magrErrors: [],
+        maggErrors: [],
+        jdates: []
+      }
     };
   },
   methods: {
     processLightCurveData: function() {
       // Iterate through data and create four lists
-      this.magrs = [];
-      this.maggs = [];
-      this.magrErrors = [];
-      this.maggErrors = [];
-      this.jdates = [];
+      this.chartData.magrs = [];
+      this.chartData.maggs = [];
+      this.chartData.magrErrors = [];
+      this.chartData.maggErrors = [];
+      this.chartData.jdates = [];
 
       this.alerts.forEach(dataItem => {
-        this.jdates.push(dataItem.jd);
-        this.magrs.push(dataItem.magr);
-        this.maggs.push(dataItem.magg);
+        this.chartData.jdates.push(dataItem.jd);
+        this.chartData.magrs.push(dataItem.magr);
+        this.chartData.maggs.push(dataItem.magg);
 
         let magg_error = [null, null];
         if (dataItem.magg != null) {
           magg_error = [dataItem.magg - 0.1, dataItem.magg + 0.1];
         }
-        this.maggErrors.push(magg_error);
+        this.chartData.maggErrors.push(magg_error);
 
         let magr_error = [null, null];
         if (dataItem.magr) {
           magr_error = [dataItem.magr - 0.1, dataItem.magr + 0.1];
         }
-        this.magrErrors.push(magr_error);
+        this.chartData.magrErrors.push(magr_error);
       });
 
       // this.data = [magrs, maggs, magrErrors, maggErrors, jdates]
@@ -69,6 +64,11 @@ export default {
       this.processLightCurveData();
 
       this.$refs.lightCurve.redraw();
+    }
+  },
+  watch: {
+    alerts() {
+      this.redrawLightCurveChart();
     }
   }
 };

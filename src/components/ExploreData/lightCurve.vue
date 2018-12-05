@@ -11,7 +11,7 @@
 <script>
 export default {
   name: "lightCurve",
-  props: ["jdates", "magrs", "magrErrors", "maggs", "maggErrors"],
+  props: ["chartData"],
   data() {
     return {
       chartOptions: {
@@ -31,7 +31,7 @@ export default {
         },
         xAxis: {
           name: "Dates",
-          categories: this.jdates,
+          categories: [],
           title: {
             text: "Modified julian dates"
           }
@@ -51,24 +51,24 @@ export default {
             point: {
               events: {
                 click: function(e) {
-                  hs.htmlExpand(null, {
-                    pageOrigin: {
-                      x: e.pageX || e.clientX,
-                      y: e.pageY || e.clientY
-                    },
-                    headingText: this.series.name,
-                    maincontentText:
-                      "Modified julian date: " +
-                      this.jdates[this.x] +
-                      "<br/> " +
-                      this.series.name +
-                      ": " +
-                      this.y +
-                      "<br/> " +
-                      "rms error: " +
-                      0.1,
-                    width: 250
-                  });
+                  // hs.htmlExpand(null, {
+                  //   pageOrigin: {
+                  //     x: e.pageX || e.clientX,
+                  //     y: e.pageY || e.clientY
+                  //   },
+                  //   headingText: this.series.name,
+                  //   maincontentText:
+                  //     "Modified julian date: " +
+                  //     this.chartData.jdates[this.x] +
+                  //     "<br/> " +
+                  //     this.series.name +
+                  //     ": " +
+                  //     this.y +
+                  //     "<br/> " +
+                  //     "rms error: " +
+                  //     0.1,
+                  //   width: 250
+                  // });
                 }
               }
             },
@@ -83,14 +83,14 @@ export default {
             value: "rmag",
             color: "#ff0000",
             type: "scatter",
-            data: this.magrs
+            data: []
           },
           {
             name: "Red magnitude error",
             type: "errorbar",
             color: "#cc0c00",
             enableMouseTracking: false,
-            data: this.magrErrors
+            data: []
           },
           {
             name: "Green magnitude",
@@ -98,14 +98,14 @@ export default {
             // linkedTo: 'rmag',
             type: "scatter",
             color: "#22d100",
-            data: this.maggs
+            data: []
           },
           {
             name: "Green magnitude error",
             type: "errorbar",
             color: "#0a9900",
             enableMouseTracking: false,
-            data: this.maggErrors
+            data: []
           }
         ]
       }
@@ -115,7 +115,7 @@ export default {
   methods: {
     redraw: function() {
       // replace julian dates
-      this.chartOptions.xAxis.categories = this.jdates;
+      this.chartOptions.xAxis.categories = this.chartData.jdates;
 
       // delete the previous series
       this.chartOptions.series = [
@@ -124,14 +124,14 @@ export default {
           value: "rmag",
           color: "#ff0000",
           type: "scatter",
-          data: this.magrs
+          data: this.chartData.magrs
         },
         {
           name: "Red magnitude error",
           type: "errorbar",
           color: "#cc0c00",
           enableMouseTracking: false,
-          data: this.magrErrors
+          data: this.chartData.magrErrors
         },
         {
           name: "Green magnitude",
@@ -139,16 +139,24 @@ export default {
           // linkedTo: 'rmag',
           type: "scatter",
           color: "#22d100",
-          data: this.maggs
+          data: this.chartData.maggs
         },
         {
           name: "Green magnitude error",
           type: "errorbar",
           color: "#0a9900",
           enableMouseTracking: false,
-          data: this.maggErrors
+          data: this.chartData.maggErrors
         }
       ];
+    }
+  },
+  watch: {
+    chartData: {
+      handler: function() {
+        this.redraw();
+      },
+      deep: true
     }
   }
 };
