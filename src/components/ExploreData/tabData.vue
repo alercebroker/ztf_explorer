@@ -182,9 +182,7 @@
           <b-col>
             <!-- Curva de luz -->
             <b-card title="Light curve" class="h-100 align-middle">
-              <div class="text-center">
-                <p class="card-text">No data to display yet</p>
-              </div>
+                <lightCurveFrame :alerts.sync="alerts" ref="lightCurveFrame"></lightCurveFrame>
             </b-card>
           </b-col>
         </b-row>
@@ -252,9 +250,11 @@
 <script>
 import downloadModal from "./downloadModal.vue";
 import DownloadModal from "./downloadModal";
+import lightCurveFrame from "./lightCurveFrame";
+
 export default {
   name: "tabData",
-  components: { DownloadModal },
+  components: { DownloadModal, lightCurveFrame  },
   props: [
     "result",
     "error",
@@ -266,7 +266,7 @@ export default {
     "getMoreObjects",
     "taskId"
   ],
-  component: [downloadModal],
+  component: [downloadModal, lightCurveFrame],
   data() {
     return {
         superTrue: true,
@@ -274,6 +274,7 @@ export default {
       load: this.loading,
         download: this.downloading,
       details: {},
+      alerts: [],
       defaultProp: {},
       allDetails: false,
       showMoreBtn: "Show more",
@@ -382,7 +383,7 @@ export default {
         .post("/v2/result", {
           "task-id": taskId
         })
-        .then(response => {
+        .then(function(response) {
           let obj = response.data.result.object_details;
           this.defaultProp["oid"] = obj.oid;
           this.defaultProp["class"] = obj.class;
@@ -396,8 +397,17 @@ export default {
 
           this.details = obj;
           this.result = response.data.result;
+
+          this.alerts = response.data.result.alerts;
+
+          console.log('---');
+          console.log(this.alerts);
+          console.log('---');
+
+          this.redrawChart();        
+
           this.$emit("update:loading", false);
-        });
+        }.bind(this));
     },
     queryTask(task_id) {
       // let this = this;
@@ -520,7 +530,12 @@ export default {
         this.allDetails = true;
         this.showMoreBtn = "Show less";
       }
-    }
+    },
+
+    redrawChart: function() {
+        console.log("redraw the light curve frame");
+      this.$refs.lightCurveFrame.redrawLightCurveChart();
+    },
   },
   watch: {
     selected(newVal) {
@@ -580,181 +595,3 @@ table > tbody tr {
   overflow-y: auto;
 }
 </style>
-
-<!--
-<html>
-<head>
-    <title>Highcharts Tutorial</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
-    </script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-more.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-
-
-<script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
-<script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css"/>
-</head>
-
-
-<body>
-<div id = "container" style = "width: 550px; height: 400px; margin: 0 auto"></div>
-<script language = "JavaScript">
-    $(document).ready(function() {
-
-        function getRandomInt(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-        }
-
-        var data = [
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1000},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1100},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1200},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1300},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1400},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1500},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1600},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1700},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1800},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1900},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2000},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2100},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2200},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2300},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2400},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2500},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2600},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2700},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2800}
-        ];
-
-        // Iterate through data and create four lists
-        // var jdates = [];
-        var rmags = [];
-        var gmags = [];
-        var rmag_errors = [];
-        var gmag_errors = [];
-        var jdates = [];
-        data.forEach(function (dataItem) {
-            jdates.push(dataItem.jd);
-            rmags.push(dataItem.rmag);
-            gmags.push(dataItem.gmag);
-            rmag_errors.push(dataItem.rmag_error);
-            gmag_errors.push(dataItem.gmag_error);
-        });
-
-        var chart = {
-            scrollablePlotArea: {
-                minWidth: 700
-            }
-        };
-
-        var tooltip = {
-            headerFormat: '<span style="font-size: 10px">Modified julian date: {point.key}</span><br/>',
-            shared: true,
-            crosshairs: [true]
-        };
-
-        var title = {
-            text: 'Light Curve'
-        };
-
-        var xAxis = {
-            name: 'Dates',
-            categories: jdates,
-            title: {
-                text: 'Modified julian dates'
-            },
-        };
-
-        var yAxis = {
-            title: {
-                text: 'Magnitude'
-            },
-            type: 'linear'
-        };
-
-        var plotOptions = {
-            shared: true,
-            crosshairs: true,
-            enableMouseTracking: true,
-            series: {
-                cursor: 'pointer',
-                point: {
-                    events: {
-                        click: function (e) {
-                            hs.htmlExpand(null, {
-                                pageOrigin: {
-                                    x: e.pageX || e.clientX,
-                                    y: e.pageY || e.clientY
-                                },
-                                headingText: this.series.name,
-                                maincontentText: 'Modified julian date: ' + jdates[this.x] + '<br/> ' +
-                                    this.series.name + ': ' + this.y + '<br/> ' +
-                                    'error: ' + '[ ' + rmag_errors[this.x][0] + ', ' + rmag_errors[this.x][1] + ']',
-                                width: 200
-                            });
-                        }
-                    }
-                },
-                marker: {
-                    lineWidth: 1
-                }
-            }
-        };
-
-        var series = [
-            {
-                name: 'Red magnitude',
-                value: 'rmag',
-                color: '#ff0000',
-                type: 'spline',
-                data: rmags,
-                label: {
-                    text: "LABEL R"
-                }
-            },
-            {
-                name: 'Red magnitude error',
-                type: 'errorbar',
-                color: '#cc0c00',
-                data: rmag_errors,
-
-            },
-            {
-                name: 'Green magnitude',
-                value: 'gmag',
-                // linkedTo: 'rmag',
-                type: 'spline',
-                color: '#22d100',
-                data: gmags,
-
-            },
-            {
-                name: 'Green magnitude error',
-                type: 'errorbar',
-                color: '#0a9900',
-                data: gmag_errors,
-
-            }
-
-        ];
-
-        var json = {};
-        json.chart = chart;
-        json.title = title;
-        json.tooltip = tooltip;
-        json.xAxis = xAxis;
-        json.yAxis = yAxis;
-        json.series = series;
-        json.plotOptions = plotOptions;
-        $('#container').highcharts(json);
-    });
-</script>
-</body>
-
-</html>
--->
