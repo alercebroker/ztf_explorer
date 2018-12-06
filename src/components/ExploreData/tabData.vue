@@ -182,9 +182,7 @@
           <b-col>
             <!-- Curva de luz -->
             <b-card title="Light curve" class="h-100 align-middle">
-              <div class="text-center">
-                <p class="card-text">No data to display yet</p>
-              </div>
+              <lightCurveFrame :alerts="alerts" ref="lightCurveFrame"></lightCurveFrame>
             </b-card>
           </b-col>
         </b-row>
@@ -252,34 +250,38 @@
 <script>
 import downloadModal from "./downloadModal.vue";
 import DownloadModal from "./downloadModal";
+import lightCurveFrame from "./lightCurveFrame";
+
 export default {
   name: "tabData",
-  components: { DownloadModal },
+  components: { DownloadModal, lightCurveFrame },
   props: [
     "result",
     "error",
     "query_sql",
     "loading",
-      "downloading",
+    "downloading",
     "pageNumber",
     "numResults",
     "getMoreObjects",
     "taskId"
   ],
-  component: [downloadModal],
+  component: [downloadModal, lightCurveFrame],
   data() {
     return {
-        superTrue: true,
+      superTrue: true,
       interval: null,
       load: this.loading,
-        download: this.downloading,
+      download: this.downloading,
       details: {},
+      alerts: [],
       defaultProp: {},
       allDetails: false,
       showMoreBtn: "Show more",
       showModal: false,
       allSelected: false,
       indeterminate: false,
+      selectedObj: null,
       selected: [
         {
           key: "oid",
@@ -299,72 +301,78 @@ export default {
       ], // TODO: must contain default columns
       options: [
         //TODO: change values and text
-          {
-              text: "Object ID",
-              value: {
-                  key: "oid",
-                  sortable: false,
-                  label: "Object ID"
-              }
-          },
-          {
-              text: "Nobs",
-              value: {
-                  key: "nobs",
-                  sortable: false,
-                  label: "# Obs"
-              }
-          },
-          {
-              text: "Pclass",
-              value: {
-                  key: "pclass",
-                  sortable: false,
-                  label: "Probability on class"
-              }
-          },
-          { text: "Class", value: "class" },
-          { text: "Period", value: "period" },
-          { text: "Ext", value: "ext" },
+        {
+          text: "Object ID",
+          value: {
+            key: "oid",
+            sortable: false,
+            label: "Object ID"
+          }
+        },
+        {
+          text: "Nobs",
+          value: {
+            key: "nobs",
+            sortable: false,
+            label: "# Obs"
+          }
+        },
+        {
+          text: "Pclass",
+          value: {
+            key: "pclass",
+            sortable: false,
+            label: "Probability on class"
+          }
+        },
+        { text: "Class", value: "class" },
+        { text: "Period", value: "period" },
+        { text: "Ext", value: "ext" },
 
-          { text: "FirstMagG", value: "firstmagg" },
-          { text: "LastMagG", value: "lastmagg" },
-          { text: "MinG", value: "ming" },
-          { text: "MaxG", value: "maxg" },
-          { text: "MeanG", value: "meang" },
-          { text: "MedianG", value: "mediang" },
-          { text: "RmsG", value: "rmsg" },
-          { text: "SlopeG", value: "slopeg" },
+        { text: "FirstMagG", value: "firstmagg" },
+        { text: "LastMagG", value: "lastmagg" },
+        { text: "MinG", value: "ming" },
+        { text: "MaxG", value: "maxg" },
+        { text: "MeanG", value: "meang" },
+        { text: "MedianG", value: "mediang" },
+        { text: "RmsG", value: "rmsg" },
+        { text: "SlopeG", value: "slopeg" },
 
+        { text: "LastMagR", value: "lastmagr" },
+        { text: "FirstMagR", value: "firstmagr" },
+        { text: "MinR", value: "minr" },
+        { text: "MaxR", value: "maxr" },
+        { text: "MeanR", value: "meanr" },
+        { text: "MedianR", value: "medianr" },
+        { text: "RmsR", value: "rmsr" },
+        { text: "SlopeR", value: "sloper" },
 
-          { text: "LastMagR", value: "lastmagr" },
-          { text: "FirstMagR", value: "firstmagr" },
-          { text: "MinR", value: "minr" },
-          { text: "MaxR", value: "maxr" },
-          { text: "MeanR", value: "meanr" },
-          { text: "MedianR", value: "medianr" },
-          { text: "RmsR", value: "rmsr" },
-          { text: "SlopeR", value: "sloper" },
+        {
+          text: "FirstMJD",
+          value: {
+            key: "firstjd",
+            label: "FirstMJD"
+          }
+        },
+        {
+          text: "LastMJD",
+          value: {
+            key: "lastjd",
+            label: "LastMJD"
+          }
+        },
+        {
+          text: "DeltaMJD",
+          value: {
+            key: "deltajd",
+            label: "DeltaMJD"
+          }
+        },
 
-          {
-              text: "FirstMJD",
-              value:{
-                  key:"firstjd" ,
-                  label:"FirstMJD"
-          }},
-          { text: "LastMJD", value: {
-                  key:"lastjd" ,
-                  label:"LastMJD"
-              }},
-          { text: "DeltaMJD", value:{
-              key:"deltajd" ,
-              label:"DeltaMJD"
-          } },
-
-          { text: "MeanDEC", value: "meandec" },
-          { text: "RmsDEC", value: "rmsdec" },
-          { text: "MeanRA", value: "meanra" },
-          { text: "RmsRA", value: "rmsra" }
+        { text: "MeanDEC", value: "meandec" },
+        { text: "RmsDEC", value: "rmsdec" },
+        { text: "MeanRA", value: "meanra" },
+        { text: "RmsRA", value: "rmsra" }
       ]
     };
   },
@@ -382,22 +390,26 @@ export default {
         .post("/v2/result", {
           "task-id": taskId
         })
-        .then(response => {
-          let obj = response.data.result.object_details;
-          this.defaultProp["oid"] = obj.oid;
-          this.defaultProp["class"] = obj.class;
-          this.defaultProp["pclass"] = obj.pclass;
-          this.defaultProp["period"] = obj.period;
+        .then(
+          function(response) {
+            let obj = response.data.result.object_details;
+            this.alerts = response.data.result.alerts;
+            this.defaultProp["oid"] = obj.oid;
+            this.defaultProp["class"] = obj.class;
+            this.defaultProp["pclass"] = obj.pclass;
+            this.defaultProp["period"] = obj.period;
 
-          delete obj.oid;
-          delete obj.class;
-          delete obj.pclass;
-          delete obj.period;
+            delete obj.oid;
+            delete obj.class;
+            delete obj.pclass;
+            delete obj.period;
 
-          this.details = obj;
-          this.result = response.data.result;
-          this.$emit("update:loading", false);
-        });
+            this.details = obj;
+
+            this.$emit("update:loading", false);
+            // this.$refs.lightCurveFrame.redrawLightCurveChart();
+          }.bind(this)
+        );
     },
     queryTask(task_id) {
       // let this = this;
@@ -412,8 +424,6 @@ export default {
               this.getQueryResults(task_id);
             } else {
               console.log(response);
-              // this.result = result;
-              // this.$emit("update:loading", false);
             }
           }.bind(this)
         )
@@ -422,6 +432,7 @@ export default {
     showObjectDetails(item) {
       this.$emit("update:loading", true);
       this.$refs.objDetailsModal.show();
+      this.selectedObj = item;
 
       this.$http
         .post("/v2/query_alerts", {
@@ -437,38 +448,6 @@ export default {
           }.bind(this)
         )
         .catch(function(error) {});
-
-      // this.$http
-      //   .post("/v2/query_alerts", {
-      //     query_parameters: {
-      //       filters: {
-      //         oid: item.oid
-      //       }
-      //     }
-      //   })
-      //   .then(result => {
-      //     let obj = result.data.results[0];
-      //     this.defaultProp["oid"] = obj.oid;
-      //     this.defaultProp["class"] = obj.class;
-      //     this.defaultProp["pclass"] = obj.pclass;
-      //     this.defaultProp["period"] = obj.period;
-      //
-      //     delete obj.oid;
-      //     delete obj.class;
-      //     delete obj.pclass;
-      //     delete obj.period;
-      //
-      //     this.details = obj;
-      //   });
-      //
-      // this.$http
-      //   .post("/v2/query_alerts", {
-      //     oid: item.oid
-      //   })
-      //   .then(result => {
-      //     let taskId = result.data["task-id"];
-      //     this.getObjectStamps(taskId);
-      //   });
     },
     getObjectStamps(taskId) {
       this.$http
@@ -480,22 +459,7 @@ export default {
           if (state == "PENDING") {
             this.getObjectStamps(result.data["task-id"]);
           } else {
-            result.data.result.forEach(() => {
-              // val contiene 3 valores, cada uno representando la stamp correspondiente
-              // el valor viene en hexadecimal, hay que pasarlo a binario para luego transformarlo a un blob
-              // pero, aun no se sabe cual es el formato de la imagen, y falta un paso de la conversion en binario
-              // ya que para armar el blob, al parecer tienen que estar en base64
-              //   var arrayBufferView = btoa(
-              //     parseInt(val.difs, 16)
-              //       .toString(2)
-              //       .padStart(8, "0")
-              //   );
-              //   var blob = new Blob([arrayBufferView], { type: "image/bmp" });
-              //   var urlCreator = window.URL || window.webkitURL;
-              //   var imageUrl = urlCreator.createObjectURL(blob);
-              //   var img = document.querySelector("#image");
-              //   img.src = imageUrl;
-            });
+            result.data.result.forEach(() => {});
           }
         });
     },
@@ -508,10 +472,10 @@ export default {
     closeObjectModal: function() {
       this.$refs.objDetailsModal.hide();
     },
-      lessDetails: function(){
-          this.allDetails = false;
-          this.showMoreBtn = "Show more";
-      },
+    lessDetails: function() {
+      this.allDetails = false;
+      this.showMoreBtn = "Show more";
+    },
     moreDetails: function() {
       if (this.allDetails) {
         this.allDetails = false;
@@ -536,14 +500,17 @@ export default {
         this.allSelected = false;
       }
     },
+    alerts() {
+
+    },
     load(newVal) {
       // Handle changes in individual flavour checkboxes
       this.$emit("update:loading", newVal);
     },
-      download(newVal) {
-          // Handle changes in individual flavour checkboxes
-          this.$emit("update:downloading", newVal);
-      }
+    download(newVal) {
+      // Handle changes in individual flavour checkboxes
+      this.$emit("update:downloading", newVal);
+    }
   }
 };
 </script>
@@ -580,181 +547,3 @@ table > tbody tr {
   overflow-y: auto;
 }
 </style>
-
-<!--
-<html>
-<head>
-    <title>Highcharts Tutorial</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
-    </script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-more.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-
-
-<script src="https://www.highcharts.com/media/com_demo/js/highslide-full.min.js"></script>
-<script src="https://www.highcharts.com/media/com_demo/js/highslide.config.js" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css" href="https://www.highcharts.com/media/com_demo/css/highslide.css"/>
-</head>
-
-
-<body>
-<div id = "container" style = "width: 550px; height: 400px; margin: 0 auto"></div>
-<script language = "JavaScript">
-    $(document).ready(function() {
-
-        function getRandomInt(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-        }
-
-        var data = [
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1000},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1100},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1200},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1300},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1400},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1500},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1600},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1700},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1800},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 1900},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2000},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2100},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2200},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2300},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2400},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2500},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2600},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2700},
-            {rmag: getRandomInt(0, 50), rmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], gmag: getRandomInt(0, 50), gmag_error: [getRandomInt(10, 40), getRandomInt(10, 40)], jd: 2800}
-        ];
-
-        // Iterate through data and create four lists
-        // var jdates = [];
-        var rmags = [];
-        var gmags = [];
-        var rmag_errors = [];
-        var gmag_errors = [];
-        var jdates = [];
-        data.forEach(function (dataItem) {
-            jdates.push(dataItem.jd);
-            rmags.push(dataItem.rmag);
-            gmags.push(dataItem.gmag);
-            rmag_errors.push(dataItem.rmag_error);
-            gmag_errors.push(dataItem.gmag_error);
-        });
-
-        var chart = {
-            scrollablePlotArea: {
-                minWidth: 700
-            }
-        };
-
-        var tooltip = {
-            headerFormat: '<span style="font-size: 10px">Modified julian date: {point.key}</span><br/>',
-            shared: true,
-            crosshairs: [true]
-        };
-
-        var title = {
-            text: 'Light Curve'
-        };
-
-        var xAxis = {
-            name: 'Dates',
-            categories: jdates,
-            title: {
-                text: 'Modified julian dates'
-            },
-        };
-
-        var yAxis = {
-            title: {
-                text: 'Magnitude'
-            },
-            type: 'linear'
-        };
-
-        var plotOptions = {
-            shared: true,
-            crosshairs: true,
-            enableMouseTracking: true,
-            series: {
-                cursor: 'pointer',
-                point: {
-                    events: {
-                        click: function (e) {
-                            hs.htmlExpand(null, {
-                                pageOrigin: {
-                                    x: e.pageX || e.clientX,
-                                    y: e.pageY || e.clientY
-                                },
-                                headingText: this.series.name,
-                                maincontentText: 'Modified julian date: ' + jdates[this.x] + '<br/> ' +
-                                    this.series.name + ': ' + this.y + '<br/> ' +
-                                    'error: ' + '[ ' + rmag_errors[this.x][0] + ', ' + rmag_errors[this.x][1] + ']',
-                                width: 200
-                            });
-                        }
-                    }
-                },
-                marker: {
-                    lineWidth: 1
-                }
-            }
-        };
-
-        var series = [
-            {
-                name: 'Red magnitude',
-                value: 'rmag',
-                color: '#ff0000',
-                type: 'spline',
-                data: rmags,
-                label: {
-                    text: "LABEL R"
-                }
-            },
-            {
-                name: 'Red magnitude error',
-                type: 'errorbar',
-                color: '#cc0c00',
-                data: rmag_errors,
-
-            },
-            {
-                name: 'Green magnitude',
-                value: 'gmag',
-                // linkedTo: 'rmag',
-                type: 'spline',
-                color: '#22d100',
-                data: gmags,
-
-            },
-            {
-                name: 'Green magnitude error',
-                type: 'errorbar',
-                color: '#0a9900',
-                data: gmag_errors,
-
-            }
-
-        ];
-
-        var json = {};
-        json.chart = chart;
-        json.title = title;
-        json.tooltip = tooltip;
-        json.xAxis = xAxis;
-        json.yAxis = yAxis;
-        json.series = series;
-        json.plotOptions = plotOptions;
-        $('#container').highcharts(json);
-    });
-</script>
-</body>
-
-</html>
--->
