@@ -362,7 +362,7 @@
                           ></b-form-input>
                         </b-col>
                         <b-col md="4" class="text-center">
-                          delta
+                          First to Last alert
                           <small class="text-muted">(days)</small>
                         </b-col>
                         <b-col md="4">
@@ -387,7 +387,14 @@
                                 <small class="text-muted">(deg)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="RA"></b-form-input>
+                                <b-form-input
+                                    size="sm"
+                                    id="RA"
+                                    type="number"
+                                    step=0.00001
+                                    v-model="queryParameters.coordinates.ra"
+                                    :required="coordSearch"
+                                    ></b-form-input>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -396,16 +403,28 @@
                                 <small class="text-muted">(deg)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="DEC"></b-form-input>
+                                <b-form-input
+                                size="sm"
+                                id="DEC"
+                                type="number"
+                                step=0.00001
+                                v-model="queryParameters.coordinates.dec"
+                                :required="coordSearch"></b-form-input>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
                               <b-col md="6">
                                 RS
-                                <small class="text-muted">(deg)</small>
+                                <small class="text-muted">(arcsec)</small>
                               </b-col>
                               <b-col md="6">
-                                <b-form-input size="sm" id="RS"></b-form-input>
+                                <b-form-input
+                                size="sm"
+                                id="RS"
+                                type="number"
+                                step=0.00001
+                                v-model="queryParameters.coordinates.rs"
+                                :required="coordSearch"></b-form-input>
                               </b-col>
                             </b-row>
                           </b-container>
@@ -489,6 +508,7 @@ export default {
       anyBand: false,
       firstGreg: null,
       lastGreg: null,
+      coordSearch: false,
       queryParameters: {
         filters: {
           oid: null,
@@ -699,6 +719,11 @@ export default {
               max: null
             }
           }
+        },
+        coordinates: {
+          ra: null,
+          dec: null,
+          rs: null
         }
       }
     };
@@ -712,6 +737,18 @@ export default {
     }
   },
   watch: {
+    'queryParameters.coordinates': {
+        handler: function(newVal){
+            let req = false;
+            for(let k in newVal){
+                if (newVal[k] != null && newVal[k] != ""){
+                    req = true;
+                }
+            }
+            this.coordSearch = req;
+        },
+        deep: true
+    },
     queryParameters: {
       handler: function(newVal) {
         let queryToSubmit = this._.cloneDeep(newVal);
