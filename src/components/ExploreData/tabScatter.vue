@@ -37,6 +37,9 @@ export default {
 			optionsX: [
 				{ value: null, text: "Please select a variable" },
 				{ text: "Nr. Obs", value: "nobs" },
+				{ text: "Class", value: "class" },
+				{ text: "Class Probability", value: "pclass" },
+				{ text: "Period*", value: "period" },
 				{
 					value: null,
 					text: "-- Magnitude  Band G --",
@@ -63,6 +66,9 @@ export default {
 			optionsY: [
 				{ value: null, text: "Please select a variable" },
 				{ text: "Nr. Obs", value: "nobs" },
+				{ text: "Class", value: "class" },
+				{ text: "Class Probability", value: "pclass" },
+				{ text: "Period*", value: "period" },
 				{
 					value: null,
 					text: "-- Magnitude  Band G --",
@@ -97,8 +103,14 @@ export default {
 		getAxisData: function(axis,obj){
     		var x = axis;
     		if (obj != null){
-	    		if (x == "nobs"){
+    			if (x == "nobs"){
 	    			return obj.nobs;
+	    		} if (x == "class"){
+	    			return obj.class;
+	    		} if (x == "pclass"){
+	    			return obj.pclass;
+	    		} if (x == "period"){
+	    			return obj.period;
 	    		} if (x == "maxg"){
 	    			return obj.maxg;
 	    		} if (x == "ming"){

@@ -37,8 +37,9 @@
 
 				    plotOptions:{
 				    	histogram:{
+				    		binsNumber: 'rice' ,
 				    		pointPadding: 0.05,
-				    		pointWidth: 20,
+				    		pointWidth: 30,
 				    		color:'#3C347E',
 				    	}
 				    },
