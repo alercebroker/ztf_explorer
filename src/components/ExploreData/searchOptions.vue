@@ -362,7 +362,7 @@
                           ></b-form-input>
                         </b-col>
                         <b-col md="4" class="text-center">
-                          delta
+                          First to Last alert
                           <small class="text-muted">(days)</small>
                         </b-col>
                         <b-col md="4">

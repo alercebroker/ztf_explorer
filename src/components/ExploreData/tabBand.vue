@@ -30,7 +30,7 @@
                 <b-form-input id="minSlopeAny" size="sm" type="number" v-model="band.slope.min" :max="band.slope.max"></b-form-input>
                 <!-- <input class="form-control form-control-sm" v-model="band.slope.min" min="0" type="number" :max="band.slope.max" id="minSlopeAny"></input> -->
             </b-col>
-            <b-col md="4" class="text-center"> slope </b-col>
+            <b-col md="4" class="text-center"> slope <small class="text-muted">(mag/day)</small></b-col>
             <b-col md="4">
                 <b-form-input id="maxSlopeAny" size="sm" type="number" v-model="band.slope.max" :min="band.slope.min"></b-form-input>
                 <!-- <input class="form-control form-control-sm" v-model="band.slope.max" :min="band.slope.min" type="number" id="maxSlopeAny"></input> -->
@@ -67,7 +67,7 @@
                 <b-form-input id="minLastmagU" size="sm" type="number" v-model="band.lastmag.min" min="0" :max="band.lastmag.max"></b-form-input>
                 <!-- <input class="form-control form-control-sm" v-model="band.lastmag.min" min="0" type="number" :max="band.lastmag.max" id="minLastmagU"></input> -->
             </b-col>
-            <b-col md="4" class="text-center"> last magn. </b-col>
+            <b-col md="4" class="text-center"> last detected magn. </b-col>
             <b-col md="4">
                 <b-form-input id="maxLastmagU" size="sm" type="number" v-model="band.lastmag.max" :min="band.lastmag.min"></b-form-input>
                 <!-- <input class="form-control form-control-sm" v-model="band.lastmag.max" :min="band.lastmag.min" type="number" id="maxLastmagU"></input> -->
