@@ -21,10 +21,12 @@ export default {
           panKey: "shift"
         },
         tooltip: {
-          headerFormat:
-            '<span style="font-size: 10px">Modified julian date: {point.key}</span><br/>',
-          shared: true,
-          crosshairs: [true]
+            formatter: function () {
+              var header = '<span style="font-size: 13px">Modified julian date :' + this.x + '</span><br/>'; 
+              var footer = '<span style="font-size: 11px; font-weight: bold;">' + this.series.name + ': ' + this.y + '</span>';
+            return header + footer;
+        },
+            crosshairs: [true, false]
         },
         title: {
           text: "Light Curve"
@@ -62,7 +64,7 @@ export default {
                   //     this.chartData.jdates[this.x] +
                   //     "<br/> " +
                   //     this.series.name +
-                  //     ": " +
+                  //     ": " +√
                   //     this.y +
                   //     "<br/> " +
                   //     "rms error: " +
