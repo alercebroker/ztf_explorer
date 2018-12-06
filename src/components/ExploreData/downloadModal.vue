@@ -17,7 +17,11 @@ export default {
       interval: null,
       download: false,
       selected: null,
-      options: ["CSV", "FITS", "VOT"]
+      options: [
+        {value: "CSV", text: "CSV"},
+        {value: "FITS", text: "FITS", disabled: true},
+        {value: "VOT", text: "VOT"}
+      ]
     };
   },
   methods: {
