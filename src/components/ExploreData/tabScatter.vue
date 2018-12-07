@@ -12,7 +12,7 @@
 				</b-form-group>
 			</b-col>
 			<b-col cols="2">
-				<b-button variant="secondary" alt="Load and add another sample of data" disabled>More data</b-button>
+				<b-button variant="secondary" alt="Load and add another sample of data" v-on:click="loadMore(setPlotValues)" :disabled="disabled">More data</b-button>
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
@@ -25,7 +25,7 @@
 import scatter from "./scatter.vue";
 export default {
   	name: 'tabScatter',
-  	props: ["result", "currentQueryParent"],
+  	props: ["result", "currentQueryParent","loadMore"],
   	components: {
   		scatter,
   	},
@@ -158,6 +158,11 @@ export default {
 	    		};
     		});
     	},
+	},
+	computed : {
+  	  disabled () {
+  	      return this.selectedX == null || this.selectedY == null
+	  }
 	},
 	watch: {
 		selectedX: function(newVal, oldVal) { // watch it
