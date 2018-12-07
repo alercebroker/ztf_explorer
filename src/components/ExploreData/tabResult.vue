@@ -18,10 +18,11 @@
                 ></tabData>
               </b-tab>
               <b-tab title="Histogram" v-on:click="reDrawHist" :disabled="result.data.length != 0 ? false : true">
-                <tabHistogram ref="histogram" :results="result" :currentQueryParent="query_sql"></tabHistogram>
+                <tabHistogram ref="histogram" :loadMore="loadMore" :results="result" :currentQueryParent="query_sql"></tabHistogram>
               </b-tab>
                 <b-tab v-on:click="reDrawScat" title="Scatter" :disabled="result.data.length != 0 ? false : true">
                     <tabScatter ref="scatter"
+                                :loadMore="loadMore"
                       :result="result"
                       :currentQueryParent="query_sql"
                       :disabled="result.data.status == 200 ? false : true"
@@ -29,9 +30,9 @@
               </b-tab>
               <b-tab
                 title="Spatial Distribution"
-                :disabled="result.data.status == 200 ? false : true"
+                :disabled="false"
               >
-                <tabSpatialDistribution :result="result"></tabSpatialDistribution>
+                <tabSpatialDistribution :result="result" disabled></tabSpatialDistribution>
               </b-tab>
             <!--
                             <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
@@ -77,7 +78,8 @@ export default {
     };
   },
   methods: {
-    getQueryResults: function(taskId) {
+    getQueryResults: function(taskId,fun_update) {
+        this.$emit("update:loading", true);
       this.$http
         .post("/v2/paginated_result", {
           "task-id": taskId,
@@ -91,11 +93,18 @@ export default {
             } else {
               this.result.data = this.result.data.concat(results.data);
             }
+            if(fun_update) {
+                fun_update()
+            }
             this.$emit("update:loading", false);
 
           }.bind(this)
         );
     },
+      loadMore: function(fun_update) {
+        this.pageNumber = this.pageNumber + 1;
+        this.getQueryResults(this.taskId,fun_update)
+      },
     queryTask: function(task_id) {
       this.$http
         .post("/v2/query_status", {

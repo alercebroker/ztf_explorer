@@ -12,7 +12,7 @@
 				</b-form-group>
 			</b-col-->
 			<b-col cols="2">
-				<b-button variant="secondary" alt="Load and add another sample of data" disabled>More data</b-button>
+				<b-button variant="secondary" alt="Load and add another sample of data" v-on:click="loadMore(setPlotValues)" :disabled="disabled">More data</b-button>
 			</b-col>
 		</b-row>
 		<b-row align-h="center">
@@ -25,12 +25,16 @@
 import histogram from "./histogram.vue";
 
 export default {
-  	name: 'tabHistogram',
-  	props: ["results", "currentQueryParent"],
-  	components: {
-  		histogram
-  	},
-  	data(){
+	name: 'tabHistogram',
+	props: ["results",
+		"currentQueryParent",
+		"pageNumber",
+		"getMoreObjects",
+		"loadMore"],
+	components: {
+		histogram
+	},
+	data(){
 		return {
 			currentQuery: this.currentQueryParent,
 			nbins: 10,
@@ -67,65 +71,70 @@ export default {
 				},
 				{ text: "FirstJd", value: "firstjd" },
 				{ text: "LastJd", value: "lastjd" },
-        		{ text: "DeltaJd", value: "deltajd" },
-				
+				{ text: "DeltaJd", value: "deltajd" },
+
 			]
 		}
 	},
 	methods:{
 		getAxisData: function(axis,obj){
-    		var x = axis;
-    		if (obj != null){
-	    		if (x == "maxg"){
-	    			return obj.maxg;
-	    		} if (x == "ming"){
-	    			return obj.ming;
-	    		} if (x == "meang"){
-	    			return obj.meang;
-	    		} if (x == "slopeg"){
-	    			return obj.slopeg;
-	    		} if (x == "firstmagg"){
-	    			return obj.firstmagg;
-	    		} if (x == "lastmagg"){
-	    			return obj.lastmagg;
-	    		} if (x == "maxr"){
-	    			return obj.maxr;
-	    		} if (x == "minr"){
-	    			return obj.minr;
-	    		} if (x == "meanr"){
-	    			return obj.meanr;
-	    		} if (x == "sloper"){
-	    			return obj.sloper;
-	    		} if (x == "firstmagr"){
-	    			return obj.firstmagr;
-	    		} if (x == "lastmagr"){
-	    			return obj.lastmagr;
-	    		} if (x == "firstjd"){
-	    			return obj.firstjd;
-	    		} if (x == "lastjd"){
-	    			return obj.lastjd;
-	    		} if (x == "deltajd"){
-	    			return obj.deltajd;
-	    		} else {
-	    			return null;
-	    		}
-	    	} else {
-	    		return null;
-	    	}
-    	},
-    	setPlotValues: function(){
-    		//borrar datos anteriores
-    		this.plotValues=[];
-    		//agregar plotValues
-    		this.results.data.forEach(obj => {
-    			if (this.getAxisData(this.selected, obj) != null){
-	    			this.plotValues.push({
-	    				oid: obj.oid,
-	    				pair:this.getAxisData(this.selected, obj),
-	    			});
-	    		};
-    		});
-    	},
+			var x = axis;
+			if (obj != null){
+				if (x == "maxg"){
+					return obj.maxg;
+				} if (x == "ming"){
+					return obj.ming;
+				} if (x == "meang"){
+					return obj.meang;
+				} if (x == "slopeg"){
+					return obj.slopeg;
+				} if (x == "firstmagg"){
+					return obj.firstmagg;
+				} if (x == "lastmagg"){
+					return obj.lastmagg;
+				} if (x == "maxr"){
+					return obj.maxr;
+				} if (x == "minr"){
+					return obj.minr;
+				} if (x == "meanr"){
+					return obj.meanr;
+				} if (x == "sloper"){
+					return obj.sloper;
+				} if (x == "firstmagr"){
+					return obj.firstmagr;
+				} if (x == "lastmagr"){
+					return obj.lastmagr;
+				} if (x == "firstjd"){
+					return obj.firstjd;
+				} if (x == "lastjd"){
+					return obj.lastjd;
+				} if (x == "deltajd"){
+					return obj.deltajd;
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		},
+		setPlotValues: function(){
+			//borrar datos anteriores
+			this.plotValues=[];
+			//agregar plotValues
+			this.results.data.forEach(obj => {
+				if (this.getAxisData(this.selected, obj) != null){
+					this.plotValues.push({
+						oid: obj.oid,
+						pair:this.getAxisData(this.selected, obj),
+					});
+				};
+			});
+		},
+	},
+	computed : {
+	  disabled() {
+	      return this.selected == null;
+	  },
 	},
 	watch: {
 		selected: function(newVal, oldVal) { // watch it
