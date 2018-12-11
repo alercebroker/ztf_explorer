@@ -16,7 +16,7 @@ export default {
     return {
       interval: null,
       download: false,
-      selected: null,
+      selected: "CSV",
       options: [
         {value: "CSV", text: "CSV"},
         {value: "FITS", text: "FITS", disabled: true},
