@@ -30,9 +30,9 @@
               </b-tab>
               <b-tab
                 title="Spatial Distribution"
-                :disabled="false"
+                :disabled="true"
               >
-                <tabSpatialDistribution :result="result" disabled></tabSpatialDistribution>
+                <tabSpatialDistribution :result="result"></tabSpatialDistribution>
               </b-tab>
             <!--
                             <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
