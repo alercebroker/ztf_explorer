@@ -48,7 +48,10 @@
 </template>
 
 <script>
-import tabData from "./tabData.vue";
+    /**
+     * this component manage tab components and do query to API
+     */
+    import tabData from "./tabData.vue";
 import tabScatter from "./tabScatter.vue";
 import tabHistogram from "./tabHistogram.vue";
 import tabSankey from "./tabSankey.vue";
@@ -78,6 +81,11 @@ export default {
     };
   },
   methods: {
+      /**
+       * query to api with taskId and call fun_update if exist
+       * @param taskId:string with id from query
+       * @param fun_update: function
+       */
     getQueryResults: function(taskId,fun_update) {
         this.$emit("update:loading", true);
       this.$http
@@ -101,10 +109,19 @@ export default {
           }.bind(this)
         );
     },
+
+      /**
+       * query next page
+       * @param fun_update: function
+       */
       loadMore: function(fun_update) {
         this.pageNumber = this.pageNumber + 1;
         this.getQueryResults(this.taskId,fun_update)
       },
+      /**
+       * query status of task
+       * @param task_id: string
+       */
     queryTask: function(task_id) {
       this.$http
         .post("/v2/query_status", {
@@ -136,6 +153,10 @@ export default {
       reDrawScat: function(){
         this.$refs.scatter.setPlotValues();
       },
+
+      /**
+       * update tab_histogram
+       */
       reDrawHist: function() {
           if(this.$refs.histogram.selected!=null) {
               this.$refs.histogram.setPlotValues();

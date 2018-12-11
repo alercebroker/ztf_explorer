@@ -493,7 +493,10 @@
 
 
 <script>
-import tabBand from "./tabBand.vue";
+    /**
+     * this component update prop params with the forms, update prop currentQueryParent with current query,
+     */
+    import tabBand from "./tabBand.vue";
 export default {
   name: "searchOptions",
   props: ["params", "loading", "currentQueryParent"],
@@ -729,9 +732,11 @@ export default {
     };
   },
   computed: {
+      //this bind this.queryParameters.dates.firstjd for use it in watch
     firstjd() {
       return this.queryParameters.dates.firstjd;
     },
+      //this bind this.queryParameters.dates.lastjd for use it in watch
     lastjd() {
       return this.queryParameters.dates.lastjd;
     }
@@ -793,7 +798,10 @@ export default {
     }
   },
   methods: {
-      refreshSQL: function (event) {
+      /**
+       * update current sql query
+       */
+      refreshSQL: function () {
           let queryToSubmit = this._.cloneDeep(this.queryParameters);
           this.checkAnyBand(queryToSubmit);
           this.removeEmpty(queryToSubmit);
@@ -807,6 +815,11 @@ export default {
               .catch(() => {
               });
           },
+
+      /**
+       * clean the bands inside queryToSubmit to send
+       * @param queryToSubmit: object cloned from queryParameters
+       */
     checkAnyBand: function(queryToSubmit) {
       if (this.anyBand) {
         let any = queryToSubmit.bands.any;
@@ -818,6 +831,12 @@ export default {
         queryToSubmit.bands = bands;
       }
     },
+
+      /**
+       * receives date in julian format and convert in gregorian format
+       * @param MJD:date in julian format
+       * @returns {string} : date in julian format
+       */
     jdToGregorian(MJD) {
       var JD = Number(MJD) + 2400000.5;
       const y = 4716;
@@ -850,6 +869,12 @@ export default {
 
       return today;
     },
+
+      /**
+       * receives date in gregorian format and convert in julian format
+       * @param gDate:date in gregorian format
+       * @returns {number} : date in gregorian format
+       */
     gregorianToJd(gDate) {
       //MJD = JD − 2400000.5
       var dateObj = new Date(gDate);
@@ -857,6 +882,11 @@ export default {
 
       return mjulianDate;
     },
+
+      /**
+       *  remove all variables inside obj what are empty
+       * @param obj: object cloned from queryParameters
+       */
     removeEmpty(obj) {
       Object.entries(obj).forEach(([key, val]) => {
         if (val && typeof val === "object") {
@@ -867,7 +897,11 @@ export default {
         }
       });
     },
-    onSubmitQuery() {
+
+      /**
+       * send query
+       */
+      onSubmitQuery() {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
       this.checkAnyBand(queryToSubmit);
       this.removeEmpty(queryToSubmit);

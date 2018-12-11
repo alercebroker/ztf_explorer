@@ -78,6 +78,9 @@
 </template>
 
 <script>
+    /**
+     * component update prop band with form
+     */
     export default {
         name: "tabBand",
         props: ['band']

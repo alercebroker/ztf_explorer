@@ -377,13 +377,21 @@ export default {
     };
   },
   methods: {
+      /**
+       * query for next page
+       */
     getMoreResults() {
       this.$emit("update:pageNumber", this.pageNumber + 1);
       this.getMoreObjects(this.taskId);
     },
+
     toggleAll(checked) {
       this.selected = checked ? this.options.map(a => a.value).slice() : [];
     },
+      /**
+       * query task result
+       * @param taskId
+       */
     getQueryResults: function(taskId) {
       this.$http
         .post("/v2/result", {
@@ -410,7 +418,12 @@ export default {
           }.bind(this)
         );
     },
-    queryTask(task_id) {
+
+      /**
+       *  query if task is ready
+       * @param task_id
+       */
+      queryTask(task_id) {
       // let this = this;
       this.$http
         .post("/v2/query_status", {
@@ -428,11 +441,14 @@ export default {
         )
         .catch(function(error) {});
     },
+      /**
+       * show modal and do query for alert of object
+       * @param item
+       */
     showObjectDetails(item) {
       this.$emit("update:loading", true);
       this.$refs.objDetailsModal.show();
       this.selectedObj = item;
-
       this.$http
         .post("/v2/query_alerts", {
           oid: item.oid
@@ -447,20 +463,6 @@ export default {
           }.bind(this)
         )
         .catch(function(error) {});
-    },
-    getObjectStamps(taskId) {
-      this.$http
-        .post("/v2/query_result", {
-          "task-id": taskId
-        })
-        .then(result => {
-          let state = result.data.state;
-          if (state == "PENDING") {
-            this.getObjectStamps(result.data["task-id"]);
-          } else {
-            result.data.result.forEach(() => {});
-          }
-        });
     },
     showDownload() {
       this.$refs.downloadModal.show();
@@ -498,9 +500,6 @@ export default {
         this.indeterminate = true;
         this.allSelected = false;
       }
-    },
-    alerts() {
-
     },
     load(newVal) {
       // Handle changes in individual flavour checkboxes
