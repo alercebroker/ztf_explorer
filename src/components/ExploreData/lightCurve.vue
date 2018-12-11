@@ -44,6 +44,15 @@ export default {
           },
           type: "linear"
         },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            floating: true,
+            x: -10,
+            y: -5
+            // backgroundColor: '#FFFFFF'
+        },
         plotOptions: {
           shared: true,
           crosshairs: true,
@@ -122,21 +131,21 @@ export default {
       // delete the previous series
       this.chartOptions.series = [
         {
-          name: "Red magnitude",
+          name: "red magnitude",
           value: "rmag",
           color: "#ff0000",
           type: "scatter",
           data: this.chartData.magrs
         },
         {
-          name: "Red magnitude error",
+          name: "red magnitude error",
           type: "errorbar",
           color: "#cc0c00",
           enableMouseTracking: false,
           data: this.chartData.magrErrors
         },
         {
-          name: "Green magnitude",
+          name: "green magnitude",
           value: "gmag",
           // linkedTo: 'rmag',
           type: "scatter",
@@ -144,7 +153,7 @@ export default {
           data: this.chartData.maggs
         },
         {
-          name: "Green magnitude error",
+          name: "green magnitude error",
           type: "errorbar",
           color: "#0a9900",
           enableMouseTracking: false,
