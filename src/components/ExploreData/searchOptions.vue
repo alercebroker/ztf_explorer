@@ -798,7 +798,7 @@ export default {
           this.checkAnyBand(queryToSubmit);
           this.removeEmpty(queryToSubmit);
           this.$http
-              .post("/v1/get_sql", {
+              .post("/v2/get_sql", {
                   query_parameters: queryToSubmit
                               })
               .then(result_query => {
