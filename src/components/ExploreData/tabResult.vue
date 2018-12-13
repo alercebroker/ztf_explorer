@@ -12,6 +12,7 @@
                   :result="result"
                   :error="error"
                   :query_sql="query_sql"
+                  :params="params"
                   :pageNumber.sync="pageNumber"
                   :getMoreObjects="getQueryResults"
                   :taskId="taskId"
@@ -75,6 +76,7 @@ export default {
       numResults: 10,
       pageNumber: 1,
       taskId: null,
+      params: this.params
     };
   },
   methods: {
