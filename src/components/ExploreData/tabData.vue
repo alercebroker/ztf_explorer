@@ -38,8 +38,10 @@
       </b-form-group>
     </b-modal>
     <small>
-      <strong>Note: this is a random sample from your query result set.</strong> </br>
-      Showing {{ result.data.result.length }} rows of {{ result.data.total }}.
+      <div>
+        <strong>Note: this is a random sample from your query result set.</strong>
+      </div>
+      <div>Showing {{ result.data.result.length }} rows of {{ result.data.total }}.</div>
     </small>
     <div v-show="selected.length">
       <b-table
@@ -138,7 +140,11 @@
     </div>
     <b-row>
       <b-col class="text-center">
-        <b-btn variant="primary" v-on:click="getMoreResults" :disabled="!moreResultsLeft()">Load more</b-btn>
+        <b-btn
+          variant="primary"
+          v-on:click="getMoreResults"
+          :disabled="!moreResultsLeft()"
+        >Load more</b-btn>
         <!-- TODO: disable btn when there is no more data to load -->
       </b-col>
     </b-row>
@@ -485,8 +491,8 @@ export default {
         this.showMoreBtn = "Show less";
       }
     },
-    moreResultsLeft(){
-        return this.result.data.result.length != this.result.data.total;
+    moreResultsLeft() {
+      return this.result.data.result.length != this.result.data.total;
     }
   },
   watch: {
@@ -503,9 +509,7 @@ export default {
         this.allSelected = false;
       }
     },
-    alerts() {
-
-    },
+    alerts() {},
     load(newVal) {
       // Handle changes in individual flavour checkboxes
       this.$emit("update:loading", newVal);
@@ -523,9 +527,9 @@ export default {
   padding: 0 !important;
 }
 .modal-fullscreen .modal-dialog {
-  max-width: 100%;
-  height: 100%;
-  margin: 0;
+  max-width: 90%;
+  /* height: 90%; */
+  /* margin: 0; */
 }
 .modal-fullscreen .modal-content {
   border: 0;
