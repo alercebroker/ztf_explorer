@@ -3,8 +3,24 @@
     <!-- <b-form v-on:submit.prevent="onQuerySubmit"> -->
     <br>
     <b-card no-body header-tag="header">
-      <h2 slot="header" class="mb-6">Search Options</h2>
+      <div slot="header">
+        <b-row>
+          <b-col>
+            <h3>Search Options</h3>
+          </b-col>
+        </b-row>
+      </div>
       <b-card-body>
+        <b-row class="mb-3">
+          <b-col>
+            <b-btn
+              variant="outline-primary"
+              size="sm"
+              block="btnblock"
+              @click="clearQuery"
+            >Clear all options</b-btn>
+          </b-col>
+        </b-row>
         <b-form v-on:submit.prevent="onSubmitQuery">
           <div class="filter-content">
             <!-- OBJECT ID -->
@@ -388,13 +404,13 @@
                               </b-col>
                               <b-col md="6">
                                 <b-form-input
-                                    size="sm"
-                                    id="RA"
-                                    type="number"
-                                    step=0.00001
-                                    v-model="queryParameters.coordinates.ra"
-                                    :required="coordSearch"
-                                    ></b-form-input>
+                                  size="sm"
+                                  id="RA"
+                                  type="number"
+                                  step="0.00001"
+                                  v-model="queryParameters.coordinates.ra"
+                                  :required="coordSearch"
+                                ></b-form-input>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -404,12 +420,13 @@
                               </b-col>
                               <b-col md="6">
                                 <b-form-input
-                                size="sm"
-                                id="DEC"
-                                type="number"
-                                step=0.00001
-                                v-model="queryParameters.coordinates.dec"
-                                :required="coordSearch"></b-form-input>
+                                  size="sm"
+                                  id="DEC"
+                                  type="number"
+                                  step="0.00001"
+                                  v-model="queryParameters.coordinates.dec"
+                                  :required="coordSearch"
+                                ></b-form-input>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -419,12 +436,13 @@
                               </b-col>
                               <b-col md="6">
                                 <b-form-input
-                                size="sm"
-                                id="RS"
-                                type="number"
-                                step=0.00001
-                                v-model="queryParameters.coordinates.rs"
-                                :required="coordSearch"></b-form-input>
+                                  size="sm"
+                                  id="RS"
+                                  type="number"
+                                  step="0.00001"
+                                  v-model="queryParameters.coordinates.rs"
+                                  :required="coordSearch"
+                                ></b-form-input>
                               </b-col>
                             </b-row>
                           </b-container>
@@ -448,18 +466,21 @@
                 <b-container>
                   <b-row class="text-center">
                     <b-col>
-                      <b-button variant="outline-secondary" v-on:click="refreshSQL" v-b-toggle="'SQL'">Show SQL</b-button>
+                      <b-button
+                        variant="outline-secondary"
+                        v-on:click="refreshSQL"
+                        v-b-toggle="'SQL'"
+                      >Show SQL</b-button>
                     </b-col>
                   </b-row>
                   <b-collapse id="SQL" class="mt-3">
                     <b-jumbotron>
-                        <b-row style="position: absolute; top: 65px; right:55px">
-                            <b-button id="refreshSQL" v-on:click="refreshSQL">
-                                <v-icon name="redo"/></b-button>
-                        </b-row>
-                        <b-row>
-                            {{currentQuery}}
-                        </b-row>
+                      <b-row style="position: absolute; top: 65px; right:55px">
+                        <b-button id="refreshSQL" v-on:click="refreshSQL">
+                          <v-icon name="redo"/>
+                        </b-button>
+                      </b-row>
+                      <b-row>{{currentQuery}}</b-row>
                     </b-jumbotron>
                   </b-collapse>
                   <b-row class="text-center my-4">
@@ -503,6 +524,7 @@ export default {
   data() {
     return {
       currentQuery: this.currentQueryParent,
+      btnblock: true,
       flagFirst: false,
       flagLast: false,
       anyBand: false,
@@ -510,6 +532,223 @@ export default {
       lastGreg: null,
       coordSearch: false,
       queryParameters: {
+        filters: {
+          oid: null,
+          class: null,
+          subclass: null,
+          nobs: {
+            min: null,
+            max: null
+          },
+          pclass: {
+            min: null,
+            max: null
+          },
+          period: {
+            min: null,
+            max: null
+          },
+          ext: null
+        },
+        dates: {
+          firstjd: null,
+          lastjd: null,
+          deltajd: {
+            min: null,
+            max: null
+          }
+        },
+        bands: {
+          any: {
+            min: {
+              min: null,
+              max: null
+            },
+            max: {
+              min: null,
+              max: null
+            },
+            slope: {
+              min: null,
+              max: null
+            },
+            mean: {
+              min: null,
+              max: null
+            },
+            rms: {
+              min: null,
+              max: null
+            },
+            lastmag: {
+              min: null,
+              max: null
+            }
+          },
+          u: {
+            min: {
+              min: null,
+              max: null
+            },
+            max: {
+              min: null,
+              max: null
+            },
+            slope: {
+              min: null,
+              max: null
+            },
+            mean: {
+              min: null,
+              max: null
+            },
+            rms: {
+              min: null,
+              max: null
+            },
+            lastmag: {
+              min: null,
+              max: null
+            }
+          },
+          g: {
+            min: {
+              min: null,
+              max: null
+            },
+            max: {
+              min: null,
+              max: null
+            },
+            slope: {
+              min: null,
+              max: null
+            },
+            mean: {
+              min: null,
+              max: null
+            },
+            rms: {
+              min: null,
+              max: null
+            },
+            lastmag: {
+              min: null,
+              max: null
+            }
+          },
+          r: {
+            min: {
+              min: null,
+              max: null
+            },
+            max: {
+              min: null,
+              max: null
+            },
+            slope: {
+              min: null,
+              max: null
+            },
+            mean: {
+              min: null,
+              max: null
+            },
+            rms: {
+              min: null,
+              max: null
+            },
+            lastmag: {
+              min: null,
+              max: null
+            }
+          },
+          i: {
+            min: {
+              min: null,
+              max: null
+            },
+            max: {
+              min: null,
+              max: null
+            },
+            slope: {
+              min: null,
+              max: null
+            },
+            mean: {
+              min: null,
+              max: null
+            },
+            rms: {
+              min: null,
+              max: null
+            },
+            lastmag: {
+              min: null,
+              max: null
+            }
+          },
+          z: {
+            min: {
+              min: null,
+              max: null
+            },
+            max: {
+              min: null,
+              max: null
+            },
+            slope: {
+              min: null,
+              max: null
+            },
+            mean: {
+              min: null,
+              max: null
+            },
+            rms: {
+              min: null,
+              max: null
+            },
+            lastmag: {
+              min: null,
+              max: null
+            }
+          },
+          y: {
+            min: {
+              min: null,
+              max: null
+            },
+            max: {
+              min: null,
+              max: null
+            },
+            slope: {
+              min: null,
+              max: null
+            },
+            mean: {
+              min: null,
+              max: null
+            },
+            rms: {
+              min: null,
+              max: null
+            },
+            lastmag: {
+              min: null,
+              max: null
+            }
+          }
+        },
+        coordinates: {
+          ra: null,
+          dec: null,
+          rs: null
+        }
+      },
+      emptyQuery: {
         filters: {
           oid: null,
           class: null,
@@ -737,17 +976,17 @@ export default {
     }
   },
   watch: {
-    'queryParameters.coordinates': {
-        handler: function(newVal){
-            let req = false;
-            for(let k in newVal){
-                if (newVal[k] != null && newVal[k] != ""){
-                    req = true;
-                }
-            }
-            this.coordSearch = req;
-        },
-        deep: true
+    "queryParameters.coordinates": {
+      handler: function(newVal) {
+        let req = false;
+        for (let k in newVal) {
+          if (newVal[k] != null && newVal[k] != "") {
+            req = true;
+          }
+        }
+        this.coordSearch = req;
+      },
+      deep: true
     },
     queryParameters: {
       handler: function(newVal) {
@@ -793,20 +1032,19 @@ export default {
     }
   },
   methods: {
-      refreshSQL: function (event) {
-          let queryToSubmit = this._.cloneDeep(this.queryParameters);
-          this.checkAnyBand(queryToSubmit);
-          this.removeEmpty(queryToSubmit);
-          this.$http
-              .post("/v2/get_sql", {
-                  query_parameters: queryToSubmit
-                              })
-              .then(result_query => {
-                  this.currentQuery = result_query.data;
-              })
-              .catch(() => {
-              });
-          },
+    refreshSQL: function(event) {
+      let queryToSubmit = this._.cloneDeep(this.queryParameters);
+      this.checkAnyBand(queryToSubmit);
+      this.removeEmpty(queryToSubmit);
+      this.$http
+        .post("/v2/get_sql", {
+          query_parameters: queryToSubmit
+        })
+        .then(result_query => {
+          this.currentQuery = result_query.data;
+        })
+        .catch(() => {});
+    },
     checkAnyBand: function(queryToSubmit) {
       if (this.anyBand) {
         let any = queryToSubmit.bands.any;
@@ -856,6 +1094,10 @@ export default {
       var mjulianDate = dateObj / 86400000 + 40588;
 
       return mjulianDate;
+    },
+    clearQuery() {
+      let emptyQ = this._.cloneDeep(this.emptyQuery);
+      this.queryParameters = emptyQ;
     },
     removeEmpty(obj) {
       Object.entries(obj).forEach(([key, val]) => {
