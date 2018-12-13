@@ -11,7 +11,7 @@
 <script>
 export default {
   name: "downloadModal",
-  props: ["query", "downloading"],
+  props: ["query", "downloading", "params"],
   data() {
     return {
       interval: null,
@@ -74,7 +74,7 @@ export default {
       this.download = true;
       this.$http
         .post("/v2/download", {
-          q: this.query,
+          query_parameters: this.params,
           format: this.selected
         })
         .then(function(response) {

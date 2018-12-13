@@ -215,7 +215,7 @@
       </div>
     </b-modal>
     <b-modal id="showDownloadModal" title="Download Objects">
-      <download-modal :downloading.sync="download" :query="query_sql"></download-modal>
+      <download-modal :downloading.sync="download" :query="query_sql" :params="params"></download-modal>
       <div slot="modal-footer"></div>
     </b-modal>
   </div>
@@ -259,6 +259,7 @@ export default {
     "result",
     "error",
     "query_sql",
+    "params",
     "loading",
     "downloading",
     "pageNumber",
