@@ -36,7 +36,7 @@ export default {
 			selectedY: null,
 			optionsX: [
 				{ value: null, text: "Please select a variable" },
-				{ text: "Nr. Obs", value: "nobs" },
+				{ text: "Nr. Alerts", value: "nobs" },
 				{ text: "Class", value: "class" },
 				{ text: "Class Probability", value: "pclass" },
 				{ text: "Period*", value: "period" },
@@ -65,7 +65,7 @@ export default {
 			],
 			optionsY: [
 				{ value: null, text: "Please select a variable" },
-				{ text: "Nr. Obs", value: "nobs" },
+				{ text: "Nr. Alerts", value: "nobs" },
 				{ text: "Class", value: "class" },
 				{ text: "Class Probability", value: "pclass" },
 				{ text: "Period*", value: "period" },
@@ -146,7 +146,7 @@ export default {
     		//borrar datos anteriores
     		this.plotValues=[];
     		//agregar plotValues
-    		this.result.data.forEach(obj => {
+    		this.result.data.result.forEach(obj => {
     			if (this.getAxisData(this.selectedX, obj) != null && this.getAxisData(this.selectedY, obj) != null){
 	    			this.plotValues.push({
 	    				oid: obj.oid,

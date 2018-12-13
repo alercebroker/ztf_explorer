@@ -10,7 +10,7 @@
   </div>
   <div v-else-if="result.status === 200">
     <div class="row">
-      <b-btn class="mb-3 col-4" v-b-modal.showDetails>Show more details</b-btn>
+      <b-btn class="mb-3 col-4" v-b-modal.showDetails>Columns to show in table</b-btn>
       <b-btn class="mb-3 offset-5 col-3" v-b-modal.showDownloadModal>Download</b-btn>
     </div>
     <b-modal id="showDetails" ok-variant="secondary" ok-title="Close">
@@ -38,13 +38,14 @@
       </b-form-group>
     </b-modal>
     <small>
-      <strong>Note: this is a random sample from your query result set</strong>
+      <strong>Note: this is a random sample from your query result set.</strong> </br>
+      Showing {{ result.data.result.length }} rows of {{ result.data.total }}.
     </small>
     <div v-show="selected.length">
       <b-table
         striped
         hover
-        :items="result.data"
+        :items="result.data.result"
         :fields="selected"
         @row-clicked="showObjectDetails"
       >
@@ -137,7 +138,7 @@
     </div>
     <b-row>
       <b-col class="text-center">
-        <b-btn variant="primary" v-on:click="getMoreResults">Load more</b-btn>
+        <b-btn variant="primary" v-on:click="getMoreResults" :disabled="!moreResultsLeft()">Load more</b-btn>
         <!-- TODO: disable btn when there is no more data to load -->
       </b-col>
     </b-row>
@@ -311,7 +312,7 @@ export default {
           }
         },
         {
-          text: "Nobs",
+          text: "Nalerts",
           value: {
             key: "nobs",
             sortable: false,
@@ -484,6 +485,9 @@ export default {
         this.allDetails = true;
         this.showMoreBtn = "Show less";
       }
+    },
+    moreResultsLeft(){
+        return this.result.data.result.length != this.result.data.total;
     }
   },
   watch: {

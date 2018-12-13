@@ -1,12 +1,12 @@
 <template>
 	<div class="tabHistogram">
-		<b-row align-h="around"> 
-			<b-col cols="4"> 
+		<b-row align-h="around">
+			<b-col cols="4">
 				<b-form-group horizontal label="xAxis" label-for="yAxis">
 					<b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
 				</b-form-group>
 			</b-col>
-			<!--b-col cols="4"> 
+			<!--b-col cols="4">
 				<b-form-group horizontal label="nbins" label-for="nbins">
 					<b-form-input id="nbins" type="number" v-model="nbins" disabled></b-form-input>
 				</b-form-group>
@@ -121,7 +121,7 @@ export default {
 			//borrar datos anteriores
 			this.plotValues=[];
 			//agregar plotValues
-			this.results.data.forEach(obj => {
+			this.results.data.result.forEach(obj => {
 				if (this.getAxisData(this.selected, obj) != null){
 					this.plotValues.push({
 						oid: obj.oid,

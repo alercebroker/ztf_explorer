@@ -5,7 +5,7 @@
         <transition name="fade">
           <b-card no-body>
             <b-tabs card>
-              <b-tab title="Data">
+              <b-tab title="Table">
                 <tabData
                   :loading.sync="load"
                   :downloading.sync="download"
@@ -93,7 +93,7 @@ export default {
             if (this.result.data.length <= 0) {
               this.result = results;
             } else {
-              this.result.data = this.result.data.concat(results.data);
+              this.result.data.result = this.result.data.result.concat(results.data.result);
             }
             if(fun_update) {
                 fun_update()
