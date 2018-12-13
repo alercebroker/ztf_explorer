@@ -250,9 +250,9 @@
             <!-- MORE OPTIONS BUTTON -->
             <b-row class="mb-2">
               <b-col class="align-middle">
-                <div class="text-center">
-                  <b-btn variant="outline-secondary" v-b-toggle="'AdvancedSearch'">More Options</b-btn>
-                </div>
+
+                  <b-btn block="btnblock" variant="outline-secondary" v-b-toggle="'AdvancedSearch'" @click="changeMoreOptLabel()">{{ moreOptsLabel }}</b-btn>
+
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -483,28 +483,37 @@
                 </b-collapse>
               </b-col>
             </b-row>
-            <b-row>
-              <b-col>
-                <b-container>
+
                   <b-row class="text-center">
                     <b-col>
                       <b-button
+                        block="btnblock"
                         variant="outline-secondary"
-                        v-on:click="refreshSQL"
+                        v-on:click="changeShowSQLLabel"
                         v-b-toggle="'SQL'"
-                      >Show SQL</b-button>
+                      >{{ showSQLLabel }}</b-button>
                     </b-col>
                   </b-row>
-                  <b-collapse id="SQL" class="mt-3">
-                    <b-jumbotron>
-                      <b-row style="position: absolute; top: 65px; right:55px">
-                        <b-button id="refreshSQL" v-on:click="refreshSQL">
-                          <v-icon name="redo"/>
-                        </b-button>
-                      </b-row>
-                      <b-row>{{currentQuery}}</b-row>
-                    </b-jumbotron>
-                  </b-collapse>
+                  <b-row>
+                      <b-col>
+                          <b-collapse id="SQL" class="mt-3">
+                            <div class="pt-2 pb-4" style="background-color:#e9ecef">
+                                <div class="text-right mr-2 mb-1">
+                                    <b-button id="refreshSQL" v-on:click="refreshSQL">
+                                      <v-icon name="redo"/>
+                                    </b-button>
+                                </div>
+                                <div class="mx-2 text-center">
+                                    {{currentQuery}}
+                                </div>
+
+
+
+                            </div>
+                          </b-collapse>
+                      </b-col>
+                  </b-row>
+
                   <b-row class="text-center my-4">
                     <b-col>
                       <b-button
@@ -524,9 +533,7 @@
                       <b-button variant="warning" size="sm" disabled>Subscribe</b-button>
                     </b-col>
                   </b-row>
-                </b-container>
-              </b-col>
-            </b-row>
+
           </div>
         </b-form>
       </b-card-body>
@@ -553,6 +560,8 @@ export default {
       firstGreg: null,
       lastGreg: null,
       coordSearch: false,
+      moreOptsLabel: 'More Options',
+      showSQLLabel: 'Show SQL',
       queryParameters: {
         filters: {
           oid: null,
@@ -1054,6 +1063,13 @@ export default {
     }
   },
   methods: {
+    changeMoreOptLabel(){
+      this.moreOptsLabel = this.moreOptsLabel == 'More Options' ? 'Hide' : 'More Options';
+    },
+    changeShowSQLLabel(){
+      this.refreshSQL();
+      this.showSQLLabel = this.showSQLLabel == 'Show SQL' ? 'Hide SQL' : 'Show SQL';
+    },
     refreshSQL: function(event) {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
       this.checkAnyBand(queryToSubmit);
