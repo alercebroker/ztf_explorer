@@ -5,7 +5,7 @@
         <transition name="fade">
           <b-card no-body>
             <b-tabs card>
-              <b-tab title="Data">
+              <b-tab title="Table">
                 <tabData
                   :loading.sync="load"
                   :downloading.sync="download"

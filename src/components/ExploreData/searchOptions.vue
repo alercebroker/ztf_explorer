@@ -76,7 +76,7 @@
             <!-- NUMBER OF OBSERVATIONS -->
             <b-row class="mb-3">
               <b-col cols="12" class="mb-3">
-                <b>Number of observations</b>
+                <b>Number of alerts</b>
               </b-col>
               <b-col>
                 <b-row>
@@ -414,7 +414,7 @@
                             </b-row>
                             <b-row class="align-middle">
                               <b-col md="6">
-                                RS
+                                Radius
                                 <small class="text-muted">(arcsec)</small>
                               </b-col>
                               <b-col md="6">
