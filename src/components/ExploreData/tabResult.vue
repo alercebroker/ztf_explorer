@@ -91,7 +91,7 @@ export default {
             if (this.result.data.length <= 0) {
               this.result = results;
             } else {
-              this.result.data = this.result.data.concat(results.data);
+              this.result.data.result = this.result.data.result.concat(results.data.result);
             }
             if(fun_update) {
                 fun_update()

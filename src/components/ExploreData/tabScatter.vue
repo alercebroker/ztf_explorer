@@ -146,7 +146,7 @@ export default {
     		//borrar datos anteriores
     		this.plotValues=[];
     		//agregar plotValues
-    		this.result.data.forEach(obj => {
+    		this.result.data.result.forEach(obj => {
     			if (this.getAxisData(this.selectedX, obj) != null && this.getAxisData(this.selectedY, obj) != null){
 	    			this.plotValues.push({
 	    				oid: obj.oid,

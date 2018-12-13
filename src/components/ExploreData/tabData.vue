@@ -44,7 +44,7 @@
       <b-table
         striped
         hover
-        :items="result.data"
+        :items="result.data.result"
         :fields="selected"
         @row-clicked="showObjectDetails"
       >
