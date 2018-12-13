@@ -26,11 +26,11 @@
             <!-- OBJECT ID -->
             <b-row class="mb-3">
               <b-col cols="4">
-                <label for="oid">
-                  <b>Object ID</b>
-                </label>
+                  <label for="oid">
+                    <b>Object ID</b>
+                  </label>
               </b-col>
-              <b-col cols="8">
+              <b-col cols="7">
                 <input
                   type="text"
                   class="form-control form-control-sm"
@@ -39,15 +39,18 @@
                   :disabled="loading"
                 >
               </b-col>
+              <b-col cols="1 px-0">
+                <v-icon v-b-tooltip.hover.right title="Unique ID for each object in ALeRCE database" name="info-circle" color="#C0C0C0"></v-icon>
+              </b-col>
             </b-row>
             <!-- CLASS -->
             <b-row class="mb-3">
               <b-col cols="4">
-                <label for="class">
-                  <b>Class</b>
-                </label>
+                  <label for="class">
+                    <b>Class</b>
+                  </label>
               </b-col>
-              <b-col cols="8">
+              <b-col cols="7">
                 <select
                   class="form-control form-control-sm"
                   id="class"
@@ -66,6 +69,9 @@
                   <option value="10">Supernova Iabg</option>
                   <option value="11">Supernova IIn</option>
                 </select>
+              </b-col>
+              <b-col cols="1 px-0">
+                <v-icon v-b-tooltip.hover.right title="Return objects of a certain class. Each object belongs to its most likely class according to a classification model. Each class could be divided into subclasses" name="info-circle" color="#C0C0C0"></v-icon>
               </b-col>
             </b-row>
             <!-- SUBCLASS -->
@@ -89,10 +95,11 @@
                 </select>
               </b-col>
             </b-row>
-            <!-- NUMBER OF OBSERVATIONS -->
+            <!-- NUMBER OF ALERTS -->
             <b-row class="mb-3">
-              <b-col cols="12" class="mb-3">
+              <b-col cols="12" class="mb-3 mb-1">
                 <b>Number of alerts</b>
+                <v-icon v-b-tooltip.hover.right class="ml-3" title="Number of alerts associated with an object" name="info-circle" color="#C0C0C0"></v-icon>
               </b-col>
               <b-col>
                 <b-row>
@@ -133,6 +140,8 @@
             <b-row class="mb-3">
               <b-col cols="12" class="mb-3">
                 <b>Class Probability</b>
+                <v-icon v-b-tooltip.hover.right class="ml-3 mb-1" title="Probability of the most likely class given by a classification model" name="info-circle" color="#C0C0C0"></v-icon>
+                <div class="text-muted"><small>(From 0.0 to 1.0)</small></div>
               </b-col>
               <b-col>
                 <b-row>
@@ -177,6 +186,7 @@
             <b-row>
               <b-col cols="12" class="mb-3">
                 <b>Period</b>
+                <v-icon v-b-tooltip.hover.right class="ml-3 mb-1" title="(For variable stars that have a period) Minimum and maximum desired values for the period" name="info-circle" color="#C0C0C0"></v-icon>
               </b-col>
               <b-col md="6">
                 <b-row>
@@ -233,6 +243,7 @@
                     value="1"
                     :unchecked-value="null"
                   >Has Crossmatch</b-form-checkbox>
+                  <v-icon v-b-tooltip.hover.right class="mb-1" title="Search only objects that are also in another catalog" name="info-circle" color="#C0C0C0"></v-icon>
                 </b-form-group>
               </b-col>
             </b-row>
@@ -258,6 +269,7 @@
                           v-on:click="anyBand = !anyBand"
                           v-model="anyBand"
                         >Any band</b-form-checkbox>
+                        <v-icon v-b-tooltip.hover.right class="mb-1" title="Search using magnitude criteria that are not specific by color filter" name="info-circle" color="#C0C0C0"></v-icon>
                       </b-form-group>
                     </div>
                     <transition name="fade">
@@ -318,7 +330,7 @@
                       </b-row>
                       <b-row class="align-middle">
                         <b-col>
-                          <label>First alert</label>
+                          <label>Start Date</label>
                         </b-col>
                       </b-row>
                       <b-row class="align-middle" name="firstJD">
@@ -342,7 +354,7 @@
                       <br>
                       <b-row class="align-middle">
                         <b-col>
-                          <label>Last alert</label>
+                          <label>End Date</label>
                         </b-col>
                       </b-row>
                       <b-row class="align-middle" name="lastJD">
@@ -379,6 +391,7 @@
                         </b-col>
                         <b-col md="4" class="text-center">
                           First to Last alert
+                          <v-icon v-b-tooltip.hover.right class="mb-1 mx-1" title="Search using magnitude criteria that are not specific by color filter" name="info-circle" color="#C0C0C0"></v-icon></br>
                           <small class="text-muted">(days)</small>
                         </b-col>
                         <b-col md="4">
@@ -398,11 +411,11 @@
                         <b-tab title="Single">
                           <b-container>
                             <b-row class="align-middle">
-                              <b-col md="6">
+                              <b-col md="5">
                                 RA
                                 <small class="text-muted">(deg)</small>
                               </b-col>
-                              <b-col md="6">
+                              <b-col md="5" class="mb-1">
                                 <b-form-input
                                   size="sm"
                                   id="RA"
@@ -412,13 +425,16 @@
                                   :required="coordSearch"
                                 ></b-form-input>
                               </b-col>
+                              <b-col cols="2 px-0">
+                                <v-icon v-b-tooltip.hover.right title="Right Ascension" name="info-circle" color="#C0C0C0"></v-icon>
+                              </b-col>
                             </b-row>
                             <b-row class="align-middle">
-                              <b-col md="6">
+                              <b-col md="5">
                                 DEC
                                 <small class="text-muted">(deg)</small>
                               </b-col>
-                              <b-col md="6">
+                              <b-col md="5" class="mb-1">
                                 <b-form-input
                                   size="sm"
                                   id="DEC"
@@ -428,13 +444,16 @@
                                   :required="coordSearch"
                                 ></b-form-input>
                               </b-col>
+                              <b-col cols="2 px-0">
+                                <v-icon v-b-tooltip.hover.right title="Declination" name="info-circle" color="#C0C0C0"></v-icon>
+                              </b-col>
                             </b-row>
                             <b-row class="align-middle">
-                              <b-col md="6">
+                              <b-col md="5">
                                 Radius
                                 <small class="text-muted">(arcsec)</small>
                               </b-col>
-                              <b-col md="6">
+                              <b-col md="5" class="mb-1">
                                 <b-form-input
                                   size="sm"
                                   id="RS"
@@ -443,6 +462,9 @@
                                   v-model="queryParameters.coordinates.rs"
                                   :required="coordSearch"
                                 ></b-form-input>
+                              </b-col>
+                              <b-col cols="2 px-0">
+                                <v-icon v-b-tooltip.hover.right title="Cone search radius" name="info-circle" color="#C0C0C0"></v-icon>
                               </b-col>
                             </b-row>
                           </b-container>
