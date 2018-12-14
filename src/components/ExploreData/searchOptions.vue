@@ -16,7 +16,7 @@
             <b-btn
               variant="outline-primary"
               size="sm"
-              block="btnblock"
+              :block="btnblock"
               @click="clearQuery"
             >Clear all options</b-btn>
           </b-col>
@@ -26,9 +26,9 @@
             <!-- OBJECT ID -->
             <b-row class="mb-3">
               <b-col cols="4">
-                  <label for="oid">
-                    <b>Object ID</b>
-                  </label>
+                <label for="oid">
+                  <b>Object ID</b>
+                </label>
               </b-col>
               <b-col cols="7">
                 <input
@@ -40,15 +40,20 @@
                 >
               </b-col>
               <b-col cols="1 px-0">
-                <v-icon v-b-tooltip.hover.right title="Unique ID for each object in ALeRCE database" name="info-circle" color="#C0C0C0"></v-icon>
+                <v-icon
+                  v-b-tooltip.hover.right
+                  title="Unique ID for each object in ALeRCE database"
+                  name="info-circle"
+                  color="#C0C0C0"
+                ></v-icon>
               </b-col>
             </b-row>
             <!-- CLASS -->
             <b-row class="mb-3">
               <b-col cols="4">
-                  <label for="class">
-                    <b>Class</b>
-                  </label>
+                <label for="class">
+                  <b>Class</b>
+                </label>
               </b-col>
               <b-col cols="7">
                 <select
@@ -71,7 +76,12 @@
                 </select>
               </b-col>
               <b-col cols="1 px-0">
-                <v-icon v-b-tooltip.hover.right title="Return objects of a certain class. Each object belongs to its most likely class according to a classification model. Each class could be divided into subclasses" name="info-circle" color="#C0C0C0"></v-icon>
+                <v-icon
+                  v-b-tooltip.hover.right
+                  title="Return objects of a certain class. Each object belongs to its most likely class according to a classification model. Each class could be divided into subclasses"
+                  name="info-circle"
+                  color="#C0C0C0"
+                ></v-icon>
               </b-col>
             </b-row>
             <!-- SUBCLASS -->
@@ -99,7 +109,13 @@
             <b-row class="mb-3">
               <b-col cols="12" class="mb-3 mb-1">
                 <b>Number of alerts</b>
-                <v-icon v-b-tooltip.hover.right class="ml-3" title="Number of alerts associated with an object" name="info-circle" color="#C0C0C0"></v-icon>
+                <v-icon
+                  v-b-tooltip.hover.right
+                  class="ml-3"
+                  title="Number of alerts associated with an object"
+                  name="info-circle"
+                  color="#C0C0C0"
+                ></v-icon>
               </b-col>
               <b-col>
                 <b-row>
@@ -140,8 +156,16 @@
             <b-row class="mb-3">
               <b-col cols="12" class="mb-3">
                 <b>Class Probability</b>
-                <v-icon v-b-tooltip.hover.right class="ml-3 mb-1" title="Probability of the most likely class given by a classification model" name="info-circle" color="#C0C0C0"></v-icon>
-                <div class="text-muted"><small>(From 0.0 to 1.0)</small></div>
+                <v-icon
+                  v-b-tooltip.hover.right
+                  class="ml-3 mb-1"
+                  title="Probability of the most likely class given by a classification model"
+                  name="info-circle"
+                  color="#C0C0C0"
+                ></v-icon>
+                <div class="text-muted">
+                  <small>(From 0.0 to 1.0)</small>
+                </div>
               </b-col>
               <b-col>
                 <b-row>
@@ -186,15 +210,21 @@
             <b-row>
               <b-col cols="12" class="mb-3">
                 <b>Period</b>
-                <v-icon v-b-tooltip.hover.right class="ml-3 mb-1" title="(For variable stars that have a period) Minimum and maximum desired values for the period" name="info-circle" color="#C0C0C0"></v-icon>
+                <v-icon
+                  v-b-tooltip.hover.right
+                  class="ml-3 mb-1"
+                  title="(For variable stars that have a period) Minimum and maximum desired values for the period"
+                  name="info-circle"
+                  color="#C0C0C0"
+                ></v-icon>
+                <div class="text-muted">
+                  <small>(days)</small>
+                </div>
               </b-col>
               <b-col md="6">
                 <b-row>
                   <b-col cols="3">
-                    <label>
-                      Min
-                      <small class="text-muted">(days)</small>
-                    </label>
+                    <label>Min</label>
                   </b-col>
                   <b-col cols="9">
                     <input
@@ -212,10 +242,7 @@
               <b-col md="6">
                 <b-row>
                   <b-col cols="3">
-                    <label>
-                      Max
-                      <small class="text-muted">(days)</small>
-                    </label>
+                    <label>Max</label>
                   </b-col>
                   <b-col cols="9">
                     <input
@@ -243,16 +270,25 @@
                     value="1"
                     :unchecked-value="null"
                   >Has Crossmatch</b-form-checkbox>
-                  <v-icon v-b-tooltip.hover.right class="mb-1" title="Search only objects that are also in another catalog" name="info-circle" color="#C0C0C0"></v-icon>
+                  <v-icon
+                    v-b-tooltip.hover.right
+                    class="mb-1"
+                    title="Search only objects that are also in another catalog"
+                    name="info-circle"
+                    color="#C0C0C0"
+                  ></v-icon>
                 </b-form-group>
               </b-col>
             </b-row>
             <!-- MORE OPTIONS BUTTON -->
             <b-row class="mb-2">
               <b-col class="align-middle">
-
-                  <b-btn block="btnblock" variant="outline-secondary" v-b-toggle="'AdvancedSearch'" @click="changeMoreOptLabel()">{{ moreOptsLabel }}</b-btn>
-
+                <b-btn
+                  :block="btnblock"
+                  variant="outline-secondary"
+                  v-b-toggle="'AdvancedSearch'"
+                  @click="changeMoreOptLabel()"
+                >{{ moreOptsLabel }}</b-btn>
               </b-col>
             </b-row>
             <b-row class="mb-3">
@@ -269,7 +305,13 @@
                           v-on:click="anyBand = !anyBand"
                           v-model="anyBand"
                         >Any band</b-form-checkbox>
-                        <v-icon v-b-tooltip.hover.right class="mb-1" title="Search using magnitude criteria that are not specific by color filter" name="info-circle" color="#C0C0C0"></v-icon>
+                        <v-icon
+                          v-b-tooltip.hover.right
+                          class="mb-1"
+                          title="Search using magnitude criteria that are not specific by color filter"
+                          name="info-circle"
+                          color="#C0C0C0"
+                        ></v-icon>
                       </b-form-group>
                     </div>
                     <transition name="fade">
@@ -389,9 +431,14 @@
                             v-model="queryParameters.dates.deltajd.min"
                           ></b-form-input>
                         </b-col>
-                        <b-col md="4" class="text-center">
-                          First to Last alert
-                          <v-icon v-b-tooltip.hover.right class="mb-1 mx-1" title="Search using magnitude criteria that are not specific by color filter" name="info-circle" color="#C0C0C0"></v-icon></br>
+                        <b-col md="4" class="text-center">First to Last alert
+                          <v-icon
+                            v-b-tooltip.hover.right
+                            class="mb-1 mx-1"
+                            title="Search using magnitude criteria that are not specific by color filter"
+                            name="info-circle"
+                            color="#C0C0C0"
+                          ></v-icon>
                           <small class="text-muted">(days)</small>
                         </b-col>
                         <b-col md="4">
@@ -426,7 +473,12 @@
                                 ></b-form-input>
                               </b-col>
                               <b-col cols="2 px-0">
-                                <v-icon v-b-tooltip.hover.right title="Right Ascension" name="info-circle" color="#C0C0C0"></v-icon>
+                                <v-icon
+                                  v-b-tooltip.hover.right
+                                  title="Right Ascension"
+                                  name="info-circle"
+                                  color="#C0C0C0"
+                                ></v-icon>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -445,7 +497,12 @@
                                 ></b-form-input>
                               </b-col>
                               <b-col cols="2 px-0">
-                                <v-icon v-b-tooltip.hover.right title="Declination" name="info-circle" color="#C0C0C0"></v-icon>
+                                <v-icon
+                                  v-b-tooltip.hover.right
+                                  title="Declination"
+                                  name="info-circle"
+                                  color="#C0C0C0"
+                                ></v-icon>
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
@@ -464,7 +521,12 @@
                                 ></b-form-input>
                               </b-col>
                               <b-col cols="2 px-0">
-                                <v-icon v-b-tooltip.hover.right title="Cone search radius" name="info-circle" color="#C0C0C0"></v-icon>
+                                <v-icon
+                                  v-b-tooltip.hover.right
+                                  title="Cone search radius"
+                                  name="info-circle"
+                                  color="#C0C0C0"
+                                ></v-icon>
                               </b-col>
                             </b-row>
                           </b-container>
@@ -484,56 +546,50 @@
               </b-col>
             </b-row>
 
-                  <b-row class="text-center">
-                    <b-col>
-                      <b-button
-                        block="btnblock"
-                        variant="outline-secondary"
-                        v-on:click="changeShowSQLLabel"
-                        v-b-toggle="'SQL'"
-                      >{{ showSQLLabel }}</b-button>
-                    </b-col>
-                  </b-row>
-                  <b-row>
-                      <b-col>
-                          <b-collapse id="SQL" class="mt-3">
-                            <div class="pt-2 pb-4" style="background-color:#e9ecef">
-                                <div class="text-right mr-2 mb-1">
-                                    <b-button id="refreshSQL" v-on:click="refreshSQL">
-                                      <v-icon name="redo"/>
-                                    </b-button>
-                                </div>
-                                <div class="mx-2 text-center">
-                                    {{currentQuery}}
-                                </div>
+            <b-row class="text-center">
+              <b-col>
+                <b-button
+                  :block="btnblock"
+                  variant="outline-secondary"
+                  v-on:click="changeShowSQLLabel"
+                  v-b-toggle="'SQL'"
+                >{{ showSQLLabel }}</b-button>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col>
+                <b-collapse id="SQL" class="mt-3">
+                  <div class="pt-2 pb-4" style="background-color:#e9ecef">
+                    <div class="text-right mr-2 mb-1">
+                      <b-button id="refreshSQL" v-on:click="refreshSQL">
+                        <v-icon name="redo"/>
+                      </b-button>
+                    </div>
+                    <div class="mx-2 text-center">{{currentQuery}}</div>
+                  </div>
+                </b-collapse>
+              </b-col>
+            </b-row>
 
-
-
-                            </div>
-                          </b-collapse>
-                      </b-col>
-                  </b-row>
-
-                  <b-row class="text-center my-4">
-                    <b-col>
-                      <b-button
-                        type="submit"
-                        variant="primary"
-                        size="lg"
-                        block
-                        id="searchbtn"
-                      >SEARCH</b-button>
-                    </b-col>
-                  </b-row>
-                  <b-row>
-                    <b-col class="text-center">
-                      <b-button variant="secondary" size="sm" id="searchbtn" disabled>Save search</b-button>
-                    </b-col>
-                    <b-col class="text-center">
-                      <b-button variant="warning" size="sm" disabled>Subscribe</b-button>
-                    </b-col>
-                  </b-row>
-
+            <b-row class="text-center my-4">
+              <b-col>
+                <b-button
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  :block="btnblock"
+                  id="searchbtn"
+                >SEARCH</b-button>
+              </b-col>
+            </b-row>
+            <b-row>
+              <b-col class="text-center">
+                <b-button variant="secondary" size="sm" id="searchbtn" disabled>Save search</b-button>
+              </b-col>
+              <b-col class="text-center">
+                <b-button variant="warning" size="sm" disabled>Subscribe</b-button>
+              </b-col>
+            </b-row>
           </div>
         </b-form>
       </b-card-body>
@@ -560,8 +616,8 @@ export default {
       firstGreg: null,
       lastGreg: null,
       coordSearch: false,
-      moreOptsLabel: 'More Options',
-      showSQLLabel: 'Show SQL',
+      moreOptsLabel: "More Options",
+      showSQLLabel: "Show SQL",
       queryParameters: {
         filters: {
           oid: null,
@@ -1063,12 +1119,14 @@ export default {
     }
   },
   methods: {
-    changeMoreOptLabel(){
-      this.moreOptsLabel = this.moreOptsLabel == 'More Options' ? 'Hide' : 'More Options';
+    changeMoreOptLabel() {
+      this.moreOptsLabel =
+        this.moreOptsLabel == "More Options" ? "Hide" : "More Options";
     },
-    changeShowSQLLabel(){
+    changeShowSQLLabel() {
       this.refreshSQL();
-      this.showSQLLabel = this.showSQLLabel == 'Show SQL' ? 'Hide SQL' : 'Show SQL';
+      this.showSQLLabel =
+        this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
     },
     refreshSQL: function(event) {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);

@@ -1,1 +1,0 @@
-axios.defaults.baseURL = 'https://api-alerce-test.herokuapp.com/v1';
