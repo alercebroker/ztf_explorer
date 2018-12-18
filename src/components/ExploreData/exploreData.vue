@@ -17,6 +17,10 @@
 import searchOptions from "./searchOptions.vue";
 import tabResult from "./tabResult.vue";
 import loading from "vue-full-loading";
+
+/**This component connect searchOption and tabResult
+ * call component loading when variable loading or dowloading is true
+ */
 export default {
   name: "exploreData",
   props: {},

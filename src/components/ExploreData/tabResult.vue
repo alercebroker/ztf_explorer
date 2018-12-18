@@ -46,11 +46,6 @@
               <b-tab title="Spatial Distribution" :disabled="true">
                 <tabSpatialDistribution :result="result"></tabSpatialDistribution>
               </b-tab>
-              <!--
-                            <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
-								<tabSankey :result="result"></tabSankey>
-							</b-tab>
-              -->
             </b-tabs>
           </b-card>
         </transition>
@@ -90,6 +85,11 @@ export default {
     };
   },
   methods: {
+      /**
+       * get data from server
+       * @param taskId: task id in server
+       * @param fun_update: fun to apply when result is ok
+       */
     getQueryResults: function(taskId, fun_update) {
       this.$emit("update:loading", true);
       window.scrollTo(0, 0);
@@ -115,10 +115,18 @@ export default {
           }.bind(this)
         );
     },
+      /**
+       * query for next page results
+       * @param fun_update: fun to pass getQueryResults
+       */
     loadMore: function(fun_update) {
       this.pageNumber = this.pageNumber + 1;
       this.getQueryResults(this.taskId, fun_update);
     },
+      /**
+       * query ask if task is ready
+       * @param task_id
+       */
     queryTask: function(task_id) {
       this.$http
         .post("/v2/query_status", {
@@ -147,9 +155,15 @@ export default {
         )
         .catch(function(error) {});
     },
+      /**
+       * Re draw scatter tab
+       */
     reDrawScat: function() {
       this.$refs.scatter.setPlotValues();
     },
+      /**
+       * Re draw Histogram tab
+       */
     reDrawHist: function() {
       if (this.$refs.histogram.selected != null) {
         this.$refs.histogram.setPlotValues();
@@ -157,15 +171,14 @@ export default {
     }
   },
   watch: {
+      /**
+       * do query when params change
+       */
     params: function(newVal, oldVal) {
-      // watch it
-      // ONLY FOR DEMO PURPOSES!! remove it afterwards
-      //   let simulate_slow_query = Math.random() < 0.5 ? 0 : 4;
       this.$emit("update:loading", true);
       this.$http
         .post("/v2/query", {
           query_parameters: newVal
-          //   sleep: simulate_slow_query
         })
         .then(result_query => {
           this.interval = setInterval(
@@ -173,20 +186,16 @@ export default {
             2000,
             result_query.data["task-id"]
           );
-          //   this.checkQueryResults(result_query.data["task-id"], 10000);
         })
         .catch(error => {
           this.$emit("update:loading", false);
           this.result = error.response;
         });
     },
-
     load(newVal) {
-      // Handle changes in individual flavour checkboxes
       this.$emit("update:loading", newVal);
     },
     download(newVal) {
-      // Handle changes in individual flavour checkboxes
       this.$emit("update:downloading", newVal);
     }
   }

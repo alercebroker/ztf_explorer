@@ -266,6 +266,9 @@ import downloadModal from "./downloadModal.vue";
 import DownloadModal from "./downloadModal";
 import lightCurveFrame from "./lightCurveFrame";
 
+/**
+ * this component contains table and details object modal
+ */
 export default {
   name: "tabData",
   components: { DownloadModal, lightCurveFrame },
@@ -392,13 +395,22 @@ export default {
     };
   },
   methods: {
+      /**
+       * get more result or next page result
+       */
     getMoreResults() {
       this.$emit("update:pageNumber", this.pageNumber + 1);
       this.getMoreObjects(this.taskId);
     },
+      /**
+       * checked or unchecked all option in checkbox of selection columns
+       */
     toggleAll(checked) {
       this.selected = checked ? this.options.map(a => a.value).slice() : [];
     },
+      /**
+       * query for alerts
+       */
     getQueryResults: function(taskId) {
       this.$http
         .post("/v2/result", {
@@ -421,12 +433,14 @@ export default {
             this.details = obj;
 
             this.$emit("update:loading", false);
-            // this.$refs.lightCurveFrame.redrawLightCurveChart();
           }.bind(this)
         );
     },
+      /**
+       * query if task is ready
+       * @param task_id: id task in server
+       */
     queryTask(task_id) {
-      // let this = this;
       this.$http
         .post("/v2/query_status", {
           "task-id": task_id
@@ -443,11 +457,13 @@ export default {
         )
         .catch(function(error) {});
     },
+      /**
+       * launch modal object details
+       */
     showObjectDetails(item) {
       this.$emit("update:loading", true);
       this.$refs.objDetailsModal.show();
       this.selectedObj = item;
-
       this.$http
         .post("/v2/query_alerts", {
           oid: item.oid
@@ -505,7 +521,6 @@ export default {
   },
   watch: {
     selected(newVal) {
-      // Handle changes in individual flavour checkboxes
       if (newVal.length === 0) {
         this.indeterminate = false;
         this.allSelected = false;
@@ -517,13 +532,10 @@ export default {
         this.allSelected = false;
       }
     },
-    alerts() {},
     load(newVal) {
-      // Handle changes in individual flavour checkboxes
       this.$emit("update:loading", newVal);
     },
     download(newVal) {
-      // Handle changes in individual flavour checkboxes
       this.$emit("update:downloading", newVal);
     }
   }
