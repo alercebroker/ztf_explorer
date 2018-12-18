@@ -1104,15 +1104,24 @@ export default {
     }
   },
   methods: {
+      /**
+       * change option avanced label
+       */
     changeMoreOptLabel() {
       this.moreOptsLabel =
         this.moreOptsLabel == "More Options" ? "Hide" : "More Options";
     },
+      /**
+       * change option text in show sql
+       */
     changeShowSQLLabel() {
       this.refreshSQL();
       this.showSQLLabel =
         this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
     },
+      /**
+       * update query sql
+       */
     refreshSQL: function(event) {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
       this.checkAnyBand(queryToSubmit);
@@ -1126,6 +1135,9 @@ export default {
         })
         .catch(() => {});
     },
+      /**
+       * clear data if anyband is checked
+       */
     checkAnyBand: function(queryToSubmit) {
       if (this.anyBand) {
         let any = queryToSubmit.bands.any;
@@ -1185,13 +1197,18 @@ export default {
       //MJD = JD − 2400000.5
       var dateObj = new Date(gDate);
       var mjulianDate = dateObj / 86400000 + 40588;
-
       return mjulianDate;
     },
+      /**
+       * reset all input
+       */
     clearQuery() {
       let emptyQ = this._.cloneDeep(this.emptyQuery);
       this.queryParameters = emptyQ;
     },
+      /**
+       * remove param that are empty
+       */
     removeEmpty(obj) {
       Object.entries(obj).forEach(([key, val]) => {
         if (val && typeof val === "object") {
@@ -1204,7 +1221,7 @@ export default {
     },
 
       /**
-       * send query
+       * update params in component parent
        */
       onSubmitQuery() {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
