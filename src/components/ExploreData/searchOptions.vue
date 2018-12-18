@@ -1039,6 +1039,9 @@ export default {
       }
     };
   },
+    /**
+     * variables computadas
+     * */
   computed: {
     firstjd() {
       return this.queryParameters.dates.firstjd;
@@ -1060,6 +1063,9 @@ export default {
       },
       deep: true
     },
+      /**
+       *  cleans empty variables from query parameters
+       *  */
     queryParameters: {
       handler: function(newVal) {
         let queryToSubmit = this._.cloneDeep(newVal);
@@ -1068,7 +1074,9 @@ export default {
       },
       deep: true
     },
-
+/**
+ * watch date variables to change date cheking if flag is active first, flags avoid over write
+ * */
     firstGreg: function(newGreg) {
       if (!this.flagFirst) {
         this.flagFirst = true;
@@ -1120,7 +1128,7 @@ export default {
         this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
     },
       /**
-       * update query sql
+       * request api new sql to show
        */
     refreshSQL: function(event) {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
@@ -1136,7 +1144,7 @@ export default {
         .catch(() => {});
     },
       /**
-       * clear data if anyband is checked
+       * clear other bands if anyband is checked
        */
     checkAnyBand: function(queryToSubmit) {
       if (this.anyBand) {
@@ -1153,7 +1161,7 @@ export default {
       /**
        * receives date in julian format and convert in gregorian format
        * @param MJD:date in julian format
-       * @returns {string} : date in julian format
+       * @returns {string} : date in gregorian format
        */
     jdToGregorian(MJD) {
       var JD = Number(MJD) + 2400000.5;
@@ -1191,7 +1199,7 @@ export default {
       /**
        * receives date in gregorian format and convert in julian format
        * @param gDate:date in gregorian format
-       * @returns {number} : date in gregorian format
+       * @returns {number} : date in jualian format
        */
     gregorianToJd(gDate) {
       //MJD = JD − 2400000.5

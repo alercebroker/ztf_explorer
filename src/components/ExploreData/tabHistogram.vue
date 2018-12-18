@@ -118,9 +118,9 @@ export default {
 			}
 		},
 		setPlotValues: function(){
-			//borrar datos anteriores
+			//erase previous values
 			this.plotValues=[];
-			//agregar plotValues
+			//add plot values
 			this.results.data.result.forEach(obj => {
 				if (this.getAxisData(this.selected, obj) != null){
 					this.plotValues.push({
@@ -132,11 +132,18 @@ export default {
 		},
 	},
 	computed : {
+        /**
+		 * check if axis is selected
+         * @returns {boolean}
+         */
 	  disabled() {
 	      return this.selected == null;
 	  },
 	},
 	watch: {
+        /**
+		 * update plot values when selected axis change by user
+         */
 		selected: function(newVal, oldVal) { // watch it
                 this.setPlotValues();
         },

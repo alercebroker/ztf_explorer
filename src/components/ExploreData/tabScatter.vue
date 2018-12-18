@@ -160,14 +160,24 @@ export default {
     	},
 	},
 	computed : {
+        /**
+         * check if axis is selected
+         * @returns {boolean}
+         */
   	  disabled () {
   	      return this.selectedX == null || this.selectedY == null
 	  }
 	},
 	watch: {
+  	    /**
+         * update plot values when selected axis x change by user
+         */
 		selectedX: function(newVal, oldVal) { // watch it
                 this.setPlotValues();
         },
+        /**
+         * update plot values when selected axis change by user
+		 */
         selectedY: function(newVal, oldVal) { // watch it
                 this.setPlotValues();
         },

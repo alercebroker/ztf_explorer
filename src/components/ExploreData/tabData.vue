@@ -409,7 +409,7 @@ export default {
       this.selected = checked ? this.options.map(a => a.value).slice() : [];
     },
       /**
-       * query for alerts
+       * query for alerts from a specific object
        */
     getQueryResults: function(taskId) {
       this.$http
@@ -437,7 +437,7 @@ export default {
         );
     },
       /**
-       * query if task is ready
+       * query if task is ready (for alerts)
        * @param task_id: id task in server
        */
     queryTask(task_id) {
@@ -479,6 +479,10 @@ export default {
         )
         .catch(function(error) {});
     },
+      /**
+       * TODO: implent stamps on back end
+       * @param taskId
+       */
     getObjectStamps(taskId) {
       this.$http
         .post("/v2/query_result", {
@@ -515,6 +519,10 @@ export default {
         this.showMoreBtn = "Show less";
       }
     },
+      /**
+       * for checking if there are any results left
+       * @returns {boolean}
+       */
     moreResultsLeft() {
       return this.result.data.result.length != this.result.data.total;
     }

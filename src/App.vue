@@ -17,7 +17,6 @@ export default {
   components: {
     Header,
     Footer,
-    searchOptions
   }
 };
 </script>

@@ -1,3 +1,4 @@
+
 <template>
 	<div class="tabSankey">
 		<h1>tabSankey</h1>
@@ -5,8 +6,10 @@
 </template>
 
 <script>
-
-export default {
+    /**
+	 * TODO
+     */
+    export default {
   name: 'tabSankey',
   props: {
 
