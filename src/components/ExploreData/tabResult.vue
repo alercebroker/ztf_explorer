@@ -5,36 +5,48 @@
         <transition name="fade">
           <b-card no-body>
             <b-tabs card>
-              <b-tab title="Data">
+              <b-tab title="Table">
                 <tabData
                   :loading.sync="load"
                   :downloading.sync="download"
                   :result="result"
                   :error="error"
                   :query_sql="query_sql"
+                  :params="params"
                   :pageNumber.sync="pageNumber"
                   :getMoreObjects="getQueryResults"
                   :taskId="taskId"
                 ></tabData>
               </b-tab>
-              <b-tab title="Histogram" v-on:click="reDrawHist" :disabled="result.data.length != 0 ? false : true">
-                <tabHistogram ref="histogram" :loadMore="loadMore" :results="result" :currentQueryParent="query_sql"></tabHistogram>
-              </b-tab>
-                <b-tab v-on:click="reDrawScat" title="Scatter" :disabled="result.data.length != 0 ? false : true">
-                    <tabScatter ref="scatter"
-                                :loadMore="loadMore"
-                      :result="result"
-                      :currentQueryParent="query_sql"
-                      :disabled="result.data.status == 200 ? false : true"
-                    ></tabScatter>
+              <b-tab
+                title="Histogram"
+                v-on:click="reDrawHist"
+                :disabled="result.data.length != 0 ? false : true"
+              >
+                <tabHistogram
+                  ref="histogram"
+                  :loadMore="loadMore"
+                  :results="result"
+                  :currentQueryParent="query_sql"
+                ></tabHistogram>
               </b-tab>
               <b-tab
-                title="Spatial Distribution"
-                :disabled="false"
+                v-on:click="reDrawScat"
+                title="Scatter"
+                :disabled="result.data.length != 0 ? false : true"
               >
-                <tabSpatialDistribution :result="result" disabled></tabSpatialDistribution>
+                <tabScatter
+                  ref="scatter"
+                  :loadMore="loadMore"
+                  :result="result"
+                  :currentQueryParent="query_sql"
+                  :disabled="result.data.status == 200 ? false : true"
+                ></tabScatter>
               </b-tab>
-            <!--
+              <b-tab title="Spatial Distribution" :disabled="true">
+                <tabSpatialDistribution :result="result"></tabSpatialDistribution>
+              </b-tab>
+              <!--
                             <b-tab title="Sankey" :disabled="result.data.length == 0 ? true : false">
 								<tabSankey :result="result"></tabSankey>
 							</b-tab>
@@ -48,10 +60,7 @@
 </template>
 
 <script>
-    /**
-     * this component manage tab components and do query to API
-     */
-    import tabData from "./tabData.vue";
+import tabData from "./tabData.vue";
 import tabScatter from "./tabScatter.vue";
 import tabHistogram from "./tabHistogram.vue";
 import tabSankey from "./tabSankey.vue";
@@ -69,7 +78,7 @@ export default {
   data() {
     return {
       download: this.downloading,
-        load:this.loading,
+      load: this.loading,
       result: {
         data: []
       },
@@ -77,17 +86,13 @@ export default {
       interval: null,
       numResults: 10,
       pageNumber: 1,
-      taskId: null,
+      taskId: null
     };
   },
   methods: {
-      /**
-       * query to api with taskId and call fun_update if exist
-       * @param taskId:string with id from query
-       * @param fun_update: function
-       */
-    getQueryResults: function(taskId,fun_update) {
-        this.$emit("update:loading", true);
+    getQueryResults: function(taskId, fun_update) {
+      this.$emit("update:loading", true);
+      window.scrollTo(0, 0);
       this.$http
         .post("/v2/paginated_result", {
           "task-id": taskId,
@@ -99,29 +104,21 @@ export default {
             if (this.result.data.length <= 0) {
               this.result = results;
             } else {
-              this.result.data = this.result.data.concat(results.data);
+              this.result.data.result = this.result.data.result.concat(
+                results.data.result
+              );
             }
-            if(fun_update) {
-                fun_update()
+            if (fun_update) {
+              fun_update();
             }
             this.$emit("update:loading", false);
-
           }.bind(this)
         );
     },
-
-      /**
-       * query next page
-       * @param fun_update: function
-       */
-      loadMore: function(fun_update) {
-        this.pageNumber = this.pageNumber + 1;
-        this.getQueryResults(this.taskId,fun_update)
-      },
-      /**
-       * query status of task
-       * @param task_id: string
-       */
+    loadMore: function(fun_update) {
+      this.pageNumber = this.pageNumber + 1;
+      this.getQueryResults(this.taskId, fun_update);
+    },
     queryTask: function(task_id) {
       this.$http
         .post("/v2/query_status", {
@@ -150,18 +147,14 @@ export default {
         )
         .catch(function(error) {});
     },
-      reDrawScat: function(){
-        this.$refs.scatter.setPlotValues();
-      },
-
-      /**
-       * update tab_histogram
-       */
-      reDrawHist: function() {
-          if(this.$refs.histogram.selected!=null) {
-              this.$refs.histogram.setPlotValues();
-          }
+    reDrawScat: function() {
+      this.$refs.scatter.setPlotValues();
+    },
+    reDrawHist: function() {
+      if (this.$refs.histogram.selected != null) {
+        this.$refs.histogram.setPlotValues();
       }
+    }
   },
   watch: {
     params: function(newVal, oldVal) {
@@ -188,14 +181,14 @@ export default {
         });
     },
 
-      load(newVal) {
-          // Handle changes in individual flavour checkboxes
-          this.$emit("update:loading", newVal);
-      },
-      download(newVal) {
-          // Handle changes in individual flavour checkboxes
-          this.$emit("update:downloading", newVal);
-      }
+    load(newVal) {
+      // Handle changes in individual flavour checkboxes
+      this.$emit("update:loading", newVal);
+    },
+    download(newVal) {
+      // Handle changes in individual flavour checkboxes
+      this.$emit("update:downloading", newVal);
+    }
   }
 };
 </script>

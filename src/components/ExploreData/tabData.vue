@@ -10,7 +10,7 @@
   </div>
   <div v-else-if="result.status === 200">
     <div class="row">
-      <b-btn class="mb-3 col-4" v-b-modal.showDetails>Show more details</b-btn>
+      <b-btn class="mb-3 col-4" v-b-modal.showDetails>Columns to show in table</b-btn>
       <b-btn class="mb-3 offset-5 col-3" v-b-modal.showDownloadModal>Download</b-btn>
     </div>
     <b-modal id="showDetails" ok-variant="secondary" ok-title="Close">
@@ -38,13 +38,16 @@
       </b-form-group>
     </b-modal>
     <small>
-      <strong>Note: this is a random sample from your query result set</strong>
+      <div>
+        <strong>Note: this is a random sample from your query result set.</strong>
+      </div>
+      <div>Showing {{ result.data.result.length }} rows of {{ result.data.total }}.</div>
     </small>
     <div v-show="selected.length">
       <b-table
         striped
         hover
-        :items="result.data"
+        :items="result.data.result"
         :fields="selected"
         @row-clicked="showObjectDetails"
       >
@@ -137,7 +140,11 @@
     </div>
     <b-row>
       <b-col class="text-center">
-        <b-btn variant="primary" v-on:click="getMoreResults">Load more</b-btn>
+        <b-btn
+          variant="primary"
+          v-on:click="getMoreResults"
+          :disabled="!moreResultsLeft()"
+        >Load more</b-btn>
         <!-- TODO: disable btn when there is no more data to load -->
       </b-col>
     </b-row>
@@ -215,7 +222,7 @@
       </div>
     </b-modal>
     <b-modal id="showDownloadModal" title="Download Objects">
-      <download-modal :downloading.sync="download" :query="query_sql"></download-modal>
+      <download-modal :downloading.sync="download" :query="query_sql" :params="params"></download-modal>
       <div slot="modal-footer"></div>
     </b-modal>
   </div>
@@ -259,6 +266,7 @@ export default {
     "result",
     "error",
     "query_sql",
+    "params",
     "loading",
     "downloading",
     "pageNumber",
@@ -310,7 +318,7 @@ export default {
           }
         },
         {
-          text: "Nobs",
+          text: "Nalerts",
           value: {
             key: "nobs",
             sortable: false,
@@ -377,21 +385,13 @@ export default {
     };
   },
   methods: {
-      /**
-       * query for next page
-       */
     getMoreResults() {
       this.$emit("update:pageNumber", this.pageNumber + 1);
       this.getMoreObjects(this.taskId);
     },
-
     toggleAll(checked) {
       this.selected = checked ? this.options.map(a => a.value).slice() : [];
     },
-      /**
-       * query task result
-       * @param taskId
-       */
     getQueryResults: function(taskId) {
       this.$http
         .post("/v2/result", {
@@ -418,12 +418,7 @@ export default {
           }.bind(this)
         );
     },
-
-      /**
-       *  query if task is ready
-       * @param task_id
-       */
-      queryTask(task_id) {
+    queryTask(task_id) {
       // let this = this;
       this.$http
         .post("/v2/query_status", {
@@ -441,14 +436,11 @@ export default {
         )
         .catch(function(error) {});
     },
-      /**
-       * show modal and do query for alert of object
-       * @param item
-       */
     showObjectDetails(item) {
       this.$emit("update:loading", true);
       this.$refs.objDetailsModal.show();
       this.selectedObj = item;
+
       this.$http
         .post("/v2/query_alerts", {
           oid: item.oid
@@ -463,6 +455,20 @@ export default {
           }.bind(this)
         )
         .catch(function(error) {});
+    },
+    getObjectStamps(taskId) {
+      this.$http
+        .post("/v2/query_result", {
+          "task-id": taskId
+        })
+        .then(result => {
+          let state = result.data.state;
+          if (state == "PENDING") {
+            this.getObjectStamps(result.data["task-id"]);
+          } else {
+            result.data.result.forEach(() => {});
+          }
+        });
     },
     showDownload() {
       this.$refs.downloadModal.show();
@@ -485,6 +491,9 @@ export default {
         this.allDetails = true;
         this.showMoreBtn = "Show less";
       }
+    },
+    moreResultsLeft() {
+      return this.result.data.result.length != this.result.data.total;
     }
   },
   watch: {
@@ -501,6 +510,7 @@ export default {
         this.allSelected = false;
       }
     },
+    alerts() {},
     load(newVal) {
       // Handle changes in individual flavour checkboxes
       this.$emit("update:loading", newVal);
@@ -518,9 +528,9 @@ export default {
   padding: 0 !important;
 }
 .modal-fullscreen .modal-dialog {
-  max-width: 100%;
-  height: 100%;
-  margin: 0;
+  max-width: 90%;
+  /* height: 90%; */
+  /* margin: 0; */
 }
 .modal-fullscreen .modal-content {
   border: 0;
