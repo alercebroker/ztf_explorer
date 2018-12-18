@@ -41,7 +41,8 @@
 				    },
 				    plotOptions:{
 				    	histogram:{
-				    		color:'rgba(255,255,255,0.00)'
+				    		color:'rgba(255,255,255,0.00)',
+				    		clip:false
 				    	}
 				    },
 			    series: [{

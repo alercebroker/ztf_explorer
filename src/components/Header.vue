@@ -25,7 +25,7 @@
 					<a class="nav-link disabled" href="#">|</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link disabled" href="#">
+					<a class="nav-link disabled" href="userAccount">
 						<h4>User Account</h4>
 					</a>
 				</li>
@@ -33,7 +33,7 @@
 					<a class="nav-link disabled" href="#">|</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link disabled" href="#">
+					<a class="nav-link disabled" href="howTo">
 						<h4>How It Works</h4>
 					</a>
 				</li>

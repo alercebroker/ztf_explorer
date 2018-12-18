@@ -138,16 +138,23 @@
         </template>
       </b-table>
     </div>
-    <b-row>
-      <b-col class="text-center">
-        <b-btn
-          variant="primary"
-          v-on:click="getMoreResults"
-          :disabled="!moreResultsLeft()"
-        >Load more</b-btn>
-        <!-- TODO: disable btn when there is no more data to load -->
-      </b-col>
-    </b-row>
+    <div class="fixed-bottom">
+      <b-row >
+        <b-col cols="4"></b-col>
+        <b-col cols="8" class="text-center">
+          <b-btn
+            variant="primary"
+            v-on:click="getMoreResults"
+            :disabled="!moreResultsLeft()"
+          >Load more</b-btn>
+          <br>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col><br></b-col>
+      </b-row>
+    </div>
+    
     <b-modal
       ref="objDetailsModal"
       class="modal-fullscreen"
