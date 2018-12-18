@@ -78,7 +78,7 @@
 		  				data: [obj.pair],
 		  				color: '#3C347E',
 		  				marker: {
-				            radius: 2
+				            symbol:"circle"
 				        },
 		  			});
 		  		});

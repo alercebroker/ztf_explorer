@@ -62,17 +62,43 @@
 		  		// delete the previous series
 		  		this.chartOptions.series[1].data = [];
 		  		this.chartOptions.series[0].color = "#3C347E";
+		  		this.chartOptions.series[0].name = this.chartOptions.xAxis[1].title.text;
 		  		// add new series
 		  		this.plotValues.forEach(obj =>{
 		  			this.chartOptions.series[1].data.push(obj.pair);
 		  		});
 		  		
 		    },
+		    widthSeries(){
+		    	this.chartOptions.plotOptions.histogram= {
+		    		binsNumber : this.binData[0],
+		    		binWidth: this.binData[1],
+					pointPlacement:"on",
+					pointWidth: this.binData[2] ,
+		    	};
+
+		    },
+		    binData(){
+		    	d=this.chartOptions.series[1].data;
+		    	size = d.length;
+		    	max = Math.max.apply(null,d);
+		    	min = Math.min.apply(null,d);
+		    	bins =Math.round(Math.sqrt(size));
+		    	bins = bins > 2 ? 2 : bins;
+		    	
+		    	range = max-min;
+		    	width = range/bin;
+		    	perc = ((1/bins)* 100)+ "%";
+
+
+		    	return [bins,width,perc];
+		    },
         },
         watch: {
             xVariable: function(newVal, oldVal) { // if xVariable change
                 this.chartOptions.xAxis[1].title.text = newVal;
                 this.redraw();
+                this.widthSeries();
                 
 	        },
 	        plotValues: function(newVal, oldVal) { // if plotValues change
