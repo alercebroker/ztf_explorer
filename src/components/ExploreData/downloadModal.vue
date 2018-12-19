@@ -25,8 +25,11 @@ export default {
     };
   },
   methods: {
+      /**
+       * get result what is a link to file on the server and create tag <a> and simulate a click in that link to start download
+       * @param task_id: id task in server
+       */
     getQueryResults(task_id) {
-      // let this = this;
       this.$http
         .post("/v2/result", {
           "task-id": task_id
@@ -34,7 +37,6 @@ export default {
         .then(function(response) {
           let result = JSON.parse(response.data.result);
           this.$emit("update:downloading", false);
-
           this.download = false;
           const link = document.createElement("a");
           link.href = result.url;
@@ -47,8 +49,12 @@ export default {
         }.bind(this))
         .catch(function(error) {});
     },
+
+      /**
+       * query if task is ready
+       * @param task_id: id task in server
+       */
     queryTask(task_id) {
-      // let this = this;
       this.$http
         .post("/v2/query_status", {
           "task-id": task_id
@@ -59,17 +65,14 @@ export default {
               clearInterval(this.interval);
               this.getQueryResults(task_id);
             }
-            else {
-              console.log(response);
-              // this.result = result;
-              // this.$emit("update:loading", false);
-            }
           }.bind(this)
         )
         .catch(function(error) {});
     },
+      /**
+       * query for start downdload in server
+       */
     downloadData() {
-      // let this = this;
       this.$emit("update:downloading", true);
       this.download = true;
       this.$http
@@ -91,7 +94,12 @@ export default {
         });
     }
   },
+
   watch: {
+      /**
+       * if val is false stop interval
+       * @param val:new value of download
+       */
     download(val) {
       if (!val) {
         clearInterval(this.interval);
