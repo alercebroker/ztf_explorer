@@ -27,15 +27,17 @@
             <b-row class="mb-3">
               <b-col cols="4">
                 <label for="oid">
-                  <b>Object ID </b> <v-icon
-                  v-b-tooltip.hover.right
-                  title="Unique ID for each object in ALeRCE database"
-                  name="info-circle"
-                  color="#C0C0C0"
-                ></v-icon>
+                  <b>Object ID</b>
+                  <v-icon
+                    class="ml-2"
+                    v-b-tooltip.hover.right
+                    title="Unique ID for each object in ALeRCE database"
+                    name="info-circle"
+                    color="#C0C0C0"
+                  ></v-icon>
                 </label>
               </b-col>
-              <b-col cols="7">
+              <b-col cols="8">
                 <input
                   type="text"
                   class="form-control form-control-sm"
@@ -49,15 +51,17 @@
             <b-row class="mb-3">
               <b-col cols="4">
                 <label for="class">
-                  <b>Class </b><v-icon
-                  v-b-tooltip.hover.right
-                  title="Return objects of a certain class. Each object belongs to its most likely class according to a classification model. Each class could be divided into subclasses"
-                  name="info-circle"
-                  color="#C0C0C0"
-                ></v-icon>
+                  <b>Class</b>
+                  <v-icon
+                    class="ml-2"
+                    v-b-tooltip.hover.right
+                    title="Return objects of a certain class. Each object belongs to its most likely class according to a classification model. Each class could be divided into subclasses"
+                    name="info-circle"
+                    color="#C0C0C0"
+                  ></v-icon>
                 </label>
               </b-col>
-              <b-col cols="7">
+              <b-col cols="8">
                 <select
                   class="form-control form-control-sm"
                   id="class"
@@ -452,8 +456,8 @@
                         <b-tab title="Single">
                           <b-container>
                             <b-row class="align-middle">
-                              <b-col md="5">
-                                RA <v-icon
+                              <b-col md="5">RA
+                                <v-icon
                                   v-b-tooltip.hover.right
                                   title="Right Ascension"
                                   name="info-circle"
@@ -473,8 +477,8 @@
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
-                              <b-col md="5">
-                                DEC <v-icon
+                              <b-col md="5">DEC
+                                <v-icon
                                   v-b-tooltip.hover.right
                                   title="Declination"
                                   name="info-circle"
@@ -494,8 +498,8 @@
                               </b-col>
                             </b-row>
                             <b-row class="align-middle">
-                              <b-col md="5">
-                                Radius <v-icon
+                              <b-col md="5">Radius
+                                <v-icon
                                   v-b-tooltip.hover.right
                                   title="Cone search radius"
                                   name="info-circle"
@@ -1039,9 +1043,9 @@ export default {
       }
     };
   },
-    /**
-     * variables computadas
-     * */
+  /**
+   * variables computadas
+   * */
   computed: {
     firstjd() {
       return this.queryParameters.dates.firstjd;
@@ -1063,9 +1067,9 @@ export default {
       },
       deep: true
     },
-      /**
-       *  cleans empty variables from query parameters
-       *  */
+    /**
+     *  cleans empty variables from query parameters
+     *  */
     queryParameters: {
       handler: function(newVal) {
         let queryToSubmit = this._.cloneDeep(newVal);
@@ -1074,9 +1078,9 @@ export default {
       },
       deep: true
     },
-/**
- * watch date variables to change date cheking if flag is active first, flags avoid over write
- * */
+    /**
+     * watch date variables to change date cheking if flag is active first, flags avoid over write
+     * */
     firstGreg: function(newGreg) {
       if (!this.flagFirst) {
         this.flagFirst = true;
@@ -1112,25 +1116,25 @@ export default {
     }
   },
   methods: {
-      /**
-       * change option avanced label
-       */
+    /**
+     * change option avanced label
+     */
     changeMoreOptLabel() {
       this.moreOptsLabel =
         this.moreOptsLabel == "More Options" ? "Hide" : "More Options";
     },
-      /**
-       * change option text in show sql
-       */
+    /**
+     * change option text in show sql
+     */
     changeShowSQLLabel() {
       this.refreshSQL();
       this.showSQLLabel =
         this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
     },
-      /**
-       * request api new sql to show
-       */
-    refreshSQL: function(event) {
+    /**
+     * request api new sql to show
+     */
+    refreshSQL: function() {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
       this.checkAnyBand(queryToSubmit);
       this.removeEmpty(queryToSubmit);
@@ -1143,9 +1147,9 @@ export default {
         })
         .catch(() => {});
     },
-      /**
-       * clear other bands if anyband is checked
-       */
+    /**
+     * clear other bands if anyband is checked
+     */
     checkAnyBand: function(queryToSubmit) {
       if (this.anyBand) {
         let any = queryToSubmit.bands.any;
@@ -1158,11 +1162,11 @@ export default {
       }
     },
 
-      /**
-       * receives date in julian format and convert in gregorian format
-       * @param MJD:date in julian format
-       * @returns {string} : date in gregorian format
-       */
+    /**
+     * receives date in julian format and convert in gregorian format
+     * @param MJD:date in julian format
+     * @returns {string} : date in gregorian format
+     */
     jdToGregorian(MJD) {
       var JD = Number(MJD) + 2400000.5;
       const y = 4716;
@@ -1196,27 +1200,27 @@ export default {
       return today;
     },
 
-      /**
-       * receives date in gregorian format and convert in julian format
-       * @param gDate:date in gregorian format
-       * @returns {number} : date in jualian format
-       */
+    /**
+     * receives date in gregorian format and convert in julian format
+     * @param gDate:date in gregorian format
+     * @returns {number} : date in jualian format
+     */
     gregorianToJd(gDate) {
       //MJD = JD − 2400000.5
       var dateObj = new Date(gDate);
       var mjulianDate = dateObj / 86400000 + 40588;
       return mjulianDate;
     },
-      /**
-       * reset all input
-       */
+    /**
+     * reset all input
+     */
     clearQuery() {
       let emptyQ = this._.cloneDeep(this.emptyQuery);
       this.queryParameters = emptyQ;
     },
-      /**
-       * remove param that are empty
-       */
+    /**
+     * remove param that are empty
+     */
     removeEmpty(obj) {
       Object.entries(obj).forEach(([key, val]) => {
         if (val && typeof val === "object") {
@@ -1228,15 +1232,16 @@ export default {
       });
     },
 
-      /**
-       * update params in component parent
-       */
-      onSubmitQuery() {
+    /**
+     * update params in component parent
+     */
+    onSubmitQuery() {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
       this.checkAnyBand(queryToSubmit);
       this.removeEmpty(queryToSubmit);
       this.$emit("update:params", queryToSubmit);
       this.$emit("update:currentQueryParent", this.currentQuery);
+      window.scrollTo(0, 0);
     }
   }
 };

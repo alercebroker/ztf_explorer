@@ -85,14 +85,14 @@ export default {
     };
   },
   methods: {
-      /**
-       * get data from server
-       * @param taskId: task id in server
-       * @param fun_update: fun to apply when result is ok
-       */
+    /**
+     * get data from server
+     * @param taskId: task id in server
+     * @param fun_update: fun to apply when result is ok
+     */
     getQueryResults: function(taskId, fun_update) {
       this.$emit("update:loading", true);
-      window.scrollTo(0, 0);
+
       this.$http
         .post("/v2/paginated_result", {
           "task-id": taskId,
@@ -115,18 +115,18 @@ export default {
           }.bind(this)
         );
     },
-      /**
-       * query for next page results
-       * @param fun_update: fun to pass getQueryResults
-       */
+    /**
+     * query for next page results
+     * @param fun_update: fun to pass getQueryResults
+     */
     loadMore: function(fun_update) {
       this.pageNumber = this.pageNumber + 1;
       this.getQueryResults(this.taskId, fun_update);
     },
-      /**
-       * query ask if task is ready
-       * @param task_id
-       */
+    /**
+     * query ask if task is ready
+     * @param task_id
+     */
     queryTask: function(task_id) {
       this.$http
         .post("/v2/query_status", {
@@ -148,22 +148,22 @@ export default {
               this.result = response;
               this.$emit("update:loading", false);
             } else {
-              this.result = result;
+              this.result = response;
               this.$emit("update:loading", false);
             }
           }.bind(this)
         )
-        .catch(function(error) {});
+        .catch(function() {});
     },
-      /**
-       * Re draw scatter tab
-       */
+    /**
+     * Re draw scatter tab
+     */
     reDrawScat: function() {
       this.$refs.scatter.setPlotValues();
     },
-      /**
-       * Re draw Histogram tab
-       */
+    /**
+     * Re draw Histogram tab
+     */
     reDrawHist: function() {
       if (this.$refs.histogram.selected != null) {
         this.$refs.histogram.setPlotValues();
@@ -171,10 +171,10 @@ export default {
     }
   },
   watch: {
-      /**
-       * do query when params change
-       */
-    params: function(newVal, oldVal) {
+    /**
+     * do query when params change
+     */
+    params: function(newVal) {
       this.$emit("update:loading", true);
       this.$http
         .post("/v2/query", {

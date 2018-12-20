@@ -10,8 +10,13 @@
   </div>
   <div v-else-if="result.status === 200">
     <div class="row">
-      <b-btn class="mb-3 col-4" v-b-modal.showDetails>Columns to show in table</b-btn>
-      <b-btn class="mb-3 offset-5 col-3" v-b-modal.showDownloadModal>Download</b-btn>
+      <b-col cols="4">
+        <b-btn class="mb-3" :block="btnblock" v-b-modal.showDetails>Columns to show in table</b-btn>
+      </b-col>
+      <b-col></b-col>
+      <b-col cols="4">
+        <b-btn class="mb-3" :block="btnblock" v-b-modal.showDownloadModal>Download</b-btn>
+      </b-col>
     </div>
     <b-modal id="showDetails" ok-variant="secondary" ok-title="Close">
       <b-form-group>
@@ -138,27 +143,30 @@
         </template>
       </b-table>
     </div>
-    <div class="fixed-bottom">
-      <b-row >
-        <b-col cols="4"></b-col>
-        <b-col cols="8" class="text-center">
+    <div>
+      <b-row>
+        <b-col></b-col>
+        <b-col class="text-right">
           <b-btn
             variant="primary"
             v-on:click="getMoreResults"
             :disabled="!moreResultsLeft()"
+            id="more-results"
           >Load more</b-btn>
           <br>
         </b-col>
       </b-row>
       <b-row>
-        <b-col><br></b-col>
+        <b-col>
+          <br>
+        </b-col>
       </b-row>
     </div>
-    
+
     <b-modal
       ref="objDetailsModal"
       class="modal-fullscreen"
-      id="objDetailsModal"
+      id="more-results"
       title="Object Details"
       v-on:hidden="lessDetails"
     >
@@ -287,7 +295,7 @@ export default {
   component: [downloadModal, lightCurveFrame],
   data() {
     return {
-      superTrue: true,
+      btnblock: true,
       interval: null,
       load: this.loading,
       download: this.downloading,
@@ -395,22 +403,22 @@ export default {
     };
   },
   methods: {
-      /**
-       * get more result or next page result
-       */
+    /**
+     * get more result or next page result
+     */
     getMoreResults() {
       this.$emit("update:pageNumber", this.pageNumber + 1);
       this.getMoreObjects(this.taskId);
     },
-      /**
-       * checked or unchecked all option in checkbox of selection columns
-       */
+    /**
+     * checked or unchecked all option in checkbox of selection columns
+     */
     toggleAll(checked) {
       this.selected = checked ? this.options.map(a => a.value).slice() : [];
     },
-      /**
-       * query for alerts from a specific object
-       */
+    /**
+     * query for alerts from a specific object
+     */
     getQueryResults: function(taskId) {
       this.$http
         .post("/v2/result", {
@@ -436,10 +444,10 @@ export default {
           }.bind(this)
         );
     },
-      /**
-       * query if task is ready (for alerts)
-       * @param task_id: id task in server
-       */
+    /**
+     * query if task is ready (for alerts)
+     * @param task_id: id task in server
+     */
     queryTask(task_id) {
       this.$http
         .post("/v2/query_status", {
@@ -450,16 +458,14 @@ export default {
             if (response.data.status == "SUCCESS") {
               clearInterval(this.interval);
               this.getQueryResults(task_id);
-            } else {
-              console.log(response);
             }
           }.bind(this)
         )
-        .catch(function(error) {});
+        .catch(function() {});
     },
-      /**
-       * launch modal object details
-       */
+    /**
+     * launch modal object details
+     */
     showObjectDetails(item) {
       this.$emit("update:loading", true);
       this.$refs.objDetailsModal.show();
@@ -477,12 +483,12 @@ export default {
             );
           }.bind(this)
         )
-        .catch(function(error) {});
+        .catch(function() {});
     },
-      /**
-       * TODO: implent stamps on back end
-       * @param taskId
-       */
+    /**
+     * TODO: implent stamps on back end
+     * @param taskId
+     */
     getObjectStamps(taskId) {
       this.$http
         .post("/v2/query_result", {
@@ -519,10 +525,10 @@ export default {
         this.showMoreBtn = "Show less";
       }
     },
-      /**
-       * for checking if there are any results left
-       * @returns {boolean}
-       */
+    /**
+     * for checking if there are any results left
+     * @returns {boolean}
+     */
     moreResultsLeft() {
       return this.result.data.result.length != this.result.data.total;
     }
@@ -580,5 +586,11 @@ table > tbody tr {
 #details {
   max-height: 200px;
   overflow-y: auto;
+}
+
+#more-results {
+  top: 82%;
+  right: 3%;
+  position: fixed;
 }
 </style>

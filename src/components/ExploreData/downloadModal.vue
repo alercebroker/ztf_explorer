@@ -18,42 +18,44 @@ export default {
       download: false,
       selected: "CSV",
       options: [
-        {value: "CSV", text: "CSV"},
-        {value: "FITS", text: "FITS", disabled: true},
-        {value: "VOT", text: "VOT"}
+        { value: "CSV", text: "CSV" },
+        { value: "FITS", text: "FITS", disabled: true },
+        { value: "VOT", text: "VOT" }
       ]
     };
   },
   methods: {
-      /**
-       * get result what is a link to file on the server and create tag <a> and simulate a click in that link to start download
-       * @param task_id: id task in server
-       */
+    /**
+     * get result what is a link to file on the server and create tag <a> and simulate a click in that link to start download
+     * @param task_id: id task in server
+     */
     getQueryResults(task_id) {
       this.$http
         .post("/v2/result", {
           "task-id": task_id
         })
-        .then(function(response) {
-          let result = JSON.parse(response.data.result);
-          this.$emit("update:downloading", false);
-          this.download = false;
-          const link = document.createElement("a");
-          link.href = result.url;
-          link.setAttribute(
-            "download",
-            "report." + this.selected.toLowerCase()
-          ); //or any other extension
-          document.body.appendChild(link);
-          link.click();
-        }.bind(this))
-        .catch(function(error) {});
+        .then(
+          function(response) {
+            let result = JSON.parse(response.data.result);
+            this.$emit("update:downloading", false);
+            this.download = false;
+            const link = document.createElement("a");
+            link.href = result.url;
+            link.setAttribute(
+              "download",
+              "report." + this.selected.toLowerCase()
+            ); //or any other extension
+            document.body.appendChild(link);
+            link.click();
+          }.bind(this)
+        )
+        .catch(function() {});
     },
 
-      /**
-       * query if task is ready
-       * @param task_id: id task in server
-       */
+    /**
+     * query if task is ready
+     * @param task_id: id task in server
+     */
     queryTask(task_id) {
       this.$http
         .post("/v2/query_status", {
@@ -67,11 +69,11 @@ export default {
             }
           }.bind(this)
         )
-        .catch(function(error) {});
+        .catch(function() {});
     },
-      /**
-       * query for start downdload in server
-       */
+    /**
+     * query for start downdload in server
+     */
     downloadData() {
       this.$emit("update:downloading", true);
       this.download = true;
@@ -80,7 +82,8 @@ export default {
           query_parameters: this.params,
           format: this.selected
         })
-        .then(function(response) {
+        .then(
+          function(response) {
             this.interval = setInterval(
               this.queryTask,
               2000,
@@ -88,7 +91,7 @@ export default {
             );
           }.bind(this)
         )
-        .catch(function(error) {
+        .catch(function() {
           this.$emit("update:downloading", false);
           this.download = false;
         });
@@ -96,10 +99,10 @@ export default {
   },
 
   watch: {
-      /**
-       * if val is false stop interval
-       * @param val:new value of download
-       */
+    /**
+     * if val is false stop interval
+     * @param val:new value of download
+     */
     download(val) {
       if (!val) {
         clearInterval(this.interval);
