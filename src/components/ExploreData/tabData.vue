@@ -18,7 +18,7 @@
         <b-btn class="mb-3" :block="btnblock" v-b-modal.showDownloadModal>Download</b-btn>
       </b-col>
     </div>
-    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close">
+    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close" :ok-only="true">
       <b-form-group>
         <template slot="label">
           <b>Choose your options:</b>
