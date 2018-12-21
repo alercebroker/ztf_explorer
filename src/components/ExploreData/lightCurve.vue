@@ -21,12 +21,20 @@ export default {
           panKey: "shift"
         },
         tooltip: {
-            formatter: function () {
-              var header = '<span style="font-size: 13px">Modified julian date :' + this.x + '</span><br/>'; 
-              var footer = '<span style="font-size: 11px; font-weight: bold;">' + this.series.name + ': ' + this.y + '</span>';
+          formatter: function() {
+            var header =
+              '<span style="font-size: 13px">Modified julian date :' +
+              this.x +
+              "</span><br/>";
+            var footer =
+              '<span style="font-size: 11px; font-weight: bold;">' +
+              this.series.name +
+              ": " +
+              this.y +
+              "</span>";
             return header + footer;
-        },
-            crosshairs: [true, false]
+          },
+          crosshairs: [true, false]
         },
         title: {
           text: "Light Curve"
@@ -45,13 +53,13 @@ export default {
           type: "linear"
         },
         legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
-            floating: true,
-            x: -10,
-            y: -5
-            // backgroundColor: '#FFFFFF'
+          layout: "vertical",
+          align: "right",
+          verticalAlign: "top",
+          floating: true,
+          x: -10,
+          y: -5
+          // backgroundColor: '#FFFFFF'
         },
         plotOptions: {
           shared: true,
@@ -90,21 +98,21 @@ export default {
         },
         series: [
           {
-            name: "Red magnitude",
+            name: "r magnitude",
             value: "rmag",
             color: "#ff0000",
             type: "scatter",
             data: []
           },
           {
-            name: "Red magnitude error",
+            name: "r magnitude error",
             type: "errorbar",
             color: "#cc0c00",
             enableMouseTracking: false,
             data: []
           },
           {
-            name: "Green magnitude",
+            name: "g magnitude",
             value: "gmag",
             // linkedTo: 'rmag',
             type: "scatter",
@@ -112,7 +120,7 @@ export default {
             data: []
           },
           {
-            name: "Green magnitude error",
+            name: "g magnitude error",
             type: "errorbar",
             color: "#0a9900",
             enableMouseTracking: false,
@@ -131,21 +139,21 @@ export default {
       // delete the previous series
       this.chartOptions.series = [
         {
-          name: "red magnitude",
+          name: "r magnitude",
           value: "rmag",
           color: "#ff0000",
           type: "scatter",
           data: this.chartData.magrs
         },
         {
-          name: "red magnitude error",
+          name: "r magnitude error",
           type: "errorbar",
           color: "#cc0c00",
           enableMouseTracking: false,
           data: this.chartData.magrErrors
         },
         {
-          name: "green magnitude",
+          name: "g magnitude",
           value: "gmag",
           // linkedTo: 'rmag',
           type: "scatter",
@@ -153,7 +161,7 @@ export default {
           data: this.chartData.maggs
         },
         {
-          name: "green magnitude error",
+          name: "g magnitude error",
           type: "errorbar",
           color: "#0a9900",
           enableMouseTracking: false,
