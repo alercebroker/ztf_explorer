@@ -151,7 +151,7 @@
             variant="primary"
             v-on:click="getMoreResults"
             :disabled="!moreResultsLeft()"
-            id="more-results"
+            id="more-results-btn"
           >Load more</b-btn>
           <br>
         </b-col>
@@ -588,7 +588,7 @@ table > tbody tr {
   overflow-y: auto;
 }
 
-#more-results {
+#more-results-btn {
   top: 82%;
   right: 3%;
   position: fixed;
