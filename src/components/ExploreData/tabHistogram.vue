@@ -48,7 +48,7 @@ export default {
   },
   data() {
     return {
-      dataReady: false,
+      dataReady: 0,
       currentQuery: this.currentQueryParent,
       nbins: 10,
       selected: null,
@@ -101,8 +101,8 @@ export default {
     setPlotValues: function() {
       //erase previous values
       this.plotValues = [];
-      this.dataReady = false;
-      //add plot values
+
+        //add plot values
       this.results.data.result.forEach(obj => {
         let value = this.getAxisData(this.selected, obj);
 
@@ -113,7 +113,7 @@ export default {
           });
         }
       });
-      this.dataReady = true;
+      this.dataReady =this.dataReady +1;
     }
   },
   computed: {
