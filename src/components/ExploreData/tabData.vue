@@ -231,6 +231,18 @@
             </b-card>
           </b-col>
         </b-row>
+        <!-- Aladin -->
+        <b-row class="mt-3">
+          <b-col>
+            <b-card title="Aladin">
+              <aladin 
+                :coordinates="{meanRA: details.meanra, meanDEC: details.meandec}"
+                width="inherit"
+                height="400px"
+                />
+            </b-card>
+          </b-col>
+        </b-row>
       </b-container>
       <div slot="modal-footer">
         <b-btn v-on:click="closeObjectModal">Close</b-btn>
@@ -273,13 +285,15 @@
 import downloadModal from "./downloadModal.vue";
 import DownloadModal from "./downloadModal";
 import lightCurveFrame from "./lightCurveFrame";
+import aladin from "./aladin";
+
 
 /**
  * this component contains table and details object modal
  */
 export default {
   name: "tabData",
-  components: { DownloadModal, lightCurveFrame },
+  components: { DownloadModal, lightCurveFrame, aladin },
   props: [
     "result",
     "error",
@@ -552,7 +566,8 @@ export default {
     download(newVal) {
       this.$emit("update:downloading", newVal);
     }
-  }
+  },
+  
 };
 </script>
 

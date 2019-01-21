@@ -9,6 +9,7 @@ import HighchartsVue from 'highcharts-vue'
 import Highcharts from 'highcharts'
 import histogramInit from 'highcharts/modules/histogram-bellcurve.js'
 import exportingInit from 'highcharts/modules/exporting.js' //scatter
+import exportData from 'highcharts/modules/export-data'
 
 import BootstrapVue from 'bootstrap-vue'
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -32,6 +33,7 @@ Vue.use(VueLodash);
 highchartsMore(Highcharts);
 histogramInit(Highcharts);
 exportingInit(Highcharts);
+exportData(Highcharts);
 Vue.use(HighchartsVue);
 
 Vue.component('v-icon', Icon)
