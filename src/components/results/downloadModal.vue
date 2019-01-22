@@ -1,16 +1,21 @@
 <template>
-  <div class="row">
-    <div class="col-4">Select Format</div>
-    <div class="col-8">
-      <b-form-select v-model="selected" :options="options" class="mb-3"/>
+  <b-modal id="showDownloadModal" title="Download Objects">
+    <div class="row">
+      <div class="col-4">
+        Select Format
+      </div>
+      <div class="col-8">
+        <b-form-select v-model="selected" :options="options" class="mb-3"/>
+      </div>
+      <b-btn class="offset-8 col-3" @click="downloadData">Download</b-btn>
     </div>
-    <b-btn class="offset-8 col-3" @click="downloadData">Download</b-btn>
-  </div>
+  </b-modal>
+  
 </template>
 
 <script>
 export default {
-  name: "downloadModal",
+  name: "download-modal",
   props: ["query", "downloading", "params"],
   data() {
     return {

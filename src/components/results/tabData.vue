@@ -18,36 +18,16 @@
         <b-btn class="mb-3" :block="btnblock" v-b-modal.showDownloadModal>Download</b-btn>
       </b-col>
     </div>
-    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close" :ok-only="true">
-      <b-form-group>
-        <template slot="label">
-          <b>Choose your options:</b>
-          <br>
-          <b-form-checkbox
-            v-model="allSelected"
-            :indeterminate="indeterminate"
-            aria-describedby="options"
-            aria-controls="options"
-            @change="toggleAll"
-          >{{ allSelected ? 'Un-select All' : 'Select All' }}</b-form-checkbox>
-        </template>
-        <b-form-checkbox-group
-          id="flavors"
-          stacked
-          v-model="selected"
-          name="flavs"
-          :options="options"
-          class="ml-4"
-          aria-label="Individual options"
-        ></b-form-checkbox-group>
-      </b-form-group>
-    </b-modal>
+
+    <column-options-modal />
+
     <small>
       <div>
         <strong>Note: this is a random sample from your query result set.</strong>
       </div>
       <div>Showing {{ result.data.result.length }} rows of {{ result.data.total }}.</div>
     </small>
+    
     <div v-show="selected.length">
       <b-table
         striped
@@ -163,95 +143,9 @@
       </b-row>
     </div>
 
-    <b-modal
-      ref="objDetailsModal"
-      class="modal-fullscreen"
-      id="more-results"
-      title="Object Details"
-      v-on:hidden="lessDetails"
-    >
-      <b-container fluid>
-        <b-row>
-          <b-col cols="4">
-            <b-card title="Details">
-              <b-row>
-                <b-col id="details">
-                  <ul id="default-details">
-                    <li v-for="(value, key) in defaultProp" :key="key">
-                      <strong>{{key}}</strong>
-                      : {{ value }}
-                    </li>
-                  </ul>
-                  <ul v-show="allDetails" id="more-details">
-                    <li v-for="(value, key) in details" :key="key">
-                      <strong>{{key}}</strong>
-                      : {{ value }}
-                    </li>
-                  </ul>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col>
-                  <b-btn
-                    v-show="details != {}"
-                    variant="default"
-                    v-on:click="moreDetails"
-                  >{{ showMoreBtn }}</b-btn>
-                </b-col>
-              </b-row>
-            </b-card>
-          </b-col>
-          <b-col>
-            <!-- Curva de luz -->
-            <b-card title="Light curve" class="h-100 align-middle">
-              <lightCurveFrame :alerts="alerts" ref="lightCurveFrame"></lightCurveFrame>
-            </b-card>
-          </b-col>
-        </b-row>
-        <b-row class="mt-3">
-          <b-col>
-            <!-- Stamps -->
-            <!-- <img src="" alt="" id="image"> -->
-            <b-card title="Stamps">
-              <div class="text-center">No stamps to display</div>
-            </b-card>
-          </b-col>
-        </b-row>
-        <b-row class="mt-3">
-          <b-col>
-            <!-- Visibility Plot -->
-            <b-card title="Visibility Plots">
-              <div class="text-center">No plots to display</div>
-            </b-card>
-          </b-col>
-          <b-col>
-            <!-- Periodogram -->
-            <b-card title="Periodogram">
-              <div class="text-center">No periodogram to display</div>
-            </b-card>
-          </b-col>
-        </b-row>
-        <!-- Aladin -->
-        <b-row class="mt-3">
-          <b-col>
-            <b-card title="Aladin">
-              <aladin 
-                :coordinates="{meanRA: details.meanra, meanDEC: details.meandec}"
-                width="inherit"
-                height="400px"
-                />
-            </b-card>
-          </b-col>
-        </b-row>
-      </b-container>
-      <div slot="modal-footer">
-        <b-btn v-on:click="closeObjectModal">Close</b-btn>
-      </div>
-    </b-modal>
-    <b-modal id="showDownloadModal" title="Download Objects">
-      <download-modal :downloading.sync="download" :query="query_sql" :params="params"></download-modal>
-      <div slot="modal-footer"></div>
-    </b-modal>
+    <object-details-modal />
+    <download-modal />
+
   </div>
   <div v-else-if="result.status === 400">
     <b-alert show variant="warning">There is an error with your query</b-alert>
@@ -283,17 +177,15 @@
 
 <script>
 import downloadModal from "./downloadModal.vue";
-import DownloadModal from "./downloadModal";
-import lightCurveFrame from "./lightCurveFrame";
-import aladin from "./aladin";
-
+import columnOptionsModal from './columnOptionsModal.vue';
+import objectDetailsModal from "./objectDetailsModal";
 
 /**
  * this component contains table and details object modal
  */
 export default {
   name: "tabData",
-  components: { DownloadModal, lightCurveFrame, aladin },
+  components: { downloadModal, columnOptionsModal, objectDetailsModal },
   props: [
     "result",
     "error",
@@ -306,7 +198,6 @@ export default {
     "getMoreObjects",
     "taskId"
   ],
-  component: [downloadModal, lightCurveFrame],
   data() {
     return {
       btnblock: true,

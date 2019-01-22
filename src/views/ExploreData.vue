@@ -14,15 +14,15 @@
 </template>
 
 <script>
-import searchOptions from "./searchOptions.vue";
-import tabResult from "./tabResult.vue";
+import searchOptions from '../components/search/searchOptions.vue';
+import tabResult from "../components/results/tabResult.vue";
 import loading from "vue-full-loading";
 
 /**This component connect searchOption and tabResult
  * call component loading when variable loading or dowloading is true
  */
 export default {
-  name: "exploreData",
+  name: "ExploreData",
   props: {},
   components: {
     searchOptions,
@@ -34,7 +34,7 @@ export default {
       query: "SELECT * FROM objects",
       params: {},
       loading: false,
-        downloading: false
+      downloading: false
     };
   },
   methods: {

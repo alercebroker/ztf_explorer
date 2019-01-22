@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "lightCurve",
+  name: "light-curve",
   props: ["chartData"],
   data() {
     return {

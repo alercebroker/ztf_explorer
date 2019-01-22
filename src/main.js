@@ -17,6 +17,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css"
 import highchartsMore from 'highcharts/highcharts-more'
 
 
+
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 
@@ -36,7 +37,7 @@ exportingInit(Highcharts);
 exportData(Highcharts);
 Vue.use(HighchartsVue);
 
-Vue.component('v-icon', Icon)
+Vue.component('v-icon', Icon);
 
 new Vue({
     el: '#app',
