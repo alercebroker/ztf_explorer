@@ -38,6 +38,7 @@
               </b-col>
             </b-row>
 
+            <!-- ADVANCED SEARCH -->
             <b-row class="mb-3">
               <b-col>
                 <b-collapse id="AdvancedSearch">
@@ -56,6 +57,7 @@
                 >{{ showSQLLabel }}</b-button>
               </b-col>
             </b-row>
+
             <b-row>
               <b-col>
                 <b-collapse id="SQL" class="mt-3">
@@ -82,6 +84,7 @@
                 >SEARCH</b-button>
               </b-col>
             </b-row>
+            
             <b-row>
               <b-col class="text-center">
                 <b-button variant="secondary" size="sm" id="searchbtn" disabled>Save search</b-button>
@@ -102,7 +105,7 @@
 import defaultOptions from './defaultOptions.vue';
 import advancedOptions from './advancedOptions.vue';
 export default {
-  name: "searchOptions",
+  name: "search-options",
   props: ["params", "loading", "currentQueryParent"],
   components: {
     defaultOptions,
@@ -118,225 +121,8 @@ export default {
       lastGreg: null,
       coordSearch: false,
       moreOptsLabel: "More Options",
-      showSQLLabel: "Show SQL",
-      emptyQuery: {
-        filters: {
-          oid: null,
-          class: null,
-          subclass: null,
-          nobs: {
-            min: null,
-            max: null
-          },
-          pclass: {
-            min: null,
-            max: null
-          },
-          period: {
-            min: null,
-            max: null
-          },
-          ext: null
-        },
-        dates: {
-          firstjd: null,
-          lastjd: null,
-          deltajd: {
-            min: null,
-            max: null
-          }
-        },
-        bands: {
-          any: {
-            min: {
-              min: null,
-              max: null
-            },
-            max: {
-              min: null,
-              max: null
-            },
-            slope: {
-              min: null,
-              max: null
-            },
-            mean: {
-              min: null,
-              max: null
-            },
-            rms: {
-              min: null,
-              max: null
-            },
-            lastmag: {
-              min: null,
-              max: null
-            }
-          },
-          u: {
-            min: {
-              min: null,
-              max: null
-            },
-            max: {
-              min: null,
-              max: null
-            },
-            slope: {
-              min: null,
-              max: null
-            },
-            mean: {
-              min: null,
-              max: null
-            },
-            rms: {
-              min: null,
-              max: null
-            },
-            lastmag: {
-              min: null,
-              max: null
-            }
-          },
-          g: {
-            min: {
-              min: null,
-              max: null
-            },
-            max: {
-              min: null,
-              max: null
-            },
-            slope: {
-              min: null,
-              max: null
-            },
-            mean: {
-              min: null,
-              max: null
-            },
-            rms: {
-              min: null,
-              max: null
-            },
-            lastmag: {
-              min: null,
-              max: null
-            }
-          },
-          r: {
-            min: {
-              min: null,
-              max: null
-            },
-            max: {
-              min: null,
-              max: null
-            },
-            slope: {
-              min: null,
-              max: null
-            },
-            mean: {
-              min: null,
-              max: null
-            },
-            rms: {
-              min: null,
-              max: null
-            },
-            lastmag: {
-              min: null,
-              max: null
-            }
-          },
-          i: {
-            min: {
-              min: null,
-              max: null
-            },
-            max: {
-              min: null,
-              max: null
-            },
-            slope: {
-              min: null,
-              max: null
-            },
-            mean: {
-              min: null,
-              max: null
-            },
-            rms: {
-              min: null,
-              max: null
-            },
-            lastmag: {
-              min: null,
-              max: null
-            }
-          },
-          z: {
-            min: {
-              min: null,
-              max: null
-            },
-            max: {
-              min: null,
-              max: null
-            },
-            slope: {
-              min: null,
-              max: null
-            },
-            mean: {
-              min: null,
-              max: null
-            },
-            rms: {
-              min: null,
-              max: null
-            },
-            lastmag: {
-              min: null,
-              max: null
-            }
-          },
-          y: {
-            min: {
-              min: null,
-              max: null
-            },
-            max: {
-              min: null,
-              max: null
-            },
-            slope: {
-              min: null,
-              max: null
-            },
-            mean: {
-              min: null,
-              max: null
-            },
-            rms: {
-              min: null,
-              max: null
-            },
-            lastmag: {
-              min: null,
-              max: null
-            }
-          }
-        },
-        coordinates: {
-          ra: null,
-          dec: null,
-          rs: null
-        }
-      }
-    };
+      showSQLLabel: "Show SQL"
+    }
   },
   /**
    * variables computadas
@@ -428,6 +214,7 @@ export default {
     },
     /**
      * request api new sql to show
+     * this generates a query from the parameters passed to the API route at /get_sql
      */
     refreshSQL: function() {
       let queryToSubmit = this._.cloneDeep(this.queryParameters);
