@@ -1,6 +1,5 @@
 import QueryService from '@/services/QueryService.js';
 import Vue from 'vue';
-import _ from 'lodash';
 export const state = {
     filters: {},
     dates: {},
@@ -53,14 +52,14 @@ export const actions = {
     updateOptions({ commit }, payload) {
         commit('UPDATE_OPTIONS', payload);
     },
-    getSQL({ commit, state }, query_parameters){
+    getSQL({ commit }, query_parameters){
         QueryService.getSQL(query_parameters).then( response => {
             commit('SET_SQL', response.data);
         }).catch( error => {
             alert(error);
         })
     },
-    queryObjects({ commit, dispatch, state }, query_parameters){
+    queryObjects({ dispatch, state }, query_parameters){
         QueryService.executeQuery(query_parameters).then( response => {
             let taskId = response.data["task-id"]
             state.interval = setInterval( () => {
