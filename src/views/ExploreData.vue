@@ -65,18 +65,23 @@ export default {
     }
   },
   mounted(){
-    let queryParams = { 
-      query_parameters: {
-        filters: {
-          oid: "ZTF18abiuthh"
+    let query_parameters = {
+      
+      bands: {
+        g:{
+          min: {
+          }
         }
       }
     }
-    QueryService.getSQL(queryParams).then(result => {
-      console.log("queryparams", queryParams);
+    QueryService.getSQL(query_parameters).then(result => {
+      console.log("queryparams", query_parameters);
       console.log("QUERY SQL", result.data);
+    }).catch(error => {
+      console.log("error SQL", query_parameters)
+      console.log("error en getSQL", error);
     })
-    QueryService.executeQuery(queryParams).then( (result) => {
+    QueryService.executeQuery(query_parameters).then( (result) => {
       console.log("sent query", result.data);
       this.interval = setInterval(
             this.checkStatus,

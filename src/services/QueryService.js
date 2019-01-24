@@ -16,20 +16,14 @@ export default {
      * @param {*} queryParameters: formatted query parameters
      */
     getSQL(queryParameters){
-        let param = {
-            query_parameters: queryParameters
-        };
-        return apiClient.post('/get_sql', param);
+        return apiClient.post('/get_sql', {query_parameters: queryParameters});
     },
     /**
      * Executes query to search objects given selected parameters
      * @param {*} queryParameters: formatted query parameters
      */
     executeQuery(queryParameters){
-        let param = {
-            query_parameters: queryParameters
-        };
-        return apiClient.post('/query', param);
+        return apiClient.post('/query', {query_parameters: queryParameters});
     },
     /**
      * Checks the status of an executed query

@@ -25,12 +25,12 @@
             <b-card no-body id="magnitudTab">
                 <b-tabs card v-show="anyBand">
                     <b-tab title="Any band">
-                        <tab-band></tab-band>
+                        <tab-band band="any"></tab-band>
                     </b-tab>
                 </b-tabs>
                 <b-tabs card v-show="!anyBand" v-model="selectedBand">
                     <b-tab v-for="band in bands" :key="band" :title="band">
-                        <tab-band ></tab-band>
+                        <tab-band :band="band"></tab-band>
                     </b-tab>
                 </b-tabs>
             </b-card>

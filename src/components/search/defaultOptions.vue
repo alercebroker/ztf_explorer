@@ -19,7 +19,7 @@
                     type="text"
                     class="form-control form-control-sm"
                     id="oid"
-                    v-model="queryParameters.filters.oid"
+                    v-model="oid"
                     :disabled="loading"
                     >
                 </b-col>
@@ -42,7 +42,7 @@
                 <select
                     class="form-control form-control-sm"
                     id="class"
-                    v-model="queryParameters.filters.class"
+                    v-model="classs"
                 >
                     <option value selected>All</option>
                     <option value="1">Cepheid</option>
@@ -70,7 +70,7 @@
                 <select
                     class="form-control form-control-sm"
                     id="subclass"
-                    v-model="queryParameters.filters.subclass"
+                    v-model="subclass"
                     disabled
                 >
                     <option value selected>All</option>
@@ -103,7 +103,7 @@
                             id="minnobs"
                             type="number"
                             min="0"
-                            v-model="queryParameters.filters.nobs.min"
+                            v-model="nobsMin"
                             :disabled="loading"
                         >
                     </b-col>
@@ -119,8 +119,8 @@
                             class="form-control form-control-sm"
                             id="maxnobs"
                             type="number"
-                            :min="queryParameters.filters.nobs.min "
-                            v-model="queryParameters.filters.nobs.max"
+                            v-model="nobsMax"
+                            :min="nobsMin"
                             :disabled="loading"
                         >
                     </b-col>
@@ -155,7 +155,7 @@
                             step="0.0001"
                             min="0"
                             max="1"
-                            v-model="queryParameters.filters.pclass.min"
+                            v-model="probMin"
                             :disabled="loading"
                         >
                     </b-col>
@@ -172,9 +172,9 @@
                             id="maxpclass"
                             type="number"
                             step="0.0001"
-                            :min="queryParameters.filters.pclass.min"
                             max="1"
-                            v-model="queryParameters.filters.pclass.max"
+                            min="0"
+                            v-model="probMax"
                             :disabled="loading"
                         >
                     </b-col>
@@ -208,7 +208,7 @@
                             min="0"
                             type="number"
                             step="0.1"
-                            v-model.number="queryParameters.filters.period.min"
+                            v-model="periodMin"
                             :disabled="loading"
                         >
                     </b-col>
@@ -222,11 +222,11 @@
                     <b-col cols="9">
                         <input
                             class="form-control form-control-sm"
-                            :min="queryParameters.filters.period.min"
                             type="number"
                             step="0.1"
                             id="maxperiod"
-                            v-model="queryParameters.filters.period.max"
+                            :min="periodMin"
+                            v-model="periodMax"
                             :disabled="loading"
                         >
                     </b-col>
@@ -241,8 +241,8 @@
                         plain
                         stacked
                         id="ext"
-                        v-model="queryParameters.filters.ext"
                         value="1"
+                        v-model="crossmatch"
                         :unchecked-value="null"
                     >
                         Has Crossmatch
@@ -261,40 +261,138 @@
 </template>
 
 <script>
+    
     export default {
         name: "default-options",
         props: ['loading'],
-        data(){
-            return{
-                queryParameters: {
-                    filters: {
-                        oid: null,
-                        class: null,
-                        subclass: null,
-                        nobs: {
-                            min: null,
-                            max: null
-                        },
-                        pclass: {
-                            min: null,
-                            max: null
-                        },
-                        period: {
-                            min: null,
-                            max: null
-                        },
-                        ext: null
-                    }
-                }
-            }
-        },
         computed: {
+            /**
+             * Here, each computed property gets the state of a given parameter and sets it as the view changes
+             * To set the value, we dispatch an action that sets an object inside the state with a specified value
+             * If the object is nested we pass an array with the path to the parameter inside the object.
+             * for example: If we update the min value of the number of alerts property we need to pass 3 arguments to the action
+             * The object we are updating wich is "filters"
+             * The path to the nested attribute as array : ["nobs","min"]
+             * and the value
+             */
             oid: {
                 get(){
-
+                    return this.$store.state.search.filters.oid;
                 },
                 set(value){
-
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["oid"],
+                        value: value
+                    })
+                }
+            },
+            classs: {
+                get(){
+                    return this.$store.state.search.filters.class;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["class"],
+                        value: value
+                    })
+                }
+            },
+            subclass: {
+                get(){
+                    return this.$store.state.search.filters.subclass;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["subclass"],
+                        value: value
+                    })
+                }
+            },
+            nobsMin: {
+                get(){
+                    return this.$store.state.search.filters.nobs ? this.$store.state.search.filters.nobs.min : null;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["nobs","min"],
+                        value: value
+                    })
+                }
+            },
+            nobsMax: {
+                get(){
+                    return this.$store.state.search.filters.nobs ? this.$store.state.search.filters.nobs.max : null;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["nobs","max"],
+                        value: value
+                    })
+                }
+            },
+            probMin: {
+                get(){
+                    return this.$store.state.search.filters.pclass ? this.$store.state.search.filters.pclass.min : null;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["pclass","min"],
+                        value: value
+                    })
+                }
+            },
+            probMax: {
+                get(){
+                    return this.$store.state.search.filters.pclass ? this.$store.state.search.filters.pclass.max : null;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["pclass","max"],
+                        value: value
+                    })
+                }
+            },
+            periodMin: {
+                get(){
+                    return this.$store.state.search.filters.period ? this.$store.state.search.filters.period.min : null;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["period","min"],
+                        value: value
+                    })
+                }
+            },
+            periodMax: {
+                get(){
+                    return this.$store.state.search.filters.period ? this.$store.state.search.filters.period.max : null;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["period","max"],
+                        value: value
+                    })
+                }
+            },
+            crossmatch: {
+                get(){
+                    return this.$store.state.search.filters.ext
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "filters",
+                        keyPath: ["ext"],
+                        value: value
+                    })
                 }
             }
         }
