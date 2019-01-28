@@ -1,10 +1,10 @@
 <template>
   <b-modal
-      ref="objDetailsModal"
       class="modal-fullscreen"
       id="more-results"
-      title="Object Details"
-      v-on:hidden="lessDetails"
+      :title="title"
+      v-on:hidden="$emit('modalClosed')"
+      v-model="show"
     >
       <b-container fluid>
         <b-row>
@@ -13,26 +13,10 @@
               <b-row>
                 <b-col id="details">
                   <ul id="default-details">
-                    <li v-for="(value, key) in defaultProp" :key="key">
-                      <strong>{{key}}</strong>
-                      : {{ value }}
+                    <li v-for="(value, key) in $store.state.results.objectDetails.object_details" :key="key">
+                      <strong>{{key}}</strong> : {{ value }}
                     </li>
                   </ul>
-                  <ul v-show="allDetails" id="more-details">
-                    <li v-for="(value, key) in details" :key="key">
-                      <strong>{{key}}</strong>
-                      : {{ value }}
-                    </li>
-                  </ul>
-                </b-col>
-              </b-row>
-              <b-row>
-                <b-col>
-                  <b-btn
-                    v-show="details != {}"
-                    variant="default"
-                    v-on:click="moreDetails"
-                  >{{ showMoreBtn }}</b-btn>
                 </b-col>
               </b-row>
             </b-card>
@@ -40,7 +24,7 @@
           <b-col>
             <!-- Curva de luz -->
             <b-card title="Light curve" class="h-100 align-middle">
-              <light-curve ref="lightCurve" :chartData="chartData"></light-curve>
+              <light-curve></light-curve>
             </b-card>
           </b-col>
         </b-row>
@@ -72,7 +56,10 @@
           <b-col>
             <b-card title="Aladin">
               <aladin 
-                :coordinates="{meanRA: details.meanra, meanDEC: details.meandec}"
+                :coordinates="{
+                    meanRA: $store.state.results.objectDetails.object_details ? $store.state.results.objectDetails.object_details.meanra : null,
+                    meanDEC: $store.state.results.objectDetails.object_details ? $store.state.results.objectDetails.object_details.meandec : null
+                  }"
                 width="inherit"
                 height="400px"
                 />
@@ -81,75 +68,25 @@
         </b-row>
       </b-container>
       <div slot="modal-footer">
-        <b-btn v-on:click="closeObjectModal">Close</b-btn>
+        <b-btn v-on:click="$emit('modalClosed')">Close</b-btn>
       </div>
     </b-modal>
 </template>
 
 <script>
 import lightCurve from "./lightCurve.vue";
-
+import aladin from './aladin.vue';
 export default {
   name: "object-details-modal",
-  props: ["alerts"],
+  props: ["show"],
   components: {
-    lightCurve: lightCurve
+    lightCurve: lightCurve,
+    aladin
   },
   data() {
     return {
-      chartData: {
-        magrs: [],
-        maggs: [],
-        magrErrors: [],
-        maggErrors: [],
-        jdates: []
-      }
+      title: "Object details for: " + this.$store.state.results.selectedObject.oid,
     };
-  },
-  methods: {
-    processLightCurveData: function() {
-      // Iterate through data and create four lists
-      this.chartData.magrs = [];
-      this.chartData.maggs = [];
-      this.chartData.magrErrors = [];
-      this.chartData.maggErrors = [];
-      this.chartData.jdates = [];
-
-      this.alerts.forEach(dataItem => {
-        this.chartData.jdates.push(dataItem.jd);
-        this.chartData.magrs.push(dataItem.magr);
-        this.chartData.maggs.push(dataItem.magg);
-
-        let magg_error = [null, null];
-        if (dataItem.magg != null) {
-          magg_error = [dataItem.magg - 0.1, dataItem.magg + 0.1];
-        }
-        this.chartData.maggErrors.push(magg_error);
-
-        let magr_error = [null, null];
-        if (dataItem.magr) {
-          magr_error = [dataItem.magr - 0.1, dataItem.magr + 0.1];
-        }
-        this.chartData.magrErrors.push(magr_error);
-      });
-
-      // this.data = [magrs, maggs, magrErrors, maggErrors, jdates]
-      //   this.magrs = magrs;
-      //   this.maggs = maggs;
-      //   this.magrErrors = magrErrors;
-      //   this.maggErrors = maggErrors;
-      //   this.jdates = jdates;
-    },
-    redrawLightCurveChart: function() {
-      this.processLightCurveData();
-
-      this.$refs.lightCurve.redraw();
-    }
-  },
-  watch: {
-    alerts() {
-      this.redrawLightCurveChart();
-    }
   }
 };
 </script>

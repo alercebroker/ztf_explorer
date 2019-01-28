@@ -1,12 +1,11 @@
 <template>
-    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close" :ok-only="true">
+    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close" :ok-only="true" @hide="onClose">
       <b-form-group>
         <template slot="label">
           <b>Choose your options:</b>
           <br>
           <b-form-checkbox
             v-model="allSelected"
-            :indeterminate="indeterminate"
             aria-describedby="options"
             aria-controls="options"
             @change="toggleAll"
@@ -27,7 +26,108 @@
 
 <script>
     export default {
-        name: "column-options-modal"
+        name: "column-options-modal",
+        data(){
+          return {
+            selected: [
+              {
+                key: "oid",
+                sortable: false,
+                label: "Object ID"
+              },
+              {
+                key: "nobs",
+                sortable: false,
+                label: "# Obs"
+              },
+              {
+                key: "pclass",
+                sortable: false,
+                label: "Probability on class"
+              }
+            ], // TODO: must contain default columns
+            options: [
+              //TODO: change values and text
+              {
+                text: "Object ID",
+                value: {
+                  key: "oid",
+                  sortable: false,
+                  label: "Object ID"
+                }
+              },
+              {
+                text: "Nalerts",
+                value: {
+                  key: "nobs",
+                  sortable: false,
+                  label: "# Obs"
+                }
+              },
+              {
+                text: "Pclass",
+                value: {
+                  key: "pclass",
+                  sortable: false,
+                  label: "Probability on class"
+                }
+              },
+              { text: "Class", value: "class" },
+              { text: "Period", value: "period" },
+              { text: "Ext", value: "ext" },
+
+              { text: "FirstMagG", value: "firstmagg" },
+              { text: "LastMagG", value: "lastmagg" },
+              { text: "MinG", value: "ming" },
+              { text: "MaxG", value: "maxg" },
+              { text: "MeanG", value: "meang" },
+              { text: "MedianG", value: "mediang" },
+              { text: "RmsG", value: "rmsg" },
+              { text: "SlopeG", value: "slopeg" },
+
+              { text: "LastMagR", value: "lastmagr" },
+              { text: "FirstMagR", value: "firstmagr" },
+              { text: "MinR", value: "minr" },
+              { text: "MaxR", value: "maxr" },
+              { text: "MeanR", value: "meanr" },
+              { text: "MedianR", value: "medianr" },
+              { text: "RmsR", value: "rmsr" },
+              { text: "SlopeR", value: "sloper" },
+
+              {
+                text: "FirstMJD",
+                value: {
+                  key: "firstjd",
+                  label: "FirstMJD"
+                }
+              },
+              {
+                text: "LastMJD",
+                value: {
+                  key: "lastjd",
+                  label: "LastMJD"
+                }
+              },
+              {
+                text: "DeltaMJD",
+                value: {
+                  key: "deltajd",
+                  label: "DeltaMJD"
+                }
+              },
+
+              { text: "MeanDEC", value: "meandec" },
+              { text: "RmsDEC", value: "rmsdec" },
+              { text: "MeanRA", value: "meanra" },
+              { text: "RmsRA", value: "rmsra" }
+            ]
+          }
+        },
+        methods: {
+          onClose(){
+            this.$store.dispatch('setSelectedColumnOptions', this.selected);
+          }
+        }
     }
 </script>
 

@@ -16,7 +16,7 @@
             <b-btn
               variant="outline-primary"
               size="sm"
-              block="true"
+              block="{true}"
               @click="clearQuery"
             >Clear all options</b-btn>
           </b-col>
@@ -30,7 +30,7 @@
             <b-row class="mb-2">
               <b-col class="align-middle">
                 <b-btn
-                  block="true"
+                  block="{true}"
                   variant="outline-secondary"
                   v-b-toggle.AdvancedSearch
                   @click="changeMoreOptLabel()"
@@ -50,7 +50,7 @@
             <b-row class="text-center">
               <b-col>
                 <b-button
-                  block="true"
+                  block="{true}"
                   variant="outline-secondary"
                   v-on:click="changeShowSQLLabel"
                   v-b-toggle="'SQL'"
@@ -63,7 +63,7 @@
                 <b-collapse id="SQL" class="mt-3">
                   <div class="pt-2 pb-4" style="background-color:#e9ecef">
                     <div class="text-right mr-2 mb-1">
-                      <b-button id="refreshSQL" v-on:click="refreshSQL">
+                      <b-button id="refreshSQL" @click="refreshSQL">
                         <v-icon name="redo"/>
                       </b-button>
                     </div>
@@ -79,7 +79,7 @@
                   type="submit"
                   variant="primary"
                   size="lg"
-                  block="true"
+                  block="{true}"
                   id="searchbtn"
                 >SEARCH</b-button>
               </b-col>
@@ -106,71 +106,14 @@ import defaultOptions from './defaultOptions.vue';
 import advancedOptions from './advancedOptions.vue';
 export default {
   name: "search-options",
-  props: ["params", "loading", "currentQueryParent"],
   components: {
     defaultOptions,
     advancedOptions
   },
   data() {
     return {
-      currentQuery: this.currentQueryParent,
-      flagFirst: false,
-      flagLast: false,
-      anyBand: false,
-      firstGreg: null,
-      lastGreg: null,
-      coordSearch: false,
       moreOptsLabel: "More Options",
       showSQLLabel: "Show SQL"
-    }
-  },
-  /**
-   * variables computadas
-   * */
-  computed: {
-    firstjd() {
-      return this.queryParameters.dates.firstjd;
-    },
-    lastjd() {
-      return this.queryParameters.dates.lastjd;
-    }
-  },
-  watch: {
-    /**
-     * watch date variables to change date cheking if flag is active first, flags avoid over write
-     * */
-    firstGreg: function(newGreg) {
-      if (!this.flagFirst) {
-        this.flagFirst = true;
-        this.queryParameters.dates.firstjd = this.gregorianToJd(newGreg);
-      } else {
-        this.flagFirst = false;
-      }
-    },
-    lastGreg: function(newGreg) {
-      if (!this.flagLast) {
-        this.flagLast = true;
-        this.queryParameters.dates.lastjd = this.gregorianToJd(newGreg);
-      } else {
-        this.flagLast = false;
-      }
-    },
-    firstjd() {
-      if (!this.flagFirst) {
-        this.flagFirst = true;
-
-        this.firstGreg = this.jdToGregorian(this.queryParameters.dates.firstjd);
-      } else {
-        this.flagFirst = false;
-      }
-    },
-    lastjd() {
-      if (!this.flagLast) {
-        this.flagLast = true;
-        this.lastGreg = this.jdToGregorian(this.queryParameters.dates.lastjd);
-      } else {
-        this.flagLast = false;
-      }
     }
   },
   methods: {
@@ -189,8 +132,16 @@ export default {
       this.showSQLLabel =
         this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
     },
-
-    
+    refreshSQL(){
+      let query_parameters = {
+        filters: this.$store.state.search.filters,
+        bands: this.$store.state.search.bands,
+        dates: this.$store.state.search.dates,
+        coordinates: this.$store.state.search.coordinates,
+      }
+      this.removeEmpty(query_parameters);
+      this.$store.dispatch('getSQL', query_parameters);
+    },
 
     /**
      * remove param that are empty
@@ -220,6 +171,9 @@ export default {
       this.$store.dispatch('getSQL', query_parameters);
       this.$store.dispatch('queryObjects', query_parameters);
       window.scrollTo(0, 0);
+    },
+    clearQuery(){
+      this.$store.dispatch('clearQuery');
     }
   }
 };

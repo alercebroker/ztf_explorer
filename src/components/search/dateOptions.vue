@@ -17,15 +17,15 @@
             </b-row>
             <b-row class="mb-3" name="firstJD">
                 <b-col cols="6">
-                    <b-form-input
-                        size="sm"
+                    <input
+                        class="form-control form-control-sm"
                         id="firstjd"
                         v-model="firstjd"
                     />
                 </b-col>
                 <b-col cols="6">
-                    <b-form-input
-                        size="sm"
+                    <input
+                        class="form-control form-control-sm"
                         id="datepickerfirst"
                         name="firstJD"
                         type="date"
@@ -41,15 +41,15 @@
             </b-row>
             <b-row class="mb-3" name="lastJD">
                 <b-col cols="6">
-                    <b-form-input
-                        size="sm"
+                    <input
+                        class="form-control form-control-sm"
                         id="lastjd"
                         v-model="lastjd"
                     />
                 </b-col>
                 <b-col cols="6">
-                    <b-form-input
-                        size="sm"
+                    <input
+                        class="form-control form-control-sm"
                         id="datepickerlast"
                         name="lastJD"
                         type="date"
@@ -65,8 +65,8 @@
             </b-row>
             <b-row class="mb-3">
                 <b-col cols="4">
-                    <b-form-input
-                        size="sm"
+                    <input
+                        class="form-control form-control-sm"
                         id="minjd"
                         v-model="deltamin"
                     />
@@ -82,8 +82,8 @@
                     <small class="text-muted">(days)</small>
                 </b-col>
                 <b-col cols="4">
-                    <b-form-input
-                        size="sm"
+                    <input
+                        class="form-control form-control-sm"
                         id="maxjd"
                         v-model="deltamax"
                     />
@@ -154,6 +154,10 @@
                 },
                 set(value){
                     if(! this.$store.state.search.flagFirst){
+                        this.$store.dispatch('updateFlag', {
+                            flag: "flagFirst",
+                            value: true
+                        })
                         this.$store.dispatch('updateOptions', {
                             obj: "dates",
                             keyPath: ["firstjd"],
@@ -163,10 +167,6 @@
                             obj: "dates",
                             keyPath: ["firstGreg"],
                             value: this.jdToGregorian(value)
-                        })
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagFirst",
-                            value: true
                         })
                     }
                     else {
@@ -182,11 +182,28 @@
                     return this.$store.state.search.dates.lastjd
                 },
                 set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "dates",
-                        keyPath: ["lastjd"],
-                        value: value
-                    })
+                    if(! this.$store.state.search.flagLast){
+                        this.$store.dispatch('updateFlag', {
+                            flag: "flagLast",
+                            value: true
+                        })
+                        this.$store.dispatch('updateOptions', {
+                            obj: "dates",
+                            keyPath: ["lastjd"],
+                            value: value
+                        })
+                        this.$store.dispatch('updateOptions', {
+                            obj: "dates",
+                            keyPath: ["lastGreg"],
+                            value: this.jdToGregorian(value)
+                        })
+                    }
+                    else {
+                        this.$store.dispatch('updateFlag', {
+                            flag: "flagLast",
+                            value: false
+                        })
+                    }
                 }
             },
             firstGreg: {
@@ -195,6 +212,10 @@
                 },
                 set(value){
                     if(! this.$store.state.search.flagFirst){
+                        this.$store.dispatch('updateFlag', {
+                            flag: "flagFirst",
+                            value: true
+                        })
                         this.$store.dispatch('updateOptions', {
                             obj: "dates",
                             keyPath: ["firstGreg"],
@@ -204,10 +225,6 @@
                             obj: "dates",
                             keyPath: ["firstjd"],
                             value: this.gregorianToJd(value)
-                        })
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagFirst",
-                            value: true
                         })
                     }
                     else {
@@ -223,11 +240,28 @@
                     return this.$store.state.search.dates.lastGreg
                 },
                 set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "dates",
-                        keyPath: ["lastGreg"],
-                        value: value
-                    })
+                    if(! this.$store.state.search.flagLast){
+                        this.$store.dispatch('updateFlag', {
+                            flag: "flagLast",
+                            value: true
+                        })
+                        this.$store.dispatch('updateOptions', {
+                            obj: "dates",
+                            keyPath: ["lastGreg"],
+                            value: value
+                        })
+                        this.$store.dispatch('updateOptions', {
+                            obj: "dates",
+                            keyPath: ["lastjd"],
+                            value: this.gregorianToJd(value)
+                        })
+                    }
+                    else {
+                        this.$store.dispatch('updateFlag', {
+                            flag: "flagLast",
+                            value: false
+                        })
+                    }
                 }
             },
             deltamin: {

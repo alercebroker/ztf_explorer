@@ -54,20 +54,14 @@ export default {
      * @param {*} objectId: id of the object
      */
     executeObjectQuery(objectId){
-        let param = {
-            oid: objectId
-        };
-        return apiClient.post('/query_alerts',param);
+        return apiClient.post('/query_alerts',{oid: objectId});
     },
     /**
      * Gets the result of a finished query about the details of a specific object
      * @param {*} taskId: id of the finished query
      */
     getObjectDetails(taskId){
-        let param = {
-            "task-id": taskId
-        };
-        return apiClient.post('/result', param);
+        return apiClient.post('/result', {'task-id': taskId});
     },
     /**
      * Executes a query to download the list of objects previously filtered

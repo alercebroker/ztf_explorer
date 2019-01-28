@@ -6,10 +6,15 @@ export const state = {
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
-    objects: null,
+    objects: {
+        total: 0,
+        result: []
+    },
     interval: null,
     flagFirst: false,
     flagLast: false,
+    query_status: null,
+    error: null,
 }
 
 export const mutations = {
@@ -45,6 +50,19 @@ export const mutations = {
     },
     SET_FLAG(state, payload){
         state[payload.flag] = payload.value;
+    },
+    SET_QUERY_STATUS(state, value){
+        state.query_status = value;
+    },
+    SET_ERROR(state, error){
+        state.error = error;
+    },
+    CLEAR_QUERY(state){
+        state.filters = { }
+        state.dates = { }
+        state.bands = { }
+        state.coordinates = { }
+        state.sql = "SELECT * FROM OBJECTS"
     }
 }
 
@@ -56,35 +74,77 @@ export const actions = {
         QueryService.getSQL(query_parameters).then( response => {
             commit('SET_SQL', response.data);
         }).catch( error => {
-            alert(error);
+            commit('SET_ERROR', error);
         })
     },
-    queryObjects({ dispatch, state }, query_parameters){
+    queryObjects({ commit, dispatch, state }, query_parameters){
+        dispatch('loading', true);
         QueryService.executeQuery(query_parameters).then( response => {
             let taskId = response.data["task-id"]
             state.interval = setInterval( () => {
                 QueryService.checkQueryStatus(taskId).then(response => {
                     if (response.data.status === "SUCCESS") {
                         clearInterval(state.interval);
+                        commit('SET_QUERY_STATUS', 200);
                         dispatch('getResults',taskId);
                     }
+                    else if (response.data.status === "TIMEDOUT"){
+                        clearInterval(state.interval);
+                        commit('SET_QUERY_STATUS', 504);
+                    }
                 }).catch(error => {
-                    alert(error);
+                    commit('SET_ERROR', error);
                 })
             },500);
         }).catch(error => {
-            alert(error);
+            commit('SET_ERROR', error);
         })
     },
-    getResults({commit},taskId){
+    getResults({commit, dispatch},taskId){
         QueryService.getPaginatedResult(taskId, 10, 1).then(result => {
-            commit('SET_OBJECTS',result.data)
+            commit('SET_QUERY_STATUS', result.status);
+            commit('SET_OBJECTS',result.data);
+            dispatch('loading', false);
         }).catch(error => {
-            alert(error);
+            commit('SET_ERROR', error);
+        })
+    },
+    queryAlerts({commit, dispatch}, object){
+        dispatch('loading', true);
+        QueryService.executeObjectQuery(object.oid).then( response => {
+            let taskId = response.data["task-id"]
+            state.interval = setInterval(() => {
+                QueryService.checkQueryStatus(taskId).then(response => {
+                    if (response.data.status === "SUCCESS") {
+                        clearInterval(state.interval);
+                        commit('SET_QUERY_STATUS', 200);
+                        dispatch('getObjectDetails', taskId);
+                    }
+                    else if (response.data.status === "TIMEDOUT") {
+                        clearInterval(state.interval);
+                        commit('SET_QUERY_STATUS', 504);
+                    }
+                }).catch(error => {
+                    commit('SET_ERROR', error);
+                })
+            }, 500);
+        }).catch(error => {
+            commit('SET_ERROR', error);
+        })
+    },
+    getObjectDetails({commit, dispatch}, taskId){
+        QueryService.getObjectDetails(taskId).then( response => {
+            dispatch('setObjectDetails', response.data);
+            dispatch('loading', false);
+        }).catch(error => {
+            commit('SET_ERROR', error);
         })
     },
     updateFlag({commit}, payload){
         commit('SET_FLAG', payload);
+    },
+    clearQuery({commit}){
+        commit('CLEAR_QUERY');
     }
 }
 
@@ -97,14 +157,6 @@ export const getters = {
     },
     getSQL(state){
         return state.sql
-    },
-    query_parameters(state){
-        let query_parameters = {};
-        if (Object.keys(state.filters).length) query_parameters.filters = state.filters
-        if (Object.keys(state.bands).length) query_parameters.bands = state.bands
-        if (Object.keys(state.dates).length) query_parameters.dates = state.dates
-        if (Object.keys(state.coordinates).length) query_parameters.coordinates = state.coordinates
-        return Object.keys(state.filters).length;
     }
 }
 

@@ -5,8 +5,8 @@
             <b-tabs card>
                 <b-tab title="Single">
                     <b-container>
-                        <b-row class="align-middle">
-                            <b-col md="5">RA
+                        <b-row class="mb-3">
+                            <b-col cols="6">RA
                                 <v-icon
                                     v-b-tooltip.hover.right
                                     title="Right Ascension"
@@ -16,18 +16,17 @@
                                 <small class="text-muted">(deg)</small>
                             </b-col>
                             <b-col class="mb-1">
-                                <b-form-input
-                                    size="sm"
+                                <input
+                                    class="form-control form-control-sm"
                                     id="RA"
                                     type="number"
                                     step="0.00001"
                                     v-model="ra"
-                                    :required="coordSearch"
-                                ></b-form-input>
+                                />
                             </b-col>
                         </b-row>
-                        <b-row class="align-middle">
-                            <b-col md="5">DEC
+                        <b-row class="mb-3">
+                            <b-col cols="6">DEC
                                 <v-icon
                                     v-b-tooltip.hover.right
                                     title="Declination"
@@ -37,18 +36,17 @@
                                 <small class="text-muted">(deg)</small>
                             </b-col>
                             <b-col class="mb-1">
-                                <b-form-input
-                                    size="sm"
+                                <input
+                                    class="form-control form-control-sm"
                                     id="DEC"
                                     type="number"
                                     step="0.00001"
                                     v-model="dec"
-                                    :required="coordSearch"
-                                ></b-form-input>
+                                />
                             </b-col>
                         </b-row>
-                        <b-row class="align-middle">
-                            <b-col md="5">Radius
+                        <b-row class="mb-3">
+                            <b-col cols="6">Radius
                                 <v-icon
                                     v-b-tooltip.hover.right
                                     title="Cone search radius"
@@ -58,21 +56,20 @@
                                 <small class="text-muted">(arcsec)</small>
                             </b-col>
                             <b-col class="mb-1">
-                                <b-form-input
-                                    size="sm"
+                                <input
+                                    class="form-control form-control-sm"
                                     id="RS"
                                     type="number"
                                     step="0.00001"
                                     v-model="rs"
-                                    :required="coordSearch"
-                                ></b-form-input>
+                                />
                             </b-col>
                         </b-row>
                     </b-container>
                 </b-tab>
                 <b-tab title="List" disabled>
                     <b-container>
-                        <b-row class="align-middle">
+                        <b-row class="mb-3">
                             <b-form-file placeholder="Choose a file..."></b-form-file>
                             <b-alert show class="small">.txt file, format: "RA,DEC,RS\n"</b-alert>
                         </b-row>
@@ -86,11 +83,42 @@
 <script>
     export default {
         name: "coordinate-options",
-        data(){
-            return{
-                ra: null,
-                dec: null,
-                rs: null
+        computed: {
+            ra: {
+                get(){
+                    return this.$store.state.search.coordinates.ra;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "coordinates",
+                        keyPath: ["ra"],
+                        value: value
+                    })
+                }
+            },
+            dec: {
+                get(){
+                    return this.$store.state.search.coordinates.dec;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "coordinates",
+                        keyPath: ["dec"],
+                        value: value
+                    })
+                }
+            },
+            rs: {
+                get(){
+                    return this.$store.state.search.coordinates.rs;
+                },
+                set(value){
+                    this.$store.dispatch('updateOptions', {
+                        obj: "coordinates",
+                        keyPath: ["rs"],
+                        value: value
+                    })
+                }
             }
         }
     }

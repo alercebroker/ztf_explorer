@@ -11,7 +11,6 @@
 <script>
 export default {
   name: "light-curve",
-  props: ["chartData"],
   data() {
     return {
       chartOptions: {
@@ -132,50 +131,35 @@ export default {
   },
 
   methods: {
-    redraw: function() {
-      // replace julian dates
-      this.chartOptions.xAxis.categories = this.chartData.jdates;
-
-      // delete the previous series
-      this.chartOptions.series = [
-        {
-          name: "r magnitude",
-          value: "rmag",
-          color: "#ff0000",
-          type: "scatter",
-          data: this.chartData.magrs
-        },
-        {
-          name: "r magnitude error",
-          type: "errorbar",
-          color: "#cc0c00",
-          enableMouseTracking: false,
-          data: this.chartData.magrErrors
-        },
-        {
-          name: "g magnitude",
-          value: "gmag",
-          // linkedTo: 'rmag',
-          type: "scatter",
-          color: "#22d100",
-          data: this.chartData.maggs
-        },
-        {
-          name: "g magnitude error",
-          type: "errorbar",
-          color: "#0a9900",
-          enableMouseTracking: false,
-          data: this.chartData.maggErrors
+    processLightCurveData: function(alerts) {
+      this.chartOptions.plotOptions.series = []
+      this.chartOptions.xAxis.categories = [];
+      alerts.forEach(dataItem => {
+        this.chartOptions.xAxis.categories.push(dataItem.jd);
+        this.chartOptions.series.find(item => item.name === 'r magnitude').data.push(dataItem.magr);
+        this.chartOptions.series.find(item => item.name === 'g magnitude').data.push(dataItem.magg);
+        let magg_error = [null, null];
+        if (dataItem.magg != null) {
+          magg_error = [dataItem.magg - 0.1, dataItem.magg + 0.1];
         }
-      ];
+        this.chartOptions.series.find(item => item.name === 'g magnitude error').data.push(magg_error);
+
+        let magr_error = [null, null];
+        if (dataItem.magr) {
+          magr_error = [dataItem.magr - 0.1, dataItem.magr + 0.1];
+        }
+        this.chartOptions.series.find(item => item.name === 'r magnitude error').data.push(magr_error);
+      });
+    },
+  },
+  computed: {
+    alerts(){
+      return this.$store.state.results.objectDetails.alerts;
     }
   },
   watch: {
-    chartData: {
-      handler: function() {
-        this.redraw();
-      },
-      deep: true
+    alerts(newAlerts){
+      this.processLightCurveData(newAlerts);
     }
   }
 };
