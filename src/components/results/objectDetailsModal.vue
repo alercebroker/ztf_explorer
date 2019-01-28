@@ -32,7 +32,7 @@
           <b-col>
             <!-- Stamps -->
             <!-- <img src="" alt="" id="image"> -->
-            <b-card title="Stamps">
+            <b-card title="Stamps" v-show="false">
               <div class="text-center">No stamps to display</div>
             </b-card>
           </b-col>
@@ -40,13 +40,13 @@
         <b-row class="mt-3">
           <b-col>
             <!-- Visibility Plot -->
-            <b-card title="Visibility Plots">
+            <b-card title="Visibility Plots" v-show="false">
               <div class="text-center">No plots to display</div>
             </b-card>
           </b-col>
           <b-col>
             <!-- Periodogram -->
-            <b-card title="Periodogram">
+            <b-card title="Periodogram" v-show="false">
               <div class="text-center">No periodogram to display</div>
             </b-card>
           </b-col>

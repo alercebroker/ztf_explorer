@@ -132,7 +132,9 @@ export default {
 
   methods: {
     processLightCurveData: function(alerts) {
-      this.chartOptions.plotOptions.series = []
+      this.chartOptions.series.forEach(element => {
+        element.data = [];
+      });
       this.chartOptions.xAxis.categories = [];
       alerts.forEach(dataItem => {
         this.chartOptions.xAxis.categories.push(dataItem.jd);

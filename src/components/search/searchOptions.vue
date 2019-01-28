@@ -87,10 +87,10 @@
             
             <b-row>
               <b-col class="text-center">
-                <b-button variant="secondary" size="sm" id="searchbtn" disabled>Save search</b-button>
+                <b-button variant="secondary" size="sm" id="searchbtn" disabled v-show="false">Save search</b-button>
               </b-col>
               <b-col class="text-center">
-                <b-button variant="warning" size="sm" disabled>Subscribe</b-button>
+                <b-button variant="warning" size="sm" disabled v-show="false">Subscribe</b-button>
               </b-col>
             </b-row>
           </div>

@@ -1,5 +1,7 @@
 export const state = {
-    selectedObject: null,
+    selectedObject: {
+        oid: null
+    },
     objectDetails: {
         object_details: null,
         alerts: null,
@@ -39,9 +41,11 @@ export const actions = {
     setSelectedColumnOptions({commit}, selected){
         commit('SET_SELECTED_COLUMN_OPTIONS', selected);
     },
-    objectSelected({commit, dispatch}, object){
-        commit('SET_SELECTED_OBJECT', object);
-        dispatch('queryAlerts', object);
+    objectSelected({commit, dispatch, state}, object){
+        if(state.selectedObject.oid !== object.oid){
+            commit('SET_SELECTED_OBJECT', object);
+            dispatch('queryAlerts', object);
+        }
     },
     setObjectDetails({commit}, details){
         commit('SET_OBJECT_DETAILS', details.result);

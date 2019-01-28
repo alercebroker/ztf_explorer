@@ -11,11 +11,11 @@
   <div v-else-if="$store.state.search.query_status === 200">
     <div class="row">
       <b-col cols="4">
-        <b-btn class="mb-3" block="true" v-b-modal.showDetails>Columns to show in table</b-btn>
+        <b-btn class="mb-3 btn-wrap-text" block="true" v-b-modal.showDetails>Columns to show in table</b-btn>
       </b-col>
       <b-col></b-col>
       <b-col cols="4">
-        <b-btn class="mb-3" block="true" v-b-modal.showDownloadModal>Download</b-btn>
+        <b-btn class="mb-3 btn-wrap-text" block="true" v-b-modal.showDownloadModal>Download</b-btn>
       </b-col>
     </div>
 
@@ -222,6 +222,9 @@ export default {
   border-radius: 0;
   min-height: 100%;
   height: auto;
+}
+.btn-wrap-text {
+    white-space: normal !important;
 }
 ul > li {
   list-style: none;

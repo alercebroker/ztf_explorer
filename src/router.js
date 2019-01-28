@@ -13,7 +13,7 @@ export default new Router({
     '/vue/' : '/',
   routes: [{
       path: '/',
-      name: 'home',
+      name: 'exploreData',
       component: ExploreData
 
     },
