@@ -1,8 +1,6 @@
 <template>
     <div>
-    <div id="aladin-lite-div" :style="style">
-    </div>
-    <p>{{style}}</p>
+        <div id="aladin-lite-div" :style="style" />
     </div>
 </template>
 
