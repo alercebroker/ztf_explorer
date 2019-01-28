@@ -4,7 +4,7 @@
       id="more-results"
       :title="title"
       v-on:hidden="$emit('modalClosed')"
-      v-model="show"
+      v-model="showModal"
     >
       <b-container fluid>
         <b-row>
@@ -87,6 +87,16 @@ export default {
     return {
       title: "Object details for: " + this.$store.state.results.selectedObject.oid,
     };
+  },
+  computed: {
+    showModal: {
+      get(){
+        return this.show
+      },
+      set(value){
+        return value
+      }
+    }
   }
 };
 </script>

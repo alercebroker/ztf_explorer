@@ -1,6 +1,6 @@
 <template>
-  <div v-if="$store.state.search.error != null">
-    <b-alert show variant="danger">Error conecting to our servers</b-alert>
+  <div v-if="$store.state.search.error">
+    <b-alert show variant="danger">Error connecting to our servers</b-alert>
   </div>
   <div v-else-if="$store.state.search.query_status === 204">
     <b-alert show variant="warning">
@@ -23,16 +23,15 @@
 
     <small>
       <div>
-        <strong>Note: this is a random sample from your query result set.</strong>
+        <strong>Found {{ $store.state.search.objects.length }} results</strong>
       </div>
-      <div>Showing {{ $store.state.search.objects.result.length }} rows of {{ $store.state.search.objects.total }}.</div>
     </small>
     
     <div v-show="$store.state.results.selectedColumnOptions.length">
       <b-table
         striped
         hover
-        :items="$store.state.search.objects.result"
+        :items="items"
         :fields="$store.state.results.selectedColumnOptions"
         @row-clicked="onRowClicked"
       >
@@ -122,25 +121,8 @@
           <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
         </template>
       </b-table>
-    </div>
-    <div>
-      <b-row>
-        <b-col></b-col>
-        <b-col class="text-right">
-          <b-btn
-            variant="primary"
-            v-on:click="getMoreResults"
-            :disabled="!moreResultsLeft()"
-            id="more-results-btn"
-          >Load more</b-btn>
-          <br>
-        </b-col>
-      </b-row>
-      <b-row>
-        <b-col>
-          <br>
-        </b-col>
-      </b-row>
+      <b-pagination size="md" :total-rows="$store.state.search.objects.length" v-model="currentPage" :per-page="10">
+      </b-pagination>
     </div>
 
     <object-details-modal :show="showObjectDetailsModal" @modalClosed="showObjectDetailsModal = false"/>
@@ -150,7 +132,7 @@
   <div v-else-if="$store.state.search.query_status === 400">
     <b-alert show variant="warning">There is an error with your query</b-alert>
   </div>
-  <div v-else-if="$store.state.search.objects.total === 0">
+  <div v-else-if="$store.state.search.objects.length === 0">
     <b-alert variant="info" show>Your search results will be displayed here</b-alert>
   </div>
   <div v-else-if="$store.state.search.query_status === 504">
@@ -190,19 +172,19 @@ export default {
   data() {
     return {
       showObjectDetailsModal: false,
+      currentPage: 1,
+      pageSize: 10,
     };
   },
   methods: {
-    /**
-     * for checking if there are any results left
-     * @returns {boolean}
-     */
-    moreResultsLeft() {
-      return this.$store.state.search.objects.result.length != this.$store.state.search.objects.total;
-    },
     onRowClicked(item) {
       this.showObjectDetailsModal = true;
       this.$store.dispatch('objectSelected', item);
+    }
+  },
+  computed: {
+    items(){
+      return this.$store.state.search.objects.slice((this.currentPage - 1) * this.pageSize, (this.currentPage -1) * this.pageSize + this.pageSize)
     }
   }
 };

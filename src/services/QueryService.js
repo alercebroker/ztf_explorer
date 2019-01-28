@@ -60,7 +60,7 @@ export default {
      * Gets the result of a finished query about the details of a specific object
      * @param {*} taskId: id of the finished query
      */
-    getObjectDetails(taskId){
+    getResult(taskId){
         return apiClient.post('/result', {'task-id': taskId});
     },
     /**

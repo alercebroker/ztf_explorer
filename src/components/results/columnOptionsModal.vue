@@ -29,6 +29,7 @@
         name: "column-options-modal",
         data(){
           return {
+            allSelected: false,
             selected: [
               {
                 key: "oid",
@@ -126,6 +127,9 @@
         methods: {
           onClose(){
             this.$store.dispatch('setSelectedColumnOptions', this.selected);
+          },
+          toggleAll(checked){
+            this.selected = checked ? this.options.map(a => a.value).slice() : [];
           }
         }
     }

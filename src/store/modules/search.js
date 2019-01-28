@@ -6,10 +6,7 @@ export const state = {
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
-    objects: {
-        total: 0,
-        result: []
-    },
+    objects: [],
     interval: null,
     flagFirst: false,
     flagLast: false,
@@ -94,19 +91,22 @@ export const actions = {
                     }
                 }).catch(error => {
                     commit('SET_ERROR', error);
+                    dispatch('loading', false);
                 })
             },500);
         }).catch(error => {
             commit('SET_ERROR', error);
+            dispatch('loading', false);
         })
     },
     getResults({commit, dispatch},taskId){
-        QueryService.getPaginatedResult(taskId, 10, 1).then(result => {
-            commit('SET_QUERY_STATUS', result.status);
-            commit('SET_OBJECTS',result.data);
+        QueryService.getResult(taskId).then(result => {
+            //commit('SET_QUERY_STATUS', result.status);
+            commit('SET_OBJECTS',result.data.result);
             dispatch('loading', false);
         }).catch(error => {
             commit('SET_ERROR', error);
+            dispatch('loading', false);
         })
     },
     queryAlerts({commit, dispatch}, object){
@@ -126,18 +126,21 @@ export const actions = {
                     }
                 }).catch(error => {
                     commit('SET_ERROR', error);
+                    dispatch('loading', false);
                 })
             }, 500);
         }).catch(error => {
             commit('SET_ERROR', error);
+            dispatch('loading', false);
         })
     },
     getObjectDetails({commit, dispatch}, taskId){
-        QueryService.getObjectDetails(taskId).then( response => {
+        QueryService.getResult(taskId).then( response => {
             dispatch('setObjectDetails', response.data);
             dispatch('loading', false);
         }).catch(error => {
             commit('SET_ERROR', error);
+            dispatch('loading', false);
         })
     },
     updateFlag({commit}, payload){
