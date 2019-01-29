@@ -14,7 +14,7 @@ export const state = {
         },
         {
             key: "nobs",
-            sortable: false,
+            sortable: true,
             label: "# Obs"
         },
         {

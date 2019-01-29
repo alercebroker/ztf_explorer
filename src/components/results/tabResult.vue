@@ -6,32 +6,23 @@
           <b-card no-body>
             <b-tabs card>
               <b-tab title="Table">
-                <tabData></tabData>
-              </b-tab>
-              <!-- <b-tab
-                title="Histogram"
-                v-on:click="reDrawHist"
-                :disabled="result.data.length != 0 ? false : true"
-              >
-                <tabHistogram
-                  ref="histogram"
-                  :loadMore="loadMore"
-                ></tabHistogram>
+                <tabData/>
               </b-tab>
               <b-tab
-                v-on:click="reDrawScat"
-                title="Scatter"
-                :disabled="result.data.length != 0 ? false : true"
+                title="Histogram"
+                :disabled="$store.state.search.objects.length != 0 ? false : true"
               >
-                <tabScatter
-                  ref="scatter"
-                  :loadMore="loadMore"
-                  :disabled="result.data.status == 200 ? false : true"
-                ></tabScatter>
+                <tabHistogram/>
+              </b-tab>
+              <b-tab
+                title="Scatter"
+                :disabled="$store.state.search.objects.length != 0 ? false : true"
+              >
+                <tabScatter/>
               </b-tab>
               <b-tab title="Spatial Distribution" :disabled="true">
-                <tabSpatialDistribution :result="result"></tabSpatialDistribution>
-              </b-tab> -->
+                <tabSpatialDistribution/>
+              </b-tab>
             </b-tabs>
           </b-card>
         </transition>

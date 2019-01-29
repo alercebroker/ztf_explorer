@@ -16,7 +16,7 @@
             <b-btn
               variant="outline-primary"
               size="sm"
-              block="{true}"
+              :block="block"
               @click="clearQuery"
             >Clear all options</b-btn>
           </b-col>
@@ -30,7 +30,7 @@
             <b-row class="mb-2">
               <b-col class="align-middle">
                 <b-btn
-                  block="{true}"
+                  :block="block"
                   variant="outline-secondary"
                   v-b-toggle.AdvancedSearch
                   @click="changeMoreOptLabel()"
@@ -50,7 +50,7 @@
             <b-row class="text-center">
               <b-col>
                 <b-button
-                  block="{true}"
+                  :block="block"
                   variant="outline-secondary"
                   v-on:click="changeShowSQLLabel"
                   v-b-toggle="'SQL'"
@@ -79,7 +79,7 @@
                   type="submit"
                   variant="primary"
                   size="lg"
-                  block="{true}"
+                  :block="block"
                   id="searchbtn"
                 >SEARCH</b-button>
               </b-col>
@@ -113,7 +113,8 @@ export default {
   data() {
     return {
       moreOptsLabel: "More Options",
-      showSQLLabel: "Show SQL"
+      showSQLLabel: "Show SQL",
+      block: true,
     }
   },
   methods: {

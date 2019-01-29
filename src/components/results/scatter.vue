@@ -14,12 +14,16 @@
         props: ['plotValues', 'xVariable', 'yVariable'],
         data(){
         	return{
-        	    arg : [true,true,true],
+				arg : [true,true,true],
         		chartOptions:{
         			chart: {
 				        type: 'scatter',
 				        zoomType: 'xy'
-				    },
+					},
+					boost: {
+						useGPUTranslations: true,
+						usePreAllocated: true
+					},
 				    title: {
 				    	text: ""
 				    },
@@ -38,31 +42,18 @@
 				    legend: {
 					    enabled: false
 					  },
-
-				    plotOptions: {
-				        scatter: {
-				            marker: {
-				                radius: 5,
-				                states: {
-				                    hover: {
-				                        enabled: true,
-				                        lineColor: 'rgb(100,100,100)'
-				                    }
-				                }
-				            },
-				            states: {
-				                hover: {
-				                    marker: {
-				                        enabled: false
-				                    }
-				                }
-				            },
-				            tooltip: {
-				            	headerFormat: 'OID: <b>{series.name}</b><br>',
-				            },
-				        }
-				    },
-			        series: [],
+			        series: [{
+						type: 'scatter',
+						color: '#3C347E',
+						data: [[1,2]],
+						marker: {
+							radius: 0.1
+						},
+						tooltip: {
+							followPointer: false,
+							pointFormat: '[{point.x:.1f}, {point.y:.1f}]'
+						}
+					}],
 				    //end highcharts element
 				    },
         	}
@@ -70,33 +61,21 @@
         methods:{
 		  	redraw(){ //add a series for object
 		  		// delete the previous series
-		  		this.chartOptions.series = [];
+				  this.chartOptions.series[0].data = [];
+				  this.chartOptions.xAxis.title.text = this.xVariable;
+				  this.chartOptions.yAxis.title.text = this.yVariable;
 		  		// add new series
 		  		this.plotValues.forEach(obj =>{
-		  			this.chartOptions.series.push({
-		  				name: obj.oid,
-		  				data: [obj.pair],
-		  				color: '#3C347E',
-		  				marker: {
-				            symbol:"circle"
-				        },
-		  			});
+		  			this.chartOptions.series[0].data.push(obj.pair);
 		  		});
 		    },
 
 		},
 		watch: {
-            xVariable: function(newVal, oldVal) { // watch it
-                this.chartOptions.xAxis.title.text = newVal;
-                this.redraw();
-        },
-        yVariable: function(newVal, oldVal) { // watch it
-			  this.chartOptions.yAxis.title.text = newVal;
-			  this.redraw();
-        },
-        plotValues: function(newVal, oldVal) { // watch it
-			  this.redraw();
-        }
+			plotValues: function(newVal) { // watch it
+				//this.chartOptions.series[0].marker.radius = 5 - Math.pow((newVal.length / 10000), 3);
+				this.redraw();
+			}
 		}
     }
 </script>

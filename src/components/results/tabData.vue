@@ -11,11 +11,11 @@
   <div v-else-if="$store.state.search.query_status === 200">
     <div class="row">
       <b-col cols="4">
-        <b-btn class="mb-3 btn-wrap-text" block="true" v-b-modal.showDetails>Columns to show in table</b-btn>
+        <b-btn class="mb-3 btn-wrap-text" :block="block" v-b-modal.showDetails>Columns to show in table</b-btn>
       </b-col>
       <b-col></b-col>
       <b-col cols="4">
-        <b-btn class="mb-3 btn-wrap-text" block="true" v-b-modal.showDownloadModal>Download</b-btn>
+        <b-btn class="mb-3 btn-wrap-text" :block="block" v-b-modal.showDownloadModal>Download</b-btn>
       </b-col>
     </div>
 
@@ -34,6 +34,8 @@
         :items="items"
         :fields="$store.state.results.selectedColumnOptions"
         @row-clicked="onRowClicked"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
       >
         <template slot="class" slot-scope="data">
           <!--TODO: change classes-->
@@ -174,6 +176,9 @@ export default {
       showObjectDetailsModal: false,
       currentPage: 1,
       pageSize: 10,
+      block:true,
+      sortBy: 'nobs',
+      sortDesc: false,
     };
   },
   methods: {

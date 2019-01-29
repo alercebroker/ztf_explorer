@@ -38,7 +38,7 @@
               },
               {
                 key: "nobs",
-                sortable: false,
+                sortable: true,
                 label: "# Obs"
               },
               {
@@ -61,7 +61,7 @@
                 text: "Nalerts",
                 value: {
                   key: "nobs",
-                  sortable: false,
+                  sortable: true,
                   label: "# Obs"
                 }
               },

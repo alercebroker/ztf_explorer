@@ -1,31 +1,16 @@
 <template>
   <div class="tabHistogram">
     <b-row align-h="around">
-      <b-col cols="4">
+      <b-col cols="6">
         <b-form-group horizontal label="xAxis" label-for="yAxis">
           <b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
         </b-form-group>
-      </b-col>
-      <!--b-col cols="4">
-				<b-form-group horizontal label="nbins" label-for="nbins">
-					<b-form-input id="nbins" type="number" v-model="nbins" disabled></b-form-input>
-				</b-form-group>
-      </b-col-->
-      <b-col cols="2">
-        <b-button
-          variant="secondary"
-          alt="Load and add another sample of data"
-          v-on:click="loadMore(setPlotValues)"
-          :disabled="disabled"
-        >More data</b-button>
       </b-col>
     </b-row>
     <b-row align-h="center">
       <histogram
         :plotValues="plotValues"
         :xVariable="selected"
-        :nbins="nbins"
-        :dataReady="dataReady"
       ></histogram>
     </b-row>
   </div>
@@ -36,21 +21,11 @@ import histogram from "./histogram.vue";
 
 export default {
   name: "tabHistogram",
-  props: [
-    "results",
-    "currentQueryParent",
-    "pageNumber",
-    "getMoreObjects",
-    "loadMore"
-  ],
   components: {
     histogram
   },
   data() {
     return {
-      dataReady: 0,
-      currentQuery: this.currentQueryParent,
-      nbins: 10,
       selected: null,
       plotValues: [],
       options: [
@@ -101,11 +76,9 @@ export default {
     setPlotValues: function() {
       //erase previous values
       this.plotValues = [];
-
         //add plot values
-      this.results.data.result.forEach(obj => {
+      this.objects.forEach(obj => {
         let value = this.getAxisData(this.selected, obj);
-
         if (value != null) {
           this.plotValues.push({
             oid: obj.oid,
@@ -113,16 +86,11 @@ export default {
           });
         }
       });
-      this.dataReady =this.dataReady +1;
     }
   },
-  computed: {
-    /**
-     * check if axis is selected
-     * @returns {boolean}
-     */
-    disabled() {
-      return this.selected == null;
+  computed:{
+    objects(){
+      return this.$store.state.search.objects;
     }
   },
   watch: {
@@ -132,7 +100,13 @@ export default {
     selected: function() {
       // watch it
       this.setPlotValues();
-    }
+    },
+    /**
+		 * update plot values when new search is executed
+		 */
+		objects(){
+			if(this.selected)this.setPlotValues();
+		}
   }
 };
 </script>
