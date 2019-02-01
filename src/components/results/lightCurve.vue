@@ -49,7 +49,8 @@ export default {
           title: {
             text: "Magnitude"
           },
-          type: "linear"
+          type: "linear",
+          reversed: true,
         },
         legend: {
           layout: "vertical",
@@ -137,7 +138,7 @@ export default {
       });
       this.chartOptions.xAxis.categories = [];
       alerts.forEach(dataItem => {
-        this.chartOptions.xAxis.categories.push(dataItem.jd);
+        this.chartOptions.xAxis.categories.push(dataItem.jd.toFixed(3));
         this.chartOptions.series.find(item => item.name === 'r magnitude').data.push(dataItem.magr);
         this.chartOptions.series.find(item => item.name === 'g magnitude').data.push(dataItem.magg);
         let magg_error = [null, null];

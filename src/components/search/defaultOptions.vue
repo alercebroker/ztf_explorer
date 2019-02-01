@@ -45,22 +45,12 @@
                     v-model="classs"
                 >
                     <option value selected>All</option>
-                    <option value="1">Cepheid</option>
-                    <option value="2">Eclipsing Binary</option>
-                    <option value="3">RR Lyrae</option>
-                    <option value="4">Delta Scuti</option>
-                    <option value="5">Long Period Variable</option>
-                    <option value="6">Supernova Ia</option>
-                    <option value="7">Supernova II</option>
-                    <option value="8">Supernova Ibc</option>
-                    <option value="9">Super luminous supernova</option>
-                    <option value="10">Supernova Iabg</option>
-                    <option value="11">Supernova IIn</option>
+                    <option v-for="(option, index) in classOptions" :value="index+1" :key="index">{{option}}</option>
                 </select>
             </b-col>
         </b-row>
         <!-- SUBCLASS -->
-        <b-row class="mb-3">
+        <!-- <b-row class="mb-3">
             <b-col cols="4">
                 <label for="subclass">
                     <b>Subclass</b>
@@ -79,7 +69,7 @@
                     <option value="3">Variable Star</option>
                 </select>
             </b-col>
-        </b-row>
+        </b-row> -->
         <!-- NUMBER OF ALERTS -->
         <b-row class="mb-3">
             <b-col cols="12" class="mb-3 mb-1">
@@ -128,7 +118,7 @@
             </b-col>
         </b-row>
         <!-- CLASS PROBABILITY -->
-        <b-row class="mb-3">
+        <!-- <b-row class="mb-3">
             <b-col cols="12" class="mb-3">
                 <b>Class Probability</b>
                 <v-icon
@@ -180,7 +170,7 @@
                     </b-col>
                 </b-row>
             </b-col>
-        </b-row>
+        </b-row> -->
         <!-- PERIOD -->
         <b-row>
             <b-col cols="12" class="mb-3">
@@ -233,8 +223,9 @@
                 </b-row>
             </b-col>
         </b-row>
+        <br/>
         <!-- HAS CROSSMATCH -->
-        <b-row name="ext" class="my-3">
+        <!-- <b-row name="ext" class="my-3">
             <b-col cols="12" class="form-check">
                 <b-form-group>
                     <b-form-checkbox
@@ -256,7 +247,7 @@
                         ></v-icon>
                 </b-form-group>
             </b-col>
-        </b-row>
+        </b-row> -->
     </div>
 </template>
 
@@ -265,6 +256,14 @@
     export default {
         name: "default-options",
         props: ['loading'],
+        data(){
+            return {
+                classOptions: [
+                    "EBSD/D","RRL","Periodic-Other","LPV","EBC","Ceph","DSCT","CV","Novae","Pulsating-Other",
+                    "SNeIIb","SNeIa","SNeIIn","AGN","SNEIb/c","SNeII","SLSN","SNeIa-sub","TDE"
+                ]
+            }
+        },
         computed: {
             /**
              * Here, each computed property gets the state of a given parameter and sets it as the view changes

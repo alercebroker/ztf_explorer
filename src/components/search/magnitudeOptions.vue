@@ -49,7 +49,8 @@
             return{
                 selectedBand: 0,
                 anyBand: false,
-                bands: ['u','g','r','i','z','y']
+                //bands: ['u','g','r','i','z','y'],
+                bands: ['g','r']
             }
         }
     }

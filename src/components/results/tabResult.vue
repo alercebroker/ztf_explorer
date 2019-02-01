@@ -20,9 +20,9 @@
               >
                 <tabScatter/>
               </b-tab>
-              <b-tab title="Spatial Distribution" :disabled="true">
+              <!-- <b-tab title="Spatial Distribution" :disabled="true">
                 <tabSpatialDistribution/>
-              </b-tab>
+              </b-tab> -->
             </b-tabs>
           </b-card>
         </transition>

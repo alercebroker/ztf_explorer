@@ -2,7 +2,7 @@
     <div>
         <magnitude-options/>
         <date-options/>
-        <coordinate-options/>
+        <!-- <coordinate-options/> -->
     </div>
 </template>
 

@@ -24,17 +24,16 @@
                 <input id="maxMax" class="form-control form-control-sm" type="number" v-model="maxMax" />
             </b-col>
         </b-row>
-        <br>
+        <!-- <br>
         <b-row class="mb-3">
             <b-col cols="4">
                 <input id="slopeMin" class="form-control form-control-sm" type="number" v-model="slopeMin" />
-                <!-- <input class="form-control form-control-sm" v-model="slope.min" min="0" type="number" :max="slope.max" id="minSlopeAny"/> -->
             </b-col>
             <b-col cols="4" class="text-center"> Slope <v-icon v-b-tooltip.hover.right title="Range of allowed slopes between each consecutive pair of alerts of a source." name="info-circle" color="#C0C0C0"></v-icon> <br><small class="text-muted">(mag/day)</small></b-col>
             <b-col cols="4">
                 <input id="slopeMax" class="form-control form-control-sm" type="number" v-model="slopeMax" />
             </b-col>
-        </b-row>
+        </b-row> -->
         <br>
         <b-row class="mb-3">
             <b-col cols="4">
