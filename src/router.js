@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import AboutUs from './components/AboutUs/AboutUs.vue'
-import ExploreData from "./components/ExploreData/exploreData.vue"
-import HowTo from './components/HowTo/HowTo.vue'
-import UserAccount from './components/UserAccount/UserAccount.vue'
+import AboutUs from './views/AboutUs.vue'
+import ExploreData from "./views/ExploreData.vue"
+import HowTo from './views/HowTo.vue'
+import UserAccount from './views/UserAccount.vue'
 
 Vue.use(Router);
 
@@ -13,7 +13,7 @@ export default new Router({
     '/vue/' : '/',
   routes: [{
       path: '/',
-      name: 'home',
+      name: 'exploreData',
       component: ExploreData
 
     },

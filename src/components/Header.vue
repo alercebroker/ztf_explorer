@@ -17,31 +17,31 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto">
         <li class="nav-item">
-          <router-link to="/" class="nav-link">
+          <router-link to="/" class="nav-link" v-bind:class="{'nav-link disabled': $route.name != 'exploreData'}" >
             <h4>Explore Data</h4>
           </router-link>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">|</a>
+        <li class="nav-item" v-show="false">
+          <p class="nav-link disabled">|</p>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="userAccount">
+          <router-link to="/userAccount" class="nav-link" v-bind:class="{'nav-link disabled': $route.name != 'userAccount'}" v-show="false">
             <h4>User Account</h4>
-          </a>
+          </router-link>
+        </li>
+        <li class="nav-item" v-show="false">
+          <p class="nav-link disabled">|</p>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">|</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="howTo">
+          <router-link to="/howTo" class="nav-link" v-bind:class="{'nav-link disabled': $route.name != 'howTo'}" v-show="false">
             <h4>How It Works</h4>
-          </a>
+          </router-link>
+        </li>
+        <li class="nav-item" v-show="false">
+          <p class="nav-link disabled">|</p>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#">|</a>
-        </li>
-        <li class="nav-item">
-          <router-link to="/AboutUs" class="nav-link disabled">
+          <router-link to="/aboutUs" class="nav-link" v-bind:class="{'nav-link disabled': $route.name != 'aboutUs'}" v-show="false">
             <h4>About Us</h4>
           </router-link>
         </li>
@@ -52,3 +52,6 @@
     </div>
   </nav>
 </template>
+
+
+

@@ -5,7 +5,7 @@
 			<div class="row">
 				<div class="col-2 align-text-bottom">
 					<p class="small text-muted">
-						<router-link to="/AboutUs" class="text-muted">About Us</router-link>
+						<router-link v-show="false" to="/AboutUs" class="text-muted">About Us</router-link>
 					</p>
 				</div>
 				<div class="col-10" name="logos">
