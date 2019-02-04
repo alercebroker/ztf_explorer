@@ -29,14 +29,12 @@
           </b-col>
           <!-- ALADIN -->
           <b-col cols="4">
-            <b-card title="Aladin" align="center">
+            <b-card title="Aladin" class="h-100 align-middle">
               <aladin 
                 :coordinates="{
                     meanRA: $store.state.results.objectDetails.object_details ? $store.state.results.objectDetails.object_details.meanra : null,
                     meanDEC: $store.state.results.objectDetails.object_details ? $store.state.results.objectDetails.object_details.meandec : null
                   }"
-                width="inherit"
-                height="400px"
                 />
             </b-card>
           </b-col>

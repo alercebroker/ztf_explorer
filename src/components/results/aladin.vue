@@ -1,16 +1,14 @@
 <template>
-    <div>
-        <div id="aladin-lite-div" :style="style" />
-    </div>
+    <div id="aladin-lite-div"  :style="style" />
 </template>
 
 <script>
     export default {
         name: "aladin",
-        props: ['coordinates', 'width', 'height'],
+        props: ['coordinates'],
         data(){
             return {
-                aladin: {}
+                aladin: null
             }
         },
         mounted(){
@@ -18,14 +16,15 @@
         },
         watch:{
             coordinates(newCoord){
-                this.aladin.gotoRaDec(newCoord.meanRA, newCoord.meanDEC)
+                if(this.aladin)this.aladin.gotoRaDec(newCoord.meanRA, newCoord.meanDEC)
             }
         },
         computed: {
             style(){
                 return {
-                    'width': this.width,
-                    'height': this.height
+                    'align': "center",
+                    'width': "400px",
+                    'height': "400px"
                 }
             }
         }
@@ -33,5 +32,5 @@
 </script>
 
 <style scoped>
-
+    
 </style>
