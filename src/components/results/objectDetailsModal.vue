@@ -5,6 +5,7 @@
       :title="title"
       v-on:hidden="$emit('modalClosed')"
       v-model="showModal"
+      lazy="true"
     >
       <b-container fluid>
         <b-row>
@@ -21,14 +22,14 @@
               </b-row>
             </b-card>
           </b-col>
-          <b-col cols="6">
+          <b-col cols="7">
             <!-- Curva de luz -->
             <b-card title="Light curve" class="h-100 align-middle">
               <light-curve></light-curve>
             </b-card>
           </b-col>
           <!-- ALADIN -->
-          <b-col cols="4">
+          <b-col cols="3">
             <b-card title="Aladin" class="h-100 align-middle">
               <aladin 
                 :coordinates="{
