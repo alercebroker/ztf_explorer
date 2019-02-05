@@ -43,6 +43,7 @@
 					    enabled: false
 					  },
 			        series: [{
+						name: this.yVariable,
 						type: 'scatter',
 						color: '#3C347E',
 						data: [[1,2]],
@@ -62,6 +63,7 @@
 		  	redraw(){ //add a series for object
 		  		// delete the previous series
 				  this.chartOptions.series[0].data = [];
+				  this.chartOptions.series[0].name = this.yVariable;
 				  this.chartOptions.xAxis.title.text = this.xVariable;
 				  this.chartOptions.yAxis.title.text = this.yVariable;
 		  		// add new series

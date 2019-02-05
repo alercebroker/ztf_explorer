@@ -13,7 +13,7 @@
             <b-card title="Details">
               <b-row>
                 <b-col id="details">
-                  <ul id="default-details">
+                  <ul id="default-details" v-if="$store.state.loading === false">
                     <li v-for="(value, key) in $store.state.results.objectDetails.object_details" :key="key">
                       <strong>{{key}}</strong> : {{ typeof value === "number"? Number.parseFloat(value).toFixed(3) : value }}
                     </li>
@@ -25,18 +25,13 @@
           <b-col cols="7">
             <!-- Curva de luz -->
             <b-card title="Light curve" class="h-100 align-middle">
-              <light-curve></light-curve>
+              <light-curve ></light-curve>
             </b-card>
           </b-col>
           <!-- ALADIN -->
           <b-col cols="3">
             <b-card title="Aladin" class="h-100 align-middle">
-              <aladin 
-                :coordinates="{
-                    meanRA: $store.state.results.objectDetails.object_details ? $store.state.results.objectDetails.object_details.meanra : null,
-                    meanDEC: $store.state.results.objectDetails.object_details ? $store.state.results.objectDetails.object_details.meandec : null
-                  }"
-                />
+              <aladin v-if="$store.state.loading === false"/>
             </b-card>
           </b-col>
         </b-row>

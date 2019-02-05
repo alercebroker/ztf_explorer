@@ -43,7 +43,6 @@ export default {
 				{ text: "Maxg", value: "maxg" },
 				{ text: "Ming", value: "ming" },
 				{ text: "Meang", value: "meang" },
-				{ text: "Slopeg", value: "slopeg" },
 				{ text: "Firstmagg", value: "firstmagg" },
 				{ text: "Lastmagg", value: "lastmagg" },
 				{
@@ -54,7 +53,6 @@ export default {
 				{ text: "Maxr", value: "maxr" },
 				{ text: "Minr", value: "minr" },
 				{ text: "Meanr", value: "meanr" },
-				{ text: "Sloper", value: "sloper" },
 				{ text: "Firstmagr", value: "firstmagr" },
 				{ text: "Lastmagr", value: "lastmagr" },
 			],
