@@ -134,7 +134,7 @@
   <div v-else-if="$store.state.search.query_status === 400">
     <b-alert show variant="warning">There is an error with your query</b-alert>
   </div>
-  <div v-else-if="$store.state.search.objects.length === 0">
+  <div v-else-if="$store.state.search.query_status === 0">
     <b-alert variant="info" show>Your search results will be displayed here</b-alert>
   </div>
   <div v-else-if="$store.state.search.query_status === 504">

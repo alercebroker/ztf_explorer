@@ -10,7 +10,7 @@ export const state = {
     interval: null,
     flagFirst: false,
     flagLast: false,
-    query_status: null,
+    query_status: 0,
     error: null,
 }
 
