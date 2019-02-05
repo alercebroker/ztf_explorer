@@ -36,8 +36,17 @@ export default {
           crosshairs: [true, false]
         },
         title: {
-          text: "Light Curve "
+          text: "Light Curve" 
         },
+        exporting: {
+          enabled: true,
+          filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toLocaleString(),
+          buttons: {
+            contextButton: {
+                text: 'Export'
+            }
+        }
+        }, 
         xAxis: {
           name: "Dates",
           categories: [],
@@ -54,13 +63,12 @@ export default {
           startOnTick: true
         },
         legend: {
-          layout: "vertical",
-          align: "right",
-          verticalAlign: "top",
-          floating: true,
-          x: -10,
-          y: -5
-          // backgroundColor: '#FFFFFF'
+          //layout: "vertical",
+          //align: "left",
+          //verticalAlign: "top",
+          //floating: true,
+          //x: -10,
+          //y: -5,
         },
         plotOptions: {
           shared: true,
@@ -134,9 +142,9 @@ export default {
 
   methods: {
     processLightCurveData: function(alerts) {
-      this.chartOptions.series.forEach(element => {
+      /*this.chartOptions.series.forEach(element => {
         element.data = [];
-      });
+      });*/
       alerts.forEach(dataItem => {
         this.chartOptions.series.find(item => item.name === 'r magnitude').data.push([dataItem.jd, dataItem.magr]);
         this.chartOptions.series.find(item => item.name === 'g magnitude').data.push([dataItem.jd, dataItem.magg]);

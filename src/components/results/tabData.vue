@@ -31,11 +31,13 @@
       <b-table
         striped
         hover
-        :items="items"
+        :items="$store.state.search.objects"
         :fields="$store.state.results.selectedColumnOptions"
-        @row-clicked="onRowClicked"
+        :current-page="currentPage"
+        :per-page="perPage"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
+         @row-clicked="onRowClicked"
       >
         <template slot="class" slot-scope="data">
           <!--TODO: change classes-->
@@ -123,7 +125,7 @@
           <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
         </template>
       </b-table>
-      <b-pagination size="md" :total-rows="$store.state.search.objects.length" v-model="currentPage" :per-page="10">
+      <b-pagination size="md" :total-rows="$store.state.search.objects.length" v-model="currentPage" :per-page="perPage" align="center">
       </b-pagination>
     </div>
 
@@ -174,24 +176,25 @@ export default {
   data() {
     return {
       showObjectDetailsModal: false,
-      currentPage: 1,
-      pageSize: 10,
       block:true,
+      currentPage: 1,
+      perPage: 20,
       sortBy: 'nobs',
-      sortDesc: false,
+      sortDesc: true,
+      
     };
   },
   methods: {
     onRowClicked(item) {
       this.showObjectDetailsModal = true;
       this.$store.dispatch('objectSelected', item);
-    }
+    },
   },
-  computed: {
+  /*computed: {
     items(){
       return this.$store.state.search.objects.slice((this.currentPage - 1) * this.pageSize, (this.currentPage -1) * this.pageSize + this.pageSize)
     }
-  }
+  }*/
 };
 </script>
 

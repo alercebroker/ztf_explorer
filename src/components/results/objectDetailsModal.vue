@@ -5,7 +5,7 @@
       :title="title"
       v-on:hidden="$emit('modalClosed')"
       v-model="showModal"
-      lazy="true"
+      lazy="lazy"
     >
       <b-container fluid>
         <b-row>
@@ -76,6 +76,11 @@ import aladin from './aladin.vue';
 export default {
   name: "object-details-modal",
   props: ["show"],
+  data() {
+    return {
+      lazy: true,
+    }
+  },
   components: {
     lightCurve: lightCurve,
     aladin
