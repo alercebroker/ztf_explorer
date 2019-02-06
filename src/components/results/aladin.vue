@@ -5,7 +5,6 @@
 <script>
     export default {
         name: "aladin",
-        props: ['coordinates'],
         data(){
             return {
                 aladin: null
@@ -13,6 +12,7 @@
         },
         mounted(){
             this.aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:0.1, cooFrame: "J2000d"});
+            if(this.coordinates.meanRA && this.coordinates.meanDEC) this.aladin.gotoRaDec(this.coordinates.meanRA, this.coordinates.meanDEC)
         },
         watch:{
             coordinates(newCoord){
@@ -20,6 +20,12 @@
             }
         },
         computed: {
+            coordinates(){
+                return {
+                    meanRA: this.$store.state.results.objectDetails.object_details ? this.$store.state.results.objectDetails.object_details.meanra : null,
+                    meanDEC: this.$store.state.results.objectDetails.object_details ? this.$store.state.results.objectDetails.object_details.meandec : null
+                }
+            },
             style(){
                 return {
                     'align': "center",

@@ -177,6 +177,9 @@ export default {
     alerts(newAlerts){
       this.processLightCurveData(newAlerts);
     }
+  },
+  mounted(){
+    if(this.alerts)this.processLightCurveData(this.alerts);
   }
 };
 </script>
