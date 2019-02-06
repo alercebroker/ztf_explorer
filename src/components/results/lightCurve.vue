@@ -151,13 +151,13 @@ export default {
         this.chartOptions.series.find(item => item.name === 'g magnitude').data.push([dataItem.jd, dataItem.magg]);
         let magg_error = [null, null];
         if (dataItem.magg != null) {
-          magg_error = [dataItem.jd, dataItem.magg - 0.1, dataItem.magg + 0.1];
+          magg_error = [dataItem.jd, dataItem.magg - dataItem.rmsg, dataItem.magg + dataItem.rmsg];
         }
         this.chartOptions.series.find(item => item.name === 'g magnitude error').data.push(magg_error);
 
         let magr_error = [null, null];
         if (dataItem.magr) {
-          magr_error = [dataItem.jd, dataItem.magr - 0.1, dataItem.magr + 0.1];
+          magr_error = [dataItem.jd, dataItem.magr - dataItem.rmsr, dataItem.magr + dataItem.rmsr];
         }
         this.chartOptions.series.find(item => item.name === 'r magnitude error').data.push(magr_error);
       });
