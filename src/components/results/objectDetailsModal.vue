@@ -11,15 +11,15 @@
         <b-row>
           <b-col cols="2">
             <b-card title="Details">
-              <b-row>
-                <b-col id="details">
-                  <ul id="default-details" v-if="$store.state.loading === false">
-                    <li v-for="(value, key) in $store.state.results.objectDetails.object_details" :key="key">
-                      <strong>{{key}}</strong> : {{ typeof value === "number"? Number.parseFloat(value).toFixed(3) : value }}
-                    </li>
-                  </ul>
-                </b-col>
-              </b-row>
+                <ul id="default-details" v-if="$store.state.loading === false">
+                  <!--<li v-for="(value, key) in $store.state.results.objectDetails.object_details" :key="key">
+                    <strong>{{key}}</strong> : {{ typeof value === "number"? Number.parseFloat(value).toFixed(3) : value }}
+                  </li>-->
+                  <li><strong>Class:</strong> {{ classOptions[$store.state.results.objectDetails.object_details.class-1] }}</li>
+                  <li><strong>RA:</strong> {{ $store.state.results.objectDetails.object_details.meanra.toFixed(4) }}</li>
+                  <li><strong>Dec:</strong> {{ $store.state.results.objectDetails.object_details.meandec.toFixed(4) }}</li>
+                  <li><strong>Observations:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
+                </ul>
             </b-card>
           </b-col>
           <b-col cols="7">
@@ -74,6 +74,7 @@ export default {
   data() {
     return {
       lazy: true,
+      classOptions: ["EBSD/D","RRL","Periodic-Other","LPV","EBC","Ceph","DSCT","CV","Novae","Pulsating-Other", "SNeIIb","SNeIa","SNeIIn","AGN","SNeIb/c","SNeII","SLSN","SNeIa-sub","TDE"],
     }
   },
   components: {
@@ -97,4 +98,7 @@ export default {
 </script>
 
 <style scoped>
+ul {
+  padding-left: 0px;
+}
 </style>
