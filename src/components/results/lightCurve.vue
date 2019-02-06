@@ -40,7 +40,7 @@ export default {
         },
         exporting: {
           enabled: true,
-          filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toLocaleString(),
+          filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toLocaleString().replace(", ", "_").replace(" ", "_"),
           buttons: {
             contextButton: {
                 text: 'Export'
@@ -78,7 +78,7 @@ export default {
             cursor: "pointer",
             point: {
               events: {
-                click: function(e) {
+                //click: function(e) {
                   // hs.htmlExpand(null, {
                   //   pageOrigin: {
                   //     x: e.pageX || e.clientX,
@@ -97,7 +97,7 @@ export default {
                   //     0.1,
                   //   width: 250
                   // });
-                }
+                //}
               }
             },
             marker: {
@@ -145,6 +145,7 @@ export default {
       /*this.chartOptions.series.forEach(element => {
         element.data = [];
       });*/
+      console.log(new Date(this.$store.state.results.objectDetails.object_details.lastjd))
       alerts.forEach(dataItem => {
         this.chartOptions.series.find(item => item.name === 'r magnitude').data.push([dataItem.jd, dataItem.magr]);
         this.chartOptions.series.find(item => item.name === 'g magnitude').data.push([dataItem.jd, dataItem.magg]);
