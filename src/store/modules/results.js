@@ -21,7 +21,7 @@ export const state = {
             key: "pclass",
             sortable: false,
             label: "Probability on class"
-        }
+        },
     ]
 }
 
