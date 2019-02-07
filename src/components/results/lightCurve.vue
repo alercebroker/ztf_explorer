@@ -145,7 +145,6 @@ export default {
       /*this.chartOptions.series.forEach(element => {
         element.data = [];
       });*/
-      console.log(new Date(this.$store.state.results.objectDetails.object_details.lastjd))
       alerts.forEach(dataItem => {
         this.chartOptions.series.find(item => item.name === 'r magnitude').data.push([dataItem.jd, dataItem.magr]);
         this.chartOptions.series.find(item => item.name === 'g magnitude').data.push([dataItem.jd, dataItem.magg]);
