@@ -1,6 +1,6 @@
 export const state = {
     selectedObject: {
-        oid: null
+        oid: null,
     },
     objectDetails: {
         object_details: null,
@@ -49,6 +49,12 @@ export const actions = {
                 alerts: null,
             });
             dispatch('queryAlerts', object);
+        }
+    },
+    objectSelectedFromURL({commit, dispatch, state}, object){
+        if(state.selectedObject.oid !== object.oid){
+            commit('SET_SELECTED_OBJECT', object);
+            dispatch('queryAlertsFromURL', object);
         }
     },
     setObjectDetails({commit}, details){

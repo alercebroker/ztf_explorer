@@ -171,7 +171,6 @@ import objectDetailsModal from "./objectDetailsModal";
 export default {
   name: "tabData",
   components: { downloadModal, columnOptionsModal, objectDetailsModal },
-  
   data() {
     return {
       showObjectDetailsModal: false,
@@ -187,13 +186,19 @@ export default {
     onRowClicked(item) {
       this.showObjectDetailsModal = true;
       this.$store.dispatch('objectSelected', item);
+      this.$router.push({ name: 'object-details-modal', params: { id: item.oid } });
+    },
+    getUrlObject() {
+      if(this.$route.params.id) {
+        this.$store.dispatch('objectSelectedFromURL', {oid: this.$route.params.id});
+        this.showObjectDetailsModal = true;
+        //this.$store.state.search.query_status = 200;
+      }
     },
   },
-  /*computed: {
-    items(){
-      return this.$store.state.search.objects.slice((this.currentPage - 1) * this.pageSize, (this.currentPage -1) * this.pageSize + this.pageSize)
-    }
-  }*/
+  mounted: function() {
+    this.getUrlObject();
+  },
 };
 </script>
 
