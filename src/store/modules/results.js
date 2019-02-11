@@ -21,7 +21,7 @@ export const state = {
             key: "pclass",
             sortable: false,
             label: "Probability on class"
-        }
+        },
     ]
 }
 
@@ -44,6 +44,10 @@ export const actions = {
     objectSelected({commit, dispatch, state}, object){
         if(state.selectedObject.oid !== object.oid){
             commit('SET_SELECTED_OBJECT', object);
+            commit('SET_OBJECT_DETAILS', {
+                object_details: null,
+                alerts: null,
+            });
             dispatch('queryAlerts', object);
         }
     },

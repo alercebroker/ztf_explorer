@@ -31,11 +31,13 @@
       <b-table
         striped
         hover
-        :items="items"
+        :items="$store.state.search.objects"
         :fields="$store.state.results.selectedColumnOptions"
-        @row-clicked="onRowClicked"
+        :current-page="currentPage"
+        :per-page="perPage"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
+         @row-clicked="onRowClicked"
       >
         <template slot="class" slot-scope="data">
           <!--TODO: change classes-->
@@ -123,7 +125,7 @@
           <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
         </template>
       </b-table>
-      <b-pagination size="md" :total-rows="$store.state.search.objects.length" v-model="currentPage" :per-page="10">
+      <b-pagination size="md" :total-rows="$store.state.search.objects.length" v-model="currentPage" :per-page="perPage" align="center">
       </b-pagination>
     </div>
 
@@ -134,7 +136,7 @@
   <div v-else-if="$store.state.search.query_status === 400">
     <b-alert show variant="warning">There is an error with your query</b-alert>
   </div>
-  <div v-else-if="$store.state.search.objects.length === 0">
+  <div v-else-if="$store.state.search.query_status === 0">
     <b-alert variant="info" show>Your search results will be displayed here</b-alert>
   </div>
   <div v-else-if="$store.state.search.query_status === 504">
@@ -143,14 +145,13 @@
         <b-row>
           <h3>Opps!</h3>
         </b-row>
-        <b-row>It looks like your Query is too complex. You can try refining your Query or you can queue it and we will let you know when it's ready :)</b-row>
+        <b-row>It looks like the query is taking too long. Try refining your query :)</b-row>
         <br>
-        <b-row>
+        <!-- <b-row>
           <b-button variant="success" size="lg" id="queueQuery" disabled>
-            <!-- data-target="#saveSearchModal" -->
             Queue my Query
           </b-button>
-        </b-row>
+        </b-row> -->
       </b-container>
     </b-alert>
   </div>
@@ -174,24 +175,25 @@ export default {
   data() {
     return {
       showObjectDetailsModal: false,
-      currentPage: 1,
-      pageSize: 10,
       block:true,
+      currentPage: 1,
+      perPage: 20,
       sortBy: 'nobs',
-      sortDesc: false,
+      sortDesc: true,
+      
     };
   },
   methods: {
     onRowClicked(item) {
       this.showObjectDetailsModal = true;
       this.$store.dispatch('objectSelected', item);
-    }
+    },
   },
-  computed: {
+  /*computed: {
     items(){
       return this.$store.state.search.objects.slice((this.currentPage - 1) * this.pageSize, (this.currentPage -1) * this.pageSize + this.pageSize)
     }
-  }
+  }*/
 };
 </script>
 

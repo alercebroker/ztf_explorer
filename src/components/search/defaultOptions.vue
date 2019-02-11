@@ -260,7 +260,7 @@
             return {
                 classOptions: [
                     "EBSD/D","RRL","Periodic-Other","LPV","EBC","Ceph","DSCT","CV","Novae","Pulsating-Other",
-                    "SNeIIb","SNeIa","SNeIIn","AGN","SNEIb/c","SNeII","SLSN","SNeIa-sub","TDE"
+                    "SNeIIb","SNeIa","SNeIIn","AGN","SNeIb/c","SNeII","SLSN","SNeIa-sub","TDE"
                 ]
             }
         },

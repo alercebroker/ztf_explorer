@@ -10,7 +10,7 @@ export const state = {
     interval: null,
     flagFirst: false,
     flagLast: false,
-    query_status: null,
+    query_status: 0,
     error: null,
 }
 
@@ -82,12 +82,13 @@ export const actions = {
                 QueryService.checkQueryStatus(taskId).then(response => {
                     if (response.data.status === "SUCCESS") {
                         clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 200);
+                        //commit('SET_QUERY_STATUS', 200);
                         dispatch('getResults',taskId);
                     }
                     else if (response.data.status === "TIMEDOUT"){
                         clearInterval(state.interval);
                         commit('SET_QUERY_STATUS', 504);
+                        dispatch('loading', false);
                     }
                 }).catch(error => {
                     commit('SET_ERROR', error);
@@ -101,7 +102,7 @@ export const actions = {
     },
     getResults({commit, dispatch},taskId){
         QueryService.getResult(taskId).then(result => {
-            //commit('SET_QUERY_STATUS', result.status);
+            commit('SET_QUERY_STATUS', result.status);
             commit('SET_OBJECTS',result.data.result);
             dispatch('loading', false);
         }).catch(error => {
@@ -117,12 +118,13 @@ export const actions = {
                 QueryService.checkQueryStatus(taskId).then(response => {
                     if (response.data.status === "SUCCESS") {
                         clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 200);
+                        //commit('SET_QUERY_STATUS', 200);
                         dispatch('getObjectDetails', taskId);
                     }
                     else if (response.data.status === "TIMEDOUT") {
                         clearInterval(state.interval);
                         commit('SET_QUERY_STATUS', 504);
+                        dispatch('loading', false);
                     }
                 }).catch(error => {
                     commit('SET_ERROR', error);

@@ -1,31 +1,36 @@
 <template>
-    <div>
-        <div id="aladin-lite-div" :style="style" />
-    </div>
+    <div id="aladin-lite-div"  :style="style" />
 </template>
 
 <script>
     export default {
         name: "aladin",
-        props: ['coordinates', 'width', 'height'],
         data(){
             return {
-                aladin: {}
+                aladin: null
             }
         },
         mounted(){
             this.aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:0.1, cooFrame: "J2000d"});
+            if(this.coordinates.meanRA && this.coordinates.meanDEC) this.aladin.gotoRaDec(this.coordinates.meanRA, this.coordinates.meanDEC)
         },
         watch:{
             coordinates(newCoord){
-                this.aladin.gotoRaDec(newCoord.meanRA, newCoord.meanDEC)
+                if(this.aladin)this.aladin.gotoRaDec(newCoord.meanRA, newCoord.meanDEC)
             }
         },
         computed: {
+            coordinates(){
+                return {
+                    meanRA: this.$store.state.results.objectDetails.object_details ? this.$store.state.results.objectDetails.object_details.meanra : null,
+                    meanDEC: this.$store.state.results.objectDetails.object_details ? this.$store.state.results.objectDetails.object_details.meandec : null
+                }
+            },
             style(){
                 return {
-                    'width': this.width,
-                    'height': this.height
+                    'align': "center",
+                    'width': "100%",
+                    'height': "100%"
                 }
             }
         }
@@ -33,5 +38,5 @@
 </script>
 
 <style scoped>
-
+    
 </style>

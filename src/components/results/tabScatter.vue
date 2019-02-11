@@ -21,11 +21,11 @@
 <script>
 import scatter from "./scatter.vue";
 export default {
-  	name: 'tabScatter',
-  	components: {
-  		scatter,
-  	},
-  	data(){
+	name: 'tabScatter',
+	components: {
+		scatter,
+	},
+	data(){
 		return {
 			selectedX: null,
 			selectedY: null,
@@ -43,7 +43,6 @@ export default {
 				{ text: "Maxg", value: "maxg" },
 				{ text: "Ming", value: "ming" },
 				{ text: "Meang", value: "meang" },
-				{ text: "Slopeg", value: "slopeg" },
 				{ text: "Firstmagg", value: "firstmagg" },
 				{ text: "Lastmagg", value: "lastmagg" },
 				{
@@ -54,7 +53,6 @@ export default {
 				{ text: "Maxr", value: "maxr" },
 				{ text: "Minr", value: "minr" },
 				{ text: "Meanr", value: "meanr" },
-				{ text: "Sloper", value: "sloper" },
 				{ text: "Firstmagr", value: "firstmagr" },
 				{ text: "Lastmagr", value: "lastmagr" },
 			],
@@ -65,11 +63,11 @@ export default {
 	},
 	methods:{
 		getAxisData: function(axis,obj){
-    		return obj != null ? obj[axis] : null;
-    	},
-    	setPlotValues: function(){
-    		//borrar datos anteriores
-    		this.plotValues=[];
+			return obj != null ? obj[axis] : null;
+		},
+		setPlotValues: function(){
+			//borrar datos anteriores
+			this.plotValues=[];
 			//agregar plotValues
 			if(this.selectedX && this.selectedY){
 				this.objects.forEach(obj => {
@@ -81,10 +79,10 @@ export default {
 								this.getAxisData(this.selectedY, obj),
 							],
 						});
-					};
+					}
 				});
 			}
-    	},
+		},
 	},
 	computed:{
 		objects(){

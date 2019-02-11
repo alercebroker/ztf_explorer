@@ -51,10 +51,11 @@ export default {
         },
         series: [
           {
+            name: "Number of objects",
             type: "histogram",
             xAxis: 1,
             yAxis: 1,
-            baseSeries: 1
+            baseSeries: 1,
           },
           {
             data: [1],
@@ -67,12 +68,12 @@ export default {
   },
   methods: {
     redraw() {
-      
       //add a series for object
       // delete the previous series
       this.chartOptions.series[1].data = [];
       this.chartOptions.series[0].color = "#3C347E";
-      this.chartOptions.series[0].name = this.chartOptions.xAxis[1].title.text;
+      //this.chartOptions.series[0].name = this.chartOptions.xAxis[1].title.text;
+
       // add new series
       this.plotValues.forEach(obj => {
         this.chartOptions.series[1].data.push(obj.pair);

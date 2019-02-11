@@ -22,7 +22,7 @@ export default {
         tooltip: {
           formatter: function() {
             var header =
-              '<span style="font-size: 13px">Modified julian date :' +
+              '<span style="font-size: 13px">Modified Julian Date: ' +
               this.x +
               "</span><br/>";
             var footer =
@@ -36,14 +36,23 @@ export default {
           crosshairs: [true, false]
         },
         title: {
-          text: "Light Curve"
+          text: "Light Curve" 
         },
+        exporting: {
+          enabled: true,
+          filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toLocaleString().replace(", ", "_").replace(" ", "_"),
+          buttons: {
+            contextButton: {
+                text: 'Export'
+            }
+        }
+        }, 
         xAxis: {
           name: "Dates",
           categories: [],
           title: {
-            text: "Modified julian dates"
-          }
+            text: "Modified Julian Dates"
+          },
         },
         yAxis: {
           title: {
@@ -51,15 +60,15 @@ export default {
           },
           type: "linear",
           reversed: true,
+          startOnTick: true
         },
         legend: {
-          layout: "vertical",
-          align: "right",
-          verticalAlign: "top",
-          floating: true,
-          x: -10,
-          y: -5
-          // backgroundColor: '#FFFFFF'
+          //layout: "vertical",
+          //align: "left",
+          //verticalAlign: "top",
+          //floating: true,
+          //x: -10,
+          //y: -5,
         },
         plotOptions: {
           shared: true,
@@ -69,7 +78,7 @@ export default {
             cursor: "pointer",
             point: {
               events: {
-                click: function(e) {
+                //click: function(e) {
                   // hs.htmlExpand(null, {
                   //   pageOrigin: {
                   //     x: e.pageX || e.clientX,
@@ -88,7 +97,7 @@ export default {
                   //     0.1,
                   //   width: 250
                   // });
-                }
+                //}
               }
             },
             marker: {
@@ -117,42 +126,45 @@ export default {
             // linkedTo: 'rmag',
             type: "scatter",
             color: "#22d100",
-            data: []
+            data: [],
           },
           {
             name: "g magnitude error",
             type: "errorbar",
             color: "#0a9900",
             enableMouseTracking: false,
-            data: []
+            data: [],
           }
         ]
-      }
+      },
     };
   },
 
   methods: {
     processLightCurveData: function(alerts) {
-      this.chartOptions.series.forEach(element => {
+      /*this.chartOptions.series.forEach(element => {
         element.data = [];
-      });
-      this.chartOptions.xAxis.categories = [];
+      });*/
       alerts.forEach(dataItem => {
-        this.chartOptions.xAxis.categories.push(dataItem.jd.toFixed(3));
-        this.chartOptions.series.find(item => item.name === 'r magnitude').data.push(dataItem.magr);
-        this.chartOptions.series.find(item => item.name === 'g magnitude').data.push(dataItem.magg);
+        this.chartOptions.series.find(item => item.name === 'r magnitude').data.push([dataItem.jd, dataItem.magr]);
+        this.chartOptions.series.find(item => item.name === 'g magnitude').data.push([dataItem.jd, dataItem.magg]);
         let magg_error = [null, null];
         if (dataItem.magg != null) {
-          magg_error = [dataItem.magg - 0.1, dataItem.magg + 0.1];
+          magg_error = [dataItem.jd, dataItem.magg - dataItem.rmsg, dataItem.magg + dataItem.rmsg];
         }
         this.chartOptions.series.find(item => item.name === 'g magnitude error').data.push(magg_error);
 
         let magr_error = [null, null];
         if (dataItem.magr) {
-          magr_error = [dataItem.magr - 0.1, dataItem.magr + 0.1];
+          magr_error = [dataItem.jd, dataItem.magr - dataItem.rmsr, dataItem.magr + dataItem.rmsr];
         }
         this.chartOptions.series.find(item => item.name === 'r magnitude error').data.push(magr_error);
       });
+      let firstData = this.$store.state.results.objectDetails.alerts.map(function(x){return x.jd;})[0]
+      this.chartOptions.series[0].pointStart = firstData;
+      this.chartOptions.series[1].pointStart = firstData;
+      this.chartOptions.series[2].pointStart = firstData;
+      this.chartOptions.series[3].pointStart = firstData;
     },
   },
   computed: {
@@ -164,6 +176,9 @@ export default {
     alerts(newAlerts){
       this.processLightCurveData(newAlerts);
     }
+  },
+  mounted(){
+    if(this.alerts)this.processLightCurveData(this.alerts);
   }
 };
 </script>
