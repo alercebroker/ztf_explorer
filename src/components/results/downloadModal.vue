@@ -1,5 +1,5 @@
 <template>
-  <b-modal id="showDownloadModal" title="Download Objects">
+  <b-modal id="showDownloadModal" title="Download Objects" hide-footer>
     <div class="row">
       <div class="col-4">
         Select Format
@@ -7,10 +7,14 @@
       <div class="col-8">
         <b-form-select v-model="selected" :options="options" class="mb-3"/>
       </div>
-      <b-btn class="offset-8 col-3" @click="downloadFile">Download</b-btn>
     </div>
-    <div v-if="$store.state.search.file" >
-      <h2>{{ startDownload }}</h2>
+    <div class="row">
+      <div class="col-8">
+          <div v-if="$store.state.search.file">
+            <b-alert class="m-1" show>{{ startDownload }}</b-alert>
+          </div>
+      </div>
+      <b-btn class="col-3 m-1" variant="outline-success" @click="downloadFile">Download</b-btn>
     </div>
   </b-modal>
   
@@ -23,7 +27,6 @@ export default {
   data() {
     return {
       interval: null,
-      download: false,
       selected: "CSV",
       options: [
         { value: "CSV", text: "CSV" },
@@ -40,10 +43,8 @@ export default {
   },
   computed: {
     startDownload: function(){
-      console.log("kljh");
       var result = JSON.parse(this.$store.state.search.file);
       this.$emit("update:downloading", false);
-      this.download = false;
       const link = document.createElement("a");
       link.href = result.url;
       link.setAttribute(
@@ -52,7 +53,8 @@ export default {
       //or any other extension
       document.body.appendChild(link);
       link.click();
-      return "La descarga ha comenzado";
+      this.$store.state.search.file = null;
+      return "The download has started";
     }
   },
 };

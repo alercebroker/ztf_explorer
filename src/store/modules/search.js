@@ -56,7 +56,6 @@ export const mutations = {
         state.error = error;
     },
     SET_FILE(state, file){
-        console.log(file);
         state.file = file;
     },
     CLEAR_QUERY(state){
@@ -156,7 +155,7 @@ export const actions = {
     clearQuery({commit}){
         commit('CLEAR_QUERY');
     },
-    getFile({commit, dispatch},taskId){
+    getFile({commit},taskId){
         QueryService.getResult(taskId).then(result => {
             commit('SET_QUERY_STATUS', result.status);
             commit('SET_FILE', result.data.result);
@@ -168,18 +167,17 @@ export const actions = {
         let query_parameters = {
             filters: state.filters,
         }
-        if(!$.isEmptyObject(state.bands)){
+        if(!Object.getOwnPropertyNames(state.bands).length === 0){
             query_parameters.bands = state.bands;
         }
-        if(!$.isEmptyObject(state.dates)){
+        if(!Object.getOwnPropertyNames(state.dates).length === 0){
             query_parameters.dates = state.dates;
         }
-        if(!$.isEmptyObject(state.dates)){
-            query_parameters.dates = state.dates;
+        if(!Object.getOwnPropertyNames(state.coordinates).length === 0){
+            query_parameters.coordinates = state.coordinates;
         }
         QueryService.executeDownloadQuery(query_parameters, format).then( response => {
             let taskId = response.data["task-id"];
-            console.log(taskId)
             state.interval = setInterval(() => {
                 QueryService.checkQueryStatus(taskId).then(response => {
                     if (response.data.status === "SUCCESS") {
