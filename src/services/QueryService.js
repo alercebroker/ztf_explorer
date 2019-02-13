@@ -74,6 +74,9 @@ export default {
             format: format
         };
         return apiClient.post('/download', param);
+    },
+    getClassList(){
+        return apiClient.post('/get_classes');
     }
 
 };
