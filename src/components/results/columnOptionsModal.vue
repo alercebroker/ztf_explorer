@@ -42,9 +42,34 @@
                 label: "# Obs"
               },
               {
-                key: "pclass",
+                key: "meanra",
                 sortable: false,
-                label: "Probability on class"
+                label: "RA"
+              },
+	      {
+                key: "meandec",
+                sortable: false,
+                label: "Dec"
+              },
+	      {
+                key: "firstjd",
+                sortable: true,
+                label: "FirstMJD"
+              },
+	      {
+                key: "lastjd",
+                sortable: true,
+                label: "LastMJD"
+              },
+	      {
+                key: "ming",
+                sortable: true,
+                label: "ming"
+              },
+	      {
+                key: "minr",
+                sortable: true,
+                label: "minr"
               }
             ], // TODO: must contain default columns
             options: [
@@ -70,7 +95,7 @@
                 value: {
                   key: "pclass",
                   sortable: false,
-                  label: "Probability on class"
+                  label: "PClass"
                 }
               },
               { text: "Class", value: "class" },
@@ -79,7 +104,14 @@
 
               { text: "FirstMagG", value: "firstmagg" },
               { text: "LastMagG", value: "lastmagg" },
-              { text: "MinG", value: "ming" },
+              { 	
+			text: "MinG", 
+			value: { 
+				 key: "ming" ,
+				 label : "ming",
+				 sortable: true
+			}
+		},
               { text: "MaxG", value: "maxg" },
               { text: "MeanG", value: "meang" },
               { text: "MedianG", value: "mediang" },
@@ -88,7 +120,16 @@
 
               { text: "LastMagR", value: "lastmagr" },
               { text: "FirstMagR", value: "firstmagr" },
-              { text: "MinR", value: "minr" },
+
+	      { 	
+			text: "MinR", 
+			value: { 
+				 key: "minr" ,
+				 label : "minr",
+				 sortable: true
+			}
+		},
+
               { text: "MaxR", value: "maxr" },
               { text: "MeanR", value: "meanr" },
               { text: "MedianR", value: "medianr" },
@@ -99,14 +140,16 @@
                 text: "FirstMJD",
                 value: {
                   key: "firstjd",
-                  label: "FirstMJD"
+                  label: "FirstMJD",
+		  sortable : true
                 }
               },
               {
                 text: "LastMJD",
                 value: {
                   key: "lastjd",
-                  label: "LastMJD"
+                  label: "LastMJD",
+		  sortable : true
                 }
               },
               {
@@ -116,10 +159,24 @@
                   label: "DeltaMJD"
                 }
               },
-
-              { text: "MeanDEC", value: "meandec" },
+              { 
+			text: "Dec", 
+			value: { 
+				key : "meandec" ,
+				label : "Dec",
+				sortable: false
+			}
+	      },
               { text: "RmsDEC", value: "rmsdec" },
-              { text: "MeanRA", value: "meanra" },
+
+              { 
+			text: "RA", 
+			value: {
+				 key : "meanra" ,
+				 label : "RA",
+				 sortable: false
+			}
+	      },
               { text: "RmsRA", value: "rmsra" }
             ]
           }
