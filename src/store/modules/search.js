@@ -12,6 +12,7 @@ export const state = {
     flagLast: false,
     query_status: 0,
     error: null,
+    file: null
 }
 
 export const mutations = {
@@ -53,6 +54,9 @@ export const mutations = {
     },
     SET_ERROR(state, error){
         state.error = error;
+    },
+    SET_FILE(state, file){
+        state.file = file;
     },
     CLEAR_QUERY(state){
         state.filters = { }
@@ -176,6 +180,47 @@ export const actions = {
     },
     clearQuery({commit}){
         commit('CLEAR_QUERY');
+    },
+    getFile({commit},taskId){
+        QueryService.getResult(taskId).then(result => {
+            commit('SET_QUERY_STATUS', result.status);
+            commit('SET_FILE', result.data.result);
+        }).catch(error => {
+            commit('SET_ERROR', error);
+        })
+    },
+    downloadFile({commit, dispatch, state}, format){
+        let query_parameters = {
+            filters: state.filters,
+        }
+        if(!Object.getOwnPropertyNames(state.bands).length === 0){
+            query_parameters.bands = state.bands;
+        }
+        if(!Object.getOwnPropertyNames(state.dates).length === 0){
+            query_parameters.dates = state.dates;
+        }
+        if(!Object.getOwnPropertyNames(state.coordinates).length === 0){
+            query_parameters.coordinates = state.coordinates;
+        }
+        QueryService.executeDownloadQuery(query_parameters, format).then( response => {
+            let taskId = response.data["task-id"];
+            state.interval = setInterval(() => {
+                QueryService.checkQueryStatus(taskId).then(response => {
+                    if (response.data.status === "SUCCESS") {
+                        clearInterval(state.interval);
+                        commit('SET_QUERY_STATUS', 200);
+                        dispatch('getFile',taskId);
+                    }
+                    else if (response.data.status === "TIMEDOUT") {
+                        clearInterval(state.interval);
+                    }
+                }).catch(error => {
+                    commit('SET_ERROR', error);
+                })
+            }, 500);
+        }).catch(error => {
+            commit('SET_ERROR', error);
+        })
     }
 }
 
