@@ -169,12 +169,12 @@
                             value: this.jdToGregorian(value)
                         })
                     }
-                    else {
+                    //else {
                         this.$store.dispatch('updateFlag', {
                             flag: "flagFirst",
                             value: false
                         })
-                    }
+                    //}
                 }
             },
             lastjd: {
@@ -198,12 +198,12 @@
                             value: this.jdToGregorian(value)
                         })
                     }
-                    else {
+                    //else {
                         this.$store.dispatch('updateFlag', {
                             flag: "flagLast",
                             value: false
                         })
-                    }
+                    //}
                 }
             },
             firstGreg: {
@@ -211,7 +211,9 @@
                     return this.$store.state.search.dates.firstGreg
                 },
                 set(value){
+                    console.log("Greg 1")
                     if(! this.$store.state.search.flagFirst){
+                        console.log("Greg 2")
                         this.$store.dispatch('updateFlag', {
                             flag: "flagFirst",
                             value: true
@@ -227,12 +229,13 @@
                             value: this.gregorianToJd(value)
                         })
                     }
-                    else {
+                    //else {
+                        console.log("Greg 3")
                         this.$store.dispatch('updateFlag', {
                             flag: "flagFirst",
                             value: false
                         })
-                    }
+                    //}
                 }
             },
             lastGreg: {
@@ -256,12 +259,12 @@
                             value: this.gregorianToJd(value)
                         })
                     }
-                    else {
+                    //else {
                         this.$store.dispatch('updateFlag', {
                             flag: "flagLast",
                             value: false
                         })
-                    }
+                    //}
                 }
             },
             deltamin: {

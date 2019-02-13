@@ -5,7 +5,9 @@
       v-on:hidden="$emit('modalClosed')"
       v-model="showModal"
       lazy="lazy"
-    >
+      no-close-on-backdrop>
+      <div slot="modal-header">
+      </div>
       <b-container fluid>
         <b-row>
           <b-col cols="2">
@@ -104,7 +106,8 @@
         </b-row>
       </b-container>
       <div slot="modal-footer">
-        <b-btn v-on:click="$emit('modalClosed')">Close</b-btn>
+        <!--<b-btn v-on:click="$emit('modalClosed')">Close</b-btn>-->
+        <b-btn v-on:click="closeModal" variant="danger">Close</b-btn>
       </div>
     </b-modal>
 </template>
@@ -114,7 +117,7 @@ import lightCurve from "./lightCurve.vue";
 import aladin from './aladin.vue';
 export default {
   name: "object-details-modal",
-  props: ["show"],
+  props: ["id", "show"],
   data() {
     return {
       lazy: true,
@@ -157,6 +160,10 @@ export default {
       var date = new Date(Date.UTC(year, month, day, hour, minute, second));
       return date.toISOString().slice(0,10).replace("-","/").replace("-","/") + " - " + date.toTimeString().slice(0,8);
     },
+    closeModal: function() {
+      this.$emit('modalClosed');
+      this.$router.replace("/");
+    }
   },
   computed: {
     title(){

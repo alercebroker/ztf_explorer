@@ -4,6 +4,7 @@ import AboutUs from './views/AboutUs.vue'
 import ExploreData from "./views/ExploreData.vue"
 import HowTo from './views/HowTo.vue'
 import UserAccount from './views/UserAccount.vue'
+import ObjectModal from './components/results/objectDetailsModal.vue'
 
 Vue.use(Router);
 
@@ -14,7 +15,15 @@ export default new Router({
   routes: [{
       path: '/',
       name: 'exploreData',
-      component: ExploreData
+      component: ExploreData,
+      children: [
+        {
+          path: 'object/:id',
+          component: ObjectModal,
+          name: 'object-details-modal',
+          props: true,
+        }
+      ]
 
     },
     {

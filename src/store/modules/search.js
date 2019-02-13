@@ -82,7 +82,7 @@ export const actions = {
                 QueryService.checkQueryStatus(taskId).then(response => {
                     if (response.data.status === "SUCCESS") {
                         clearInterval(state.interval);
-                        //commit('SET_QUERY_STATUS', 200);
+                        commit('SET_QUERY_STATUS', 200);
                         dispatch('getResults',taskId);
                     }
                     else if (response.data.status === "TIMEDOUT"){
@@ -119,6 +119,32 @@ export const actions = {
                     if (response.data.status === "SUCCESS") {
                         clearInterval(state.interval);
                         //commit('SET_QUERY_STATUS', 200);
+                        dispatch('getObjectDetails', taskId);
+                    }
+                    else if (response.data.status === "TIMEDOUT") {
+                        clearInterval(state.interval);
+                        commit('SET_QUERY_STATUS', 504);
+                        dispatch('loading', false);
+                    }
+                }).catch(error => {
+                    commit('SET_ERROR', error);
+                    dispatch('loading', false);
+                })
+            }, 500);
+        }).catch(error => {
+            commit('SET_ERROR', error);
+            dispatch('loading', false);
+        })
+    },
+    queryAlertsFromURL({commit, dispatch}, object){
+        dispatch('loading', true);
+        QueryService.executeObjectQuery(object.oid).then( response => {
+            let taskId = response.data["task-id"]
+            state.interval = setInterval(() => {
+                QueryService.checkQueryStatus(taskId).then(response => {
+                    if (response.data.status === "SUCCESS") {
+                        clearInterval(state.interval);
+                        commit('SET_QUERY_STATUS', 200);
                         dispatch('getObjectDetails', taskId);
                     }
                     else if (response.data.status === "TIMEDOUT") {
