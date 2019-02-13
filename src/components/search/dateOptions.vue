@@ -169,12 +169,10 @@
                             value: this.jdToGregorian(value)
                         })
                     }
-                    //else {
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagFirst",
-                            value: false
-                        })
-                    //}
+                    this.$store.dispatch('updateFlag', {
+                    flag: "flagFirst",
+                    value: false
+                    })
                 }
             },
             lastjd: {
@@ -198,12 +196,10 @@
                             value: this.jdToGregorian(value)
                         })
                     }
-                    //else {
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagLast",
-                            value: false
-                        })
-                    //}
+                    this.$store.dispatch('updateFlag', {
+                    flag: "flagLast",
+                    value: false
+                    })
                 }
             },
             firstGreg: {
@@ -229,13 +225,10 @@
                             value: this.gregorianToJd(value)
                         })
                     }
-                    //else {
-                        console.log("Greg 3")
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagFirst",
-                            value: false
-                        })
-                    //}
+                    this.$store.dispatch('updateFlag', {
+                    flag: "flagFirst",
+                    value: false
+                    })
                 }
             },
             lastGreg: {
