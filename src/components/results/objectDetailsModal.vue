@@ -26,9 +26,9 @@
                   </ul>
               </b-card>
             </b-card-group>
-            <b-card-group deck>
+            <b-card-group>
               <b-card no-body>
-                <table>
+                <table v-if="$store.state.loading === false">
                   <tr>
                     <th>Item</th>
                     <th>g</th> 

@@ -48,7 +48,7 @@
 						color: '#3C347E',
 						data: [[1,2]],
 						marker: {
-							radius: 0.1
+							radius: 1
 						},
 						tooltip: {
 							followPointer: false,

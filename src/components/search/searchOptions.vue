@@ -2,49 +2,45 @@
   <div class="searchOptions">
     <!-- <b-form v-on:submit.prevent="onQuerySubmit"> -->
     <br>
-    <b-card no-body header-tag="header">
+    <b-card no-body 
+    header-tag="header"
+    header="Search Options"
+    >
+    <!-- HEADER -->
       <div slot="header">
-        <b-row>
-          <b-col>
-            <h3>Search Options</h3>
-          </b-col>
-        </b-row>
+          <h4>Search Options</h4>
       </div>
+    <!-- BODY -->
       <b-card-body>
-        <b-row class="mb-3">
-          <b-col>
-            <b-btn
-              variant="outline-primary"
-              size="sm"
-              :block="block"
-              @click="clearQuery"
-            >Clear all options</b-btn>
-          </b-col>
+        <b-row class="pl-3 pr-3 pb-3">
+          <b-btn
+            variant="outline-primary"
+            size="sm"
+            :block="block"
+            @click="clearQuery"
+          >Clear all options</b-btn>
         </b-row>
+    <!-- OPTIONS -->
         <b-form v-on:submit.prevent="onSubmitQuery">
           <div class="filter-content">
-            <!-- DEFAULT OPTIONS -->
+    <!-- DEFAULT OPTIONS -->
             <default-options></default-options>
-            
-            <!-- MORE OPTIONS BUTTON -->
-            <b-row class="mb-2">
-              <b-col class="align-middle">
-                <b-btn
-                  :block="block"
-                  variant="outline-secondary"
-                  v-b-toggle.AdvancedSearch
-                  @click="changeMoreOptLabel()"
-                >{{ moreOptsLabel }}</b-btn>
-              </b-col>
+    <!-- MORE OPTIONS BUTTON -->
+            <b-row class="pl-3 pr-3">
+              <b-btn
+                :block="block"
+                variant="outline-secondary"
+                v-b-toggle.AdvancedSearch
+                @click="changeMoreOptLabel()"
+              >{{ moreOptsLabel }}</b-btn>
             </b-row>
+    <!-- ADVANCED SEARCH -->
+            <b-row class="pl-3 pr-3 pb-3">
+              <b-collapse id="AdvancedSearch">
+                <hr>
+                <advanced-options></advanced-options>
 
-            <!-- ADVANCED SEARCH -->
-            <b-row class="mb-3">
-              <b-col>
-                <b-collapse id="AdvancedSearch">
-                  <advanced-options></advanced-options>
-                </b-collapse>
-              </b-col>
+              </b-collapse>
             </b-row>
 
             <b-row class="text-center">
