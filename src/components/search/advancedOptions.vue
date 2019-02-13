@@ -1,8 +1,7 @@
 <template>
     <div>
         <magnitude-options/>
-        <date-options/>
-        <coordinate-options/>
+        <hr>
     </div>
 </template>
 

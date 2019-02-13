@@ -1,95 +1,87 @@
 <template>
-    <div name="dates" class="mb-3">
-        <h2>Dates</h2>
-        <b-card>
-            <b-row class="mb-3" name="JD">
-                <b-col cols="6">
-                    <p class="small">MJD</p>
-                </b-col>
-                <b-col cols="6">
-                    <p class="small">Date</p>
-                </b-col>
-            </b-row>
-            <b-row class="mb-3">
-                <b-col cols="12">
-                    <label>Start Date</label>
-                </b-col>
-            </b-row>
-            <b-row class="mb-3" name="firstJD">
-                <b-col cols="6">
-                    <input
-                        class="form-control form-control-sm"
-                        id="firstjd"
-                        v-model="firstjd"
-                    />
-                </b-col>
-                <b-col cols="6">
-                    <input
-                        class="form-control form-control-sm"
-                        id="datepickerfirst"
-                        name="firstJD"
-                        type="date"
-                        v-model="firstGreg"
-                    />
-                </b-col>
-            </b-row>
-            <br>
-            <b-row class="mb-3">
-                <b-col cols="12">
-                    <label>End Date</label>
-                </b-col>
-            </b-row>
-            <b-row class="mb-3" name="lastJD">
-                <b-col cols="6">
-                    <input
-                        class="form-control form-control-sm"
-                        id="lastjd"
-                        v-model="lastjd"
-                    />
-                </b-col>
-                <b-col cols="6">
-                    <input
-                        class="form-control form-control-sm"
-                        id="datepickerlast"
-                        name="lastJD"
-                        type="date"
-                        v-model="lastGreg"
-                    />
-                </b-col>
-            </b-row>
-            <br>
-            <b-row class="mb-3">
-                <b-col cols="4" class="text-center small">min</b-col>
-                <b-col cols="4" class="text-center"></b-col>
-                <b-col cols="4" class="text-center small">max</b-col>
-            </b-row>
-            <b-row class="mb-3">
-                <b-col cols="4">
-                    <input
-                        class="form-control form-control-sm"
-                        id="minjd"
-                        v-model="deltamin"
-                    />
-                </b-col>
-                <b-col cols="4" class="text-center">First to Last alert
-                    <v-icon
-                        v-b-tooltip.hover.right
-                        class="mb-1 mx-1"
-                        title="Time between the first alert and the last alert associated with an object"
-                        name="info-circle"
-                        color="#C0C0C0"
-                    />
-                    <small class="text-muted">(days)</small>
-                </b-col>
-                <b-col cols="4">
-                    <input
-                        class="form-control form-control-sm"
-                        id="maxjd"
-                        v-model="deltamax"
-                    />
-                </b-col>
-            </b-row>
-        </b-card>
+    <div name="dates">
+        <b-row name="JD">
+            <b-col cols="4"></b-col>
+            <b-col cols="4">
+                <p class="small">Modified Julian Date</p>
+            </b-col>
+            <b-col cols="4">
+                <p class="small">Date</p>
+            </b-col>
+        </b-row>
+        <b-row class="mb-2">
+            <b-col cols="4">
+                <label>Start Date</label>
+            </b-col>
+            <b-col cols="4">
+                <input
+                    class="form-control form-control-sm"
+                    id="firstjd"
+                    v-model="firstjd"
+                />
+            </b-col>
+            <b-col cols="4">
+                <input
+                    class="form-control form-control-sm"
+                    id="datepickerfirst"
+                    name="firstJD"
+                    type="date"
+                    v-model="firstGreg"
+                />
+            </b-col>
+        </b-row>
+        <b-row class="mb-2">
+            <b-col cols="4">
+                <label>End Date</label>
+            </b-col>
+            <b-col cols="4">
+                <input
+                    class="form-control form-control-sm"
+                    id="lastjd"
+                    v-model="lastjd"
+                />
+            </b-col>
+            <b-col cols="4">
+                <input
+                    class="form-control form-control-sm"
+                    id="datepickerlast"
+                    name="lastJD"
+                    type="date"
+                    v-model="lastGreg"
+                />
+            </b-col>
+        </b-row>
+        <b-row>
+            <b-col cols="4" class="text-center small">min</b-col>
+            <b-col cols="4" class="text-center"></b-col>
+            <b-col cols="4" class="text-center small">max</b-col>
+        </b-row>
+        <b-row>
+            <b-col cols="4">
+                <input
+                    class="form-control form-control-sm"
+                    id="minjd"
+                    v-model="deltamin"
+                />
+            </b-col>
+            <b-col cols="4" class="text-center">First to Last alert
+                <v-icon
+                    v-b-tooltip.hover.right
+                    class="mb-1 mx-1"
+                    title="Time between the first alert and the last alert associated with an object"
+                    name="info-circle"
+                    color="#C0C0C0"
+                />
+                <small class="text-muted">(days)</small>
+            </b-col>
+            <b-col cols="4">
+                <input
+                    class="form-control form-control-sm"
+                    id="maxjd"
+                    v-model="deltamax"
+                />
+            </b-col>
+        </b-row>
     </div>
 </template>
 
@@ -207,9 +199,7 @@
                     return this.$store.state.search.dates.firstGreg
                 },
                 set(value){
-                    console.log("Greg 1")
                     if(! this.$store.state.search.flagFirst){
-                        console.log("Greg 2")
                         this.$store.dispatch('updateFlag', {
                             flag: "flagFirst",
                             value: true
