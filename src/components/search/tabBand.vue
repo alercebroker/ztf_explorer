@@ -1,11 +1,12 @@
 <template>
     <div>
-        <b-row class="mb-3">
+        <b-row>
             <b-col cols="4" class="text-center small">min</b-col>
             <b-col cols="4" class="text-center"> </b-col>
             <b-col cols="4" class="text-center small">max</b-col>
-        </b-row><hr>
-        <b-row class="mb-3">
+        </b-row>
+        <hr>
+        <b-row class="mb-2">
             <b-col cols="4">
                 <input id="minMin" class="form-control form-control-sm" type="number" v-model="minMin"/>
             </b-col>
@@ -14,8 +15,8 @@
                 <input id="minMax" class="form-control form-control-sm" type="number" v-model="minMax"/>
             </b-col>
         </b-row>
-        <br>
-        <b-row class="mb-3">
+        
+        <b-row class="mb-2">
             <b-col cols="4">
                 <input id="maxMin" class="form-control form-control-sm" type="number" v-model="maxMin"/>
             </b-col>
@@ -34,8 +35,7 @@
                 <input id="slopeMax" class="form-control form-control-sm" type="number" v-model="slopeMax" />
             </b-col>
         </b-row> -->
-        <br>
-        <b-row class="mb-3">
+        <b-row class="mb-2">
             <b-col cols="4">
                 <input id="meanMin" class="form-control form-control-sm" type="number" v-model="meanMin" />
                 <!-- <input class="form-control form-control-sm" v-model="mean.min" min="0" type="number" :max="mean.max" id="minMeanAny"/> -->
@@ -46,21 +46,18 @@
                 <!-- <input class="form-control form-control-sm" v-model="mean.max" :min="mean.min" type="number" id="maxMeanAny"/> -->
             </b-col>
         </b-row>
-        <br>
-        <b-row class=" mb-3">
+        <b-row class="mb-2">
             <b-col cols="4">
                 <input id="rmsMin" class="form-control form-control-sm" type="number" v-model="rmsMin" />
                 <!-- <input class="form-control form-control-sm" v-model="rms.min" min="0" type="number" :max="rms.max" id="minRmsAny"/> -->
             </b-col>
-            <b-col cols="4" class="text-center"> RMS </b-col>
+            <b-col cols="4" class="text-center"> RMS <v-icon v-b-tooltip.hover.right title="Root Mean Square" name="info-circle" color="#C0C0C0"></v-icon></b-col>
             <b-col cols="4">
                 <input id="rmsMax" class="form-control form-control-sm" type="number" v-model="rmsMax" />
                 <!-- <input class="form-control form-control-sm" v-model="rms.max" :min="rms.min" type="number" id="maxRmsAny"/> -->
             </b-col>
         </b-row>
-
-        <br>
-        <b-row class="mb-3">
+        <b-row>
             <b-col cols="4">
                 <input id="lastMin" class="form-control form-control-sm" type="number" v-model="lastMin" />
                 <!-- <input class="form-control form-control-sm" v-model="last.min" min="0" type="number" :max="last.max" id="minlastU"/> -->
