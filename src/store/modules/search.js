@@ -12,7 +12,8 @@ export const state = {
     flagLast: false,
     query_status: 0,
     error: null,
-    file: null
+    file: null,
+    classes: [],
 }
 
 export const mutations = {
@@ -64,6 +65,9 @@ export const mutations = {
         state.bands = { }
         state.coordinates = { }
         state.sql = "SELECT * FROM OBJECTS"
+    },
+    SET_CLASSES(state, classes){
+        state.classes = classes;
     }
 }
 
@@ -148,7 +152,7 @@ export const actions = {
                 QueryService.checkQueryStatus(taskId).then(response => {
                     if (response.data.status === "SUCCESS") {
                         clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 200);
+                        //commit('SET_QUERY_STATUS', 200);
                         dispatch('getObjectDetails', taskId);
                     }
                     else if (response.data.status === "TIMEDOUT") {
@@ -208,7 +212,7 @@ export const actions = {
                 QueryService.checkQueryStatus(taskId).then(response => {
                     if (response.data.status === "SUCCESS") {
                         clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 200);
+                        //commit('SET_QUERY_STATUS', 200);
                         dispatch('getFile',taskId);
                     }
                     else if (response.data.status === "TIMEDOUT") {
@@ -221,7 +225,34 @@ export const actions = {
         }).catch(error => {
             commit('SET_ERROR', error);
         })
-    }
+    },
+    queryClassList({commit, dispatch, state}){
+        QueryService.getClassList().then( res => {
+            let taskId = res.data["task-id"];
+            state.interval = setInterval( () => {
+                QueryService.checkQueryStatus(taskId).then(response => {
+                    if (response.data.status === "SUCCESS") {
+                        clearInterval(state.interval);
+                        dispatch('getClassList',taskId);
+                    }
+                    else if (response.data.status === "TIMEDOUT"){
+                        clearInterval(state.interval);
+                    }
+                }).catch(error => {
+                    commit('SET_ERROR', error);
+                })
+            },500);
+        }).catch( error => {
+            commit('SET_ERROR', error);
+        });
+    },
+    getClassList({commit, dispatch},taskId){
+        QueryService.getResult(taskId).then(result => {
+            commit('SET_CLASSES',result.data.result);
+        }).catch(error => {
+            commit('SET_ERROR', error);
+        })
+    },
 }
 
 export const getters = {

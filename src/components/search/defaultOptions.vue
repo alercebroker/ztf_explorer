@@ -26,27 +26,74 @@
         </b-row>
         <!-- CLASS -->
         <b-row class="mb-3">
-            <b-col cols="4">
+            <b-col cols="2">
                 <label for="class">
                     <b>Class</b>
                     <v-icon
                     class="ml-2"
                     v-b-tooltip.hover.right
-                    title="Return objects of a certain class. Each object belongs to its most likely class according to a classification model. Each class could be divided into subclasses"
+                    title="Return objects of a certain class. Each object belongs to its most likely class according to a classification model."
                     name="info-circle"
                     color="#C0C0C0"
                     ></v-icon>
                 </label>
             </b-col>
-            <b-col cols="8">
+            <b-col cols="3">
                 <select
                     class="form-control form-control-sm"
                     id="class"
-                    v-model="classs"
+                    :value="classs"
+                    @input="classSelected"
                 >
                     <option value selected>All</option>
-                    <option v-for="(option, index) in classOptions" :value="index+1" :key="index">{{option}}</option>
+                    <option v-for="(option, index) in classOptions" :value="option.id" :key="index">{{option.name}}</option>
                 </select>
+            </b-col>
+            <b-col cols="3">
+                <label for="classifier">
+                    <b>Classifier</b>
+                    <v-icon
+                    class="ml-2"
+                    v-b-tooltip.hover.right
+                    title="Classification Model Used"
+                    name="info-circle"
+                    color="#C0C0C0"
+                    ></v-icon>
+                </label>
+            </b-col>
+            <b-col cols="4">
+                <select
+                    class="form-control form-control-sm"
+                    id="classifier"
+                    :value="classifier"
+                    @input="classifierSelected"
+                >
+                    <option v-for="(option, index) in classifierOptions" :value="option.dbName" :key="index">{{option.name}}</option>
+                </select>
+            </b-col>
+        </b-row>
+        <b-row class="mb-3" cols="6" v-if="classifier != 'classxmatch' && classifier != null">
+            <b-col >
+                <label for="probability">
+                    <b>Probability</b>
+                    <v-icon
+                    class="ml-2"
+                    v-b-tooltip.hover.right
+                    title="Minimum probability obtained by the machine learning algorithm"
+                    name="info-circle"
+                    color="#C0C0C0"
+                    ></v-icon>
+                </label>
+            </b-col>
+            <b-col >
+                <input
+                    type="text"
+                    class="form-control form-control-sm"
+                    id="probability"
+                    :value="probability"
+                    @input="probabilitySelected"
+                    :disabled="loading"
+                    >
             </b-col>
         </b-row>
         <!-- SUBCLASS -->
@@ -273,12 +320,26 @@
         },
         data(){
             return {
-                classOptions: [
-                    "EBSD/D","RRL","Periodic-Other","LPV","EBC","Ceph","DSCT","CV","Novae","Pulsating-Other",
-                    "SNeIIb","SNeIa","SNeIIn","AGN","SNeIb/c","SNeII","SLSN","SNeIa-sub","TDE"
-                ]
+                classifierOptions: [
+                    {
+                        name: "X-MATCH",
+                        dbName: "classxmatch"
+                    },
+                    {
+                        name: "ML_RF",
+                        dbName: "classrf"
+                    },
+                    {
+                        name:"ML_RNN",
+                        dbName:"classrnn"
+                    }
+                ],
+                classifier: null,
+                classs: null,
+                probability: null
             }
         },
+        props: ['loading'],
         computed: {
             /**
              * Here, each computed property gets the state of a given parameter and sets it as the view changes
@@ -297,30 +358,6 @@
                     this.$store.dispatch('updateOptions', {
                         obj: "filters",
                         keyPath: ["oid"],
-                        value: value
-                    })
-                }
-            },
-            classs: {
-                get(){
-                    return this.$store.state.search.filters.class;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "filters",
-                        keyPath: ["class"],
-                        value: value
-                    })
-                }
-            },
-            subclass: {
-                get(){
-                    return this.$store.state.search.filters.subclass;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "filters",
-                        keyPath: ["subclass"],
                         value: value
                     })
                 }
@@ -408,6 +445,65 @@
                         value: value
                     })
                 }
+            },
+            classOptions(){
+                return this.$store.state.search.classes;
+            }
+        },
+        watch: {
+            classOptions(newVal){
+                return this.$store.state.search.classes;
+            }
+        },
+        mounted(){
+            this.$store.dispatch('queryClassList')
+        },
+        methods:{
+            classSelected(event){
+                this.classs = event.target.value
+                if(this.classifier){
+                    this.$store.dispatch('updateOptions',{
+                        obj: "filters",
+                        keyPath: [this.classifier],
+                        value: this.classs
+                    })
+                }
+            },
+            classifierSelected(event){
+                let oldVal = this.classifier
+                this.classifier = event.target.value
+                if(this.classs){
+                    this.$store.dispatch('updateOptions',{
+                        obj: "filters",
+                        keyPath: [oldVal],
+                        value: null
+                    })
+                    this.$store.dispatch('updateOptions',{
+                        obj: "filters",
+                        keyPath: ['p' + oldVal],
+                        value: null
+                    })
+                    if(this.classifier != 'classxmatch'){
+                        this.$store.dispatch('updateOptions',{
+                            obj: "filters",
+                            keyPath: ['p' + this.classifier],
+                            value: this.probability
+                        })
+                    }
+                    this.$store.dispatch('updateOptions',{
+                        obj: "filters",
+                        keyPath: [this.classifier],
+                        value: this.classs
+                    })
+                }
+            },
+            probabilitySelected(event){
+                this.probability = event.target.value;
+                this.$store.dispatch('updateOptions',{
+                        obj: "filters",
+                        keyPath: ['p'+this.classifier],
+                        value: this.probability
+                    })
             }
         }
         
