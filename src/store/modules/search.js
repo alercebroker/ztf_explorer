@@ -67,6 +67,7 @@ export const mutations = {
         state.sql = "SELECT * FROM OBJECTS"
     },
     SET_CLASSES(state, classes){
+        classes.push(classes.shift());
         state.classes = classes;
     }
 }
