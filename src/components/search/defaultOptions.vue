@@ -118,8 +118,8 @@
             </b-col>
         </b-row> -->
         <!-- NUMBER OF ALERTS -->
-        <b-row class="mb-3">
-            <b-col cols="12" class="mb-3 mb-1">
+        <b-row class="mb-2">
+            <b-col cols="4">
                 <b>Number of alerts</b>
                 <v-icon
                     v-b-tooltip.hover.right
@@ -129,7 +129,7 @@
                     color="#C0C0C0"
                 ></v-icon>
             </b-col>
-            <b-col>
+            <b-col cols="4">
                 <b-row>
                     <b-col cols="3" class="text-left">
                         <label>Min</label>
@@ -146,7 +146,7 @@
                     </b-col>
                 </b-row>
             </b-col>
-            <b-col>
+            <b-col cols="4">
                 <b-row>
                     <b-col cols="3" class="text-left">
                         <label>Max</label>
@@ -219,7 +219,7 @@
             </b-col>
         </b-row> -->
         <!-- PERIOD -->
-        <b-row>
+        <!--b-row>
             <b-col cols="12" class="mb-3">
                 <b>Period</b>
                 <v-icon
@@ -270,7 +270,7 @@
                 </b-row>
             </b-col>
         </b-row>
-        <br/>
+        <br/-->
         <!-- HAS CROSSMATCH -->
         <!-- <b-row name="ext" class="my-3">
             <b-col cols="12" class="form-check">
@@ -295,13 +295,29 @@
                 </b-form-group>
             </b-col>
         </b-row> -->
+        <b-card no-body class="mb-3">
+            <b-tabs card>
+                <b-tab title="Dates" active>
+                    <date-options/>
+                </b-tab>
+                <b-tab title="Coordinates">
+                    <coordinate-options/>
+                </b-tab>
+            </b-tabs>
+        </b-card>
     </div>
 </template>
 
 <script>
-    
+    import dateOptions from './dateOptions.vue';
+    import coordinateOptions from './coordinateOptions.vue';
     export default {
         name: "default-options",
+        props: ['loading'],
+        components: {
+            dateOptions,
+            coordinateOptions,
+        },
         data(){
             return {
                 classifierOptions: [
