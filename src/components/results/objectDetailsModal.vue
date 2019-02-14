@@ -18,9 +18,9 @@
                       <strong>{{key}}</strong> : {{ typeof value === "number"? Number.parseFloat(value).toFixed(3) : value }}
                     </li>-->
                     <li><strong>Object:</strong> {{ $store.state.results.objectDetails.object_details.oid }}</li>
-                    <li v-if="$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classxmatch") }} (x-match) </li>
-                    <li v-if="$store.state.results.objectDetails.object_details.classrf"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrf") }} (Random Forest) </li>
-                    <li v-if="$store.state.results.objectDetails.object_details.classrnn"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrnn") }} (Recurrent Neuronal Network) </li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classxmatch") }} (X-MATCH) </li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classrf"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrf") }} (ML_RF) </li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classrnn"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrnn") }} (ML_RNN) </li>
                     <li><strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra.toFixed(4) }}, {{ $store.state.results.objectDetails.object_details.meandec.toFixed(4) }}</li>
                     <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
                     <li><strong>First date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.firstjd) }}</li>
