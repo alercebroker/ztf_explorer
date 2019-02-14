@@ -85,6 +85,9 @@
                     ></v-icon>
                 </label>
             </b-col>
+            <b-col cols="2" >
+                &ge;
+            </b-col>
             <b-col >
                 <input
                     type="text"
@@ -454,9 +457,6 @@
             classOptions(newVal){
                 return this.$store.state.search.classes;
             }
-        },
-        mounted(){
-            this.$store.dispatch('queryClassList')
         },
         methods:{
             classSelected(event){

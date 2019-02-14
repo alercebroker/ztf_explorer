@@ -113,6 +113,9 @@ export default {
       block: true,
     }
   },
+  mounted(){
+    this.$store.dispatch('queryClassList')
+  },
   methods: {
     /**
      * change option avanced label
