@@ -46,7 +46,7 @@
                 value: {
                   key: "nobs",
                   sortable: true,
-                  label: "#Alerts"
+                  label: "#"
                 }
               },
               /*{
@@ -61,14 +61,14 @@
                 text: "Class XMATCH", 
                 value: {
                   key: "classxmatch",
-                  label: "Class X-MATCH"
+                  label: "X-MATCH"
                 } 
               },
               {
                 text: "Class RF", 
                 value: {
                   key: "classrf",
-                  label: "Class RF"
+                  label: "ML_RF"
                 } 
               },
               {
@@ -76,14 +76,14 @@
                 value: {
                   key: "pclassrf",
                   sortable: true,
-                  label: "Prob. of RF"
+                  label: "P(RF)"
                 }
               },
               {
                 text: "Class RNN", 
                 value: {
                   key: "classrnn",
-                  label: "Class RNN"
+                  label: "ML_RNN"
                 } 
               },
               {
@@ -91,7 +91,7 @@
                 value: {
                   key: "pclassrnn",
                   sortable: true,
-                  label: "Prob. of RNN"
+                  label: "P(RNN)"
                 }
               },
               /*{ 

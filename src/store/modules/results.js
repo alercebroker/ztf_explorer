@@ -15,7 +15,7 @@ export const state = {
         {
             key: "nobs",
             sortable: true,
-            label: "#Alerts"
+            label: "#"
         },
         {
             key: "coordinates",
@@ -23,25 +23,25 @@ export const state = {
         },
         {
             key: "classxmatch",
-            label: "Class XMATCH"
+            label: "X-MATCH"
         },
         {
             key: "classrf",
-            label: "Class RF"
+            label: "ML_RF"
         },
         {   
             key: "pclassrf",
             sortable: true,
-            label: "Prob. of RF",
+            label: "P(RF)",
         },
         {
             key: "classrnn",
-            label: "Class RNN"
+            label: "ML_RNN"
         },
         {
             key: "pclassrnn",
             sortable: true,
-            label: "Prob. of RNN"
+            label: "P(RNN)"
         },
         /*{
             key: "meanra",
