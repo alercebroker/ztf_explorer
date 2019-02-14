@@ -18,8 +18,9 @@
                       <strong>{{key}}</strong> : {{ typeof value === "number"? Number.parseFloat(value).toFixed(3) : value }}
                     </li>-->
                     <li><strong>Object:</strong> {{ $store.state.results.objectDetails.object_details.oid }}</li>
-                    <li v-if="$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ classOptions[$store.state.results.objectDetails.object_details.classxmatch-1] }} (x-match) </li>
-                    <li v-if="!$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ $store.state.search.classes[$store.state.results.objectDetails.object_details.classrf].name }} (Random Forest) </li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classxmatch") }} (x-match) </li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classrf"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrf") }} (Random Forest) </li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classrnn"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrnn") }} (Recurrent Neuronal Network) </li>
                     <li><strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra.toFixed(4) }}, {{ $store.state.results.objectDetails.object_details.meandec.toFixed(4) }}</li>
                     <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
                     <li><strong>First date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.firstjd) }}</li>
@@ -130,6 +131,13 @@ export default {
     aladin
   },
   methods: {
+    getClass(obj, classifier){
+      return this.$store.state.search.classes.find(function(x){
+        if(x.id == obj[classifier]){
+          return x;
+        }
+      }).name;
+    },
     julianIntToDate: function(n) {
       // https://stackoverflow.com/questions/29627533/conversion-of-julian-date-number-to-normal-date-utc-in-javascript
       var X = parseFloat(n) + 0.5 + 2400000.5;
