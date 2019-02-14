@@ -45,7 +45,9 @@
                     :value="classs"
                     @input="classSelected"
                 >
-                    <option value selected>All</option>
+                    <option value>All</option>
+                    <!--option value="classified">Classified</option>
+                    <option value="not classified">Not classified</option-->
                     <option v-for="(option, index) in classOptions" :value="option.id" :key="index">{{option.name}}</option>
                 </select>
             </b-col>
@@ -67,12 +69,13 @@
                     id="classifier"
                     :value="classifier"
                     @input="classifierSelected"
-                >
+                >   
+                    <option value>All</option>
                     <option v-for="(option, index) in classifierOptions" :value="option.dbName" :key="index">{{option.name}}</option>
                 </select>
             </b-col>
         </b-row>
-        <b-row class="mb-3" cols="6" v-if="classifier != 'classxmatch' && classifier != null">
+        <b-row class="mb-3" cols="6" v-if="classifier == 'classrf' || classifier == 'classrnn'">
             <b-col >
                 <label for="probability">
                     <b>Probability</b>
@@ -462,17 +465,28 @@
             classSelected(event){
                 this.classs = event.target.value
                 if(this.classifier){
+                    this.emptyAllClasses();
                     this.$store.dispatch('updateOptions',{
                         obj: "filters",
                         keyPath: [this.classifier],
                         value: this.classs
                     })
                 }
+                /*else{
+                    this.classifierOptions.forEach(element => {
+                        this.$store.dispatch('updateOptions',{
+                            obj: "filters",
+                            keyPath: [element.dbName],
+                            value: this.classs
+                        })
+                    });
+                }*/
             },
             classifierSelected(event){
                 let oldVal = this.classifier
                 this.classifier = event.target.value
-                if(this.classs){
+
+                if(this.classs && this.classifier != ''){
                     this.$store.dispatch('updateOptions',{
                         obj: "filters",
                         keyPath: [oldVal],
@@ -496,6 +510,12 @@
                         value: this.classs
                     })
                 }
+                else{
+                    delete this.$store.state.search.filters[this.classifier]
+                    delete this.$store.state.search.filters[oldVal]
+                    delete this.$store.state.search.filters["p"+this.classifier]
+                    delete this.$store.state.search.filters["p"+oldVal]
+                }
             },
             probabilitySelected(event){
                 this.probability = event.target.value;
@@ -504,6 +524,11 @@
                         keyPath: ['p'+this.classifier],
                         value: this.probability
                     })
+            },
+            emptyAllClasses(){
+                this.classifierOptions.forEach(element => {
+                        delete this.$store.state.search.filters[element.dbName]
+                })
             }
         }
         
