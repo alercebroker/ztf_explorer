@@ -19,7 +19,7 @@
                     </li>-->
                     <li><strong>Object:</strong> {{ $store.state.results.objectDetails.object_details.oid }}</li>
                     <li v-if="$store.state.results.objectDetails.object_details.class"><strong>Class:</strong> {{ classOptions[$store.state.results.objectDetails.object_details.class-1] }} (x-match) </li>
-                    <li v-if="!$store.state.results.objectDetails.object_details.class"><strong>Class:</strong> {{ classOptions[$store.state.results.objectDetails.object_details.class-1] }} (Random Forest) </li>
+                    <li v-if="!$store.state.results.objectDetails.object_details.class"><strong>Class:</strong> {{ $store.state.search.classes[$store.state.results.objectDetails.object_details.classrf].name }} (Random Forest) </li>
                     <li><strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra.toFixed(4) }}, {{ $store.state.results.objectDetails.object_details.meandec.toFixed(4) }}</li>
                     <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
                     <li><strong>First date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.firstjd) }}</li>
