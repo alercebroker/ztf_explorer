@@ -45,7 +45,9 @@
                     :value="classs"
                     @input="classSelected"
                 >
-                    <option value selected>All</option>
+                    <option value>Not specified</option>
+                    <option value="classified">Classified</option>
+                    <option value="not classified">Not classified</option>
                     <option v-for="(option, index) in classOptions" :value="option.id" :key="index">{{option.name}}</option>
                 </select>
             </b-col>
@@ -67,12 +69,12 @@
                     id="classifier"
                     :value="classifier"
                     @input="classifierSelected"
-                >
+                >   
                     <option v-for="(option, index) in classifierOptions" :value="option.dbName" :key="index">{{option.name}}</option>
                 </select>
             </b-col>
         </b-row>
-        <b-row class="mb-3" cols="6" v-if="classifier != 'classxmatch' && classifier != null">
+        <b-row class="mb-3" cols="6" v-if="classifier != 'classxmatch' && classifier != null && classs != 'not classified'">
             <b-col >
                 <label for="probability">
                     <b>Probability</b>
