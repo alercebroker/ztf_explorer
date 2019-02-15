@@ -10,7 +10,7 @@
             <b-col cols="4">
                 <input id="minMin" class="form-control form-control-sm" type="number" v-model="minMin"/>
             </b-col>
-            <b-col cols="4" class="text-center"> Min magnitude <v-icon v-b-tooltip.hover.right title="Range of magnitudes for the dimmest alert of a source." name="info-circle" color="#C0C0C0"></v-icon></b-col>
+            <b-col cols="4" class="text-center"> Min magnitude <v-icon v-b-tooltip.hover.right title="Range of magnitudes for the brightest alert of a source." name="info-circle" color="#C0C0C0"></v-icon></b-col>
             <b-col cols="4" >
                 <input id="minMax" class="form-control form-control-sm" type="number" v-model="minMax"/>
             </b-col>
@@ -20,7 +20,7 @@
             <b-col cols="4">
                 <input id="maxMin" class="form-control form-control-sm" type="number" v-model="maxMin"/>
             </b-col>
-            <b-col cols="4" class="text-center"> Max magnitude <v-icon v-b-tooltip.hover.right title="Range of magnitudes for the brightest alert of a source." name="info-circle" color="#C0C0C0"></v-icon></b-col>
+            <b-col cols="4" class="text-center"> Max magnitude <v-icon v-b-tooltip.hover.right title="Range of magnitudes for the dimmest alert of a source." name="info-circle" color="#C0C0C0"></v-icon></b-col>
             <b-col cols="4">
                 <input id="maxMax" class="form-control form-control-sm" type="number" v-model="maxMax" />
             </b-col>
