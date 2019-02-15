@@ -20,7 +20,7 @@
                     <li><strong>Object:</strong> {{ $store.state.results.objectDetails.object_details.oid }}</li>
                     <li v-if="$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ classOptions[$store.state.results.objectDetails.object_details.classxmatch-1] }} (x-match) </li>
                     <li v-if="!$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ $store.state.search.classes[$store.state.results.objectDetails.object_details.classrf].name }} (Random Forest) </li>
-                    <li><strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra.toFixed(4) }}, {{ $store.state.results.objectDetails.object_details.meandec.toFixed(4) }}</li>
+                    <li><strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra ? $store.state.results.objectDetails.object_details.meanra.toFixed(4) : '-' }}, {{ $store.state.results.objectDetails.object_details.meandec ? $store.state.results.objectDetails.object_details.meandec.toFixed(4) : '-' }}</li>
                     <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
                     <li><strong>First date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.firstjd) }}</li>
                     <li><strong>Last date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.lastjd) }}</li>
@@ -37,33 +37,33 @@
                   </tr>
                   <tr>
                     <td>Mean</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.meang.toFixed(3) }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.meang ? $store.state.results.objectDetails.object_details.meang.toFixed(3) : '-' }}</td> 
                     <td>{{ $store.state.results.objectDetails.object_details.meanr.toFixed(3) }}</td>
                   </tr>
                   <tr>
                     <td>Median</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.mediang.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.medianr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.mediang ? $store.state.results.objectDetails.object_details.mediang.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.medianr ? $store.state.results.objectDetails.object_details.medianr.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>First</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.firstmagg.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.firstmagr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.firstmagg ? $store.state.results.objectDetails.object_details.firstmagg.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.firstmagr ? $store.state.results.objectDetails.object_details.firstmagr.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Last</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.lastmagg.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.lastmagr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.lastmagg ? $store.state.results.objectDetails.object_details.lastmagg.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.lastmagr ? $store.state.results.objectDetails.object_details.lastmagr.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Min</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.ming.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.minr.toFixed(3) }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.ming ? $store.state.results.objectDetails.object_details.ming.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.minr ? $store.state.results.objectDetails.object_details.minr.toFixed(3) : '-' }}</td> 
                   </tr>
                   <tr>
                     <td>Max</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.maxg.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.maxr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.maxg ? $store.state.results.objectDetails.object_details.maxg.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.maxr ? $store.state.results.objectDetails.object_details.maxr.toFixed(3) : '-' }}</td>
                   </tr>
                 </table>
               </b-card>
