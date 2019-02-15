@@ -40,12 +40,24 @@ export default {
         },
         exporting: {
           enabled: true,
-          filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toLocaleString().replace(", ", "_").replace(" ", "_"),
+          filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toISOString().slice(0,19).replace("T","_"),
           buttons: {
             contextButton: {
                 text: 'Export'
             }
-        }
+          },
+          csv: {
+            columnHeaderFormatter: function(item, key){
+              if (!item || key == null){
+                return "MJD";
+              }
+              else if(key == 'y'){
+                return item.options.value[0] == 'r' ? "mag_r" : "mag_g";
+              }
+              return item.options.value + "_" + key;
+            }
+          }
+
         }, 
         xAxis: {
           name: "Dates",
@@ -76,30 +88,6 @@ export default {
           enableMouseTracking: true,
           series: {
             cursor: "pointer",
-            point: {
-              events: {
-                //click: function(e) {
-                  // hs.htmlExpand(null, {
-                  //   pageOrigin: {
-                  //     x: e.pageX || e.clientX,
-                  //     y: e.pageY || e.clientY
-                  //   },
-                  //   headingText: this.series.name,
-                  //   maincontentText:
-                  //     "Modified julian date: " +
-                  //     this.chartData.jdates[this.x] +
-                  //     "<br/> " +
-                  //     this.series.name +
-                  //     ": " +√
-                  //     this.y +
-                  //     "<br/> " +
-                  //     "rms error: " +
-                  //     0.1,
-                  //   width: 250
-                  // });
-                //}
-              }
-            },
             marker: {
               lineWidth: 1
             }
@@ -115,6 +103,7 @@ export default {
           },
           {
             name: "r magnitude error",
+            value: "e_mag_r",
             type: "errorbar",
             color: "#cc0c00",
             enableMouseTracking: false,
@@ -129,6 +118,7 @@ export default {
           },
           {
             name: "g magnitude error",
+            value: "e_mag_g",
             type: "errorbar",
             color: "#0a9900",
             enableMouseTracking: false,
