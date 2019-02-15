@@ -15,38 +15,64 @@ export const state = {
         {
             key: "nobs",
             sortable: true,
-            label: "# Obs"
+            label: "#"
         },
         {
+            key: "coordinates",
+            label: "Coordinates"
+        },
+        {
+            key: "classxmatch",
+            label: "X-MATCH"
+        },
+        {
+            key: "classrf",
+            label: "ML_RF"
+        },
+        {   
+            key: "pclassrf",
+            sortable: true,
+            label: "P(RF)",
+        },
+        {
+            key: "classrnn",
+            label: "ML_RNN"
+        },
+        {
+            key: "pclassrnn",
+            sortable: true,
+            label: "P(RNN)"
+        },
+        /*{
             key: "meanra",
             sortable: false,
             label: "RA"
         },
-	{
+	    {
             key: "meandec",
             sortable: false,
             label: "Dec"
         },
-	{
+	    {
             key: "firstjd",
             sortable: true,
             label: "FirstMJD"
-        },
-	{
+        },*/
+	    {
             key: "lastjd",
             sortable: true,
             label: "LastMJD"
         },
-	{
+	    /*{
             key: "ming",
             sortable: true,
             label: "ming"
         },
-	{
+	    {
             key: "minr",
             sortable: true,
             label: "minr"
-        }
+        }*/
     ]
 }
 

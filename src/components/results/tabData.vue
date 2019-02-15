@@ -39,90 +39,95 @@
         :sort-desc.sync="sortDesc"
          @row-clicked="onRowClicked"
       >
-        <template slot="class" slot-scope="data">
-          <!--TODO: change classes-->
-          <div v-if="data.value===1">ceph</div>
-          <div v-if="data.value===2">eb</div>
-          <div v-if="data.value===3">rrLy</div>
-          <div v-if="data.value===4">dsc</div>
-          <div v-if="data.value===5">2pv</div>
-          <div v-if="data.value===6">snIa</div>
-          <div v-if="data.value===7">snII</div>
-          <div v-if="data.value===8">snIbc</div>
-          <div v-if="data.value===9">sln</div>
-          <div v-if="data.value===10">snIa-bg</div>
+        <template slot="classxmatch" slot-scope="data">
+          <div>{{ data.item.classxmatch != null? getClass(data.item, "classxmatch"): "-" }}</div>
+        </template>
+        <template slot="classrf" slot-scope="data">
+          <div>{{ data.item.classrf != null? getClass(data.item, "classrf"): "-" }}</div>
+        </template>
+        <template slot="pclassrf" slot-scope="data">
+          <div>{{ data.value != null? data.value.toFixed(3) : "-" }}</div>
+        </template>
+        <template slot="classrnn" slot-scope="data">
+          <div>{{ data.item.classrnn != null? getClass(data.item, "classrnn"): "-" }}</div>
+        </template>
+        <template slot="pclassrnn" slot-scope="data">
+          <div>{{ data.value != null? data.value.toFixed(3) : "-" }}</div>
         </template>
         <template slot="pclass" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="period" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="firstmagg" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="lastmagg" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="firstmagr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="lastmagr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="maxg" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="ming" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="maxr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="minr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="meang" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="meanr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="mediang" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="medianr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="rmsg" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="rmsr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="slope" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="firstjd" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="lastjd" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="deltajd" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="rmsdec" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="rmsra" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="meanra" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="meandec" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(5)}}</div>
+          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+        </template>
+        <template slot="coordinates" slot-scope="data">
+          <div v-if="data.item.meanra != null && data.item.meandec != null">({{data.item.meanra.toFixed(3) +", "+data.item.meandec.toFixed(3)}})</div>
         </template>
       </b-table>
       <b-pagination size="md" :total-rows="$store.state.search.objects.length" v-model="currentPage" :per-page="perPage" align="center">
@@ -183,6 +188,13 @@ export default {
     };
   },
   methods: {
+    getClass(obj, classifier){
+      return this.$store.state.search.classes.find(function(x){
+        if(x.id == obj[classifier]){
+          return x;
+        }
+      }).name;
+    },
     onRowClicked(item) {
       this.showObjectDetailsModal = true;
       this.$store.dispatch('objectSelected', item);

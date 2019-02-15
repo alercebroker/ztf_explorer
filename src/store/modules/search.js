@@ -67,6 +67,7 @@ export const mutations = {
         state.sql = "SELECT * FROM OBJECTS"
     },
     SET_CLASSES(state, classes){
+        classes.push(classes.shift());
         state.classes = classes;
     }
 }
@@ -152,7 +153,7 @@ export const actions = {
                 QueryService.checkQueryStatus(taskId).then(response => {
                     if (response.data.status === "SUCCESS") {
                         clearInterval(state.interval);
-                        //commit('SET_QUERY_STATUS', 200);
+                        commit('SET_QUERY_STATUS', 200);
                         dispatch('getObjectDetails', taskId);
                     }
                     else if (response.data.status === "TIMEDOUT") {
