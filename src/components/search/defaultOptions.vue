@@ -45,9 +45,9 @@
                     :value="classs"
                     @input="classSelected"
                 >
-                    <option value>All</option>
-                    <!--option value="classified">Classified</option>
-                    <option value="not classified">Not classified</option-->
+                    <option value>Not specified</option>
+                    <option value="classified">Classified</option>
+                    <option value="not classified">Not classified</option>
                     <option v-for="(option, index) in classOptions" :value="option.id" :key="index">{{option.name}}</option>
                 </select>
             </b-col>
