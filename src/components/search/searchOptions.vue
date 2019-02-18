@@ -114,6 +114,7 @@ export default {
     }
   },
   mounted(){
+    console.log("search options mounted")
     this.$store.dispatch('queryClassList')
   },
   methods: {

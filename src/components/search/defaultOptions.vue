@@ -39,17 +39,12 @@
                 </label>
             </b-col>
             <b-col cols="3">
-                <select
+                <b-form-select
                     class="form-control form-control-sm"
                     id="class"
-                    :value="classs"
-                    @input="classSelected"
-                >
-                    <option value>Not specified</option>
-                    <option value="classified">Classified</option>
-                    <option value="not classified">Not classified</option>
-                    <option v-for="(option, index) in classOptions" :value="option.id" :key="index">{{option.name}}</option>
-                </select>
+                    v-model="selectedClass"
+                    :options="$store.state.search.classes"
+                />
             </b-col>
             <b-col cols="3">
                 <label for="classifier">
@@ -64,18 +59,15 @@
                 </label>
             </b-col>
             <b-col cols="4">
-                <select
+                <b-form-select
                     class="form-control form-control-sm"
                     id="classifier"
-                    :value="classifier"
-                    @input="classifierSelected"
-                >   
-                    <option value>All</option>
-                    <option v-for="(option, index) in classifierOptions" :value="option.dbName" :key="index">{{option.name}}</option>
-                </select>
+                    v-model="selectedClassifier"
+                    :options="$store.state.search.classifiers"
+                />
             </b-col>
         </b-row>
-        <b-row class="mb-3" cols="6" v-if="classifier == 'classrf' || classifier == 'classrnn'">
+        <b-row class="mb-3" cols="6" v-if="selectedClassifier == 'classrf' || selectedClassifier == 'classrnn'">
             <b-col >
                 <label for="probability">
                     <b>Probability</b>
@@ -96,33 +88,11 @@
                     type="text"
                     class="form-control form-control-sm"
                     id="probability"
-                    :value="probability"
-                    @input="probabilitySelected"
+                    v-model="probability"
                     :disabled="loading"
                     >
             </b-col>
         </b-row>
-        <!-- SUBCLASS -->
-        <!-- <b-row class="mb-3">
-            <b-col cols="4">
-                <label for="subclass">
-                    <b>Subclass</b>
-                </label>
-            </b-col>
-            <b-col cols="8">
-                <select
-                    class="form-control form-control-sm"
-                    id="subclass"
-                    v-model="subclass"
-                    disabled
-                >
-                    <option value selected>All</option>
-                    <option value="1">Star</option>
-                    <option value="2">Supernova</option>
-                    <option value="3">Variable Star</option>
-                </select>
-            </b-col>
-        </b-row> -->
         <!-- NUMBER OF ALERTS -->
         <b-row class="mb-2">
             <b-col cols="4">
@@ -170,137 +140,7 @@
                 </b-row>
             </b-col>
         </b-row>
-        <!-- CLASS PROBABILITY -->
-        <!-- <b-row class="mb-3">
-            <b-col cols="12" class="mb-3">
-                <b>Class Probability</b>
-                <v-icon
-                    v-b-tooltip.hover.right
-                    class="ml-3 mb-1"
-                    title="Probability of the most likely class given by a classification model"
-                    name="info-circle"
-                    color="#C0C0C0"
-                ></v-icon>
-                <div class="text-muted">
-                    <small>(From 0.0 to 1.0)</small>
-                </div>
-            </b-col>
-            <b-col>
-                <b-row>
-                    <b-col cols="3">
-                        <label>Min</label>
-                    </b-col>
-                    <b-col cols="9">
-                        <input
-                            class="form-control form-control-sm"
-                            id="minpclass"
-                            type="number"
-                            step="0.0001"
-                            min="0"
-                            max="1"
-                            v-model="probMin"
-                            :disabled="loading"
-                        >
-                    </b-col>
-                </b-row>
-            </b-col>
-            <b-col>
-                <b-row>
-                    <b-col cols="3">
-                        <label>Max</label>
-                    </b-col>
-                    <b-col cols="9">
-                        <input
-                            class="form-control form-control-sm"
-                            id="maxpclass"
-                            type="number"
-                            step="0.0001"
-                            max="1"
-                            min="0"
-                            v-model="probMax"
-                            :disabled="loading"
-                        >
-                    </b-col>
-                </b-row>
-            </b-col>
-        </b-row> -->
-        <!-- PERIOD -->
-        <!--b-row>
-            <b-col cols="12" class="mb-3">
-                <b>Period</b>
-                <v-icon
-                    v-b-tooltip.hover.right
-                    class="ml-3 mb-1"
-                    title="(For variable stars that have a period) Minimum and maximum desired values for the period"
-                    name="info-circle"
-                    color="#C0C0C0"
-                ></v-icon>
-                <div class="text-muted">
-                    <small>(days)</small>
-                </div>
-            </b-col>
-            <b-col md="6">
-                <b-row>
-                    <b-col cols="3">
-                        <label>Min</label>
-                    </b-col>
-                    <b-col cols="9">
-                        <input
-                            class="form-control form-control-sm"
-                            id="minperiod"
-                            min="0"
-                            type="number"
-                            step="0.1"
-                            v-model="periodMin"
-                            :disabled="loading"
-                        >
-                    </b-col>
-                </b-row>
-            </b-col>
-            <b-col md="6">
-                <b-row>
-                    <b-col cols="3">
-                        <label>Max</label>
-                    </b-col>
-                    <b-col cols="9">
-                        <input
-                            class="form-control form-control-sm"
-                            type="number"
-                            step="0.1"
-                            id="maxperiod"
-                            :min="periodMin"
-                            v-model="periodMax"
-                            :disabled="loading"
-                        >
-                    </b-col>
-                </b-row>
-            </b-col>
-        </b-row>
-        <br/-->
-        <!-- HAS CROSSMATCH -->
-        <!-- <b-row name="ext" class="my-3">
-            <b-col cols="12" class="form-check">
-                <b-form-group>
-                    <b-form-checkbox
-                        plain
-                        stacked
-                        id="ext"
-                        value="1"
-                        v-model="crossmatch"
-                        :unchecked-value="null"
-                    >
-                        Has Crossmatch
-                    </b-form-checkbox>
-                        <v-icon
-                            v-b-tooltip.hover.right
-                            class="mb-1"
-                            title="Search only objects that are also in another catalog"
-                            name="info-circle"
-                            color="#C0C0C0"
-                        ></v-icon>
-                </b-form-group>
-            </b-col>
-        </b-row> -->
+        
         <b-card no-body class="mb-3">
             <b-tabs card>
                 <b-tab title="Dates" active>
@@ -326,23 +166,7 @@
         },
         data(){
             return {
-                classifierOptions: [
-                    {
-                        name: "X-MATCH",
-                        dbName: "classxmatch"
-                    },
-                    {
-                        name: "ML_RF",
-                        dbName: "classrf"
-                    },
-                    {
-                        name:"ML_RNN",
-                        dbName:"classrnn"
-                    }
-                ],
-                classifier: null,
-                classs: null,
-                probability: null
+                
             }
         },
         props: ['loading'],
@@ -452,8 +276,35 @@
                     })
                 }
             },
-            classOptions(){
+            selectedClassifier: {
+                get(){
+                    return this.$store.state.search.selectedClassifier;
+                },
+                set(value){
+                    this.$store.dispatch('setClassifier', value);
+                }
+            },
+            selectedClass: {
+                get(){
+                    return this.$store.state.search.selectedClass;
+                },
+                set(value){
+                    this.$store.dispatch('setClass', value);
+                }
+            },
+            classifiers(){
+                return this.$store.state.search.classifiers;
+            },
+            classes(){
                 return this.$store.state.search.classes;
+            },
+            probability:{
+                get(){
+                    return this.$store.state.search.probability;
+                },
+                set(value){
+                    this.$store.dispatch('setProbability', value);
+                }
             }
         },
         watch: {
@@ -462,74 +313,7 @@
             }
         },
         methods:{
-            classSelected(event){
-                this.classs = event.target.value
-                if(this.classifier){
-                    this.emptyAllClasses();
-                    this.$store.dispatch('updateOptions',{
-                        obj: "filters",
-                        keyPath: [this.classifier],
-                        value: this.classs
-                    })
-                }
-                /*else{
-                    this.classifierOptions.forEach(element => {
-                        this.$store.dispatch('updateOptions',{
-                            obj: "filters",
-                            keyPath: [element.dbName],
-                            value: this.classs
-                        })
-                    });
-                }*/
-            },
-            classifierSelected(event){
-                let oldVal = this.classifier
-                this.classifier = event.target.value
-
-                if(this.classs && this.classifier != ''){
-                    this.$store.dispatch('updateOptions',{
-                        obj: "filters",
-                        keyPath: [oldVal],
-                        value: null
-                    })
-                    this.$store.dispatch('updateOptions',{
-                        obj: "filters",
-                        keyPath: ['p' + oldVal],
-                        value: null
-                    })
-                    if(this.classifier != 'classxmatch'){
-                        this.$store.dispatch('updateOptions',{
-                            obj: "filters",
-                            keyPath: ['p' + this.classifier],
-                            value: this.probability
-                        })
-                    }
-                    this.$store.dispatch('updateOptions',{
-                        obj: "filters",
-                        keyPath: [this.classifier],
-                        value: this.classs
-                    })
-                }
-                else{
-                    delete this.$store.state.search.filters[this.classifier]
-                    delete this.$store.state.search.filters[oldVal]
-                    delete this.$store.state.search.filters["p"+this.classifier]
-                    delete this.$store.state.search.filters["p"+oldVal]
-                }
-            },
-            probabilitySelected(event){
-                this.probability = event.target.value;
-                this.$store.dispatch('updateOptions',{
-                        obj: "filters",
-                        keyPath: ['p'+this.classifier],
-                        value: this.probability
-                    })
-            },
-            emptyAllClasses(){
-                this.classifierOptions.forEach(element => {
-                        delete this.$store.state.search.filters[element.dbName]
-                })
-            }
+            
         }
         
     }

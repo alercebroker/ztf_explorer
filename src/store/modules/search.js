@@ -13,7 +13,41 @@ export const state = {
     query_status: 0,
     error: null,
     file: null,
-    classes: [],
+    classes: [
+        {
+            text: "Not specified",
+            value: null
+        },
+        {
+            text: "Classified",
+            value: "classified"
+        },
+        {
+            text: "Not classified",
+            value: "not classified"
+        }
+    ],
+    classifiers: [
+        {
+            text: "All",
+            value: null
+        },
+        {
+            text: "X-MATCH",
+            value: "classxmatch"
+        },
+        {
+            text: "ML_RF",
+            value: "classrf"
+        },
+        {
+            text:"ML_RNN",
+            value:"classrnn"
+        }
+    ],
+    selectedClassifier: null,
+    selectedClass: null,
+    probability: null
 }
 
 export const mutations = {
@@ -36,7 +70,7 @@ export const mutations = {
                 obj[key] = {}
             obj = obj[key];
         }
-        if(payload.value)
+        if(payload.value != null)
             Vue.set(obj, payload.keyPath[lastKeyIndex], payload.value);
         else Vue.delete(obj, payload.keyPath[lastKeyIndex]);
         
@@ -65,10 +99,27 @@ export const mutations = {
         state.bands = { }
         state.coordinates = { }
         state.sql = "SELECT * FROM OBJECTS"
+        state.probability = null
+        state.selectedClass = null
+        state.selectedClassifier = null
     },
     SET_CLASSES(state, classes){
         classes.push(classes.shift());
-        state.classes = classes;
+        classes.map(option => {
+            state.classes.push({
+                text: option.name,
+                value: option.id
+            })
+        })
+    },
+    SET_CLASSIFIER(state, classifier){
+        state.selectedClassifier = classifier;
+    },
+    SET_CLASS(state, classs){
+        state.selectedClass = classs;
+    },
+    SET_PROBABILITY(state, probability){
+        state.probability = probability;
     }
 }
 
@@ -228,11 +279,16 @@ export const actions = {
         })
     },
     queryClassList({commit, dispatch, state}){
+        console.log("query class list")
         QueryService.getClassList().then( res => {
+            console.log("query class list returned task id", res.data["task-id"])
             let taskId = res.data["task-id"];
             state.interval = setInterval( () => {
+                console.log("interval", state.interval);
                 QueryService.checkQueryStatus(taskId).then(response => {
+                    console.log("checking status for task id", taskId, response.data.status)
                     if (response.data.status === "SUCCESS") {
+                        console.log("query status succeded")
                         clearInterval(state.interval);
                         dispatch('getClassList',taskId);
                     }
@@ -242,18 +298,93 @@ export const actions = {
                 }).catch(error => {
                     commit('SET_ERROR', error);
                 })
+                console.log("after checking status")
             },500);
         }).catch( error => {
             commit('SET_ERROR', error);
         });
     },
-    getClassList({commit, dispatch},taskId){
+    getClassList({commit},taskId){
+        console.log("get class list")
         QueryService.getResult(taskId).then(result => {
             commit('SET_CLASSES',result.data.result);
         }).catch(error => {
             commit('SET_ERROR', error);
         })
     },
+    setClassifier({commit, state, dispatch}, classifier){
+        let oldVal = state.selectedClassifier
+        commit('SET_CLASSIFIER', classifier);
+        if(state.selectedClass >= 0 && state.selectedClassifier){
+            console.log("oldval", oldVal)
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: [oldVal],
+                value: null
+            })
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: ['p' + oldVal],
+                value: null
+            })
+            if(state.selectedClassifier != 'classxmatch' && state.probability){
+                dispatch('updateOptions',{
+                    obj: "filters",
+                    keyPath: ['p' + state.selectedClassifier],
+                    value: state.probability
+                })
+            }
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: [state.selectedClassifier],
+                value: state.selectedClass
+            })
+        }
+        else{
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: [oldVal],
+                value: null
+            })
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: [classifier],
+                value: null
+            })
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: [classifier],
+                value: null
+            })
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: ['p'+oldVal],
+                value: null
+            })
+        }
+    },
+    setClass({commit, state, dispatch}, classs){
+        commit('SET_CLASS', classs);
+        if(state.selectedClassifier){
+            console.log("setting", state.selectedClassifier, "with", state.selectedClass)
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: [state.selectedClassifier],
+                value: classs
+            })
+        }
+        if(classs == null){
+            dispatch('setProbability', null)
+        }
+    },
+    setProbability({commit, dispatch, state}, probability){
+        commit('SET_PROBABILITY', probability);
+        dispatch('updateOptions',{
+            obj: "filters",
+            keyPath: ['p'+state.selectedClassifier],
+            value: probability
+        })
+    }
 }
 
 export const getters = {
