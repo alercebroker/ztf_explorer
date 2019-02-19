@@ -47,7 +47,7 @@ export const state = {
     ],
     selectedClassifier: null,
     selectedClass: null,
-    probability: null
+    probability: null,
 }
 
 export const mutations = {
@@ -120,7 +120,7 @@ export const mutations = {
     },
     SET_PROBABILITY(state, probability){
         state.probability = probability;
-    }
+    },
 }
 
 export const actions = {
@@ -134,27 +134,34 @@ export const actions = {
             commit('SET_ERROR', error);
         })
     },
+    checkQueryStatus({commit, dispatch}, taskId){
+        return QueryService.checkQueryStatus(taskId).then(response => {
+            console.log("status", response.data.status);
+            if (response.data.status === "SUCCESS") {
+                commit('SET_ERROR', null);
+                return "SUCCESS"
+            }
+            else if (response.data.status === "TIMEDOUT"){
+                commit('SET_QUERY_STATUS', 504)
+                dispatch('loading', false)
+            }
+            else {
+                dispatch('checkQueryStatus', taskId)
+            }
+        }).catch(error => {
+            commit('SET_ERROR', error);
+            return "ERROR"
+        })
+    },
     queryObjects({ commit, dispatch, state }, query_parameters){
         dispatch('loading', true);
         QueryService.executeQuery(query_parameters).then( response => {
             let taskId = response.data["task-id"]
-            state.interval = setInterval( () => {
-                QueryService.checkQueryStatus(taskId).then(response => {
-                    if (response.data.status === "SUCCESS") {
-                        clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 200);
-                        dispatch('getResults',taskId);
-                    }
-                    else if (response.data.status === "TIMEDOUT"){
-                        clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 504);
-                        dispatch('loading', false);
-                    }
-                }).catch(error => {
-                    commit('SET_ERROR', error);
-                    dispatch('loading', false);
-                })
-            },500);
+            dispatch('checkQueryStatus', taskId).then(result => {
+                if(result === "SUCCESS"){
+                    dispatch('getResults',taskId);
+                }
+            })
         }).catch(error => {
             commit('SET_ERROR', error);
             dispatch('loading', false);
@@ -162,8 +169,11 @@ export const actions = {
     },
     getResults({commit, dispatch},taskId){
         QueryService.getResult(taskId).then(result => {
-            commit('SET_QUERY_STATUS', result.status);
-            commit('SET_OBJECTS',result.data.result);
+            if(result.data.result.length === 0) commit('SET_QUERY_STATUS', 204);
+            else{
+                commit('SET_QUERY_STATUS', result.status);
+                commit('SET_OBJECTS',result.data.result);
+            }
             dispatch('loading', false);
         }).catch(error => {
             commit('SET_ERROR', error);
@@ -174,23 +184,11 @@ export const actions = {
         dispatch('loading', true);
         QueryService.executeObjectQuery(object.oid).then( response => {
             let taskId = response.data["task-id"]
-            state.interval = setInterval(() => {
-                QueryService.checkQueryStatus(taskId).then(response => {
-                    if (response.data.status === "SUCCESS") {
-                        clearInterval(state.interval);
-                        //commit('SET_QUERY_STATUS', 200);
-                        dispatch('getObjectDetails', taskId);
-                    }
-                    else if (response.data.status === "TIMEDOUT") {
-                        clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 504);
-                        dispatch('loading', false);
-                    }
-                }).catch(error => {
-                    commit('SET_ERROR', error);
-                    dispatch('loading', false);
-                })
-            }, 500);
+            dispatch('checkQueryStatus',taskId).then(result => {
+                if(result === "SUCCESS"){
+                    dispatch('getObjectDetails',taskId);
+                }
+            })
         }).catch(error => {
             commit('SET_ERROR', error);
             dispatch('loading', false);
@@ -200,23 +198,11 @@ export const actions = {
         dispatch('loading', true);
         QueryService.executeObjectQuery(object.oid).then( response => {
             let taskId = response.data["task-id"]
-            state.interval = setInterval(() => {
-                QueryService.checkQueryStatus(taskId).then(response => {
-                    if (response.data.status === "SUCCESS") {
-                        clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 200);
-                        dispatch('getObjectDetails', taskId);
-                    }
-                    else if (response.data.status === "TIMEDOUT") {
-                        clearInterval(state.interval);
-                        commit('SET_QUERY_STATUS', 504);
-                        dispatch('loading', false);
-                    }
-                }).catch(error => {
-                    commit('SET_ERROR', error);
-                    dispatch('loading', false);
-                })
-            }, 500);
+            dispatch('checkQueryStatus',taskId).then(result => {
+                if(result === "SUCCESS"){
+                    dispatch('getObjectDetails',taskId);
+                }
+            })
         }).catch(error => {
             commit('SET_ERROR', error);
             dispatch('loading', false);
@@ -260,52 +246,29 @@ export const actions = {
         }
         QueryService.executeDownloadQuery(query_parameters, format).then( response => {
             let taskId = response.data["task-id"];
-            state.interval = setInterval(() => {
-                QueryService.checkQueryStatus(taskId).then(response => {
-                    if (response.data.status === "SUCCESS") {
-                        clearInterval(state.interval);
-                        //commit('SET_QUERY_STATUS', 200);
-                        dispatch('getFile',taskId);
-                    }
-                    else if (response.data.status === "TIMEDOUT") {
-                        clearInterval(state.interval);
-                    }
-                }).catch(error => {
-                    commit('SET_ERROR', error);
-                })
-            }, 500);
+            dispatch('checkQueryStatus',taskId).then(result => {
+                if(result === "SUCCESS"){
+                    dispatch('getFile',taskId);
+                }
+            })
         }).catch(error => {
             commit('SET_ERROR', error);
         })
     },
-    queryClassList({commit, dispatch, state}){
-        console.log("query class list")
+    queryClassList({commit, dispatch}){
         QueryService.getClassList().then( res => {
-            console.log("query class list returned task id", res.data["task-id"])
             let taskId = res.data["task-id"];
-            state.interval = setInterval( () => {
-                console.log("interval", state.interval);
-                QueryService.checkQueryStatus(taskId).then(response => {
-                    console.log("checking status for task id", taskId, response.data.status)
-                    if (response.data.status === "SUCCESS") {
-                        console.log("query status succeded")
-                        clearInterval(state.interval);
-                        dispatch('getClassList',taskId);
-                    }
-                    else if (response.data.status === "TIMEDOUT"){
-                        clearInterval(state.interval);
-                    }
-                }).catch(error => {
-                    commit('SET_ERROR', error);
-                })
-                console.log("after checking status")
-            },500);
+            dispatch('checkQueryStatus',taskId).then( result => {
+                if(result === "SUCCESS"){
+                    dispatch('getClassList', taskId);
+                }
+            })
         }).catch( error => {
             commit('SET_ERROR', error);
         });
     },
+    
     getClassList({commit},taskId){
-        console.log("get class list")
         QueryService.getResult(taskId).then(result => {
             commit('SET_CLASSES',result.data.result);
         }).catch(error => {
