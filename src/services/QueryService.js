@@ -77,6 +77,9 @@ export default {
     },
     getClassList(){
         return apiClient.post('/get_classes');
+    },
+    getPlot(){
+        return apiClient.post('/plot');
     }
 
 };
