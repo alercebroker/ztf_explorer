@@ -133,10 +133,10 @@ export default {
   methods: {
     getClass(obj, classifier){
       return this.$store.state.search.classes.find(function(x){
-        if(x.id == obj[classifier]){
+        if(x.value == obj[classifier]){
           return x;
         }
-      }).name;
+      }).text;
     },
     julianIntToDate: function(n) {
       // https://stackoverflow.com/questions/29627533/conversion-of-julian-date-number-to-normal-date-utc-in-javascript
