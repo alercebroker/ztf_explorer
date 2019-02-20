@@ -87,11 +87,6 @@
         <b-row v-if="$store.state.results.objectDetails.probabilities" class="mt-3">
           <b-col cols="4">
             <b-card no-body class="h-100 align-middle">
-              <pieclass v-bind:classifier='1'/>
-            </b-card>
-          </b-col>
-          <b-col cols="8">
-            <b-card no-body class="h-100 align-middle">
               <lineclass></lineclass>
             </b-card>
           </b-col>
@@ -130,7 +125,6 @@
 <script>
 import lightCurve from "./lightCurve.vue";
 import aladin from './aladin.vue';
-import pieclass from './plots/PieClass.vue';
 import lineclass from './plots/LineClass.vue';
 
 export default {
@@ -145,7 +139,6 @@ export default {
   components: {
     lightCurve: lightCurve,
     aladin,
-    pieclass,
     lineclass
   },
   methods: {

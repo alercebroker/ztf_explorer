@@ -19,7 +19,8 @@
       return {
         lineOptions: {
           chart: {
-            type: 'spline'
+            type: 'spline',
+            height: 250
           },
           title: {
             text: 'Classification'
@@ -78,4 +79,5 @@
 </script>
 
 <style scoped>
+
 </style>
