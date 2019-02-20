@@ -83,6 +83,19 @@
               </div>
           </b-col>
         </b-row>
+        <!-- PROBABILITIES -->
+        <b-row v-if="$store.state.results.objectDetails.probabilities" class="mt-3">
+          <b-col cols="4">
+            <b-card no-body class="h-100 align-middle">
+              <pieclass v-bind:classifier='1'/>
+            </b-card>
+          </b-col>
+          <b-col cols="8">
+            <b-card no-body class="h-100 align-middle">
+              <lineclass></lineclass>
+            </b-card>
+          </b-col>
+        </b-row>
         <b-row class="mt-3">
           <b-col>
             <!-- Stamps -->
@@ -117,6 +130,9 @@
 <script>
 import lightCurve from "./lightCurve.vue";
 import aladin from './aladin.vue';
+import pieclass from './plots/PieClass.vue';
+import lineclass from './plots/LineClass.vue';
+
 export default {
   name: "object-details-modal",
   props: ["id", "show"],
@@ -128,7 +144,9 @@ export default {
   },
   components: {
     lightCurve: lightCurve,
-    aladin
+    aladin,
+    pieclass,
+    lineclass
   },
   methods: {
     getClass(obj, classifier){
