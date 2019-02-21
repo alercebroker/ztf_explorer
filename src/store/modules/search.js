@@ -136,7 +136,6 @@ export const actions = {
     },
     checkQueryStatus({commit, dispatch}, taskId){
         return QueryService.checkQueryStatus(taskId).then(response => {
-            console.log("status", response.data.status);
             if (response.data.status === "SUCCESS") {
                 commit('SET_ERROR', null);
                 return "SUCCESS"
@@ -153,7 +152,7 @@ export const actions = {
             return "ERROR"
         })
     },
-    queryObjects({ commit, dispatch, state }, query_parameters){
+    queryObjects({ commit, dispatch }, query_parameters){
         dispatch('loading', true);
         QueryService.executeQuery(query_parameters).then( response => {
             let taskId = response.data["task-id"]
@@ -279,7 +278,6 @@ export const actions = {
         let oldVal = state.selectedClassifier
         commit('SET_CLASSIFIER', classifier);
         if(state.selectedClass >= 0 && state.selectedClassifier){
-            console.log("oldval", oldVal)
             dispatch('updateOptions',{
                 obj: "filters",
                 keyPath: [oldVal],
@@ -329,7 +327,6 @@ export const actions = {
     setClass({commit, state, dispatch}, classs){
         commit('SET_CLASS', classs);
         if(state.selectedClassifier){
-            console.log("setting", state.selectedClassifier, "with", state.selectedClass)
             dispatch('updateOptions',{
                 obj: "filters",
                 keyPath: [state.selectedClassifier],
