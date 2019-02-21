@@ -134,7 +134,7 @@
       </b-pagination>
     </div>
 
-    <object-details-modal :show="showObjectDetailsModal" @modalClosed="showObjectDetailsModal = false"/>
+    <object-details-modal v-if="showObjectDetailsModal" :show="showObjectDetailsModal" @modalClosed="showObjectDetailsModal = false"/>
     <download-modal />
 
   </div>

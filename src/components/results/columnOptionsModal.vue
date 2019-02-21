@@ -113,11 +113,11 @@
               { 	
                 text: "MinG", 
                 value: { 
-				          key: "ming" ,
-				          label : "ming",
-				          sortable: true
-			          }
-		          },  
+                  key: "ming" ,
+                  label : "ming",
+                  sortable: true
+                }
+                },  
               { 
                 text: "MaxG", 
                 value: "maxg" 
@@ -179,7 +179,7 @@
                 value: {
                   key: "firstjd",
                   label: "FirstMJD",
-		              sortable : true
+                  sortable : true
                 }
               },
               {
@@ -187,7 +187,7 @@
                 value: {
                   key: "lastjd",
                   label: "LastMJD",
-		              sortable : true
+                  sortable : true
                 }
               },
               {
@@ -198,25 +198,25 @@
                 }
               },
               { 
-			          text: "Dec", 
-			          value: { 
-				          key : "meandec" ,
-				          label : "Dec",
-				          sortable: false
-			          }
-	            },
+                text: "Dec", 
+                value: { 
+                  key : "meandec" ,
+                  label : "Dec",
+                  sortable: false
+                }
+              },
               { 
                 text: "RmsDEC", 
                 value: "rmsdec" 
               },
               { 
-			          text: "RA", 
-			          value: {
-				          key : "meanra" ,
-				          label : "RA",
-				          sortable: false
-			          }
-	            },
+              text: "RA", 
+                value: {
+                  key : "meanra" ,
+                  label : "RA",
+                  sortable: false
+                }
+              },
               { 
                 text: "RmsRA", 
                 value: "rmsra" 
@@ -234,7 +234,6 @@
         methods: {
           onClose(){
             this.$store.dispatch('setSelectedColumnOptions', this.$store.state.results.selectedColumnOptions);
-            console.log(this.$store.state.results.selectedColumnOptions);
           },
           toggleAll(checked){
             this.$store.state.results.selectedColumnOptions = checked ? this.options.map(a => a.value).slice() : [];
