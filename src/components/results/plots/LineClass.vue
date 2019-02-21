@@ -38,6 +38,9 @@
             shared: true,
             crosshairs: true
           },
+          exporting: {
+            enabled: false,
+          },
           plotOptions: {
             line: {
               dataLabels: {
