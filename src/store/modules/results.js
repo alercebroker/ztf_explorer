@@ -18,8 +18,8 @@ export const state = {
             label: "#"
         },
         {
-            key: "coordinates",
-            label: "Coordinates"
+            key: "radec",
+            label: "RA/Dec"
         },
         {
             key: "classxmatch",

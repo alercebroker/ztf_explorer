@@ -222,10 +222,10 @@
                 value: "rmsra" 
               },
               {
-                text: "Coordinates",
+                text: "RA/Dec",
                 value: {
-                  key: "coordinates",
-                  label: "Coordinates",
+                  key: "radec",
+                  label: "RA/Dec",
                   }
               }
             ]

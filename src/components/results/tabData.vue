@@ -126,7 +126,7 @@
         <template slot="meandec" slot-scope="data">
           <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
         </template>
-        <template slot="coordinates" slot-scope="data">
+        <template slot="radec" slot-scope="data">
           <div v-if="data.item.meanra != null && data.item.meandec != null">({{data.item.meanra.toFixed(3) +", "+data.item.meandec.toFixed(3)}})</div>
         </template>
       </b-table>
