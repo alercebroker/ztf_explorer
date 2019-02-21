@@ -40,12 +40,25 @@ export default {
         },
         exporting: {
           enabled: true,
-          filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toLocaleString().replace(", ", "_").replace(" ", "_"),
+          decimalpoint: '.',
+          filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toISOString().slice(0,19).replace("T","_"),
           buttons: {
             contextButton: {
                 text: 'Export'
             }
-        }
+          },
+          csv: {
+            columnHeaderFormatter: function(item, key){
+              if (!item || key == null){
+                return "MJD";
+              }
+              else if(key == 'y'){
+                return item.options.value[0] == 'r' ? "mag_r" : "mag_g";
+              }
+              return item.options.value + "_" + key;
+            }
+          }
+
         }, 
         xAxis: {
           name: "Dates",
@@ -76,30 +89,6 @@ export default {
           enableMouseTracking: true,
           series: {
             cursor: "pointer",
-            point: {
-              events: {
-                //click: function(e) {
-                  // hs.htmlExpand(null, {
-                  //   pageOrigin: {
-                  //     x: e.pageX || e.clientX,
-                  //     y: e.pageY || e.clientY
-                  //   },
-                  //   headingText: this.series.name,
-                  //   maincontentText:
-                  //     "Modified julian date: " +
-                  //     this.chartData.jdates[this.x] +
-                  //     "<br/> " +
-                  //     this.series.name +
-                  //     ": " +√
-                  //     this.y +
-                  //     "<br/> " +
-                  //     "rms error: " +
-                  //     0.1,
-                  //   width: 250
-                  // });
-                //}
-              }
-            },
             marker: {
               lineWidth: 1
             }
@@ -115,6 +104,7 @@ export default {
           },
           {
             name: "r magnitude error",
+            value: "e_mag_r",
             type: "errorbar",
             color: "#cc0c00",
             enableMouseTracking: false,
@@ -123,13 +113,13 @@ export default {
           {
             name: "g magnitude",
             value: "gmag",
-            // linkedTo: 'rmag',
             type: "scatter",
             color: "#22d100",
             data: [],
           },
           {
             name: "g magnitude error",
+            value: "e_mag_g",
             type: "errorbar",
             color: "#0a9900",
             enableMouseTracking: false,
@@ -142,29 +132,27 @@ export default {
 
   methods: {
     processLightCurveData: function(alerts) {
-      /*this.chartOptions.series.forEach(element => {
-        element.data = [];
-      });*/
-      alerts.forEach(dataItem => {
-        this.chartOptions.series.find(item => item.name === 'r magnitude').data.push([dataItem.jd, dataItem.magr]);
-        this.chartOptions.series.find(item => item.name === 'g magnitude').data.push([dataItem.jd, dataItem.magg]);
-        let magg_error = [null, null];
-        if (dataItem.magg != null) {
-          magg_error = [dataItem.jd, dataItem.magg - dataItem.rmsg, dataItem.magg + dataItem.rmsg];
+      var rband = [];
+      var gband = [];
+      var rbandError = [];
+      var gbandError = [];
+      alerts.forEach(function(item)
+      {
+        if(item.magg)
+        {
+          gband.push([item.jd, item.magg]);
+          gbandError.push([item.jd, item.magg - item.rmsg, item.magg + item.rmsg]);
         }
-        this.chartOptions.series.find(item => item.name === 'g magnitude error').data.push(magg_error);
-
-        let magr_error = [null, null];
-        if (dataItem.magr) {
-          magr_error = [dataItem.jd, dataItem.magr - dataItem.rmsr, dataItem.magr + dataItem.rmsr];
+        else if(item.magr)
+        {
+          rband.push([item.jd, item.magr]);
+          rbandError.push([item.jd, item.magr - item.rmsr, item.magr + item.rmsr]);
         }
-        this.chartOptions.series.find(item => item.name === 'r magnitude error').data.push(magr_error);
-      });
-      let firstData = this.$store.state.results.objectDetails.alerts.map(function(x){return x.jd;})[0]
-      this.chartOptions.series[0].pointStart = firstData;
-      this.chartOptions.series[1].pointStart = firstData;
-      this.chartOptions.series[2].pointStart = firstData;
-      this.chartOptions.series[3].pointStart = firstData;
+      })
+      this.chartOptions.series[0].data = rband;
+      this.chartOptions.series[1].data = rbandError;
+      this.chartOptions.series[2].data = gband;
+      this.chartOptions.series[3].data = gbandError;
     },
   },
   computed: {

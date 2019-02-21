@@ -1,16 +1,19 @@
 <template>
-    <div name="bands" class="mb-3">
-        <h3>Magnitude</h3>
-        <div class="checkbox my-3">
-            <b-form-group>
-                <b-form-checkbox
+    <div name="bands">
+        <b-form-group class="without-margin">
+            <b-row>
+                <b-col>
+                    <h4>Magnitude</h4>
+                </b-col>
+                <b-col>
+                    <b-form-checkbox
                     plain
                     stacked
                     id="anyBand"
                     v-on:click="anyBand = !anyBand"
                     v-model="anyBand"
                 >
-                    Any band
+                Any band
                 </b-form-checkbox>
                 <v-icon
                     v-b-tooltip.hover.right
@@ -19,8 +22,9 @@
                     name="info-circle"
                     color="#C0C0C0"
                 ></v-icon>
-            </b-form-group>
-        </div>
+                </b-col>
+            </b-row>
+        </b-form-group>
         <transition name="fade">
             <b-card no-body id="magnitudTab">
                 <b-tabs card v-show="anyBand">
@@ -57,5 +61,7 @@
 </script>
 
 <style scoped>
-
+.without-margin {
+    margin-bottom: 0px;
+}
 </style>

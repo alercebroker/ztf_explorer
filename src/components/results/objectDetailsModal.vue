@@ -5,7 +5,9 @@
       v-on:hidden="$emit('modalClosed')"
       v-model="showModal"
       lazy="lazy"
-    >
+      no-close-on-backdrop>
+      <div slot="modal-header">
+      </div>
       <b-container fluid>
         <b-row>
           <b-col cols="2">
@@ -16,7 +18,9 @@
                       <strong>{{key}}</strong> : {{ typeof value === "number"? Number.parseFloat(value).toFixed(3) : value }}
                     </li>-->
                     <li><strong>Object:</strong> {{ $store.state.results.objectDetails.object_details.oid }}</li>
-                    <li><strong>Class:</strong> {{ classOptions[$store.state.results.objectDetails.object_details.class-1] }}</li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classxmatch") }} (X-MATCH) </li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classrf"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrf") }} (ML_RF) </li>
+                    <li v-if="$store.state.results.objectDetails.object_details.classrnn"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrnn") }} (ML_RNN) </li>
                     <li><strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra.toFixed(4) }}, {{ $store.state.results.objectDetails.object_details.meandec.toFixed(4) }}</li>
                     <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
                     <li><strong>First date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.firstjd) }}</li>
@@ -24,9 +28,9 @@
                   </ul>
               </b-card>
             </b-card-group>
-            <b-card-group deck>
+            <b-card-group>
               <b-card no-body>
-                <table>
+                <table v-if="$store.state.loading === false">
                   <tr>
                     <th>Item</th>
                     <th>g</th> 
@@ -34,33 +38,33 @@
                   </tr>
                   <tr>
                     <td>Mean</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.meang.toFixed(3) }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.meang ? $store.state.results.objectDetails.object_details.meang.toFixed(3) : '-' }}</td> 
                     <td>{{ $store.state.results.objectDetails.object_details.meanr.toFixed(3) }}</td>
                   </tr>
                   <tr>
                     <td>Median</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.mediang.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.medianr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.mediang ? $store.state.results.objectDetails.object_details.mediang.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.medianr ? $store.state.results.objectDetails.object_details.medianr.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>First</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.firstmagg.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.firstmagr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.firstmagg ? $store.state.results.objectDetails.object_details.firstmagg.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.firstmagr ? $store.state.results.objectDetails.object_details.firstmagr.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Last</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.lastmagg.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.lastmagr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.lastmagg ? $store.state.results.objectDetails.object_details.lastmagg.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.lastmagr ? $store.state.results.objectDetails.object_details.lastmagr.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Min</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.ming.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.minr.toFixed(3) }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.ming ? $store.state.results.objectDetails.object_details.ming.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.minr ? $store.state.results.objectDetails.object_details.minr.toFixed(3) : '-' }}</td> 
                   </tr>
                   <tr>
                     <td>Max</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.maxg.toFixed(3) }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.maxr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.maxg ? $store.state.results.objectDetails.object_details.maxg.toFixed(3) : '-' }}</td> 
+                    <td>{{ $store.state.results.objectDetails.object_details.maxr ? $store.state.results.objectDetails.object_details.maxr.toFixed(3) : '-' }}</td>
                   </tr>
                 </table>
               </b-card>
@@ -77,6 +81,14 @@
               <div class="h-100 align-middle">
                 <aladin v-if="$store.state.loading === false"/>
               </div>
+          </b-col>
+        </b-row>
+        <!-- PROBABILITIES -->
+        <b-row v-if="$store.state.results.objectDetails.probabilities" class="mt-3">
+          <b-col cols="4">
+            <b-card no-body class="h-100 align-middle">
+              <lineclass></lineclass>
+            </b-card>
           </b-col>
         </b-row>
         <b-row class="mt-3">
@@ -104,7 +116,8 @@
         </b-row>
       </b-container>
       <div slot="modal-footer">
-        <b-btn v-on:click="$emit('modalClosed')">Close</b-btn>
+        <!--<b-btn v-on:click="$emit('modalClosed')">Close</b-btn>-->
+        <b-btn v-on:click="closeModal" variant="danger">Close</b-btn>
       </div>
     </b-modal>
 </template>
@@ -112,9 +125,11 @@
 <script>
 import lightCurve from "./lightCurve.vue";
 import aladin from './aladin.vue';
+import lineclass from './plots/LineClass.vue';
+
 export default {
   name: "object-details-modal",
-  props: ["show"],
+  props: ["id", "show"],
   data() {
     return {
       lazy: true,
@@ -123,9 +138,17 @@ export default {
   },
   components: {
     lightCurve: lightCurve,
-    aladin
+    aladin,
+    lineclass
   },
   methods: {
+    getClass(obj, classifier){
+      return this.$store.state.search.classes.find(function(x){
+        if(x.value == obj[classifier]){
+          return x;
+        }
+      }).text;
+    },
     julianIntToDate: function(n) {
       // https://stackoverflow.com/questions/29627533/conversion-of-julian-date-number-to-normal-date-utc-in-javascript
       var X = parseFloat(n) + 0.5 + 2400000.5;
@@ -157,6 +180,10 @@ export default {
       var date = new Date(Date.UTC(year, month, day, hour, minute, second));
       return date.toISOString().slice(0,10).replace("-","/").replace("-","/") + " - " + date.toTimeString().slice(0,8);
     },
+    closeModal: function() {
+      this.$emit('modalClosed');
+      this.$router.replace("/");
+    }
   },
   computed: {
     title(){

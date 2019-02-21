@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: "http://52.91.72.134:8084/v2",
+    baseURL: "http://alerce.xyz:8084/v2",
     withCredentials: false,
     headers: {
         Accept: "application/json",
@@ -74,6 +74,9 @@ export default {
             format: format
         };
         return apiClient.post('/download', param);
+    },
+    getClassList(){
+        return apiClient.post('/get_classes');
     }
 
 };

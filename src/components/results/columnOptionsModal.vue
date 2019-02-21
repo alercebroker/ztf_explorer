@@ -14,7 +14,7 @@
         <b-form-checkbox-group
           id="flavors"
           stacked
-          v-model="selected"
+          v-model="$store.state.results.selectedColumnOptions"
           name="flavs"
           :options="options"
           class="ml-4"
@@ -30,23 +30,7 @@
         data(){
           return {
             allSelected: false,
-            selected: [
-              {
-                key: "oid",
-                sortable: false,
-                label: "Object ID"
-              },
-              {
-                key: "nobs",
-                sortable: true,
-                label: "# Obs"
-              },
-              {
-                key: "pclass",
-                sortable: false,
-                label: "Probability on class"
-              }
-            ], // TODO: must contain default columns
+            // TODO: must contain default columns
             options: [
               //TODO: change values and text
               {
@@ -58,55 +42,152 @@
                 }
               },
               {
-                text: "Nalerts",
+                text: "Number of alerts",
                 value: {
                   key: "nobs",
                   sortable: true,
-                  label: "# Obs"
+                  label: "#"
                 }
               },
-              {
-                text: "Pclass",
+              /*{
+                text: "Probability of class",
                 value: {
                   key: "pclass",
                   sortable: false,
-                  label: "Probability on class"
+                  label: "PClass"
+                }
+              },*/
+              {
+                text: "Class XMATCH", 
+                value: {
+                  key: "classxmatch",
+                  label: "X-MATCH"
+                } 
+              },
+              {
+                text: "Class RF", 
+                value: {
+                  key: "classrf",
+                  label: "ML_RF"
+                } 
+              },
+              {
+                text: "Probability of classifier RF",
+                value: {
+                  key: "pclassrf",
+                  sortable: true,
+                  label: "P(RF)"
                 }
               },
-              { text: "Class", value: "class" },
-              { text: "Period", value: "period" },
-              { text: "Ext", value: "ext" },
-
-              { text: "FirstMagG", value: "firstmagg" },
-              { text: "LastMagG", value: "lastmagg" },
-              { text: "MinG", value: "ming" },
-              { text: "MaxG", value: "maxg" },
-              { text: "MeanG", value: "meang" },
-              { text: "MedianG", value: "mediang" },
-              { text: "RmsG", value: "rmsg" },
-              { text: "SlopeG", value: "slopeg" },
-
-              { text: "LastMagR", value: "lastmagr" },
-              { text: "FirstMagR", value: "firstmagr" },
-              { text: "MinR", value: "minr" },
-              { text: "MaxR", value: "maxr" },
-              { text: "MeanR", value: "meanr" },
-              { text: "MedianR", value: "medianr" },
-              { text: "RmsR", value: "rmsr" },
-              { text: "SlopeR", value: "sloper" },
-
+              {
+                text: "Class RNN", 
+                value: {
+                  key: "classrnn",
+                  label: "ML_RNN"
+                } 
+              },
+              {
+                text: "Probability of classifier RNN",
+                value: {
+                  key: "pclassrnn",
+                  sortable: true,
+                  label: "P(RNN)"
+                }
+              },
+              /*{ 
+                text: "Period", 
+                value: "period" 
+              },
+              { 
+                text: "Ext", 
+                value: "ext" 
+              },*/
+              { 
+                text: "FirstMagG", 
+                value: "firstmagg" 
+              },
+              { 
+                text: "LastMagG", 
+                value: "lastmagg" 
+              },
+              { 	
+                text: "MinG", 
+                value: { 
+                  key: "ming" ,
+                  label : "ming",
+                  sortable: true
+                }
+                },  
+              { 
+                text: "MaxG", 
+                value: "maxg" 
+              },
+              { 
+                text: "MeanG", 
+                value: "meang" 
+              },
+              { 
+                text: "MedianG", 
+                value: "mediang"
+              },
+              { 
+                text: "RmsG", 
+                value: "rmsg" 
+              },
+              { 
+                text: "SlopeG", 
+                value: "slopeg" 
+              },
+              { 
+                text: "LastMagR", 
+                value: "lastmagr" 
+              },
+              { 
+                text: "FirstMagR", 
+                value: "firstmagr" 
+              },
+              { 	
+                text: "MinR", 
+                value: { 
+                  key: "minr" ,
+                  label : "minr",
+                  sortable: true
+                  }
+              },
+              { 
+                text: "MaxR", 
+                value: "maxr" 
+              },
+              { 
+                text: "MeanR", 
+                value: "meanr" 
+              },
+              { 
+                text: "MedianR", 
+                value: "medianr" 
+              },
+              { 
+                text: "RmsR", 
+                value: "rmsr" 
+              },
+              /*{ 
+                text: "SlopeR", 
+                value: "sloper" 
+              },*/
               {
                 text: "FirstMJD",
                 value: {
                   key: "firstjd",
-                  label: "FirstMJD"
+                  label: "FirstMJD",
+                  sortable : true
                 }
               },
               {
                 text: "LastMJD",
                 value: {
                   key: "lastjd",
-                  label: "LastMJD"
+                  label: "LastMJD",
+                  sortable : true
                 }
               },
               {
@@ -116,20 +197,46 @@
                   label: "DeltaMJD"
                 }
               },
-
-              { text: "MeanDEC", value: "meandec" },
-              { text: "RmsDEC", value: "rmsdec" },
-              { text: "MeanRA", value: "meanra" },
-              { text: "RmsRA", value: "rmsra" }
+              { 
+                text: "Dec", 
+                value: { 
+                  key : "meandec" ,
+                  label : "Dec",
+                  sortable: false
+                }
+              },
+              { 
+                text: "RmsDEC", 
+                value: "rmsdec" 
+              },
+              { 
+              text: "RA", 
+                value: {
+                  key : "meanra" ,
+                  label : "RA",
+                  sortable: false
+                }
+              },
+              { 
+                text: "RmsRA", 
+                value: "rmsra" 
+              },
+              {
+                text: "RA/Dec",
+                value: {
+                  key: "radec",
+                  label: "RA/Dec",
+                  }
+              }
             ]
           }
         },
         methods: {
           onClose(){
-            this.$store.dispatch('setSelectedColumnOptions', this.selected);
+            this.$store.dispatch('setSelectedColumnOptions', this.$store.state.results.selectedColumnOptions);
           },
           toggleAll(checked){
-            this.selected = checked ? this.options.map(a => a.value).slice() : [];
+            this.$store.state.results.selectedColumnOptions = checked ? this.options.map(a => a.value).slice() : [];
           }
         }
     }

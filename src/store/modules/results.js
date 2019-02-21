@@ -1,6 +1,6 @@
 export const state = {
     selectedObject: {
-        oid: null
+        oid: null,
     },
     objectDetails: {
         object_details: null,
@@ -15,12 +15,38 @@ export const state = {
         {
             key: "nobs",
             sortable: true,
-            label: "# Obs"
+            label: "#"
         },
         {
-            key: "pclass",
-            sortable: false,
-            label: "Probability on class"
+            key: "radec",
+            label: "RA/Dec"
+        },
+        {
+            key: "classxmatch",
+            label: "X-MATCH"
+        },
+        {
+            key: "classrf",
+            label: "ML_RF"
+        },
+        {   
+            key: "pclassrf",
+            sortable: true,
+            label: "P(RF)",
+        },
+        {
+            key: "classrnn",
+            label: "ML_RNN"
+        },
+        {
+            key: "pclassrnn",
+            sortable: true,
+            label: "P(RNN)"
+        },
+        {
+            key: "lastjd",
+            sortable: true,
+            label: "LastMJD"
         },
     ]
 }
@@ -49,6 +75,12 @@ export const actions = {
                 alerts: null,
             });
             dispatch('queryAlerts', object);
+        }
+    },
+    objectSelectedFromURL({commit, dispatch, state}, object){
+        if(state.selectedObject.oid !== object.oid){
+            commit('SET_SELECTED_OBJECT', object);
+            dispatch('queryAlertsFromURL', object);
         }
     },
     setObjectDetails({commit}, details){
