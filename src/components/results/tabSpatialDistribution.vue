@@ -1,17 +1,23 @@
 <template>
-	<div class="tabSpatialDistribution">
-		<h1>tabSpatialDistribution</h1>
-	</div>
+   <div id="bokeh" style="width:100%"></div>
 </template>
 
 <script>
-    /**
-	 * TODO
-     */
-    export default {
-  name: 'tabSpatialDistribution',
-  props: {
-
-  }
+export default {
+    name: "tab-spatial-distribution",
+    data(){
+        return {
+            src: null
+        }
+    },
+    mounted(){
+        this.$store.dispatch('getPlot').then(item => {
+            Bokeh.embed.embed_item(item, "bokeh");
+        });
+    }
 }
 </script>
+
+<style>
+
+</style>

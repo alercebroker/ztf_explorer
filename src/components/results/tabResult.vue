@@ -20,8 +20,8 @@
               >
                 <tabScatter/>
               </b-tab>
-              <b-tab title="Bokeh">
-                <tabBokeh/>
+              <b-tab title="Spatial Distribution">
+                <tab-spatial-distribution/>
               </b-tab>
             </b-tabs>
           </b-card>
@@ -37,7 +37,6 @@ import tabScatter from "./tabScatter.vue";
 import tabHistogram from "./tabHistogram.vue";
 import tabSankey from "./tabSankey.vue";
 import tabSpatialDistribution from "./tabSpatialDistribution.vue";
-import tabBokeh from "./tabBokeh.vue";
 export default {
   name: "tabResult",
   components: {
@@ -46,7 +45,6 @@ export default {
     tabHistogram,
     tabSankey,
     tabSpatialDistribution,
-    tabBokeh
   },
   methods: {
     
