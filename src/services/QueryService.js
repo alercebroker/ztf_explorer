@@ -75,8 +75,11 @@ export default {
         };
         return apiClient.post('/download', param);
     },
-    getClassList(){
-        return apiClient.post('/get_classes');
+    queryClassList(){
+        return apiClient.post('/query_classes');
+    },
+    getClassList(taskId){
+        return apiClient.post('/get_classes', {'task-id': taskId});
     },
     getPlot(){
         return apiClient.post('/plot');

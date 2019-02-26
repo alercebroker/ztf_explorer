@@ -74,7 +74,8 @@ export const state = {
             label: "minr"
         }*/
     ],
-    plot: null
+    plot: null,
+    objects: [],
 }
 
 export const mutations = {
@@ -89,7 +90,10 @@ export const mutations = {
     },
     SET_PLOT(state, plot){
         state.plot = plot;
-    }
+    },
+    SET_OBJECTS(state, objects){
+        state.objects = objects;
+    },
 }
 
 export const actions = {
@@ -117,6 +121,9 @@ export const actions = {
     },
     setPlot({commit}, plot){
         commit('SET_PLOT', plot);
+    },
+    setObjects({commit}, objects){
+        commit('SET_OBJECTS', objects);
     }
 }
 

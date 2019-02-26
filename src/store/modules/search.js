@@ -6,7 +6,6 @@ export const state = {
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
-    objects: [],
     interval: null,
     flagFirst: false,
     flagLast: false,
@@ -78,9 +77,6 @@ export const mutations = {
     SET_SQL(state, sql){
         state.sql = sql;
     },
-    SET_OBJECTS(state, objects){
-        state.objects = objects;
-    },
     SET_FLAG(state, payload){
         state[payload.flag] = payload.value;
     },
@@ -144,8 +140,8 @@ export const actions = {
                 commit('SET_QUERY_STATUS', 504)
                 dispatch('loading', false)
             }
-            else {
-                dispatch('checkQueryStatus', taskId)
+            else if( response.data.status === "STARTED"){
+                return dispatch('checkQueryStatus', taskId)
             }
         }).catch(error => {
             commit('SET_ERROR', error);
@@ -171,7 +167,8 @@ export const actions = {
             if(result.data.result.length === 0) commit('SET_QUERY_STATUS', 204);
             else{
                 commit('SET_QUERY_STATUS', result.status);
-                commit('SET_OBJECTS',result.data.result);
+                dispatch('setObjects',result.data.result);
+                dispatch('setPlot', result.data.plot)
             }
             dispatch('loading', false);
         }).catch(error => {
@@ -255,9 +252,10 @@ export const actions = {
         })
     },
     queryClassList({commit, dispatch}){
-        QueryService.getClassList().then( res => {
+        QueryService.queryClassList().then( res => {
             let taskId = res.data["task-id"];
             dispatch('checkQueryStatus',taskId).then( result => {
+                console.log("status", result)
                 if(result === "SUCCESS"){
                     dispatch('getClassList', taskId);
                 }
@@ -268,7 +266,7 @@ export const actions = {
     },
     
     getClassList({commit},taskId){
-        QueryService.getResult(taskId).then(result => {
+        QueryService.getClassList(taskId).then(result => {
             commit('SET_CLASSES',result.data.result);
         }).catch(error => {
             commit('SET_ERROR', error);
@@ -356,9 +354,6 @@ export const actions = {
 export const getters = {
     getFilters(state){
         return state.filters
-    },
-    getObjects(state){
-        return state.objects
     },
     getSQL(state){
         return state.sql

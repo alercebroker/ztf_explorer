@@ -10,17 +10,20 @@
               </b-tab>
               <b-tab
                 title="Histogram"
-                :disabled="$store.state.search.objects.length != 0 ? false : true"
+                :disabled="$store.state.results.objects.length != 0 ? false : true"
               >
                 <tabHistogram/>
               </b-tab>
               <b-tab
                 title="Scatter"
-                :disabled="$store.state.search.objects.length != 0 ? false : true"
+                :disabled="$store.state.results.objects.length != 0 ? false : true"
               >
                 <tabScatter/>
               </b-tab>
-              <b-tab title="Spatial Distribution">
+              <b-tab 
+                title="Spatial Distribution"
+                :disabled="$store.state.results.objects.length != 0 ? false : true"
+              >
                 <tab-spatial-distribution/>
               </b-tab>
             </b-tabs>

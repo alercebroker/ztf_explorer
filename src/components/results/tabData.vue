@@ -23,7 +23,7 @@
 
     <small>
       <div>
-        <strong>Found {{ $store.state.search.objects.length }} results</strong>
+        <strong>Found {{ $store.state.results.objects.length }} results</strong>
       </div>
     </small>
     
@@ -31,7 +31,7 @@
       <b-table
         striped
         hover
-        :items="$store.state.search.objects"
+        :items="$store.state.results.objects"
         :fields="$store.state.results.selectedColumnOptions"
         :current-page="currentPage"
         :per-page="perPage"
@@ -130,7 +130,7 @@
           <div v-if="data.item.meanra != null && data.item.meandec != null">({{data.item.meanra.toFixed(3) +", "+data.item.meandec.toFixed(3)}})</div>
         </template>
       </b-table>
-      <b-pagination size="md" :total-rows="$store.state.search.objects.length" v-model="currentPage" :per-page="perPage" align="center">
+      <b-pagination size="md" :total-rows="$store.state.results.objects.length" v-model="currentPage" :per-page="perPage" align="center">
       </b-pagination>
     </div>
 
