@@ -10,19 +10,22 @@
               </b-tab>
               <b-tab
                 title="Histogram"
-                :disabled="$store.state.search.objects.length != 0 ? false : true"
+                :disabled="$store.state.results.objects.length != 0 ? false : true"
               >
                 <tabHistogram/>
               </b-tab>
               <b-tab
                 title="Scatter"
-                :disabled="$store.state.search.objects.length != 0 ? false : true"
+                :disabled="$store.state.results.objects.length != 0 ? false : true"
               >
                 <tabScatter/>
               </b-tab>
-              <!-- <b-tab title="Spatial Distribution" :disabled="true">
-                <tabSpatialDistribution/>
-              </b-tab> -->
+              <b-tab 
+                title="Spatial Distribution"
+                :disabled="$store.state.results.objects.length != 0 ? false : false"
+              >
+                <tab-spatial-distribution/>
+              </b-tab>
             </b-tabs>
           </b-card>
         </transition>
@@ -44,7 +47,7 @@ export default {
     tabScatter,
     tabHistogram,
     tabSankey,
-    tabSpatialDistribution
+    tabSpatialDistribution,
   },
   methods: {
     

@@ -48,7 +48,19 @@ export const state = {
             sortable: true,
             label: "LastMJD"
         },
-    ]
+	    /*{
+            key: "ming",
+            sortable: true,
+            label: "ming"
+        },
+	    {
+            key: "minr",
+            sortable: true,
+            label: "minr"
+        }*/
+    ],
+    spatialDistribution: null,
+    objects: [],
 }
 
 export const mutations = {
@@ -60,7 +72,13 @@ export const mutations = {
     },
     SET_OBJECT_DETAILS(state, details){
         state.objectDetails = details;
-    }
+    },
+    SET_SPATIAL_DISTRIBUTION(state, plot){
+        state.spatialDistribution = plot;
+    },
+    SET_OBJECTS(state, objects){
+        state.objects = objects;
+    },
 }
 
 export const actions = {
@@ -85,6 +103,12 @@ export const actions = {
     },
     setObjectDetails({commit}, details){
         commit('SET_OBJECT_DETAILS', details.result);
+    },
+    setSpatialDistribution({commit}, plot){
+        commit('SET_SPATIAL_DISTRIBUTION', plot);
+    },
+    setObjects({commit}, objects){
+        commit('SET_OBJECTS', objects);
     }
 }
 
