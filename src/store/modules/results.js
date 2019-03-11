@@ -18,8 +18,8 @@ export const state = {
             label: "#"
         },
         {
-            key: "coordinates",
-            label: "Coordinates"
+            key: "radec",
+            label: "RA/Dec"
         },
         {
             key: "classxmatch",
@@ -43,22 +43,7 @@ export const state = {
             sortable: true,
             label: "P(RNN)"
         },
-        /*{
-            key: "meanra",
-            sortable: false,
-            label: "RA"
-        },
-	    {
-            key: "meandec",
-            sortable: false,
-            label: "Dec"
-        },
-	    {
-            key: "firstjd",
-            sortable: true,
-            label: "FirstMJD"
-        },*/
-	    {
+        {
             key: "lastjd",
             sortable: true,
             label: "LastMJD"

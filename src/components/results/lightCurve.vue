@@ -40,6 +40,7 @@ export default {
         },
         exporting: {
           enabled: true,
+          decimalpoint: '.',
           filename: 'ALeRCE_'+this.$store.state.results.selectedObject.oid + '_'+ new Date().toISOString().slice(0,19).replace("T","_"),
           buttons: {
             contextButton: {
