@@ -1,14 +1,13 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: "http://localhost:8084/v2",
+    baseURL: "http://alerce.xyz:8084/v2",
     withCredentials: false,
     headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
     }
 });
-
 
 export default {
     /**
@@ -81,8 +80,5 @@ export default {
     getClassList(taskId){
         return apiClient.post('/get_classes', {'task-id': taskId});
     },
-    getPlot(){
-        return apiClient.post('/plot');
-    }
 
 };

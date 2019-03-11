@@ -22,7 +22,7 @@
               </b-tab>
               <b-tab 
                 title="Spatial Distribution"
-                :disabled="$store.state.results.objects.length != 0 ? false : true"
+                :disabled="$store.state.results.objects.length != 0 ? false : false"
               >
                 <tab-spatial-distribution/>
               </b-tab>

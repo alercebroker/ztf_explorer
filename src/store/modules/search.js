@@ -1,4 +1,5 @@
 import QueryService from '@/services/QueryService.js';
+import QueryServiceV3 from '@/services/QueryServiceV3.js'
 import Vue from 'vue';
 export const state = {
     filters: {},
@@ -168,7 +169,7 @@ export const actions = {
             else{
                 commit('SET_QUERY_STATUS', result.status);
                 dispatch('setObjects',result.data.result);
-                dispatch('setPlot', result.data.plot)
+                // dispatch('setPlot', result.data.plot)
             }
             dispatch('loading', false);
         }).catch(error => {
@@ -343,11 +344,16 @@ export const actions = {
             value: probability
         })
     },
-    getPlot({dispatch}){
-        return QueryService.getPlot().then(response => {
-            dispatch('setPlot', response.data);
+    getSpatialDistribution({dispatch}){
+        return QueryServiceV3.getSpatialDistribution().then(response => {
+            dispatch('setSpatialDistribution', response.data);
             return response.data;
         });
+    },
+    queryObjectsV3({dispatch}){
+        return QueryServiceV3.queryObjectsV3().then( response => {
+            dispatch('setObjects', response.data);
+        })
     }
 }
 
