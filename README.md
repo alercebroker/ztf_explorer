@@ -5,9 +5,9 @@
 
 #Run in Localhost
 ## clone repository
-./vue-proj$ git clone http://gitlab.dim.uchile.cl/AlerceFrontEnd/vue-proj.git
-./vue-proj$ cd vue-proj
-./vue-proj$ npm install
+> $ git clone http://gitlab.dim.uchile.cl/AlerceFrontEnd/vue-proj.git
+> $ cd vue-proj
+> $ npm install
 
 ## Run server
 ./vue-proj/$ yarn serve
@@ -46,3 +46,31 @@ This has to look like this:
 			- *script* : JavaSripts native of the Django project
 			- *static* : Static files native of the Django project
 			- *template* : HTML's native of the Django project
+
+
+# vue-proj
+
+## Project setup
+```
+yarn install
+```
+
+### Compiles and hot-reloads for development
+```
+yarn run serve
+```
+
+### Compiles and minifies for production
+```
+yarn run build
+```
+
+### Run your tests
+```
+yarn run test
+```
+
+### Lints and fixes files
+```
+yarn run lint
+```
