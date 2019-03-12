@@ -12,7 +12,8 @@ $ npm install
 ```
 
 ## Run server
-./vue-proj/$ yarn serve
+```
+$ yarn serve
 ```
 With this you change the ```./vue-npm/vue-proj/src/components``` folder for the one in the repository :)
 
