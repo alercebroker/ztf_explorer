@@ -5,9 +5,11 @@
 
 #Run in Localhost
 ## clone repository
-> $ git clone http://gitlab.dim.uchile.cl/AlerceFrontEnd/vue-proj.git
-> $ cd vue-proj
-> $ npm install
+``
+$ git clone https://github.com/alercebroker/vue-proj.git
+$ cd vue-proj
+$ npm install
+```
 
 ## Run server
 ./vue-proj/$ yarn serve
