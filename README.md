@@ -5,7 +5,7 @@
 
 #Run in Localhost
 ## clone repository
-``
+```
 $ git clone https://github.com/alercebroker/vue-proj.git
 $ cd vue-proj
 $ npm install
