@@ -170,7 +170,7 @@ export default {
       }
       this.removeEmpty(query_parameters);
       this.$store.dispatch('getSQL', query_parameters);
-      this.$store.dispatch('queryObjects', query_parameters);
+      this.$store.dispatch('queryObjectsV3', query_parameters);
       window.scrollTo(0, 0);
     },
     clearQuery(){

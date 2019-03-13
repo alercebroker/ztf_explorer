@@ -254,6 +254,7 @@ export const actions = {
     },
     queryClassList({commit, dispatch}){
         QueryService.queryClassList().then( res => {
+            console.log("res ? ")
             let taskId = res.data["task-id"];
             dispatch('checkQueryStatus',taskId).then( result => {
                 console.log("status", result)
@@ -350,9 +351,15 @@ export const actions = {
             return response.data;
         });
     },
-    queryObjectsV3({dispatch}){
-        return QueryServiceV3.queryObjectsV3().then( response => {
-            dispatch('setObjects', response.data);
+    queryObjectsV3({dispatch, commit}, query_parameters){
+        dispatch('loading', true);
+        return QueryServiceV3.queryObjects(query_parameters).then( response => {
+            if(response.data.length === 0) commit('SET_QUERY_STATUS', 204);
+            else{
+                commit('SET_QUERY_STATUS', response.status);
+                dispatch('setObjects',response.data);
+            }
+            dispatch('loading', false);
         })
     }
 }

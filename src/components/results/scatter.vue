@@ -1,11 +1,5 @@
 <template>
-	<div>
-		<b-row>
-			<b-col>
-				<highcharts class="scatter" :options="chartOptions" :updateArgs="arg"></highcharts>
-			</b-col>
-		</b-row>
-	</div>
+	<highcharts class="scatter" :options="chartOptions" :updateArgs="arg" style="width:100%;height:10%;"></highcharts>
 </template>
 
 <script>
@@ -55,8 +49,20 @@
 							pointFormat: '[{point.x:.1f}, {point.y:.1f}]'
 						}
 					}],
-				    //end highcharts element
-				    },
+				    responsive: {
+						rules: [{
+							condition: {
+								maxWidth: 500,
+								maxHeight: 100
+							},
+							chartOptions: {
+								legend: {
+									enabled: false
+								}
+							}
+						}]
+					}
+				},
         	}
         },
         methods:{

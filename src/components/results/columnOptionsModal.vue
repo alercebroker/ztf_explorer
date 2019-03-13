@@ -49,14 +49,6 @@
                   label: "#"
                 }
               },
-              /*{
-                text: "Probability of class",
-                value: {
-                  key: "pclass",
-                  sortable: false,
-                  label: "PClass"
-                }
-              },*/
               {
                 text: "Class XMATCH", 
                 value: {
@@ -94,14 +86,10 @@
                   label: "P(RNN)"
                 }
               },
-              /*{ 
-                text: "Period", 
-                value: "period" 
-              },
               { 
-                text: "Ext", 
-                value: "ext" 
-              },*/
+                text: "Period", 
+                value: "period"
+              },
               { 
                 text: "FirstMagG", 
                 value: "firstmagg" 
@@ -137,6 +125,10 @@
               { 
                 text: "SlopeG", 
                 value: "slopeg" 
+              },
+              { 
+                text: "SlopeR", 
+                value: "sloper" 
               },
               { 
                 text: "LastMagR", 

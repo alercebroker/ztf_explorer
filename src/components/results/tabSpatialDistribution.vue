@@ -1,5 +1,7 @@
 <template>
-   <div id="bokeh" style="width:100%"></div>
+    <b-card title="Spatial Distribution">
+        <div id="bokeh" style="width:100%"></div>
+    </b-card>
 </template>
 
 <script>
