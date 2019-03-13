@@ -149,7 +149,7 @@ export const actions = {
             return "ERROR"
         })
     },
-    queryObjects({ commit, dispatch, state }, query_parameters){
+    queryObjects({ commit, dispatch }, query_parameters){
         dispatch('loading', true);
         QueryService.executeQuery(query_parameters).then( response => {
             let taskId = response.data["task-id"]
