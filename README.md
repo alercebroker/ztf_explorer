@@ -51,6 +51,7 @@ npm run build
 ## Deploy
 
 ```
+cd /opt/alerce/vue-proj
 sudo rm -r /var/www/html/vue
 sudo mv dist /var/www/html/vue
 sudo systemctl restart nginx
@@ -63,13 +64,12 @@ sudo systemctl restart nginx
 ```
 cd /opt/alerce/vue-proj
 npm run build
-sudo rm -r /var/www/html/vue
-sudo mv dist /var/www/html/vue
 ```
 
 ## Deploy
 
 ```
+cd /opt/alerce/vue-proj
 sudo rm -r /var/www/html/vue
 sudo mv dist /var/www/html/vue
 sudo systemctl restart nginx
