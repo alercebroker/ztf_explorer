@@ -11,7 +11,7 @@ $ cd vue-proj
 $ npm install
 ```
 
-# vue-proj
+# Develop
 
 ## Project setup
 ```
@@ -36,4 +36,19 @@ yarn run test
 ### Lints and fixes files
 ```
 yarn run lint
+```
+
+# Stage
+
+## Tests
+
+# Production
+
+## Build
+
+```
+cd /opt/alerce/vue-proj
+npm run build
+sudo rm -r /var/www/html/vue
+sudo mv dist /var/www/html/vue
 ```
