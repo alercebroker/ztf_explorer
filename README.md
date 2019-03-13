@@ -46,8 +46,14 @@ yarn run lint
 ```
 cd /opt/alerce/vue-proj
 npm run build
+```
+
+## Deploy
+
+```
 sudo rm -r /var/www/html/vue
 sudo mv dist /var/www/html/vue
+sudo systemctl restart nginx
 ```
 
 # Production
@@ -59,4 +65,12 @@ cd /opt/alerce/vue-proj
 npm run build
 sudo rm -r /var/www/html/vue
 sudo mv dist /var/www/html/vue
+```
+
+## Deploy
+
+```
+sudo rm -r /var/www/html/vue
+sudo mv dist /var/www/html/vue
+sudo systemctl restart nginx
 ```
