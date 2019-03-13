@@ -9,22 +9,16 @@
                 <tabData/>
               </b-tab>
               <b-tab
-                title="Histogram"
+                title="Query Dashboard"
                 :disabled="$store.state.results.objects.length != 0 ? false : true"
               >
-                <tabHistogram/>
-              </b-tab>
-              <b-tab
-                title="Scatter"
-                :disabled="$store.state.results.objects.length != 0 ? false : true"
-              >
-                <tabScatter/>
+                <queryDashboard/>
               </b-tab>
               <b-tab 
-                title="Spatial Distribution"
+                title="General Dashboard"
                 :disabled="$store.state.results.objects.length != 0 ? false : false"
               >
-                <tab-spatial-distribution/>
+                <generalDashboard/>
               </b-tab>
             </b-tabs>
           </b-card>
@@ -36,18 +30,14 @@
 
 <script>
 import tabData from "./tabData.vue";
-import tabScatter from "./tabScatter.vue";
-import tabHistogram from "./tabHistogram.vue";
-import tabSankey from "./tabSankey.vue";
-import tabSpatialDistribution from "./tabSpatialDistribution.vue";
+import generalDashboard from "./generalDashboard.vue";
+import queryDashboard from './queryDashboard.vue';
 export default {
   name: "tabResult",
   components: {
     tabData,
-    tabScatter,
-    tabHistogram,
-    tabSankey,
-    tabSpatialDistribution,
+    generalDashboard,
+    queryDashboard
   },
   methods: {
     

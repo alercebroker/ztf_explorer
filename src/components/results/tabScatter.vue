@@ -1,5 +1,5 @@
 <template>
-	<div class="tabScatter">
+	<b-card title="Scatter">
 		<b-row align-h="around">
 			<b-col cols="6">
 				<b-form-group horizontal label="xAxis" label-for="xAxis">
@@ -15,7 +15,7 @@
 		<b-row align-h="center">
 			<scatter :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
 		</b-row>
-	</div>
+	</b-card>
 </template>
 
 <script>
@@ -86,7 +86,7 @@ export default {
 	},
 	computed:{
 		objects(){
-			return this.$store.state.search.objects;
+			return this.$store.state.results.objects;
 		}
 	},
 	watch: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="tabHistogram">
+  <b-card title="Histogram">
     <b-row align-h="around">
       <b-col cols="6">
         <b-form-group horizontal label="xAxis" label-for="yAxis">
@@ -13,7 +13,7 @@
         :xVariable="selected"
       ></histogram>
     </b-row>
-  </div>
+  </b-card>
 </template>
 
 <script>
@@ -90,7 +90,7 @@ export default {
   },
   computed:{
     objects(){
-      return this.$store.state.search.objects;
+      return this.$store.state.results.objects;
     }
   },
   watch: {

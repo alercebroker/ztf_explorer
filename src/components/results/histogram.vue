@@ -1,11 +1,5 @@
 <template>
-  <div>
-    <b-row>
-      <b-col>
-        <highcharts class="histogram" :options="chartOptions"></highcharts>
-      </b-col>
-    </b-row>
-  </div>
+  <highcharts class="histogram" :options="chartOptions" style="width:100%;height:10%;"></highcharts>
 </template>
 
 <script>
@@ -61,8 +55,20 @@ export default {
             data: [1],
             visible: false
           }
-        ]
-        //end chartOptions
+        ],
+        responsive: {
+          rules: [{
+            condition: {
+              maxWidth: 500,
+              maxHeight:500
+            },
+            chartOptions: {
+              legend: {
+                enabled: false
+              }
+            }
+          }]
+        }
       }
     };
   },

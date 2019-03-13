@@ -21,7 +21,9 @@
                     <li v-if="$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classxmatch") }} (X-MATCH) </li>
                     <li v-if="$store.state.results.objectDetails.object_details.classrf"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrf") }} (ML_RF) </li>
                     <li v-if="$store.state.results.objectDetails.object_details.classrnn"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrnn") }} (ML_RNN) </li>
-                    <li><strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra.toFixed(4) }}, {{ $store.state.results.objectDetails.object_details.meandec.toFixed(4) }}</li>
+                    <li>
+                      <strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra ? $store.state.results.objectDetails.object_details.meanra.toFixed(4) : '-' }},
+                       {{ $store.state.results.objectDetails.object_details.meandec ? $store.state.results.objectDetails.object_details.meandec.toFixed(4) : '-' }}</li>
                     <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
                     <li><strong>First date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.firstjd) }}</li>
                     <li><strong>Last date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.lastjd) }}</li>
@@ -39,7 +41,7 @@
                   <tr>
                     <td>Mean</td>
                     <td>{{ $store.state.results.objectDetails.object_details.meang ? $store.state.results.objectDetails.object_details.meang.toFixed(3) : '-' }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.meanr.toFixed(3) }}</td>
+                    <td>{{ $store.state.results.objectDetails.object_details.meanr ? $store.state.results.objectDetails.object_details.meanr.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Median</td>
