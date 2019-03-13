@@ -3,7 +3,6 @@
 - npm@6.4.1
 - yarn@1.10.1 
 
-#Run in Localhost
 ## clone repository
 ```
 $ git clone https://github.com/alercebroker/vue-proj.git
@@ -41,6 +40,15 @@ yarn run lint
 # Stage
 
 ## Tests
+
+## Build
+
+```
+cd /opt/alerce/vue-proj
+npm run build
+sudo rm -r /var/www/html/vue
+sudo mv dist /var/www/html/vue
+```
 
 # Production
 
