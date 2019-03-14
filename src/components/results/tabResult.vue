@@ -5,7 +5,13 @@
         <transition name="fade">
           <b-card no-body>
             <b-tabs card>
-              <b-tab title="Table">
+              <b-tab 
+                title="General Dashboard"
+                :disabled="$store.state.results.objects.length != 0 ? false : false"
+              >
+                <generalDashboard/>
+              </b-tab>
+              <b-tab title="Query Table">
                 <tabData/>
               </b-tab>
               <b-tab
@@ -14,12 +20,7 @@
               >
                 <queryDashboard/>
               </b-tab>
-              <b-tab 
-                title="General Dashboard"
-                :disabled="$store.state.results.objects.length != 0 ? false : false"
-              >
-                <generalDashboard/>
-              </b-tab>
+              
             </b-tabs>
           </b-card>
         </transition>
