@@ -12,6 +12,7 @@ export default new Vuex.Store({
     state: {
         loading: false,
         downloading: false,
+        selectedTab: 2,
     },
     mutations: {
         SET_LOADING(state, value) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
         },
         SET_DOWNLOADING(state, value){
             state.downloading = value;
+        },
+        SET_SELECTED_TAB(state,value){
+            state.selectedTab = value;
         }
     },
     actions: {
@@ -27,6 +31,9 @@ export default new Vuex.Store({
         },
         downloading({commit}, value){
             commit('SET_DOWNLOADING', value);
+        },
+        setSelectedTab({commit}, value){
+            commit('SET_SELECTED_TAB', value);
         }
     },
     getters: {
