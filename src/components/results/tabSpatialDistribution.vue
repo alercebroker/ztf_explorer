@@ -1,6 +1,8 @@
 <template>
-    <b-card id="card" title="Spatial Distribution">
-        <div id="bokeh"></div>
+    <b-card title="Spatial Distribution">
+        <div id="plotContainer">
+            <div id="bokeh"></div>
+        </div>
     </b-card>
 </template>
 
@@ -29,7 +31,7 @@ export default {
     },
     methods:{
         clearDiv(){
-            document.getElementById("card").innerHTML = '<div id="bokeh" />'
+            document.getElementById("plotContainer").innerHTML = '<div id="bokeh" />'
         }
     },
     watch:{
