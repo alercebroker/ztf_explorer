@@ -348,7 +348,6 @@ export const actions = {
     getSpatialDistribution({dispatch}){
         return QueryServiceV3.getSpatialDistribution().then(response => {
             dispatch('setSpatialDistribution', response.data);
-            return response.data;
         });
     },
     queryObjectsV3({dispatch, commit}, query_parameters){

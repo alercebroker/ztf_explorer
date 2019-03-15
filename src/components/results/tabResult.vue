@@ -4,22 +4,21 @@
       <b-card-body>
         <transition name="fade">
           <b-card no-body>
-            <b-tabs card>
-              <b-tab title="Table">
+            <b-tabs card v-model="selectedTab">
+              <b-tab 
+                title="General Dashboard"
+              >
+                <generalDashboard/>
+              </b-tab>
+              <b-tab title="Query Table">
                 <tabData/>
               </b-tab>
               <b-tab
                 title="Query Dashboard"
-                :disabled="$store.state.results.objects.length != 0 ? false : true"
               >
                 <queryDashboard/>
               </b-tab>
-              <b-tab 
-                title="General Dashboard"
-                :disabled="$store.state.results.objects.length != 0 ? false : false"
-              >
-                <generalDashboard/>
-              </b-tab>
+              
             </b-tabs>
           </b-card>
         </transition>
@@ -61,6 +60,16 @@ export default {
     reDrawHist: function() {
       if (this.$refs.histogram.selected != null) {
         this.$refs.histogram.setPlotValues();
+      }
+    }
+  },
+  computed: {
+    selectedTab:{
+      get(){
+        return this.$store.state.selectedTab
+      },
+      set(value){
+        this.$store.dispatch('setSelectedTab',value);
       }
     }
   }
