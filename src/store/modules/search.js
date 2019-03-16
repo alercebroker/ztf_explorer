@@ -360,6 +360,17 @@ export const actions = {
             }
             dispatch('loading', false);
         })
+    },
+    queryPaginated({dispatch,commit}, payload){
+        dispatch('loading', true);
+        return QueryServiceV3.paginatedQuery(payload.query_parameters, payload.page, payload.per_page).then( response => {
+            if(response.data.total === 0) commit('SET_QUERY_STATUS', 204);
+            else{
+                commit('SET_QUERY_STATUS', response.status);
+                dispatch('setObjects',response.data);
+            }
+            dispatch('loading', false);
+        })
     }
 }
 

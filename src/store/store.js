@@ -13,6 +13,7 @@ export default new Vuex.Store({
         loading: false,
         downloading: false,
         selectedTab: 2,
+        perPage: 20
     },
     mutations: {
         SET_LOADING(state, value) {
