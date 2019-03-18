@@ -1,7 +1,7 @@
 <template>
     <b-container>
         <b-row>
-            <b-col cols=6>
+            <b-col cols=12>
                 <tab-spatial-distribution/>
             </b-col>
         </b-row>

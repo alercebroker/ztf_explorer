@@ -1,7 +1,7 @@
 <template>
     <b-card title="Spatial Distribution">
         <div id="plotContainer">
-            <div id="bokeh" style="width:100%;"></div>
+            <div id="bokeh" style="width:100%;height:300px"></div>
         </div>
     </b-card>
 </template>
@@ -31,7 +31,7 @@ export default {
     },
     methods:{
         clearDiv(){
-            document.getElementById("plotContainer").innerHTML = '<div id="bokeh" style="width:100%; height:100%"/>'
+            document.getElementById("plotContainer").innerHTML = '<div id="bokeh" style="width:100%; height:300px"/>'
         }
     },
     watch:{
