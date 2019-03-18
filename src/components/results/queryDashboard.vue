@@ -1,6 +1,9 @@
 <template>
     <b-container>
-        <b-row>
+        <div v-if="!$store.state.results.total > 0">
+            <b-alert variant="info" show>Graphs will be displayed here after you make a query</b-alert>
+        </div>
+        <b-row v-else>
             <b-col cols="6">
                 <tabHistogram/>
             </b-col>

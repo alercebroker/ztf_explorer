@@ -17,5 +17,8 @@ export default {
 
     queryObjects(query_parameters){
         return apiClient.post('/query', {query_parameters: query_parameters});
+    },
+    paginatedQuery(query_parameters, page, perPage){
+        return apiClient.post('/paginated_query',{query_parameters: query_parameters, page: page, per_page: perPage});
     }
 }

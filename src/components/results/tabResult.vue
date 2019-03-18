@@ -6,7 +6,7 @@
           <b-card no-body>
             <b-tabs card v-model="selectedTab">
               <b-tab 
-                title="General Dashboard"
+                title="Overview Dashboard"
               >
                 <generalDashboard/>
               </b-tab>

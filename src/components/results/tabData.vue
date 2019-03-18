@@ -23,7 +23,7 @@
 
     <small>
       <div>
-        <strong>Found {{ $store.state.results.objects.length }} results</strong>
+        <strong>Found {{ $store.state.results.total }} results</strong>
       </div>
     </small>
     
@@ -33,8 +33,6 @@
         hover
         :items="$store.state.results.objects"
         :fields="$store.state.results.selectedColumnOptions"
-        :current-page="currentPage"
-        :per-page="perPage"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
          @row-clicked="onRowClicked"
@@ -130,7 +128,7 @@
           <div v-if="data.item.meanra != null && data.item.meandec != null">({{data.item.meanra.toFixed(3) +", "+data.item.meandec.toFixed(3)}})</div>
         </template>
       </b-table>
-      <b-pagination size="md" :total-rows="$store.state.results.objects.length" v-model="currentPage" :per-page="perPage" align="center">
+      <b-pagination size="md" :total-rows="$store.state.results.total" v-model="currentPage" :per-page="$store.state.perPage" align="center" v-on:input="pageChange">
       </b-pagination>
     </div>
 
@@ -181,7 +179,6 @@ export default {
       showObjectDetailsModal: false,
       block:true,
       currentPage: 1,
-      perPage: 20,
       sortBy: 'nobs',
       sortDesc: true,
       
@@ -207,6 +204,29 @@ export default {
         //this.$store.state.search.query_status = 200;
       }
     },
+    /**
+     * remove param that are empty
+     */
+    removeEmpty(obj) {
+      Object.entries(obj).forEach(([key, val]) => {
+        if (val && typeof val === "object") {
+          this.removeEmpty(val);
+          if (Object.keys(val).length === 0) delete obj[key];
+        } else {
+          if (val == null || val == "") delete obj[key];
+        }
+      });
+    },
+    pageChange(page){
+      let query_parameters = {
+        filters: this.$store.state.search.filters,
+        bands: this.$store.state.search.bands,
+        dates: this.$store.state.search.dates,
+        coordinates: this.$store.state.search.coordinates,
+      }
+      this.removeEmpty(query_parameters);
+      this.$store.dispatch('queryPaginated', {query_parameters: query_parameters, page: page, per_page: this.$store.state.perPage});
+    }
   },
   mounted: function() {
     this.getUrlObject();

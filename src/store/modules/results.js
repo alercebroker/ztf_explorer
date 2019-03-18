@@ -61,6 +61,8 @@ export const state = {
     ],
     spatialDistribution: null,
     objects: [],
+    total: 0,
+    num_pages: 0
 }
 
 export const mutations = {
@@ -79,6 +81,12 @@ export const mutations = {
     SET_OBJECTS(state, objects){
         state.objects = objects;
     },
+    SET_NUM_PAGES(state,num_pages){
+        state.num_pages = num_pages;
+    },
+    SET_TOTAL(state, total){
+        state.total = total;
+    }
 }
 
 export const actions = {
@@ -108,7 +116,9 @@ export const actions = {
         commit('SET_SPATIAL_DISTRIBUTION', plot);
     },
     setObjects({commit}, objects){
-        commit('SET_OBJECTS', objects);
+        commit('SET_OBJECTS', JSON.parse(objects.result));
+        commit('SET_TOTAL', objects.total);
+        commit('SET_NUM_PAGES', objects.num_pages)
     }
 }
 
