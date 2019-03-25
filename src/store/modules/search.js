@@ -2,6 +2,7 @@ import QueryService from '@/services/QueryService.js';
 import QueryServiceV3 from '@/services/QueryServiceV3.js'
 import Vue from 'vue';
 export const state = {
+    query_parameters: null,
     filters: {},
     dates: {},
     bands: {},
@@ -75,6 +76,9 @@ export const mutations = {
         else Vue.delete(obj, payload.keyPath[lastKeyIndex]);
         
     },
+    SET_QUERY_PARAMETERS(state, query_parameters){
+        state.query_parameters = query_parameters;
+    },
     SET_SQL(state, sql){
         state.sql = sql;
     },
@@ -123,6 +127,9 @@ export const mutations = {
 export const actions = {
     updateOptions({ commit }, payload) {
         commit('UPDATE_OPTIONS', payload);
+    },
+    setQueryParameters({ commit }, query_parameters){
+        commit('SET_QUERY_PARAMETERS', query_parameters);
     },
     getSQL({ commit }, query_parameters){
         QueryService.getSQL(query_parameters).then( response => {
@@ -349,6 +356,45 @@ export const actions = {
         return QueryServiceV3.getSpatialDistribution().then(response => {
             dispatch('setSpatialDistribution', response.data);
         });
+    },
+    getOverviewHistogram({dispatch}, xAxis){
+        dispatch('loadingPlot', true);
+        return QueryServiceV3.getOverviewHistogram(xAxis).then(response => {
+            dispatch('setOverviewHistogram', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
+    getQueryHistogram({dispatch, state}, xAxis){
+        dispatch('loadingPlot', true);
+        let payload = {
+            query_parameters: state.query_parameters,
+            "x-axis": xAxis
+        }
+        return QueryServiceV3.getQueryHistogram(payload).then(response => {
+            dispatch('setQueryHistogram', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
+    getOverviewScatter({dispatch}, payload){
+        dispatch('loadingPlot', true);
+        return QueryServiceV3.getOverviewScatter(payload).then(response => {
+            dispatch('setOverviewScatter', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
+    getQueryScatter({ dispatch, state }, payload){
+        dispatch('loadingPlot', true);
+        let newPayload = {
+            "x-axis": payload["x-axis"],
+            "y-axis": payload["y-axis"],
+            "class": payload["class"],
+            "classifier": payload["classifier"],
+            "query_parameters": state.query_parameters
+        }
+        return QueryServiceV3.getQueryScatter(newPayload).then(response => {
+            dispatch('setQueryScatter', response.data);
+            dispatch('loadingPlot', false);
+        })
     },
     queryObjectsV3({dispatch, commit}, query_parameters){
         dispatch('loading', true);

@@ -168,6 +168,7 @@ export default {
         coordinates: this.$store.state.search.coordinates,
       }
       this.removeEmpty(query_parameters);
+      this.$store.dispatch('setQueryParameters', query_parameters);
       this.$store.dispatch('getSQL', query_parameters);
       this.$store.dispatch('queryPaginated', {query_parameters: query_parameters, page: 1, per_page: this.$store.state.perPage});
       this.$store.dispatch('setSelectedTab', 1)

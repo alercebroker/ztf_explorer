@@ -1,20 +1,31 @@
 <template>
 	<b-card title="Scatter">
-		<b-row align-h="around">
+		<b-row align-v="center">
 			<b-col cols="6">
-				<b-form-group horizontal label="xAxis" label-for="xAxis">
+				<b-form-group label="xAxis" label-for="xAxis">
 					<b-form-select v-model="selectedX" :options="options" id="xAxis"></b-form-select>
 				</b-form-group>
 			</b-col>
 			<b-col cols="6">
-				<b-form-group horizontal label="yAxis" label-for="yAxis">
+				<b-form-group label="yAxis" label-for="yAxis">
 					<b-form-select v-model="selectedY" :options="options" id="yAxis"></b-form-select>
 				</b-form-group>
 			</b-col>
+			<b-col cols="6">
+				<b-form-group label="Class" label-for="class">
+					<b-form-select v-model="selectedClass" :options="classOptions" id="class"></b-form-select>
+				</b-form-group>
+			</b-col>
+			<b-col cols="6">
+				<b-form-group label="Classifier" label-for="classifier">
+					<b-form-select v-model="selectedClassifier" :options="classifierOptions" id="class"></b-form-select>
+				</b-form-group>
+			</b-col>
 		</b-row>
-		<b-row align-h="center">
-			<scatter :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
+		<b-row align-h="around">
+			<b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
 		</b-row>
+		<scatter :type="type" :xAxis="selectedX" :yAxis="selectedY" :cls="selectedClass" :classifier="selectedClassifier"/>
 	</b-card>
 </template>
 
@@ -22,6 +33,7 @@
 import scatter from "./scatter.vue";
 export default {
 	name: 'tabScatter',
+	props:['type'],
 	components: {
 		scatter,
 	},
@@ -29,12 +41,11 @@ export default {
 		return {
 			selectedX: null,
 			selectedY: null,
+			selectedClass: null,
+			selectedClassifier: null,
 			options: [
 				{ value: null, text: "Please select a variable" },
 				{ text: "Nr. Alerts", value: "nobs" },
-				{ text: "Class", value: "class" },
-				{ text: "Class Probability", value: "pclass" },
-				{ text: "Period*", value: "period" },
 				{
 					value: null,
 					text: "-- Magnitude  Band G --",
@@ -62,51 +73,47 @@ export default {
 		}
 	},
 	methods:{
-		getAxisData: function(axis,obj){
-			return obj != null ? obj[axis] : null;
-		},
-		setPlotValues: function(){
-			//borrar datos anteriores
-			this.plotValues=[];
-			//agregar plotValues
-			if(this.selectedX && this.selectedY){
-				this.objects.forEach(obj => {
-					if (this.getAxisData(this.selectedX, obj) != null && this.getAxisData(this.selectedY, obj) != null){
-						this.plotValues.push({
-							oid: obj.oid,
-							pair:[
-								this.getAxisData(this.selectedX, obj),
-								this.getAxisData(this.selectedY, obj),
-							],
-						});
-					}
-				});
+		plot(){
+			if(this.selectedClass == null || this.selectedClassifier == null){
+				this.selectedClass = null;
+				this.selectedClassifier = null;
 			}
-		},
+			let payload = {
+				"x-axis": this.selectedX,
+				"y-axis": this.selectedY,
+				"class": this.selectedClass,
+				"classifier": this.selectedClassifier
+			}
+			if(this.type === "overview"){
+				this.$store.dispatch('getOverviewScatter', payload);
+			}
+			else if (this.type === "query"){
+				this.$store.dispatch('getQueryScatter', payload);
+			}
+		}
 	},
 	computed:{
-		objects(){
-			return this.$store.state.results.objects;
+		classOptions(){
+			let aux = this.$store.state.search.classes.slice(3)
+			aux.unshift({text: "All", value: null})
+			return aux;
+		},
+		classifierOptions(){
+			let aux = this.$store.state.search.classifiers.slice(2)
+			aux.unshift({text: "All", value: null})
+			return aux;
 		}
 	},
 	watch: {
-		/**
-		 * update plot values when selected axis x change by user
-         */
-		selectedX: function() { // watch it
-                this.setPlotValues();
-        },
-        /**
-         * update plot values when selected axis change by user
-		 */
-        selectedY: function() { // watch it
-                this.setPlotValues();
+		selectedClass(val){
+			if(val == null){
+				this.selectedClassifier = null
+			}
 		},
-		/**
-		 * update plot values when new search is executed
-		 */
-		objects(){
-			this.setPlotValues();
+		selectedClassifier(val){
+			if(val == null){
+				this.selectedClass = null
+			}
 		}
 	},
 }

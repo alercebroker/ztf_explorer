@@ -1,18 +1,16 @@
 <template>
   <b-card title="Histogram">
-    <b-row align-h="around">
-      <b-col cols="6">
-        <b-form-group horizontal label="xAxis" label-for="yAxis">
+    <b-row align-v="center">
+      <b-col cols="8">
+        <b-form-group label="xAxis" label-for="yAxis">
           <b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
         </b-form-group>
       </b-col>
+      <b-col cols="4">
+        <b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
+      </b-col>
     </b-row>
-    <b-row align-h="center">
-      <histogram
-        :plotValues="plotValues"
-        :xVariable="selected"
-      ></histogram>
-    </b-row>
+    <histogram :type="type" :xAxis="selected"/>
   </b-card>
 </template>
 
@@ -24,10 +22,11 @@ export default {
   components: {
     histogram
   },
+  props:["type"],
   data() {
     return {
+      buttonText: "Plot",
       selected: null,
-      plotValues: [],
       options: [
         { value: null, text: "Please select a variable", disabled: true },
         {
@@ -64,34 +63,17 @@ export default {
     };
   },
   methods: {
-    getAxisData: function(axis, obj) {
-      var x = axis;
-      if (obj != null) {
-        if (obj[x] !== undefined) {
-          return obj[x];
-        }
+    plot(){
+      if(this.type === "overview"){
+        this.$store.dispatch('getOverviewHistogram', this.selected);
       }
-      return null;
-    },
-    setPlotValues: function() {
-      //erase previous values
-      this.plotValues = [];
-        //add plot values
-      this.objects.forEach(obj => {
-        let value = this.getAxisData(this.selected, obj);
-        if (value != null) {
-          this.plotValues.push({
-            oid: obj.oid,
-            pair: Number(value.toFixed(5))
-          });
-        }
-      });
+      else if(this.type === "query"){
+        this.$store.dispatch('getQueryHistogram', this.selected);
+      }
     }
   },
   computed:{
-    objects(){
-      return this.$store.state.results.objects;
-    }
+    
   },
   watch: {
     /**
@@ -99,14 +81,8 @@ export default {
      */
     selected: function() {
       // watch it
-      this.setPlotValues();
+      
     },
-    /**
-		 * update plot values when new search is executed
-		 */
-		objects(){
-			if(this.selected)this.setPlotValues();
-		}
   }
 };
 </script>
