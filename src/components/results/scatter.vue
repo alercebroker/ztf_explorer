@@ -1,89 +1,59 @@
 <template>
-	<highcharts class="scatter" :options="chartOptions" :updateArgs="arg" style="width:100%;height:10%;"></highcharts>
+	<div id="scatterContainer">
+		<div id="scatter" style="width:100%;height:300px"></div>
+	</div>
 </template>
 
 <script>
 	export default {
         name: "scatter",
-        props: ['plotValues', 'xVariable', 'yVariable'],
+        props: ['type', 'xAxis', 'yAxis','cls', 'classifier'],
         data(){
-        	return{
-				arg : [true,true,true],
-        		chartOptions:{
-        			chart: {
-				        type: 'scatter',
-				        zoomType: 'xy'
-					},
-					boost: {
-						useGPUTranslations: true,
-						usePreAllocated: true
-					},
-				    title: {
-				    	text: ""
-				    },
-				    xAxis: {
-				        title: {
-				            enabled: true,
-				            text: this.xVariable,
-				        },
-						showLastLabel:true
-				    },
-				    yAxis: {
-				        title: {
-				            text: this.yVariable,
-				        }
-				    },
-				    legend: {
-					    enabled: false
-					  },
-			        series: [{
-						name: this.yVariable,
-						type: 'scatter',
-						color: '#3C347E',
-						data: [[1,2]],
-						marker: {
-							radius: 1
-						},
-						tooltip: {
-							followPointer: false,
-							pointFormat: '[{point.x:.1f}, {point.y:.1f}]'
-						}
-					}],
-				    responsive: {
-						rules: [{
-							condition: {
-								maxWidth: 500,
-								maxHeight: 100
-							},
-							chartOptions: {
-								legend: {
-									enabled: false
-								}
-							}
-						}]
-					}
-				},
+        	return{ 
+
         	}
-        },
-        methods:{
-		  	redraw(){ //add a series for object
-		  		// delete the previous series
-				  this.chartOptions.series[0].data = [];
-				  this.chartOptions.series[0].name = this.yVariable;
-				  this.chartOptions.xAxis.title.text = this.xVariable;
-				  this.chartOptions.yAxis.title.text = this.yVariable;
-		  		// add new series
-		  		this.plotValues.forEach(obj =>{
-		  			this.chartOptions.series[0].data.push(obj.pair);
-		  		});
-		    },
+		},
+		mounted(){
+			let payload = {
+				"x-axis": this.xAxis,
+				"y-axis": this.yAxis,
+				"class": this.cls,
+				"classifier": this.classifier
+			}
+			if(this.type === "overview"){
+				this.$store.dispatch('getOverviewScatter', payload);
+			}
+			else if(this.type === "query"){
+				// query histogram
+			}
+		},
+        computed:{
+			overviewScatter(){
+				return this.$store.state.results.overviewScatter
+			},
+			selectedTab(){
+				return this.$store.state.selectedTab
+			}
+		},
+		methods:{
+			clearDiv(){
+				document.getElementById("scatterContainer").innerHTML = '<div id="scatter" style="width:100%; height:300px"/>'
+			}
+		},
+		watch:{
+			overviewScatter(newVal){
+				if(newVal && this.selectedTab===0){
+					this.clearDiv();
+					Bokeh.embed.embed_item(newVal, "scatter");
+				}
+			},
+			selectedTab(newVal){
+				if(newVal === 0 && this.overviewHistogram){
+					this.clearDiv();
+					Bokeh.embed.embed_item(this.overviewHistogram, "scatter");
+				}
+			}
 
 		},
-		watch: {
-			plotValues: function(newVal) { // watch it
-				//this.chartOptions.series[0].marker.radius = 5 - Math.pow((newVal.length / 10000), 3);
-				this.redraw();
-			}
-		}
     }
 </script>

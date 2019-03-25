@@ -350,6 +350,20 @@ export const actions = {
             dispatch('setSpatialDistribution', response.data);
         });
     },
+    getOverviewHistogram({dispatch}, xAxis){
+        dispatch('loadingPlot', true);
+        return QueryServiceV3.getOverviewHistogram(xAxis).then(response => {
+            dispatch('setOverviewHistogram', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
+    getOverviewScatter({dispatch}, payload){
+        dispatch('loadingPlot', true);
+        return QueryServiceV3.getOverviewScatter(payload).then(response => {
+            dispatch('setOverviewScatter', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
     queryObjectsV3({dispatch, commit}, query_parameters){
         dispatch('loading', true);
         return QueryServiceV3.queryObjects(query_parameters).then( response => {
