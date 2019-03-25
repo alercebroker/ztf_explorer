@@ -18,7 +18,7 @@
 			</b-col>
 			<b-col cols="6">
 				<b-form-group label="Classifier" label-for="classifier">
-					<b-form-select v-model="selectedClassifier" :options="$store.state.search.classifiers" id="class"></b-form-select>
+					<b-form-select v-model="selectedClassifier" :options="classifierOptions" id="class"></b-form-select>
 				</b-form-group>
 			</b-col>
 		</b-row>
@@ -84,12 +84,22 @@ export default {
 				"class": this.selectedClass,
 				"classifier": this.selectedClassifier
 			}
-			this.$store.dispatch('getOverviewScatter', payload);
+			if(this.type === "overview"){
+				this.$store.dispatch('getOverviewScatter', payload);
+			}
+			else if (this.type === "query"){
+				this.$store.dispatch('getQueryScatter', payload);
+			}
 		}
 	},
 	computed:{
 		classOptions(){
 			let aux = this.$store.state.search.classes.slice(3)
+			aux.unshift({text: "All", value: null})
+			return aux;
+		},
+		classifierOptions(){
+			let aux = this.$store.state.search.classifiers.slice(2)
 			aux.unshift({text: "All", value: null})
 			return aux;
 		}

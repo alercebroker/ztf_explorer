@@ -64,7 +64,12 @@ export default {
   },
   methods: {
     plot(){
-      this.$store.dispatch('getOverviewHistogram', this.selected);
+      if(this.type === "overview"){
+        this.$store.dispatch('getOverviewHistogram', this.selected);
+      }
+      else if(this.type === "query"){
+        this.$store.dispatch('getQueryHistogram', this.selected);
+      }
     }
   },
   computed:{

@@ -17,8 +17,14 @@ export default {
     getOverviewHistogram(xAxis){
         return apiClient.post('/histogram', {"x-axis": xAxis})
     },
+    getQueryHistogram(payload){
+        return apiClient.post('/query_histogram', payload);
+    },
     getOverviewScatter(payload){
         return apiClient.post('/scatter', payload);
+    },
+    getQueryScatter(payload){
+        return apiClient.post('/query_scatter', payload);
     },
     queryObjects(query_parameters){
         return apiClient.post('/query', {query_parameters: query_parameters});

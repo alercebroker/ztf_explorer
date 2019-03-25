@@ -24,33 +24,46 @@
 				this.$store.dispatch('getOverviewScatter', payload);
 			}
 			else if(this.type === "query"){
-				// query histogram
+				this.$store.dispatch('getQueryScatter', payload);
 			}
 		},
-        computed:{
+    computed:{
 			overviewScatter(){
 				return this.$store.state.results.overviewScatter
+			},
+			queryScatter(){
+				return this.$store.state.results.queryScatter;
 			},
 			selectedTab(){
 				return this.$store.state.selectedTab
 			}
 		},
 		methods:{
-			clearDiv(){
-				document.getElementById("scatterContainer").innerHTML = '<div id="scatter" style="width:100%; height:300px"/>'
+			clearDiv(type){
+				document.getElementById("scatterContainer").innerHTML = '<div id="'+type+'Scatter" style="width:100%; height:300px"/>'
 			}
 		},
 		watch:{
 			overviewScatter(newVal){
 				if(newVal && this.selectedTab===0){
-					this.clearDiv();
-					Bokeh.embed.embed_item(newVal, "scatter");
+					this.clearDiv("overview");
+					Bokeh.embed.embed_item(newVal, "overviewScatter");
+				}
+			},
+			queryScatter(newVal){
+				if(newVal && this.selectedTab===2){
+					this.clearDiv("query");
+					Bokeh.embed.embed_item(newVal, "queryScatter");
 				}
 			},
 			selectedTab(newVal){
-				if(newVal === 0 && this.overviewHistogram){
-					this.clearDiv();
-					Bokeh.embed.embed_item(this.overviewHistogram, "scatter");
+				if(newVal === 0 && this.overviewScatter){
+					this.clearDiv("overview");
+					Bokeh.embed.embed_item(this.overviewScatter, "overviewScatter");
+				}
+				if(newVal === 2 && this.queryScatter){
+					this.clearDiv("query");
+					Bokeh.embed.embed_item(this.queryScatter, "queryScatter");
 				}
 			}
 

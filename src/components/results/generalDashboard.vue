@@ -9,14 +9,14 @@
                     <tab-spatial-distribution/>
                 </b-col>
             </b-row>
-            <b-row>
+            <!-- <b-row>
                 <b-col cols=6>
                     <tabHistogram type="overview" />
                 </b-col>
                 <b-col cols=6>
                     <tabScatter type="overview"/>
                 </b-col>
-            </b-row>
+            </b-row> -->
         </b-container>
     </div>
 </template>

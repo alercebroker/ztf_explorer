@@ -61,7 +61,9 @@ export const state = {
     ],
     spatialDistribution: null,
     overviewHistogram: null,
+    queryHistogram: null,
     overviewScatter: null,
+    queryScatter: null,
     objects: [],
     total: 0,
     num_pages: 0
@@ -83,8 +85,14 @@ export const mutations = {
     SET_OVERVIEW_HISTOGRAM(state,plot){
         state.overviewHistogram = plot;
     },
+    SET_QUERY_HISTOGRAM(state,plot){
+        state.queryHistogram = plot;
+    },
     SET_OVERVIEW_SCATTER(state,plot){
         state.overviewScatter = plot;
+    },
+    SET_QUERY_SCATTER(state, plot){
+        state.queryScatter = plot;
     },
     SET_OBJECTS(state, objects){
         state.objects = objects;
@@ -126,8 +134,14 @@ export const actions = {
     setOverviewHistogram({commit}, plot){
         commit('SET_OVERVIEW_HISTOGRAM', plot);
     },
+    setQueryHistogram({ commit }, plot){
+        commit('SET_QUERY_HISTOGRAM', plot);
+    },
     setOverviewScatter({commit}, plot){
         commit('SET_OVERVIEW_SCATTER', plot);
+    },
+    setQueryScatter({ commit }, plot){
+        commit('SET_QUERY_SCATTER', plot);
     },
     setObjects({commit}, objects){
         commit('SET_OBJECTS', JSON.parse(objects.result));

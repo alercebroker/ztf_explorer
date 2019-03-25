@@ -8,10 +8,10 @@
         </div>
         <b-row v-else>
             <b-col cols="6">
-                <tabHistogram/>
+                <tabHistogram type="query"/>
             </b-col>
             <b-col cols="6">
-                <tabScatter/>
+                <tabScatter type="query"/>
             </b-col>
         </b-row>
     </b-container>
