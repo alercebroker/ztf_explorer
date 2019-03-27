@@ -1,7 +1,12 @@
 <template>
-	<div id="scatterContainer">
-		<div id="scatter" style="width:100%;height:300px"></div>
-	</div>
+	<div>
+        <div id="overviewScatterContainer" v-if="type=='overview'">
+            <div id="overviewScatter" style="width:100%;height:300px"/>
+        </div>
+        <div id="queryScatterContainer" v-if="type=='query'" style="width:100%;height:300px">
+            <div id="queryScatter" style="width:100%;height:300px"/>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -10,7 +15,7 @@
         props: ['type', 'xAxis', 'yAxis','cls', 'classifier'],
         data(){
         	return{ 
-
+						
         	}
 		},
 		mounted(){
@@ -40,7 +45,7 @@
 		},
 		methods:{
 			clearDiv(type){
-				document.getElementById("scatterContainer").innerHTML = '<div id="'+type+'Scatter" style="width:100%; height:300px"/>'
+				document.getElementById(type+"ScatterContainer").innerHTML = '<div id="'+type+'Scatter" style="width:100%; height:300px"/>'
 			}
 		},
 		watch:{

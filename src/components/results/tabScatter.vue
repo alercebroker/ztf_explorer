@@ -1,30 +1,26 @@
 <template>
-	<b-card title="Scatter">
-		<b-row align-v="center">
-			<b-col cols="6">
-				<b-form-group label="xAxis" label-for="xAxis">
-					<b-form-select v-model="selectedX" :options="options" id="xAxis"></b-form-select>
-				</b-form-group>
+	<b-card >
+		<b-row align-v="center" >
+			<b-col cols="4" class="pr-0">
+				<h4>Scatter</h4>
 			</b-col>
-			<b-col cols="6">
-				<b-form-group label="yAxis" label-for="yAxis">
-					<b-form-select v-model="selectedY" :options="options" id="yAxis"></b-form-select>
-				</b-form-group>
+			<b-col cols="3" class="pl-0">
+				<b-form-select v-model="selectedX" :options="optionsX" id="xAxis"></b-form-select>
 			</b-col>
-			<b-col cols="6">
-				<b-form-group label="Class" label-for="class">
-					<b-form-select v-model="selectedClass" :options="classOptions" id="class"></b-form-select>
-				</b-form-group>
+			<b-col cols="3" class="pl-0">
+				<b-form-select v-model="selectedY" :options="optionsY" id="yAxis"></b-form-select>
 			</b-col>
-			<b-col cols="6">
-				<b-form-group label="Classifier" label-for="classifier">
-					<b-form-select v-model="selectedClassifier" :options="classifierOptions" id="class"></b-form-select>
-				</b-form-group>
+			<!-- <b-col cols="3">
+				<b-form-select v-model="selectedClass" :options="classOptions" id="class"></b-form-select>
+			</b-col>
+			<b-col cols="3">
+				<b-form-select v-model="selectedClassifier" :options="classifierOptions" id="class"></b-form-select>
+			</b-col> -->
+			<b-col cols="2" class="pl-0">
+				<b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
 			</b-col>
 		</b-row>
-		<b-row align-h="around">
-			<b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
-		</b-row>
+		
 		<scatter :type="type" :xAxis="selectedX" :yAxis="selectedY" :cls="selectedClass" :classifier="selectedClassifier"/>
 	</b-card>
 </template>
@@ -44,7 +40,6 @@ export default {
 			selectedClass: null,
 			selectedClassifier: null,
 			options: [
-				{ value: null, text: "Please select a variable" },
 				{ text: "Nr. Alerts", value: "nobs" },
 				{
 					value: null,
@@ -66,9 +61,6 @@ export default {
 				{ text: "Meanr", value: "meanr" },
 				{ text: "Firstmagr", value: "firstmagr" },
 				{ text: "Lastmagr", value: "lastmagr" },
-			],
-			plotValues:[
-				{oid: 1, pair:[2 ,20]},
 			],
 		}
 	},
@@ -102,6 +94,12 @@ export default {
 			let aux = this.$store.state.search.classifiers.slice(2)
 			aux.unshift({text: "All", value: null})
 			return aux;
+		},
+		optionsX(){
+			return [{ text: "xAxis", value: null, disabled: true }].concat(this.options)
+		},
+		optionsY(){
+			return [{ text: "yAxis", value: null, disabled: true }].concat(this.options)
 		}
 	},
 	watch: {

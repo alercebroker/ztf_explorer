@@ -284,7 +284,7 @@ export const actions = {
     setClassifier({commit, state, dispatch}, classifier){
         let oldVal = state.selectedClassifier
         commit('SET_CLASSIFIER', classifier);
-        if(state.selectedClass >= 0 && state.selectedClassifier){
+        if(state.selectedClass && classifier){
             dispatch('updateOptions',{
                 obj: "filters",
                 keyPath: [oldVal],
