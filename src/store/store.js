@@ -12,7 +12,7 @@ export default new Vuex.Store({
     state: {
         loading: false,
         downloading: false,
-        selectedTab: 2,
+        selectedTab: 0,
         perPage: 20,
         loadingPlot: false,
     },

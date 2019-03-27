@@ -1,12 +1,11 @@
 <template>
-  <b-card title="Histogram">
+  <b-card>
     <b-row align-v="center">
-      <b-col cols="8">
-        <b-form-group label="xAxis" label-for="yAxis">
-          <b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
-        </b-form-group>
+      <b-col cols="5" class="pr-0"><h4>Histogram</h4></b-col>
+      <b-col cols="4" class="pl-0">
+        <b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
       </b-col>
-      <b-col cols="4">
+      <b-col cols="3" class="pl-0">
         <b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
       </b-col>
     </b-row>
@@ -28,7 +27,7 @@ export default {
       buttonText: "Plot",
       selected: null,
       options: [
-        { value: null, text: "Please select a variable", disabled: true },
+        { value: null, text: "xAxis", disabled: true },
         {
           value: null,
           text: "-- Magnitude  Band G --",

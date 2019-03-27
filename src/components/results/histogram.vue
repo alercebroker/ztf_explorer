@@ -1,12 +1,17 @@
 <template>
-    <div id="histContainer">
-        <div id="histogram" style="width:100%;height:300px"/>
+    <div>
+        <div id="overviewHistogramContainer" v-if="type=='overview'">
+            <div id="overviewHistogram" style="width:100%;height:300px"/>
+        </div>
+        <div id="queryHistogramContainer" v-if="type=='query'" style="width:100%;height:300px">
+            <div id="queryHistogram" style="width:100%;height:300px"/>
+        </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: "tab-spatial-distribution",
+    name: "tab-histogram",
     components: {
     },
     props:['type', 'xAxis'],
@@ -37,7 +42,7 @@ export default {
     },
     methods:{
         clearDiv(type){
-            document.getElementById("histContainer").innerHTML = '<div id="'+type+'Histogram" style="width:100%; height:300px"/>'
+            document.getElementById(type+"HistogramContainer").innerHTML = '<div id="'+type+'Histogram" style="width:100%;height:300px"/>'
         }
     },
     watch:{
