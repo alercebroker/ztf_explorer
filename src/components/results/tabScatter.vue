@@ -40,27 +40,27 @@ export default {
 			selectedClass: null,
 			selectedClassifier: null,
 			options: [
-				{ text: "Nr. Alerts", value: "nobs" },
+				{ text: "Detections", value: "nobs" },
 				{
 					value: null,
 					text: "-- Magnitude  Band G --",
 					disabled: true
 				},
-				{ text: "Maxg", value: "maxg" },
-				{ text: "Ming", value: "ming" },
-				{ text: "Meang", value: "meang" },
-				{ text: "Firstmagg", value: "firstmagg" },
-				{ text: "Lastmagg", value: "lastmagg" },
+				{ text: "Max of g", value: "maxg" },
+				{ text: "Min of g", value: "ming" },
+				{ text: "Mean of g", value: "meang" },
+				{ text: "First det. of g ", value: "firstmagg" },
+				{ text: "Last det. of g", value: "lastmagg" },
 				{
 					value: null,
 					text: "-- Magnitude Band R --",
 					disabled: true
 				},
-				{ text: "Maxr", value: "maxr" },
-				{ text: "Minr", value: "minr" },
-				{ text: "Meanr", value: "meanr" },
-				{ text: "Firstmagr", value: "firstmagr" },
-				{ text: "Lastmagr", value: "lastmagr" },
+				{ text: "Max of r", value: "maxr" },
+				{ text: "Min of r", value: "minr" },
+				{ text: "Mean of r", value: "meanr" },
+				{ text: "First det. of r", value: "firstmagr" },
+				{ text: "Last det. of r", value: "lastmagr" },
 			],
 		}
 	},
@@ -96,10 +96,10 @@ export default {
 			return aux;
 		},
 		optionsX(){
-			return [{ text: "xAxis", value: null, disabled: true }].concat(this.options)
+			return this.options
 		},
 		optionsY(){
-			return [{ text: "yAxis", value: null, disabled: true }].concat(this.options)
+			return this.options
 		}
 	},
 	watch: {
