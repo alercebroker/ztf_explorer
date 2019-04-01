@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       buttonText: "Plot",
-      selected: null,
+      selected: "maxg",
       options: [
         { value: null, text: "xAxis", disabled: true },
         {

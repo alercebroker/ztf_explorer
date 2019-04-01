@@ -35,8 +35,8 @@ export default {
 	},
 	data(){
 		return {
-			selectedX: null,
-			selectedY: null,
+			selectedX: "meang",
+			selectedY: "meanr",
 			selectedClass: null,
 			selectedClassifier: null,
 			options: [
