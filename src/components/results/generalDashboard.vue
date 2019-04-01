@@ -5,6 +5,9 @@
         </div>
         <b-container v-else>
             <b-row>
+                <generalData/>
+            </b-row>
+            <b-row class="mb-3">
                 <b-col cols=12>
                     <tab-spatial-distribution/>
                 </b-col>
@@ -25,12 +28,14 @@
 import tabSpatialDistribution from './tabSpatialDistribution.vue';
 import tabHistogram from './tabHistogram.vue';
 import tabScatter from './tabScatter.vue';
+import generalData from './tabGeneralData.vue'
 export default {
     name:"general-dashboard",
     components: {
         tabSpatialDistribution,
         tabHistogram,
-        tabScatter
+        tabScatter,
+        generalData
     }
 }
 </script>
