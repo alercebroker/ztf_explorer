@@ -4,9 +4,9 @@
             <b-alert show variant="danger">Error connecting to our servers</b-alert>
         </div>
         <b-container v-else>
-            <b-row>
+            <b-container fluid>
                 <generalData/>
-            </b-row>
+            </b-container>
             <b-row class="mb-3">
                 <b-col cols=12>
                     <tab-spatial-distribution/>

@@ -20,7 +20,6 @@
               </b-tab>
               
             </b-tabs>
-            <div slot="footer"><small class="text-muted">Last updated 3 mins ago</small></div>
           </b-card>
         </transition>
       </b-card-body>
