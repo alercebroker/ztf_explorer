@@ -37,23 +37,23 @@
         </b-row> -->
         <b-row class="mb-2">
             <b-col cols="4">
-                <input id="meanMin" class="form-control form-control-sm" type="number" v-model="meanMin" />
+                <input id="meanMin" class="form-control form-control-sm" type="number" step="0.01" v-model="meanMin" />
                 <!-- <input class="form-control form-control-sm" v-model="mean.min" min="0" type="number" :max="mean.max" id="minMeanAny"/> -->
             </b-col>
             <b-col cols="4" class="text-center"> Mean <v-icon v-b-tooltip.hover.right title="Range of values for the mean magnitude of a source." name="info-circle" color="#C0C0C0"></v-icon></b-col>
             <b-col cols="4">
-                <input id="meanMax" class="form-control form-control-sm" type="number" v-model="meanMax" />
+                <input id="meanMax" class="form-control form-control-sm" type="number" step="0.01" v-model="meanMax" />
                 <!-- <input class="form-control form-control-sm" v-model="mean.max" :min="mean.min" type="number" id="maxMeanAny"/> -->
             </b-col>
         </b-row>
         <b-row class="mb-2">
             <b-col cols="4">
-                <input id="rmsMin" class="form-control form-control-sm" type="number" v-model="rmsMin" />
+                <input id="rmsMin" class="form-control form-control-sm" type="number" step="0.01" v-model="rmsMin" />
                 <!-- <input class="form-control form-control-sm" v-model="rms.min" min="0" type="number" :max="rms.max" id="minRmsAny"/> -->
             </b-col>
             <b-col cols="4" class="text-center"> RMS <v-icon v-b-tooltip.hover.right title="Root Mean Square" name="info-circle" color="#C0C0C0"></v-icon></b-col>
             <b-col cols="4">
-                <input id="rmsMax" class="form-control form-control-sm" type="number" v-model="rmsMax" />
+                <input id="rmsMax" class="form-control form-control-sm" type="number" step="0.01" v-model="rmsMax" />
                 <!-- <input class="form-control form-control-sm" v-model="rms.max" :min="rms.min" type="number" id="maxRmsAny"/> -->
             </b-col>
         </b-row>
