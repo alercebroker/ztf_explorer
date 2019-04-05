@@ -23,7 +23,7 @@
                 <span class="fas fa-plus-circle fa-3x"></span>
             </b-card-title>
             <b-card-body>
-                <strong>1.097.872</strong> new alerts
+                <strong>1.097.872</strong> new objects
             </b-card-body>
             <div slot="footer"><small>Last updated 3 mins ago</small></div>
         </b-card>
