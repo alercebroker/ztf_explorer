@@ -85,7 +85,10 @@
             </b-col>
             <b-col >
                 <input
-                    type="text"
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="0.01"
                     class="form-control form-control-sm"
                     id="probability"
                     v-model="probability"

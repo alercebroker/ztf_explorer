@@ -282,52 +282,45 @@ export const actions = {
         })
     },
     setClassifier({commit, state, dispatch}, classifier){
-        let oldVal = state.selectedClassifier
+        dispatch('setProbability', null);
         commit('SET_CLASSIFIER', classifier);
+        dispatch('updateOptions',{
+            obj: "filters",
+            keyPath: ["classxmatch"],
+            value: null
+        })
+        dispatch('updateOptions',{
+            obj: "filters",
+            keyPath: ["classrf"],
+            value: null
+        })
+        dispatch('updateOptions',{
+            obj: "filters",
+            keyPath: ["classrnn"],
+            value: null
+        })
         if(state.selectedClass && classifier){
             dispatch('updateOptions',{
                 obj: "filters",
-                keyPath: [oldVal],
-                value: null
-            })
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: ['p' + oldVal],
-                value: null
-            })
-            if(state.selectedClassifier != 'classxmatch' && state.probability){
-                dispatch('updateOptions',{
-                    obj: "filters",
-                    keyPath: ['p' + state.selectedClassifier],
-                    value: state.probability
-                })
-            }
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: [state.selectedClassifier],
+                keyPath: [classifier],
                 value: state.selectedClass
             })
         }
-        else{
+        if(state.selectedClass && !classifier){
             dispatch('updateOptions',{
                 obj: "filters",
-                keyPath: [oldVal],
-                value: null
+                keyPath: ["classxmatch"],
+                value: state.selectedClass
             })
             dispatch('updateOptions',{
                 obj: "filters",
-                keyPath: [classifier],
-                value: null
+                keyPath: ["classrnn"],
+                value: state.selectedClass
             })
             dispatch('updateOptions',{
                 obj: "filters",
-                keyPath: [classifier],
-                value: null
-            })
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: ['p'+oldVal],
-                value: null
+                keyPath: ["classrf"],
+                value: state.selectedClass
             })
         }
     },
@@ -337,6 +330,23 @@ export const actions = {
             dispatch('updateOptions',{
                 obj: "filters",
                 keyPath: [state.selectedClassifier],
+                value: classs
+            })
+        }
+        else{
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: ["classxmatch"],
+                value: classs
+            })
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: ["classrf"],
+                value: classs
+            })
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: ["classrnn"],
                 value: classs
             })
         }
