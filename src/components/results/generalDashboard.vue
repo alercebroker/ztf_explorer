@@ -5,7 +5,7 @@
         </div>
         <b-container v-else>
             <!--CARDS WITH GENERAL DATA-->
-            <b-container fluid>
+            <b-container fluid class="mb-3">
                 <generalData/>
             </b-container>
             <!--SPATIAL DISTRIBUTION OF ALL OBJECTS-->

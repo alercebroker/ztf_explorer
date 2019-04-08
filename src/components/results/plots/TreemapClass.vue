@@ -56,7 +56,7 @@
             }]
           }],
           title: {
-            text: 'Treemap of classifier ' + this.classifier
+            text: 'Treemap of classifier ' + this.classifier.toString()
           }
         }
       }
