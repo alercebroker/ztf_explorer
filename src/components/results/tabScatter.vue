@@ -16,8 +16,8 @@
 			<b-col cols="3">
 				<b-form-select v-model="selectedClassifier" :options="classifierOptions" id="class"></b-form-select>
 			</b-col> -->
-			<b-col cols="2" class="pl-0">
-				<b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
+			<b-col cols="2" class="pl-0 mb-2">
+				<b-button variant="primary" @click="plot" :disabled="$store.state.loadingScatterPlot">{{$store.state.loadingScatterPlot ? "Loading" : "Plot"}}</b-button>
 			</b-col>
 		</b-row>
 		
