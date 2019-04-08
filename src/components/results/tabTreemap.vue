@@ -4,8 +4,12 @@
             <b-tab title="XMATCH" active>
                 <treemapclass classifier="1"/>
             </b-tab>
-            <b-tab title="Random Forest"><p>I'm the second tab content</p></b-tab>
-            <b-tab title="Recurrent Neuronal Net"><p>Disabled tab!</p></b-tab>
+            <b-tab title="Random Forest">
+                <treemapclass classifier="2"/>
+            </b-tab>
+            <b-tab title="Recurrent Neuronal Net">
+                <treemapclass classifier="3"/>
+            </b-tab>
         </b-tabs>
     </b-card>
 </template>

@@ -2,7 +2,6 @@
 
   <b-container>
     <div class="align-middle">
-      <h2>ksñlajkhjdas {{ classifier}}</h2>
       <highcharts :options="treemapOptions"></highcharts>
     </div>
   </b-container>
@@ -20,44 +19,45 @@
       return {
         treemapOptions: {
           colorAxis: {
-        minColor: '#FFFFFF',
-    },
-    series: [{
-        type: 'treemap',
-        layoutAlgorithm: 'squarified',
-        data: [{
-            name: 'A',
-            value: 6,
-            colorValue: 1
-        }, {
-            name: 'B',
-            value: 6,
-            colorValue: 2
-        }, {
-            name: 'C',
-            value: 4,
-            colorValue: 3
-        }, {
-            name: 'D',
-            value: 3,
-            colorValue: 4
-        }, {
-            name: 'E',
-            value: 2,
-            colorValue: 5
-        }, {
-            name: 'F',
-            value: 2,
-            colorValue: 6
-        }, {
-            name: 'G',
-            value: 1,
-            colorValue: 7
-        }]
-    }],
-    title: {
-        text: 'Highcharts Treemap'
-    }
+            minColor: '#FFFFFF',
+            maxColor: '#0779D8'
+          },
+          series: [{
+            type: 'treemap',
+            layoutAlgorithm: 'squarified',
+            data: [{
+                name: 'A',
+                value: 6,
+                colorValue: 6
+            }, {
+                name: 'B',
+                value: 2,
+                colorValue: 2
+            }, {
+                name: 'C',
+                value: 3,
+                colorValue: 3
+            }, {
+                name: 'D',
+                value: 4,
+                colorValue: 4
+            }, {
+                name: 'E',
+                value: 5,
+                colorValue: 5
+            }, {
+                name: 'F',
+                value: 15,
+                colorValue: 15
+            }, {
+                name: 'G',
+                value: 7,
+                colorValue: 7
+            }]
+          }],
+          title: {
+            text: 'Treemap of classifier ' + this.classifier
+          }
         }
       }
     },
