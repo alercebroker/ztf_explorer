@@ -11,6 +11,7 @@
                 <treemapclass v-bind:classifier="3"/>
             </b-tab>
         </b-tabs>
+        {{ dataTreemap }}
     </b-card>
 </template>
 <script>
@@ -19,6 +20,15 @@ export default {
     name: "tabTreemap",
     components: {
         treemapclass
+    },
+    mounted(){
+        this.$store.dispatch('getClassCounts');
+    },
+    computed:{
+        dataTreemap(){
+            
+            return this.$store.state.results.class_counts;
+        }
     }
 }
 </script>

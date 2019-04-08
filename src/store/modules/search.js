@@ -417,6 +417,11 @@ export const actions = {
             }
             dispatch('loading', false);
         })
+    },
+    getClassCounts({dispatch}){
+        return QueryServiceV3.countClass().then(response => {
+            dispatch('setClassCounts', response.data);
+        });
     }
 }
 
