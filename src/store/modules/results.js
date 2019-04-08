@@ -67,7 +67,7 @@ export const state = {
     objects: [],
     total: 0,
     num_pages: 0,
-    class_counts: [],
+    class_counts: null,
 }
 
 export const mutations = {
