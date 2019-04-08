@@ -25,35 +25,7 @@
           series: [{
             type: 'treemap',
             layoutAlgorithm: 'squarified',
-            data: [{
-                name: 'A',
-                value: 6,
-                colorValue: 6
-            }, {
-                name: 'B',
-                value: 2,
-                colorValue: 2
-            }, {
-                name: 'C',
-                value: 3,
-                colorValue: 3
-            }, {
-                name: 'D',
-                value: 4,
-                colorValue: 4
-            }, {
-                name: 'E',
-                value: 5,
-                colorValue: 5
-            }, {
-                name: 'F',
-                value: 15,
-                colorValue: 15
-            }, {
-                name: 'G',
-                value: 7,
-                colorValue: 7
-            }]
+            data: []
           }],
           title: {
             text: 'Treemap of classifier ' + this.classifier.toString()
@@ -62,12 +34,23 @@
       }
     },
     mounted(){
-
+      this.treemapOptions.series[0].data = this.data;
     },
     methods: {
-      
+      dataFormat(data){
+            var fdata = []
+            for(var i in data){
+                var key = i;
+                var val = data[i];
+                fdata.push({name: key, value: val, colorValue: val});
+            }
+            return fdata;
+        }
     },
     computed: {
+      data(){
+        return this.dataFormat(this.$store.state.results.class_counts);
+      }
     }
 }
 </script>
