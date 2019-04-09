@@ -156,13 +156,37 @@ export const actions = {
             return "ERROR"
         })
     },
-    queryObjects({ commit, dispatch }, query_parameters){
+    checkQueryStatusV3({commit, dispatch}, queryId){
+        return QueryServiceV3.queryStatus(queryId).then(response => {
+            if (response.data === "finished"){
+                commit('SET_ERROR', null);
+                return "finished"
+            }
+            else if(response.data === "error"){
+                commit('SET_ERROR', "error")
+                return "error"
+            }
+            else if(response.data === "pending"){
+                return dispatch('checkQueryStatusV3', queryId)
+            }
+        }).catch(error => {
+            commit('SET_ERROR', error)
+            return "error"
+        })
+    },
+    queryObjectsV3({ commit, dispatch }, payload){
         dispatch('loading', true);
-        QueryService.executeQuery(query_parameters).then( response => {
-            let taskId = response.data["task-id"]
-            dispatch('checkQueryStatus', taskId).then(result => {
-                if(result === "SUCCESS"){
-                    dispatch('getResults',taskId);
+        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
+            let queryId = response.data
+            dispatch('checkQueryStatusV3', queryId).then(result => {
+                if(result === "finished"){
+                    let newPayload = {
+                        queryId: queryId,
+                        page: payload.page,
+                        perPage: payload.perPage
+                    }
+
+                    dispatch('getPaginatedResult',newPayload);
                 }
             })
         }).catch(error => {
@@ -170,17 +194,13 @@ export const actions = {
             dispatch('loading', false);
         })
     },
-    getResults({commit, dispatch},taskId){
-        QueryService.getResult(taskId).then(result => {
-            if(result.data.result.length === 0) commit('SET_QUERY_STATUS', 204);
+    getPaginatedResult({commit, dispatch},payload){
+        QueryServiceV3.paginatedResult(payload.queryId, payload.page, payload.perPage).then( response =>{
+            if(response.data.total === 0) commit('SET_QUERY_STATUS', 204);
             else{
-                commit('SET_QUERY_STATUS', result.status);
-                dispatch('setObjects',result.data.result);
-                // dispatch('setPlot', result.data.plot)
+                commit('SET_QUERY_STATUS', response.status);
+                dispatch('setObjects',response.data);
             }
-            dispatch('loading', false);
-        }).catch(error => {
-            commit('SET_ERROR', error);
             dispatch('loading', false);
         })
     },
@@ -404,17 +424,6 @@ export const actions = {
         return QueryServiceV3.getQueryScatter(newPayload).then(response => {
             dispatch('setQueryScatter', response.data);
             dispatch('loadingPlot', false);
-        })
-    },
-    queryObjectsV3({dispatch, commit}, query_parameters){
-        dispatch('loading', true);
-        return QueryServiceV3.queryObjects(query_parameters).then( response => {
-            if(response.data.length === 0) commit('SET_QUERY_STATUS', 204);
-            else{
-                commit('SET_QUERY_STATUS', response.status);
-                dispatch('setObjects',response.data);
-            }
-            dispatch('loading', false);
         })
     },
     queryPaginated({dispatch,commit}, payload){

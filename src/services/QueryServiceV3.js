@@ -29,6 +29,16 @@ export default {
     queryObjects(query_parameters){
         return apiClient.post('/query', {query_parameters: query_parameters});
     },
+    queryStatus(queryId){
+        return apiClient.post('/check_query_status', {"query-id": queryId})
+    },
+    paginatedResult(queryId, page, perPage){
+        return apiClient.post('/get_paginated_result',{
+            "query-id": queryId,
+            "page": page,
+            "per_page": perPage
+        })
+    },
     paginatedQuery(query_parameters, page, perPage){
         return apiClient.post('/paginated_query',{query_parameters: query_parameters, page: page, per_page: perPage});
     }
