@@ -406,14 +406,14 @@ export const actions = {
         })
     },
     getOverviewScatter({dispatch}, payload){
-        dispatch('loadingPlot', true);
+        dispatch('loadingScatterPlot', true);
         return QueryServiceV3.getOverviewScatter(payload).then(response => {
             dispatch('setOverviewScatter', response.data);
-            dispatch('loadingPlot', false);
+            dispatch('loadingScatterPlot', false);
         })
     },
     getQueryScatter({ dispatch, state }, payload){
-        dispatch('loadingPlot', true);
+        dispatch('loadingScatterPlot', true);
         let newPayload = {
             "x-axis": payload["x-axis"],
             "y-axis": payload["y-axis"],
@@ -423,7 +423,7 @@ export const actions = {
         }
         return QueryServiceV3.getQueryScatter(newPayload).then(response => {
             dispatch('setQueryScatter', response.data);
-            dispatch('loadingPlot', false);
+            dispatch('loadingScatterPlot', false);
         })
     },
     queryPaginated({dispatch,commit}, payload){
@@ -436,6 +436,11 @@ export const actions = {
             }
             dispatch('loading', false);
         })
+    },
+    getClassCounts({dispatch}){
+        return QueryServiceV3.countClass().then(response => {
+            dispatch('setClassCounts', response.data);
+        });
     }
 }
 

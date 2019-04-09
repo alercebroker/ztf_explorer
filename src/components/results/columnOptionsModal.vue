@@ -30,9 +30,7 @@
         data(){
           return {
             allSelected: false,
-            // TODO: must contain default columns
             options: [
-              //TODO: change values and text
               {
                 text: "Object ID",
                 value: {
@@ -49,15 +47,86 @@
                   label: "#"
                 }
               },
+              { 
+                text: "Period", 
+                value: {
+                  key: "period",
+                  label: "Period"
+                }
+              },
               {
-                text: "Class XMATCH", 
+                text: "First MJD",
+                value: {
+                  key: "firstjd",
+                  label: "FirstMJD",
+                  sortable : true
+                }
+              },
+              {
+                text: "Last MJD",
+                value: {
+                  key: "lastjd",
+                  label: "LastMJD",
+                  sortable : true
+                }
+              },
+              {
+                text: "Delta MJD",
+                value: {
+                  key: "deltajd",
+                  label: "DeltaMJD"
+                }
+              },
+              { 
+                text: "Mean Dec", 
+                value: { 
+                  key : "meandec" ,
+                  label : "Dec",
+                  sortable: false
+                }
+              },
+              { 
+                text: "RMS of DEC", 
+                value: {
+                  key: "rmsdec",
+                  label: "RmsDec"
+                } 
+              },
+              { 
+              text: "Mean RA", 
+                value: {
+                  key : "meanra" ,
+                  label : "RA",
+                  sortable: false
+                }
+              },
+              { 
+                text: "RMS of RA", 
+                value: {
+                  key: "rmsra",
+                  label: "RmsRA"
+                }
+              },
+              {
+                text: "RA/Dec",
+                value: {
+                  key: "radec",
+                  label: "RA/Dec",
+                  }
+              },
+              {
+                text: "-- Classifiers --",
+                disabled: true
+              },
+              {
+                text: "Class by XMATCH", 
                 value: {
                   key: "classxmatch",
                   label: "X-MATCH"
                 } 
               },
               {
-                text: "Class RF", 
+                text: "Class by RF", 
                 value: {
                   key: "classrf",
                   label: "ML_RF"
@@ -72,7 +141,7 @@
                 }
               },
               {
-                text: "Class RNN", 
+                text: "Class by RNN", 
                 value: {
                   key: "classrnn",
                   label: "ML_RNN"
@@ -86,60 +155,84 @@
                   label: "P(RNN)"
                 }
               },
-              { 
-                text: "Period", 
-                value: "period"
+              {
+                text: "-- Magnitude band g --",
+                disabled: true
               },
               { 
-                text: "FirstMagG", 
-                value: "firstmagg" 
+                text: "First det. of mag. g", 
+                value: {
+                  key: "firstmagg",
+                  label: "FirstMagG"
+                }
               },
               { 
-                text: "LastMagG", 
-                value: "lastmagg" 
+                text: "Last det. of mag. g", 
+                value: {
+                  key: "lastmagg",
+                  label: "LastMagG"
+                }
               },
               { 	
-                text: "MinG", 
+                text: "Min of band g", 
                 value: { 
                   key: "ming" ,
                   label : "ming",
                   sortable: true
                 }
-                },  
+              },  
               { 
-                text: "MaxG", 
-                value: "maxg" 
+                text: "Max of band g", 
+                value: {
+                  key: "maxg",
+                  label: "MaxG"
+                } 
               },
               { 
-                text: "MeanG", 
-                value: "meang" 
+                text: "Mean of band g", 
+                value: {
+                  key: "meang",
+                  label: "MeanG"
+                }
               },
               { 
-                text: "MedianG", 
-                value: "mediang"
+                text: "Median of band g", 
+                value: {
+                  key: "mediang",
+                  label: "MedianG"
+                }
               },
               { 
-                text: "RmsG", 
-                value: "rmsg" 
+                text: "RMS of band g", 
+                value: {
+                  key: "rmsg",
+                  label: "RmsG"
+                }
               },
-              { 
+              /*{ 
                 text: "SlopeG", 
                 value: "slopeg" 
+              },*/
+              {
+                text: "-- Magnitude band r --",
+                disabled: true
               },
               { 
-                text: "SlopeR", 
-                value: "sloper" 
+                text: "Last det. of mag r", 
+                value: {
+                  key: "lastmagr",
+                  label: "LastMagR"
+                }
               },
               { 
-                text: "LastMagR", 
-                value: "lastmagr" 
-              },
-              { 
-                text: "FirstMagR", 
-                value: "firstmagr" 
+                text: "First det. of mag r", 
+                value: {
+                  key: "firstmagr",
+                  label: "FirstMagR"
+                }
               },
               { 	
-                text: "MinR", 
+                text: "Min of band r", 
                 value: { 
                   key: "minr" ,
                   label : "minr",
@@ -147,79 +240,37 @@
                   }
               },
               { 
-                text: "MaxR", 
-                value: "maxr" 
+                text: "Max of band r", 
+                value: {
+                  key: "maxr",
+                  label: "MaxR"
+                }
               },
               { 
-                text: "MeanR", 
-                value: "meanr" 
+                text: "Mean of band r", 
+                value: {
+                  key: "meanr",
+                  label: "MeanR"
+                }
               },
               { 
-                text: "MedianR", 
-                value: "medianr" 
+                text: "Median of band r", 
+                value: {
+                  key: "medianr",
+                  label: "MedianR"
+                } 
               },
               { 
-                text: "RmsR", 
-                value: "rmsr" 
+                text: "RMS of band r", 
+                value: {
+                  key: "rmsr",
+                  label: "RmsR"
+                } 
               },
               /*{ 
                 text: "SlopeR", 
                 value: "sloper" 
               },*/
-              {
-                text: "FirstMJD",
-                value: {
-                  key: "firstjd",
-                  label: "FirstMJD",
-                  sortable : true
-                }
-              },
-              {
-                text: "LastMJD",
-                value: {
-                  key: "lastjd",
-                  label: "LastMJD",
-                  sortable : true
-                }
-              },
-              {
-                text: "DeltaMJD",
-                value: {
-                  key: "deltajd",
-                  label: "DeltaMJD"
-                }
-              },
-              { 
-                text: "Dec", 
-                value: { 
-                  key : "meandec" ,
-                  label : "Dec",
-                  sortable: false
-                }
-              },
-              { 
-                text: "RmsDEC", 
-                value: "rmsdec" 
-              },
-              { 
-              text: "RA", 
-                value: {
-                  key : "meanra" ,
-                  label : "RA",
-                  sortable: false
-                }
-              },
-              { 
-                text: "RmsRA", 
-                value: "rmsra" 
-              },
-              {
-                text: "RA/Dec",
-                value: {
-                  key: "radec",
-                  label: "RA/Dec",
-                  }
-              }
             ]
           }
         },
