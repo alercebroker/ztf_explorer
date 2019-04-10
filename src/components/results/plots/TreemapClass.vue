@@ -1,7 +1,7 @@
 <template>
 
   <b-container>
-    <div v-if="data" class="align-middle">
+    <div v-if="classCounts" class="align-middle">
       <highcharts :options="treemapOptions"></highcharts>
     </div>
     <div v-else>
@@ -17,7 +17,7 @@
   import {AtomSpinner} from 'epic-spinners';
   export default  {
     name: 'treemapclass',
-    props: {classifier: Number},
+    props: {classifier: String},
     components: {
       AtomSpinner
     },
@@ -44,33 +44,39 @@
     },
     mounted(){
       this.treemapOptions.title.text = 'Treemap of classifier ' + this.selected();
+      this.$store.dispatch('getClassCounts');
     },
     methods: {
       dataFormat(data){
         if(!data)
           return null
         var fdata = []
-        for(var i in data){
-          var key = i;
-          var val = data[i];
+        for(let c in data[this.classifier]){
+          var key = c;
+          var val = data[this.classifier][c];
           fdata.push({name: key, value: val, colorValue: val});
         }
         this.treemapOptions.series[0].data = fdata;
         return fdata;
       },
       selected(){
-        if(this.classifier == 1)
+        if(this.classifier == "xmatch")
           return "XMATCH"
-        else if(this.classifier == 2)
+        else if(this.classifier == "rf")
           return "Random Forest"
         else
           return "Recurrent Neuronal Net"
       }
     },
     computed: {
-      data(){
-        return this.dataFormat(this.$store.state.results.class_counts);
+      classCounts(){
+        return this.$store.state.results.class_counts;
       },
+    },
+    watch:{
+      classCounts(newVal){
+        return this.dataFormat(newVal)
+      }
     }
 }
 </script>

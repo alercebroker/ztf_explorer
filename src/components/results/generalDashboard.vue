@@ -5,9 +5,9 @@
         </div>
         <b-container v-else>
             <!--CARDS WITH GENERAL DATA-->
-            <b-container fluid class="mb-3">
+            <!-- <b-container fluid class="mb-3">
                 <generalData/>
-            </b-container>
+            </b-container> -->
             <!--SPATIAL DISTRIBUTION OF ALL OBJECTS-->
             <b-row class="mb-3">
                 <b-col cols=12>

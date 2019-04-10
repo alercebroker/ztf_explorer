@@ -185,7 +185,6 @@ export const actions = {
                         page: payload.page,
                         perPage: payload.perPage
                     }
-
                     dispatch('getPaginatedResult',newPayload);
                 }
             })
@@ -394,12 +393,25 @@ export const actions = {
             dispatch('loadingPlot', false);
         })
     },
-    getQueryHistogram({dispatch, state}, xAxis){
+    queryHistogram({dispatch, commit}, payload){
         dispatch('loadingPlot', true);
-        let payload = {
-            query_parameters: state.query_parameters,
-            "x-axis": xAxis
-        }
+        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
+            let queryId = response.data
+            dispatch('checkQueryStatusV3', queryId).then(result => {
+                if(result === "finished"){
+                    let newPayload = {
+                        "query-id": queryId,
+                        "x-axis": payload.xAxis
+                    }
+                    dispatch('getQueryHistogram',newPayload);
+                }
+            })
+        }).catch(error => {
+            commit('SET_ERROR', error);
+            dispatch('loading', false);
+        })
+    },
+    getQueryHistogram({dispatch, state}, payload){
         return QueryServiceV3.getQueryHistogram(payload).then(response => {
             dispatch('setQueryHistogram', response.data);
             dispatch('loadingPlot', false);
@@ -407,21 +419,40 @@ export const actions = {
     },
     getOverviewScatter({dispatch}, payload){
         dispatch('loadingScatterPlot', true);
-        return QueryServiceV3.getOverviewScatter(payload).then(response => {
+        let newPayload = {
+            "x-axis": payload.xAxis,
+            "y-axis": payload.yAxis,
+            "class": payload.classs,
+            "classifier": payload.classifier
+        }
+        return QueryServiceV3.getOverviewScatter(newPayload).then(response => {
             dispatch('setOverviewScatter', response.data);
             dispatch('loadingScatterPlot', false);
         })
     },
-    getQueryScatter({ dispatch, state }, payload){
+    queryScatter({dispatch, commit}, payload){
         dispatch('loadingScatterPlot', true);
-        let newPayload = {
-            "x-axis": payload["x-axis"],
-            "y-axis": payload["y-axis"],
-            "class": payload["class"],
-            "classifier": payload["classifier"],
-            "query_parameters": state.query_parameters
-        }
-        return QueryServiceV3.getQueryScatter(newPayload).then(response => {
+        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
+            let queryId = response.data
+            dispatch('checkQueryStatusV3', queryId).then(result => {
+                if(result === "finished"){
+                    let newPayload = {
+                        "query-id": queryId,
+                        "x-axis": payload.xAxis,
+                        "y-axis": payload.yAxis,
+                        "class": payload.classs,
+                        "classifier": payload.classifier
+                    }
+                    dispatch('getQueryScatter',newPayload);
+                }
+            })
+        }).catch(error => {
+            commit('SET_ERROR', error);
+            dispatch('loading', false);
+        })
+    },
+    getQueryScatter({ dispatch, state }, payload){
+        return QueryServiceV3.getQueryScatter(payload).then(response => {
             dispatch('setQueryScatter', response.data);
             dispatch('loadingScatterPlot', false);
         })

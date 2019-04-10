@@ -2,13 +2,13 @@
     <b-card>
         <b-tabs content-class="mt-3">
             <b-tab title="XMATCH" active>
-                <treemapclass v-bind:classifier="1"/>
+                <treemapclass v-bind:classifier="'xmatch'"/>
             </b-tab>
             <b-tab title="Random Forest">
-                <treemapclass v-bind:classifier="2"/>
+                <treemapclass v-bind:classifier="'rf'"/>
             </b-tab>
             <b-tab title="Recurrent Neuronal Net">
-                <treemapclass v-bind:classifier="3"/>
+                <treemapclass v-bind:classifier="'rnn'"/>
             </b-tab>
         </b-tabs>
     </b-card>

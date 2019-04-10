@@ -71,16 +71,18 @@ export default {
 				this.selectedClassifier = null;
 			}
 			let payload = {
-				"x-axis": this.selectedX,
-				"y-axis": this.selectedY,
-				"class": this.selectedClass,
-				"classifier": this.selectedClassifier
+				xAxis: this.selectedX,
+				yAxis: this.selectedY,
+				classs: this.selectedClass,
+				classifier: this.selectedClassifier,
+				query_parameters: this.$store.state.search.query_parameters
 			}
+			console.log("GOING TO PLOT SCATTER", payload)
 			if(this.type === "overview"){
 				this.$store.dispatch('getOverviewScatter', payload);
 			}
 			else if (this.type === "query"){
-				this.$store.dispatch('getQueryScatter', payload);
+				this.$store.dispatch('queryScatter', payload);
 			}
 		}
 	},

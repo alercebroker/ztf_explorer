@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div v-if="loading" style="width:100%;height:300px">
+        <div v-show="loading" style="width:100%;height:300px">
 			<div class="overlay">
                 <atom-spinner :animation-duration="2000" :size="200" color="#0779D8"/> 
             </div>
 		</div>
-		<div v-if="!loading">
+		<div v-show="!loading">
 			<div id="overviewHistogramContainer" v-if="type=='overview'">
                 <div id="overviewHistogram" style="width:100%;height:300px;position:relative;"/>
             </div>
@@ -34,7 +34,7 @@ export default {
             this.$store.dispatch('getOverviewHistogram', this.xAxis);
         }
         else if(this.type === "query"){
-            this.$store.dispatch('getQueryHistogram', this.xAxis);
+            this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.xAxis});
         }
         
     },
@@ -54,10 +54,7 @@ export default {
     },
     methods:{
         clearDiv(type){
-            if(this.$store.state.loadingPlot)
-            {
-                document.getElementById(type+"HistogramContainer").innerHTML = '<div id="'+type+'Histogram" style="width:100%;height:300px"/>'
-            }
+            document.getElementById(type+"HistogramContainer").innerHTML = '<div id="'+type+'Histogram" style="width:100%;height:300px"/>'
         }
     },
     watch:{

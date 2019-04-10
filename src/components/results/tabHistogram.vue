@@ -66,7 +66,7 @@ export default {
         this.$store.dispatch('getOverviewHistogram', this.selected);
       }
       else if(this.type === "query"){
-        this.$store.dispatch('getQueryHistogram', this.selected);
+        this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.selected});
       }
     }
   },

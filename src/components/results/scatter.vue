@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<div v-if="loading" style="width:100%;height:300px">
+		<div v-show="loading" style="width:100%;height:300px">
 			<div class="overlay">
                 <atom-spinner :animation-duration="2000" :size="200" color="#0779D8"/> 
             </div>
 		</div>
-		<div v-if="!loading">
+		<div v-show="!loading">
 			<div id="overviewScatterContainer" v-if="type=='overview'" style="width:100%;height:300px">
             	<div id="overviewScatter" style="width:100%;height:300px;position:relative;"/>
         	</div>
@@ -30,16 +30,17 @@ export default {
 	},
 	mounted(){
 		let payload = {
-			"x-axis": this.xAxis,
-			"y-axis": this.yAxis,
-			"class": this.cls,
-			"classifier": this.classifier
+			xAxis: this.xAxis,
+			yAxis: this.yAxis,
+			classs: this.cls,
+			classifier: this.classifier,
+			query_parameters: this.$store.state.search.query_parameters
 		}
 		if(this.type === "overview"){
 			this.$store.dispatch('getOverviewScatter', payload);
 		}
 		else if(this.type === "query"){
-			this.$store.dispatch('getQueryScatter', payload);
+			this.$store.dispatch('queryScatter', payload);
 		}
 	},
     computed:{
@@ -59,10 +60,7 @@ export default {
 	},
 	methods:{
 		clearDiv(type){
-			if(this.$store.state.loadingScatterPlot)
-			{
-				document.getElementById(type+"ScatterContainer").innerHTML = '<div id="'+type+'Scatter" style="width:100%; height:300px"/>'
-			}	
+			document.getElementById(type+"ScatterContainer").innerHTML = '<div id="'+type+'Scatter" style="width:100%; height:300px"/>'	
 		}
 	},
 	watch:{
