@@ -207,7 +207,7 @@ export default {
 
     pageChange(page){
       let query_parameters = this.$store.state.search.query_parameters;
-      this.$store.dispatch('queryPaginated', {query_parameters: query_parameters, page: page, per_page: this.$store.state.perPage});
+      this.$store.dispatch('queryObjectsV3', {query_parameters: query_parameters, page: page, perPage: this.$store.state.perPage});
     }
   },
   mounted: function() {

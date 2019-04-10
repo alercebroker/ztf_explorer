@@ -66,7 +66,8 @@ export const state = {
     queryScatter: null,
     objects: [],
     total: 0,
-    num_pages: 0
+    num_pages: 0,
+    class_counts: null,
 }
 
 export const mutations = {
@@ -102,6 +103,9 @@ export const mutations = {
     },
     SET_TOTAL(state, total){
         state.total = total;
+    },
+    SET_CLASS_COUNTS(state, data){
+        state.class_counts = data;
     }
 }
 
@@ -147,7 +151,10 @@ export const actions = {
         commit('SET_OBJECTS', JSON.parse(objects.result));
         commit('SET_TOTAL', objects.total);
         commit('SET_NUM_PAGES', objects.num_pages)
-    }
+    },
+    setClassCounts({commit}, data){
+        commit('SET_CLASS_COUNTS', data);
+    },
 }
 
 export const getters = {

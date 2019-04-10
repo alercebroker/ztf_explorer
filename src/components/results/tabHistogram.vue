@@ -5,7 +5,7 @@
       <b-col cols="4" class="pl-0">
         <b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
       </b-col>
-      <b-col cols="3" class="pl-0">
+      <b-col cols="3" class="pl-0 mb-2">
         <b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
       </b-col>
     </b-row>
@@ -66,7 +66,7 @@ export default {
         this.$store.dispatch('getOverviewHistogram', this.selected);
       }
       else if(this.type === "query"){
-        this.$store.dispatch('getQueryHistogram', this.selected);
+        this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.selected});
       }
     }
   },

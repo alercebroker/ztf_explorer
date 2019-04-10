@@ -156,13 +156,36 @@ export const actions = {
             return "ERROR"
         })
     },
-    queryObjects({ commit, dispatch }, query_parameters){
+    checkQueryStatusV3({commit, dispatch}, queryId){
+        return QueryServiceV3.queryStatus(queryId).then(response => {
+            if (response.data === "finished"){
+                commit('SET_ERROR', null);
+                return "finished"
+            }
+            else if(response.data === "error"){
+                commit('SET_ERROR', "error")
+                return "error"
+            }
+            else if(response.data === "pending"){
+                return dispatch('checkQueryStatusV3', queryId)
+            }
+        }).catch(error => {
+            commit('SET_ERROR', error)
+            return "error"
+        })
+    },
+    queryObjectsV3({ commit, dispatch }, payload){
         dispatch('loading', true);
-        QueryService.executeQuery(query_parameters).then( response => {
-            let taskId = response.data["task-id"]
-            dispatch('checkQueryStatus', taskId).then(result => {
-                if(result === "SUCCESS"){
-                    dispatch('getResults',taskId);
+        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
+            let queryId = response.data
+            dispatch('checkQueryStatusV3', queryId).then(result => {
+                if(result === "finished"){
+                    let newPayload = {
+                        queryId: queryId,
+                        page: payload.page,
+                        perPage: payload.perPage
+                    }
+                    dispatch('getPaginatedResult',newPayload);
                 }
             })
         }).catch(error => {
@@ -170,17 +193,13 @@ export const actions = {
             dispatch('loading', false);
         })
     },
-    getResults({commit, dispatch},taskId){
-        QueryService.getResult(taskId).then(result => {
-            if(result.data.result.length === 0) commit('SET_QUERY_STATUS', 204);
+    getPaginatedResult({commit, dispatch},payload){
+        QueryServiceV3.paginatedResult(payload.queryId, payload.page, payload.perPage).then( response =>{
+            if(response.data.total === 0) commit('SET_QUERY_STATUS', 204);
             else{
-                commit('SET_QUERY_STATUS', result.status);
-                dispatch('setObjects',result.data.result);
-                // dispatch('setPlot', result.data.plot)
+                commit('SET_QUERY_STATUS', response.status);
+                dispatch('setObjects',response.data);
             }
-            dispatch('loading', false);
-        }).catch(error => {
-            commit('SET_ERROR', error);
             dispatch('loading', false);
         })
     },
@@ -282,52 +301,45 @@ export const actions = {
         })
     },
     setClassifier({commit, state, dispatch}, classifier){
-        let oldVal = state.selectedClassifier
+        dispatch('setProbability', null);
         commit('SET_CLASSIFIER', classifier);
+        dispatch('updateOptions',{
+            obj: "filters",
+            keyPath: ["classxmatch"],
+            value: null
+        })
+        dispatch('updateOptions',{
+            obj: "filters",
+            keyPath: ["classrf"],
+            value: null
+        })
+        dispatch('updateOptions',{
+            obj: "filters",
+            keyPath: ["classrnn"],
+            value: null
+        })
         if(state.selectedClass && classifier){
             dispatch('updateOptions',{
                 obj: "filters",
-                keyPath: [oldVal],
-                value: null
-            })
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: ['p' + oldVal],
-                value: null
-            })
-            if(state.selectedClassifier != 'classxmatch' && state.probability){
-                dispatch('updateOptions',{
-                    obj: "filters",
-                    keyPath: ['p' + state.selectedClassifier],
-                    value: state.probability
-                })
-            }
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: [state.selectedClassifier],
+                keyPath: [classifier],
                 value: state.selectedClass
             })
         }
-        else{
+        if(state.selectedClass && !classifier){
             dispatch('updateOptions',{
                 obj: "filters",
-                keyPath: [oldVal],
-                value: null
+                keyPath: ["classxmatch"],
+                value: state.selectedClass
             })
             dispatch('updateOptions',{
                 obj: "filters",
-                keyPath: [classifier],
-                value: null
+                keyPath: ["classrnn"],
+                value: state.selectedClass
             })
             dispatch('updateOptions',{
                 obj: "filters",
-                keyPath: [classifier],
-                value: null
-            })
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: ['p'+oldVal],
-                value: null
+                keyPath: ["classrf"],
+                value: state.selectedClass
             })
         }
     },
@@ -337,6 +349,23 @@ export const actions = {
             dispatch('updateOptions',{
                 obj: "filters",
                 keyPath: [state.selectedClassifier],
+                value: classs
+            })
+        }
+        else{
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: ["classxmatch"],
+                value: classs
+            })
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: ["classrf"],
+                value: classs
+            })
+            dispatch('updateOptions',{
+                obj: "filters",
+                keyPath: ["classrnn"],
                 value: classs
             })
         }
@@ -364,47 +393,68 @@ export const actions = {
             dispatch('loadingPlot', false);
         })
     },
-    getQueryHistogram({dispatch, state}, xAxis){
+    queryHistogram({dispatch, commit}, payload){
         dispatch('loadingPlot', true);
-        let payload = {
-            query_parameters: state.query_parameters,
-            "x-axis": xAxis
-        }
+        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
+            let queryId = response.data
+            dispatch('checkQueryStatusV3', queryId).then(result => {
+                if(result === "finished"){
+                    let newPayload = {
+                        "query-id": queryId,
+                        "x-axis": payload.xAxis
+                    }
+                    dispatch('getQueryHistogram',newPayload);
+                }
+            })
+        }).catch(error => {
+            commit('SET_ERROR', error);
+            dispatch('loading', false);
+        })
+    },
+    getQueryHistogram({dispatch, state}, payload){
         return QueryServiceV3.getQueryHistogram(payload).then(response => {
             dispatch('setQueryHistogram', response.data);
             dispatch('loadingPlot', false);
         })
     },
     getOverviewScatter({dispatch}, payload){
-        dispatch('loadingPlot', true);
-        return QueryServiceV3.getOverviewScatter(payload).then(response => {
+        dispatch('loadingScatterPlot', true);
+        let newPayload = {
+            "x-axis": payload.xAxis,
+            "y-axis": payload.yAxis,
+            "class": payload.classs,
+            "classifier": payload.classifier
+        }
+        return QueryServiceV3.getOverviewScatter(newPayload).then(response => {
             dispatch('setOverviewScatter', response.data);
-            dispatch('loadingPlot', false);
+            dispatch('loadingScatterPlot', false);
+        })
+    },
+    queryScatter({dispatch, commit}, payload){
+        dispatch('loadingScatterPlot', true);
+        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
+            let queryId = response.data
+            dispatch('checkQueryStatusV3', queryId).then(result => {
+                if(result === "finished"){
+                    let newPayload = {
+                        "query-id": queryId,
+                        "x-axis": payload.xAxis,
+                        "y-axis": payload.yAxis,
+                        "class": payload.classs,
+                        "classifier": payload.classifier
+                    }
+                    dispatch('getQueryScatter',newPayload);
+                }
+            })
+        }).catch(error => {
+            commit('SET_ERROR', error);
+            dispatch('loading', false);
         })
     },
     getQueryScatter({ dispatch, state }, payload){
-        dispatch('loadingPlot', true);
-        let newPayload = {
-            "x-axis": payload["x-axis"],
-            "y-axis": payload["y-axis"],
-            "class": payload["class"],
-            "classifier": payload["classifier"],
-            "query_parameters": state.query_parameters
-        }
-        return QueryServiceV3.getQueryScatter(newPayload).then(response => {
+        return QueryServiceV3.getQueryScatter(payload).then(response => {
             dispatch('setQueryScatter', response.data);
-            dispatch('loadingPlot', false);
-        })
-    },
-    queryObjectsV3({dispatch, commit}, query_parameters){
-        dispatch('loading', true);
-        return QueryServiceV3.queryObjects(query_parameters).then( response => {
-            if(response.data.length === 0) commit('SET_QUERY_STATUS', 204);
-            else{
-                commit('SET_QUERY_STATUS', response.status);
-                dispatch('setObjects',response.data);
-            }
-            dispatch('loading', false);
+            dispatch('loadingScatterPlot', false);
         })
     },
     queryPaginated({dispatch,commit}, payload){
@@ -417,6 +467,11 @@ export const actions = {
             }
             dispatch('loading', false);
         })
+    },
+    getClassCounts({dispatch}){
+        return QueryServiceV3.countClass().then(response => {
+            dispatch('setClassCounts', response.data);
+        });
     }
 }
 
