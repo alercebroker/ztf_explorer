@@ -23,7 +23,7 @@
 
     <small>
       <div>
-        <strong>Found {{ $store.state.search.objects.length }} results</strong>
+        <strong>Found {{ $store.state.results.total }} results</strong>
       </div>
     </small>
     
@@ -31,10 +31,8 @@
       <b-table
         striped
         hover
-        :items="$store.state.search.objects"
+        :items="$store.state.results.objects"
         :fields="$store.state.results.selectedColumnOptions"
-        :current-page="currentPage"
-        :per-page="perPage"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
          @row-clicked="onRowClicked"
@@ -46,91 +44,91 @@
           <div>{{ data.item.classrf != null? getClass(data.item, "classrf"): "-" }}</div>
         </template>
         <template slot="pclassrf" slot-scope="data">
-          <div>{{ data.value != null? data.value.toFixed(3) : "-" }}</div>
+          <div>{{ data.item.pclassrf != null? data.value.toFixed(3) : "-" }}</div>
         </template>
         <template slot="classrnn" slot-scope="data">
           <div>{{ data.item.classrnn != null? getClass(data.item, "classrnn"): "-" }}</div>
         </template>
         <template slot="pclassrnn" slot-scope="data">
-          <div>{{ data.value != null? data.value.toFixed(3) : "-" }}</div>
-        </template>
-        <template slot="pclass" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div>{{ data.item.pclassrnn != null? data.value.toFixed(3) : "-" }}</div>
         </template>
         <template slot="period" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.period!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="firstmagg" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.firstmagg!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="lastmagg" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.lastmagg!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="firstmagr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.firstmagr!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="lastmagr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.lastmagr!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="maxg" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.maxg!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="ming" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.ming!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="maxr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.maxr!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="minr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.minr!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="meang" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.meang!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="meanr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.meanr!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="mediang" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.mediang!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="medianr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.medianr!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="rmsg" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.rmsg!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="rmsr" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.rmsr!=null">{{data.value.toFixed(3)}}</div>
         </template>
-        <template slot="slope" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+        <template slot="slopeg" slot-scope="data">
+          <div v-if="data.item.slopeg!=null">{{data.value.toFixed(3)}}</div>
+        </template>
+        <template slot="sloper" slot-scope="data">
+          <div v-if="data.item.sloper!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="firstjd" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.firstjd!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="lastjd" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.lastjd!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="deltajd" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.deltajd!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="rmsdec" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.rmsdec!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="rmsra" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.rmsra!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="meanra" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.meanra!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="meandec" slot-scope="data">
-          <div v-if="data.value!=null">{{data.value.toFixed(3)}}</div>
+          <div v-if="data.item.meandec!=null">{{data.value.toFixed(3)}}</div>
         </template>
         <template slot="radec" slot-scope="data">
           <div v-if="data.item.meanra != null && data.item.meandec != null">({{data.item.meanra.toFixed(3) +", "+data.item.meandec.toFixed(3)}})</div>
         </template>
       </b-table>
-      <b-pagination size="md" :total-rows="$store.state.search.objects.length" v-model="currentPage" :per-page="perPage" align="center">
+      <b-pagination size="md" :total-rows="$store.state.results.total" v-model="currentPage" :per-page="$store.state.perPage" align="center" v-on:input="pageChange">
       </b-pagination>
     </div>
 
@@ -181,7 +179,6 @@ export default {
       showObjectDetailsModal: false,
       block:true,
       currentPage: 1,
-      perPage: 20,
       sortBy: 'nobs',
       sortDesc: true,
       
@@ -207,6 +204,11 @@ export default {
         //this.$store.state.search.query_status = 200;
       }
     },
+
+    pageChange(page){
+      let query_parameters = this.$store.state.search.query_parameters;
+      this.$store.dispatch('queryPaginated', {query_parameters: query_parameters, page: page, per_page: this.$store.state.perPage});
+    }
   },
   mounted: function() {
     this.getUrlObject();

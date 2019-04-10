@@ -1,12 +1,13 @@
 import QueryService from '@/services/QueryService.js';
+import QueryServiceV3 from '@/services/QueryServiceV3.js'
 import Vue from 'vue';
 export const state = {
+    query_parameters: null,
     filters: {},
     dates: {},
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
-    objects: [],
     interval: null,
     flagFirst: false,
     flagLast: false,
@@ -75,11 +76,11 @@ export const mutations = {
         else Vue.delete(obj, payload.keyPath[lastKeyIndex]);
         
     },
+    SET_QUERY_PARAMETERS(state, query_parameters){
+        state.query_parameters = query_parameters;
+    },
     SET_SQL(state, sql){
         state.sql = sql;
-    },
-    SET_OBJECTS(state, objects){
-        state.objects = objects;
     },
     SET_FLAG(state, payload){
         state[payload.flag] = payload.value;
@@ -127,6 +128,9 @@ export const actions = {
     updateOptions({ commit }, payload) {
         commit('UPDATE_OPTIONS', payload);
     },
+    setQueryParameters({ commit }, query_parameters){
+        commit('SET_QUERY_PARAMETERS', query_parameters);
+    },
     getSQL({ commit }, query_parameters){
         QueryService.getSQL(query_parameters).then( response => {
             commit('SET_SQL', response.data);
@@ -144,8 +148,8 @@ export const actions = {
                 commit('SET_QUERY_STATUS', 504)
                 dispatch('loading', false)
             }
-            else {
-                dispatch('checkQueryStatus', taskId)
+            else if( response.data.status === "STARTED"){
+                return dispatch('checkQueryStatus', taskId)
             }
         }).catch(error => {
             commit('SET_ERROR', error);
@@ -171,7 +175,8 @@ export const actions = {
             if(result.data.result.length === 0) commit('SET_QUERY_STATUS', 204);
             else{
                 commit('SET_QUERY_STATUS', result.status);
-                commit('SET_OBJECTS',result.data.result);
+                dispatch('setObjects',result.data.result);
+                // dispatch('setPlot', result.data.plot)
             }
             dispatch('loading', false);
         }).catch(error => {
@@ -255,9 +260,11 @@ export const actions = {
         })
     },
     queryClassList({commit, dispatch}){
-        QueryService.getClassList().then( res => {
+        QueryService.queryClassList().then( res => {
+            console.log("res ? ")
             let taskId = res.data["task-id"];
             dispatch('checkQueryStatus',taskId).then( result => {
+                console.log("status", result)
                 if(result === "SUCCESS"){
                     dispatch('getClassList', taskId);
                 }
@@ -268,7 +275,7 @@ export const actions = {
     },
     
     getClassList({commit},taskId){
-        QueryService.getResult(taskId).then(result => {
+        QueryService.getClassList(taskId).then(result => {
             commit('SET_CLASSES',result.data.result);
         }).catch(error => {
             commit('SET_ERROR', error);
@@ -277,7 +284,7 @@ export const actions = {
     setClassifier({commit, state, dispatch}, classifier){
         let oldVal = state.selectedClassifier
         commit('SET_CLASSIFIER', classifier);
-        if(state.selectedClass >= 0 && state.selectedClassifier){
+        if(state.selectedClass && classifier){
             dispatch('updateOptions',{
                 obj: "filters",
                 keyPath: [oldVal],
@@ -344,15 +351,78 @@ export const actions = {
             keyPath: ['p'+state.selectedClassifier],
             value: probability
         })
+    },
+    getSpatialDistribution({dispatch}){
+        return QueryServiceV3.getSpatialDistribution().then(response => {
+            dispatch('setSpatialDistribution', response.data);
+        });
+    },
+    getOverviewHistogram({dispatch}, xAxis){
+        dispatch('loadingPlot', true);
+        return QueryServiceV3.getOverviewHistogram(xAxis).then(response => {
+            dispatch('setOverviewHistogram', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
+    getQueryHistogram({dispatch, state}, xAxis){
+        dispatch('loadingPlot', true);
+        let payload = {
+            query_parameters: state.query_parameters,
+            "x-axis": xAxis
+        }
+        return QueryServiceV3.getQueryHistogram(payload).then(response => {
+            dispatch('setQueryHistogram', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
+    getOverviewScatter({dispatch}, payload){
+        dispatch('loadingPlot', true);
+        return QueryServiceV3.getOverviewScatter(payload).then(response => {
+            dispatch('setOverviewScatter', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
+    getQueryScatter({ dispatch, state }, payload){
+        dispatch('loadingPlot', true);
+        let newPayload = {
+            "x-axis": payload["x-axis"],
+            "y-axis": payload["y-axis"],
+            "class": payload["class"],
+            "classifier": payload["classifier"],
+            "query_parameters": state.query_parameters
+        }
+        return QueryServiceV3.getQueryScatter(newPayload).then(response => {
+            dispatch('setQueryScatter', response.data);
+            dispatch('loadingPlot', false);
+        })
+    },
+    queryObjectsV3({dispatch, commit}, query_parameters){
+        dispatch('loading', true);
+        return QueryServiceV3.queryObjects(query_parameters).then( response => {
+            if(response.data.length === 0) commit('SET_QUERY_STATUS', 204);
+            else{
+                commit('SET_QUERY_STATUS', response.status);
+                dispatch('setObjects',response.data);
+            }
+            dispatch('loading', false);
+        })
+    },
+    queryPaginated({dispatch,commit}, payload){
+        dispatch('loading', true);
+        return QueryServiceV3.paginatedQuery(payload.query_parameters, payload.page, payload.per_page).then( response => {
+            if(response.data.total === 0) commit('SET_QUERY_STATUS', 204);
+            else{
+                commit('SET_QUERY_STATUS', response.status);
+                dispatch('setObjects',response.data);
+            }
+            dispatch('loading', false);
+        })
     }
 }
 
 export const getters = {
     getFilters(state){
         return state.filters
-    },
-    getObjects(state){
-        return state.objects
     },
     getSQL(state){
         return state.sql

@@ -1,98 +1,78 @@
 <template>
-  <div>
-    <b-row>
-      <b-col>
-        <highcharts class="histogram" :options="chartOptions"></highcharts>
-      </b-col>
-    </b-row>
-  </div>
+    <div>
+        <div id="overviewHistogramContainer" v-if="type=='overview'">
+            <div id="overviewHistogram" style="width:100%;height:300px"/>
+        </div>
+        <div id="queryHistogramContainer" v-if="type=='query'" style="width:100%;height:300px">
+            <div id="queryHistogram" style="width:100%;height:300px"/>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
-  name: "histogram",
-  props: ["plotValues", "xVariable"],
-  data() {
-    return {
-      bins: 0,
-      chartOptions: {
-        title: {
-          text: ""
-        },
-        xAxis: [
-          {
-            title: { text: "" },
-            alignTicks: false
-          },
-          {
-            title: { text: "Please select a variable for xAxis" },
-            alignTicks: false,
-            opposite: false
-          }
-        ],
-
-        yAxis: [
-          {
-            title: { text: "" }
-          },
-          {
-            title: { text: "Number of Objects" },
-            opposite: false
-          }
-        ],
-
-        legend: {
-          enabled: false
-        },
-        plotOptions: {
-          histogram: {
-            color: "rgba(255,255,255,0.00)"
-          }
-        },
-        series: [
-          {
-            name: "Number of objects",
-            type: "histogram",
-            xAxis: 1,
-            yAxis: 1,
-            baseSeries: 1,
-          },
-          {
-            data: [1],
-            visible: false
-          }
-        ]
-        //end chartOptions
-      }
-    };
-  },
-  methods: {
-    redraw() {
-      //add a series for object
-      // delete the previous series
-      this.chartOptions.series[1].data = [];
-      this.chartOptions.series[0].color = "#3C347E";
-      //this.chartOptions.series[0].name = this.chartOptions.xAxis[1].title.text;
-
-      // add new series
-      this.plotValues.forEach(obj => {
-        this.chartOptions.series[1].data.push(obj.pair);
-      });
-    }
-  },
-
-  watch: {
-    xVariable: function(newVal) {
-      // if xVariable change
-      this.chartOptions.xAxis[1].title.text = newVal;
-      this.redraw();
+    name: "tab-histogram",
+    components: {
     },
-    plotValues: function(newVal) {
-      // if plotValues change
-      if (newVal) {
-        this.redraw();
-      }
-    }
-  }
-};
+    props:['type', 'xAxis'],
+    data(){
+        return {
+            
+        }
+    },
+    mounted(){
+        if(this.type === "overview"){
+            this.$store.dispatch('getOverviewHistogram', this.xAxis);
+        }
+        else if(this.type === "query"){
+            this.$store.dispatch('getQueryHistogram', this.xAxis);
+        }
+        
+    },
+    computed:{
+        overviewHistogram(){
+            return this.$store.state.results.overviewHistogram
+        },
+        queryHistogram(){
+            return this.$store.state.results.queryHistogram
+        },
+        selectedTab(){
+            return this.$store.state.selectedTab
+        }
+    },
+    methods:{
+        clearDiv(type){
+            document.getElementById(type+"HistogramContainer").innerHTML = '<div id="'+type+'Histogram" style="width:100%;height:300px"/>'
+        }
+    },
+    watch:{
+        overviewHistogram(newVal){
+            if(newVal && this.selectedTab===0){
+                this.clearDiv("overview");
+                Bokeh.embed.embed_item(newVal, "overviewHistogram");
+            }
+        },
+        queryHistogram(newVal){
+            if(newVal && this.selectedTab === 2){
+                this.clearDiv("query");
+                Bokeh.embed.embed_item(newVal, "queryHistogram")
+            }
+        },
+        selectedTab(newVal){
+            if(newVal === 0 && this.overviewHistogram){
+                this.clearDiv("overview");
+                Bokeh.embed.embed_item(this.overviewHistogram, "overviewHistogram");
+            }
+            else if(newVal === 2 && this.queryHistogram){
+                this.clearDiv("query");
+                Bokeh.embed.embed_item(this.queryHistogram, "queryHistogram")
+            }
+        }
+
+    },
+}
 </script>
+
+<style>
+
+</style>
