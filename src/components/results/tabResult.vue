@@ -23,6 +23,7 @@
           </b-card>
         </transition>
       </b-card-body>
+      
     </b-card-group>
   </div>
 </template>

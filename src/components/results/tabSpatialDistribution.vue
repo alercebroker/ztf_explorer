@@ -1,17 +1,22 @@
 <template>
     <b-card title="Spatial Distribution">
         <div id="plotContainer">
-            <div id="bokeh" style="width:100%;height:300px"></div>
+            <div v-if="spatialDistribution" id="bokeh" style="width:100%;height:300px"></div>
+            <div v-else style="width:100%;height:300px;">
+                <div class="overlay">
+                    <atom-spinner :animation-duration="2000" :size="200" color="#0779D8"/> 
+                </div>
+            </div>
         </div>
     </b-card>
 </template>
 
 <script>
-import loading from "vue-full-loading";
+import {AtomSpinner} from 'epic-spinners'
 export default {
     name: "tab-spatial-distribution",
     components: {
-        loading
+        AtomSpinner
     },
     data(){
         return {
@@ -52,5 +57,12 @@ export default {
 </script>
 
 <style>
-
+.overlay {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>

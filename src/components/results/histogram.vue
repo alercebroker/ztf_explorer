@@ -1,18 +1,27 @@
 <template>
     <div>
-        <div id="overviewHistogramContainer" v-if="type=='overview'">
-            <div id="overviewHistogram" style="width:100%;height:300px"/>
-        </div>
-        <div id="queryHistogramContainer" v-if="type=='query'" style="width:100%;height:300px">
-            <div id="queryHistogram" style="width:100%;height:300px"/>
-        </div>
+        <div v-show="loading" style="width:100%;height:300px">
+			<div class="overlay">
+                <atom-spinner :animation-duration="2000" :size="200" color="#0779D8"/> 
+            </div>
+		</div>
+		<div v-show="!loading">
+			<div id="overviewHistogramContainer" v-if="type=='overview'">
+                <div id="overviewHistogram" style="width:100%;height:300px;position:relative;"/>
+            </div>
+			<div id="queryHistogramContainer" v-if="type=='query'" style="width:100%;height:300px">
+                <div id="queryHistogram" style="width:100%;height:300px;position:relative;"/>
+            </div>
+		</div>
     </div>
 </template>
 
 <script>
+import {AtomSpinner} from 'epic-spinners'
 export default {
     name: "tab-histogram",
     components: {
+        AtomSpinner
     },
     props:['type', 'xAxis'],
     data(){
@@ -25,19 +34,22 @@ export default {
             this.$store.dispatch('getOverviewHistogram', this.xAxis);
         }
         else if(this.type === "query"){
-            this.$store.dispatch('getQueryHistogram', this.xAxis);
+            this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.xAxis});
         }
         
     },
     computed:{
         overviewHistogram(){
-            return this.$store.state.results.overviewHistogram
+            return this.$store.state.results.overviewHistogram;
         },
         queryHistogram(){
-            return this.$store.state.results.queryHistogram
+            return this.$store.state.results.queryHistogram;
         },
         selectedTab(){
-            return this.$store.state.selectedTab
+            return this.$store.state.selectedTab;
+        },
+        loading(){
+            return this.$store.state.loadingPlot;
         }
     },
     methods:{
