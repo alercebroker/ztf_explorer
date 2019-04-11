@@ -16,8 +16,8 @@
 			<b-col cols="3">
 				<b-form-select v-model="selectedClassifier" :options="classifierOptions" id="class"></b-form-select>
 			</b-col> -->
-			<b-col cols="2" class="pl-0">
-				<b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
+			<b-col cols="2" class="pl-0 mb-2">
+				<b-button variant="primary" @click="plot" :disabled="$store.state.loadingScatterPlot">{{$store.state.loadingScatterPlot ? "Loading" : "Plot"}}</b-button>
 			</b-col>
 		</b-row>
 		
@@ -71,16 +71,18 @@ export default {
 				this.selectedClassifier = null;
 			}
 			let payload = {
-				"x-axis": this.selectedX,
-				"y-axis": this.selectedY,
-				"class": this.selectedClass,
-				"classifier": this.selectedClassifier
+				xAxis: this.selectedX,
+				yAxis: this.selectedY,
+				classs: this.selectedClass,
+				classifier: this.selectedClassifier,
+				query_parameters: this.$store.state.search.query_parameters
 			}
+			console.log("GOING TO PLOT SCATTER", payload)
 			if(this.type === "overview"){
 				this.$store.dispatch('getOverviewScatter', payload);
 			}
 			else if (this.type === "query"){
-				this.$store.dispatch('getQueryScatter', payload);
+				this.$store.dispatch('queryScatter', payload);
 			}
 		}
 	},
