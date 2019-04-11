@@ -65,25 +65,15 @@ export default {
 	},
 	watch:{
 		overviewScatter(newVal){
-			if(newVal && this.selectedTab===0){
+			if(newVal && this.type==="overview"){
 				this.clearDiv("overview");
 				Bokeh.embed.embed_item(newVal, "overviewScatter");
 			}
 		},
 		queryScatter(newVal){
-			if(newVal && this.selectedTab===2){
+			if(newVal && this.type==="query"){
 				this.clearDiv("query");
 				Bokeh.embed.embed_item(newVal, "queryScatter");
-			}
-		},
-		selectedTab(newVal){
-			if(newVal === 0 && this.overviewScatter){
-				this.clearDiv("overview");
-				Bokeh.embed.embed_item(this.overviewScatter, "overviewScatter");
-			}
-			if(newVal === 2 && this.queryScatter){
-				this.clearDiv("query");
-				Bokeh.embed.embed_item(this.queryScatter, "queryScatter");
 			}
 		}
 	},
