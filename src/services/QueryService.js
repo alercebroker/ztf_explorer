@@ -53,7 +53,7 @@ export default {
      * @param {*} objectId: id of the object
      */
     executeObjectQuery(objectId){
-        return apiClient.post('/query_alerts',{oid: objectId});
+        return apiClient.post('/query_alerts',{id: objectId});
     },
     /**
      * Gets the result of a finished query about the details of a specific object
