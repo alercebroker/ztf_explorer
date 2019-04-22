@@ -205,7 +205,7 @@ export const actions = {
     },
     queryAlerts({commit, dispatch}, object){
         dispatch('loading', true);
-        QueryService.executeObjectQuery(object.oid).then( response => {
+        QueryService.executeObjectQuery(object.id).then( response => {
             let taskId = response.data["task-id"]
             dispatch('checkQueryStatus',taskId).then(result => {
                 if(result === "SUCCESS"){

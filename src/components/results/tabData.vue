@@ -31,7 +31,7 @@
       <b-table
         striped
         hover
-        :items="$store.state.results.objects"
+        :items="Object.values($store.state.results.objects)"
         :fields="$store.state.results.selectedColumnOptions"
         :sort-by.sync="sortBy"
         :sort-desc.sync="sortDesc"
