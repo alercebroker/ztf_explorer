@@ -7,10 +7,10 @@
 		</div>
 		<div v-show="!loading">
 			<div id="overviewHistogramContainer" v-if="type=='overview'">
-                <div id="overviewHistogram" style="width:100%;height:300px;position:relative;"/>
+                <div id="overviewHistogram" style="width:100%;height:300px;"/>
             </div>
 			<div id="queryHistogramContainer" v-if="type=='query'" style="width:100%;height:300px">
-                <div id="queryHistogram" style="width:100%;height:300px;position:relative;"/>
+                <div id="queryHistogram" style="width:100%;height:300px;"/>
             </div>
 		</div>
     </div>
@@ -54,33 +54,23 @@ export default {
     },
     methods:{
         clearDiv(type){
-            document.getElementById(type+"HistogramContainer").innerHTML = '<div id="'+type+'Histogram" style="width:100%;height:300px"/>'
+            var container = document.getElementById(type+"HistogramContainer");
+            container.innerHTML = '<div id="'+type+'Histogram" style="width:100%;height:300px"/>'
         }
     },
     watch:{
         overviewHistogram(newVal){
-            if(newVal && this.selectedTab===0){
+            if(newVal && this.type === "overview"){
                 this.clearDiv("overview");
                 Bokeh.embed.embed_item(newVal, "overviewHistogram");
             }
         },
         queryHistogram(newVal){
-            if(newVal && this.selectedTab === 2){
+            if(newVal && this.type === "query"){
                 this.clearDiv("query");
                 Bokeh.embed.embed_item(newVal, "queryHistogram")
             }
         },
-        selectedTab(newVal){
-            if(newVal === 0 && this.overviewHistogram){
-                this.clearDiv("overview");
-                Bokeh.embed.embed_item(this.overviewHistogram, "overviewHistogram");
-            }
-            else if(newVal === 2 && this.queryHistogram){
-                this.clearDiv("query");
-                Bokeh.embed.embed_item(this.queryHistogram, "queryHistogram")
-            }
-        }
-
     },
 }
 </script>
