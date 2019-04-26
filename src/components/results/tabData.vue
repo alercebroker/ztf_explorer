@@ -204,28 +204,10 @@ export default {
         //this.$store.state.search.query_status = 200;
       }
     },
-    /**
-     * remove param that are empty
-     */
-    removeEmpty(obj) {
-      Object.entries(obj).forEach(([key, val]) => {
-        if (val && typeof val === "object") {
-          this.removeEmpty(val);
-          if (Object.keys(val).length === 0) delete obj[key];
-        } else {
-          if (val == null || val == "") delete obj[key];
-        }
-      });
-    },
+
     pageChange(page){
-      let query_parameters = {
-        filters: this.$store.state.search.filters,
-        bands: this.$store.state.search.bands,
-        dates: this.$store.state.search.dates,
-        coordinates: this.$store.state.search.coordinates,
-      }
-      this.removeEmpty(query_parameters);
-      this.$store.dispatch('queryPaginated', {query_parameters: query_parameters, page: page, per_page: this.$store.state.perPage});
+      let query_parameters = this.$store.state.search.query_parameters;
+      this.$store.dispatch('queryObjectsV3', {query_parameters: query_parameters, page: page, perPage: this.$store.state.perPage});
     }
   },
   mounted: function() {

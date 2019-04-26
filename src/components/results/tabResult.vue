@@ -23,6 +23,7 @@
           </b-card>
         </transition>
       </b-card-body>
+      
     </b-card-group>
   </div>
 </template>
@@ -40,28 +41,6 @@ export default {
   },
   methods: {
     
-    /**
-     * query for next page results
-     * @param fun_update: fun to pass getQueryResults
-     */
-    loadMore: function(fun_update) {
-      this.pageNumber = this.pageNumber + 1;
-      this.getQueryResults(this.taskId, fun_update);
-    },
-    /**
-     * Re draw scatter tab
-     */
-    reDrawScat: function() {
-      this.$refs.scatter.setPlotValues();
-    },
-    /**
-     * Re draw Histogram tab
-     */
-    reDrawHist: function() {
-      if (this.$refs.histogram.selected != null) {
-        this.$refs.histogram.setPlotValues();
-      }
-    }
   },
   computed: {
     selectedTab:{

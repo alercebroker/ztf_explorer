@@ -1,20 +1,27 @@
 <template>
-	<b-card title="Scatter">
-		<b-row align-h="around">
-			<b-col cols="6">
-				<b-form-group horizontal label="xAxis" label-for="xAxis">
-					<b-form-select v-model="selectedX" :options="options" id="xAxis"></b-form-select>
-				</b-form-group>
+	<b-card >
+		<b-row align-v="center" >
+			<b-col cols="4" class="pr-0">
+				<h4>Scatter</h4>
 			</b-col>
-			<b-col cols="6">
-				<b-form-group horizontal label="yAxis" label-for="yAxis">
-					<b-form-select v-model="selectedY" :options="options" id="yAxis"></b-form-select>
-				</b-form-group>
+			<b-col cols="3" class="pl-0">
+				<b-form-select v-model="selectedX" :options="optionsX" id="xAxis"></b-form-select>
+			</b-col>
+			<b-col cols="3" class="pl-0">
+				<b-form-select v-model="selectedY" :options="optionsY" id="yAxis"></b-form-select>
+			</b-col>
+			<!-- <b-col cols="3">
+				<b-form-select v-model="selectedClass" :options="classOptions" id="class"></b-form-select>
+			</b-col>
+			<b-col cols="3">
+				<b-form-select v-model="selectedClassifier" :options="classifierOptions" id="class"></b-form-select>
+			</b-col> -->
+			<b-col cols="2" class="pl-0 mb-2">
+				<b-button variant="primary" @click="plot" :disabled="$store.state.loadingScatterPlot">{{$store.state.loadingScatterPlot ? "Loading" : "Plot"}}</b-button>
 			</b-col>
 		</b-row>
-		<b-row align-h="center">
-			<scatter :plotValues="plotValues" :xVariable="selectedX" :yVariable="selectedY"></scatter>
-		</b-row>
+		
+		<scatter :type="type" :xAxis="selectedX" :yAxis="selectedY" :cls="selectedClass" :classifier="selectedClassifier"/>
 	</b-card>
 </template>
 
@@ -22,91 +29,91 @@
 import scatter from "./scatter.vue";
 export default {
 	name: 'tabScatter',
+	props:['type'],
 	components: {
 		scatter,
 	},
 	data(){
 		return {
-			selectedX: null,
-			selectedY: null,
+			selectedX: "meang",
+			selectedY: "meanr",
+			selectedClass: null,
+			selectedClassifier: null,
 			options: [
-				{ value: null, text: "Please select a variable" },
-				{ text: "Nr. Alerts", value: "nobs" },
-				{ text: "Class", value: "class" },
-				{ text: "Class Probability", value: "pclass" },
-				{ text: "Period*", value: "period" },
+				{ text: "Detections", value: "nobs" },
 				{
 					value: null,
 					text: "-- Magnitude  Band G --",
 					disabled: true
 				},
-				{ text: "Maxg", value: "maxg" },
-				{ text: "Ming", value: "ming" },
-				{ text: "Meang", value: "meang" },
-				{ text: "Firstmagg", value: "firstmagg" },
-				{ text: "Lastmagg", value: "lastmagg" },
+				{ text: "Max of g", value: "maxg" },
+				{ text: "Min of g", value: "ming" },
+				{ text: "Mean of g", value: "meang" },
+				{ text: "First det. of g ", value: "firstmagg" },
+				{ text: "Last det. of g", value: "lastmagg" },
 				{
 					value: null,
 					text: "-- Magnitude Band R --",
 					disabled: true
 				},
-				{ text: "Maxr", value: "maxr" },
-				{ text: "Minr", value: "minr" },
-				{ text: "Meanr", value: "meanr" },
-				{ text: "Firstmagr", value: "firstmagr" },
-				{ text: "Lastmagr", value: "lastmagr" },
-			],
-			plotValues:[
-				{oid: 1, pair:[2 ,20]},
+				{ text: "Max of r", value: "maxr" },
+				{ text: "Min of r", value: "minr" },
+				{ text: "Mean of r", value: "meanr" },
+				{ text: "First det. of r", value: "firstmagr" },
+				{ text: "Last det. of r", value: "lastmagr" },
 			],
 		}
 	},
 	methods:{
-		getAxisData: function(axis,obj){
-			return obj != null ? obj[axis] : null;
-		},
-		setPlotValues: function(){
-			//borrar datos anteriores
-			this.plotValues=[];
-			//agregar plotValues
-			if(this.selectedX && this.selectedY){
-				this.objects.forEach(obj => {
-					if (this.getAxisData(this.selectedX, obj) != null && this.getAxisData(this.selectedY, obj) != null){
-						this.plotValues.push({
-							oid: obj.oid,
-							pair:[
-								this.getAxisData(this.selectedX, obj),
-								this.getAxisData(this.selectedY, obj),
-							],
-						});
-					}
-				});
+		plot(){
+			if(this.selectedClass == null || this.selectedClassifier == null){
+				this.selectedClass = null;
+				this.selectedClassifier = null;
 			}
-		},
+			let payload = {
+				xAxis: this.selectedX,
+				yAxis: this.selectedY,
+				classs: this.selectedClass,
+				classifier: this.selectedClassifier,
+				query_parameters: this.$store.state.search.query_parameters
+			}
+			if(this.type === "overview"){
+				payload.query_parameters = {};
+				this.$store.dispatch('queryScatter', payload);
+			}
+			else if (this.type === "query"){
+				this.$store.dispatch('queryScatter', payload);
+			}
+		}
 	},
 	computed:{
-		objects(){
-			return this.$store.state.results.objects;
+		classOptions(){
+			let aux = this.$store.state.search.classes.slice(3)
+			aux.unshift({text: "All", value: null})
+			return aux;
+		},
+		classifierOptions(){
+			let aux = this.$store.state.search.classifiers.slice(2)
+			aux.unshift({text: "All", value: null})
+			return aux;
+		},
+		optionsX(){
+			return this.options
+		},
+		optionsY(){
+			return this.options
 		}
 	},
 	watch: {
-		/**
-		 * update plot values when selected axis x change by user
-         */
-		selectedX: function() { // watch it
-                this.setPlotValues();
-        },
-        /**
-         * update plot values when selected axis change by user
-		 */
-        selectedY: function() { // watch it
-                this.setPlotValues();
+		selectedClass(val){
+			if(val == null){
+				this.selectedClassifier = null
+			}
 		},
-		/**
-		 * update plot values when new search is executed
-		 */
-		objects(){
-			this.setPlotValues();
+		selectedClassifier(val){
+			if(val == null){
+				this.selectedClass = null
+			}
 		}
 	},
 }

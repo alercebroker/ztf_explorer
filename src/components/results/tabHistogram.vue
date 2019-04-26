@@ -1,18 +1,15 @@
 <template>
-  <b-card title="Histogram">
-    <b-row align-h="around">
-      <b-col cols="6">
-        <b-form-group horizontal label="xAxis" label-for="yAxis">
-          <b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
-        </b-form-group>
+  <b-card>
+    <b-row align-v="center">
+      <b-col cols="5" class="pr-0"><h4>Histogram</h4></b-col>
+      <b-col cols="4" class="pl-0">
+        <b-form-select v-model="selected" :options="options" id="yAxis"></b-form-select>
+      </b-col>
+      <b-col cols="3" class="pl-0 mb-2">
+        <b-button variant="primary" @click="plot" :disabled="$store.state.loadingPlot">{{$store.state.loadingPlot ? "Loading" : "Plot"}}</b-button>
       </b-col>
     </b-row>
-    <b-row align-h="center">
-      <histogram
-        :plotValues="plotValues"
-        :xVariable="selected"
-      ></histogram>
-    </b-row>
+    <histogram :type="type" :xAxis="selected"/>
   </b-card>
 </template>
 
@@ -24,74 +21,57 @@ export default {
   components: {
     histogram
   },
+  props:["type"],
   data() {
     return {
-      selected: null,
-      plotValues: [],
+      buttonText: "Plot",
+      selected: "meang",
       options: [
-        { value: null, text: "Please select a variable", disabled: true },
         {
           value: null,
-          text: "-- Magnitude  Band G --",
+          text: "-- Magnitude Band G --",
           disabled: true
         },
-        { text: "Maxg", value: "maxg" },
-        { text: "Ming", value: "ming" },
-        { text: "Meang", value: "meang" },
+        { text: "Max of g", value: "maxg" },
+        { text: "Min of g", value: "ming" },
+        { text: "Mean of g", value: "meang" },
         //{ text: "Slopeg", value: "slopeg" },
-        { text: "Firstmagg", value: "firstmagg" },
-        { text: "Lastmagg", value: "lastmagg" },
+        { text: "First det. of g (JD)", value: "firstmagg" },
+        { text: "Last det. of g (JD)", value: "lastmagg" },
         {
           value: null,
           text: "-- Magnitude Band R --",
           disabled: true
         },
-        { text: "Maxr", value: "maxr" },
-        { text: "Minr", value: "minr" },
-        { text: "Meanr", value: "meanr" },
+        { text: "Max of r", value: "maxr" },
+        { text: "Min of r", value: "minr" },
+        { text: "Mean of r", value: "meanr" },
         //{ text: "Sloper", value: "sloper" },
-        { text: "Firstmagr", value: "firstmagr" },
-        { text: "Lastmagr", value: "lastmagr" },
+        { text: "First det. of r (JD)", value: "firstmagr" },
+        { text: "Last det. of r (JD)", value: "lastmagr" },
         {
           value: null,
           text: "-- Dates --",
           disabled: true
         },
-        { text: "FirstJd", value: "firstjd" },
-        { text: "LastJd", value: "lastjd" },
-        { text: "DeltaJd", value: "deltajd" }
+        { text: "First julian dates", value: "firstjd" },
+        { text: "Last julian dates", value: "lastjd" },
+        { text: "Delta julian dates", value: "deltajd" }
       ]
     };
   },
   methods: {
-    getAxisData: function(axis, obj) {
-      var x = axis;
-      if (obj != null) {
-        if (obj[x] !== undefined) {
-          return obj[x];
-        }
+    plot(){
+      if(this.type === "overview"){
+        this.$store.dispatch('queryHistogram', {query_parameters: {}, xAxis: this.selected});
       }
-      return null;
-    },
-    setPlotValues: function() {
-      //erase previous values
-      this.plotValues = [];
-        //add plot values
-      this.objects.forEach(obj => {
-        let value = this.getAxisData(this.selected, obj);
-        if (value != null) {
-          this.plotValues.push({
-            oid: obj.oid,
-            pair: Number(value.toFixed(5))
-          });
-        }
-      });
+      else if(this.type === "query"){
+        this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.selected});
+      }
     }
   },
   computed:{
-    objects(){
-      return this.$store.state.results.objects;
-    }
+    
   },
   watch: {
     /**
@@ -99,14 +79,8 @@ export default {
      */
     selected: function() {
       // watch it
-      this.setPlotValues();
+      
     },
-    /**
-		 * update plot values when new search is executed
-		 */
-		objects(){
-			if(this.selected)this.setPlotValues();
-		}
   }
 };
 </script>

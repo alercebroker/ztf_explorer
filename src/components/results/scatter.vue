@@ -1,89 +1,82 @@
 <template>
-	<highcharts class="scatter" :options="chartOptions" :updateArgs="arg" style="width:100%;height:10%;"></highcharts>
+	<div>
+		<div v-show="loading" style="width:100%;height:300px">
+			<div class="overlay">
+                <atom-spinner :animation-duration="2000" :size="200" color="#0779D8"/> 
+            </div>
+		</div>
+		<div v-show="!loading">
+			<div id="overviewScatterContainer" v-if="type=='overview'" style="width:100%;height:300px">
+            	<div id="overviewScatter" style="width:100%;height:300px;position:relative;"/>
+        	</div>
+			<div id="queryScatterContainer" v-if="type=='query'" style="width:100%;height:300px">
+            	<div id="queryScatter" style="width:100%;height:300px;position: relative;"/>
+        	</div>
+		</div>
+    </div>
 </template>
 
 <script>
-	export default {
-        name: "scatter",
-        props: ['plotValues', 'xVariable', 'yVariable'],
-        data(){
-        	return{
-				arg : [true,true,true],
-        		chartOptions:{
-        			chart: {
-				        type: 'scatter',
-				        zoomType: 'xy'
-					},
-					boost: {
-						useGPUTranslations: true,
-						usePreAllocated: true
-					},
-				    title: {
-				    	text: ""
-				    },
-				    xAxis: {
-				        title: {
-				            enabled: true,
-				            text: this.xVariable,
-				        },
-						showLastLabel:true
-				    },
-				    yAxis: {
-				        title: {
-				            text: this.yVariable,
-				        }
-				    },
-				    legend: {
-					    enabled: false
-					  },
-			        series: [{
-						name: this.yVariable,
-						type: 'scatter',
-						color: '#3C347E',
-						data: [[1,2]],
-						marker: {
-							radius: 1
-						},
-						tooltip: {
-							followPointer: false,
-							pointFormat: '[{point.x:.1f}, {point.y:.1f}]'
-						}
-					}],
-				    responsive: {
-						rules: [{
-							condition: {
-								maxWidth: 500,
-								maxHeight: 100
-							},
-							chartOptions: {
-								legend: {
-									enabled: false
-								}
-							}
-						}]
-					}
-				},
-        	}
-        },
-        methods:{
-		  	redraw(){ //add a series for object
-		  		// delete the previous series
-				  this.chartOptions.series[0].data = [];
-				  this.chartOptions.series[0].name = this.yVariable;
-				  this.chartOptions.xAxis.title.text = this.xVariable;
-				  this.chartOptions.yAxis.title.text = this.yVariable;
-		  		// add new series
-		  		this.plotValues.forEach(obj =>{
-		  			this.chartOptions.series[0].data.push(obj.pair);
-		  		});
-		    },
-
+import {AtomSpinner} from 'epic-spinners'
+export default {
+    name: "scatter",
+    props: ['type', 'xAxis', 'yAxis','cls', 'classifier'],
+	components: {
+		AtomSpinner
+	},
+    data(){
+        return{ 						
+        }
+	},
+	mounted(){
+		let payload = {
+			xAxis: this.xAxis,
+			yAxis: this.yAxis,
+			classs: this.cls,
+			classifier: this.classifier,
+			query_parameters: this.$store.state.search.query_parameters
+		}
+		if(this.type === "overview"){
+			payload.query_parameters = {}
+			this.$store.dispatch('queryScatter', payload);
+		}
+		else if(this.type === "query"){
+			this.$store.dispatch('queryScatter', payload);
+		}
+	},
+    computed:{
+		overviewScatter(){
+			return this.$store.state.results.overviewScatter
 		},
-		watch: {
-			plotValues: function(newVal) { // watch it
-				//this.chartOptions.series[0].marker.radius = 5 - Math.pow((newVal.length / 10000), 3);
-				this.redraw();
+		queryScatter(){
+			return this.$store.state.results.queryScatter;
+		},
+		selectedTab(){
+			return this.$store.state.selectedTab;
+		},
+		loading()
+		{
+			return this.$store.state.loadingScatterPlot;
+		}
+	},
+	methods:{
+		clearDiv(type){
+			document.getElementById(type+"ScatterContainer").innerHTML = '<div id="'+type+'Scatter" style="width:100%; height:300px"/>'	
+		}
+	},
+	watch:{
+		overviewScatter(newVal){
+			if(newVal && this.type==="overview"){
+				this.clearDiv("overview");
+				Bokeh.embed.embed_item(newVal, "overviewScatter");
+			}
+		},
+		queryScatter(newVal){
+			if(newVal && this.type==="query"){
+				this.clearDiv("query");
+				Bokeh.embed.embed_item(newVal, "queryScatter");
 			}
 		}
-    }
+	},
+}
 </script>

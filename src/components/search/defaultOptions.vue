@@ -85,7 +85,10 @@
             </b-col>
             <b-col >
                 <input
-                    type="text"
+                    type="number"
+                    min="0"
+                    max="1"
+                    step="0.01"
                     class="form-control form-control-sm"
                     id="probability"
                     v-model="probability"
@@ -212,66 +215,6 @@
                     this.$store.dispatch('updateOptions', {
                         obj: "filters",
                         keyPath: ["nobs","max"],
-                        value: value
-                    })
-                }
-            },
-            probMin: {
-                get(){
-                    return this.$store.state.search.filters.pclass ? this.$store.state.search.filters.pclass.min : null;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "filters",
-                        keyPath: ["pclass","min"],
-                        value: value
-                    })
-                }
-            },
-            probMax: {
-                get(){
-                    return this.$store.state.search.filters.pclass ? this.$store.state.search.filters.pclass.max : null;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "filters",
-                        keyPath: ["pclass","max"],
-                        value: value
-                    })
-                }
-            },
-            periodMin: {
-                get(){
-                    return this.$store.state.search.filters.period ? this.$store.state.search.filters.period.min : null;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "filters",
-                        keyPath: ["period","min"],
-                        value: value
-                    })
-                }
-            },
-            periodMax: {
-                get(){
-                    return this.$store.state.search.filters.period ? this.$store.state.search.filters.period.max : null;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "filters",
-                        keyPath: ["period","max"],
-                        value: value
-                    })
-                }
-            },
-            crossmatch: {
-                get(){
-                    return this.$store.state.search.filters.ext
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "filters",
-                        keyPath: ["ext"],
                         value: value
                     })
                 }
