@@ -37,7 +37,8 @@ export default {
 			query_parameters: this.$store.state.search.query_parameters
 		}
 		if(this.type === "overview"){
-			this.$store.dispatch('getOverviewScatter', payload);
+			payload.query_parameters = {}
+			this.$store.dispatch('queryScatter', payload);
 		}
 		else if(this.type === "query"){
 			this.$store.dispatch('queryScatter', payload);

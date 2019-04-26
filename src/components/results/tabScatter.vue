@@ -77,9 +77,9 @@ export default {
 				classifier: this.selectedClassifier,
 				query_parameters: this.$store.state.search.query_parameters
 			}
-			console.log("GOING TO PLOT SCATTER", payload)
 			if(this.type === "overview"){
-				this.$store.dispatch('getOverviewScatter', payload);
+				payload.query_parameters = {};
+				this.$store.dispatch('queryScatter', payload);
 			}
 			else if (this.type === "query"){
 				this.$store.dispatch('queryScatter', payload);

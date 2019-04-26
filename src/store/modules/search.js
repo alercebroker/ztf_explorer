@@ -386,13 +386,6 @@ export const actions = {
             dispatch('setSpatialDistribution', response.data);
         });
     },
-    getOverviewHistogram({dispatch}, xAxis){
-        dispatch('loadingPlot', true);
-        return QueryServiceV3.getOverviewHistogram(xAxis).then(response => {
-            dispatch('setOverviewHistogram', response.data);
-            dispatch('loadingPlot', false);
-        })
-    },
     queryHistogram({dispatch, commit}, payload){
         dispatch('loadingPlot', true);
         QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
@@ -417,19 +410,7 @@ export const actions = {
             dispatch('loadingPlot', false);
         })
     },
-    getOverviewScatter({dispatch}, payload){
-        dispatch('loadingScatterPlot', true);
-        let newPayload = {
-            "x-axis": payload.xAxis,
-            "y-axis": payload.yAxis,
-            "class": payload.classs,
-            "classifier": payload.classifier
-        }
-        return QueryServiceV3.getOverviewScatter(newPayload).then(response => {
-            dispatch('setOverviewScatter', response.data);
-            dispatch('loadingScatterPlot', false);
-        })
-    },
+
     queryScatter({dispatch, commit}, payload){
         dispatch('loadingScatterPlot', true);
         QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
