@@ -158,7 +158,7 @@ export const actions = {
     },
     checkQueryStatusV3({commit, dispatch}, queryId){
         return QueryServiceV3.queryStatus(queryId).then(response => {
-            if (response.data === "finished"){
+            if (response.data.status === "finished"){
                 commit('SET_ERROR', null);
                 return "finished"
             }
@@ -177,7 +177,7 @@ export const actions = {
     queryObjectsV3({ commit, dispatch }, payload){
         dispatch('loading', true);
         QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data
+            let queryId = response.data["query-id"]
             dispatch('checkQueryStatusV3', queryId).then(result => {
                 if(result === "finished"){
                     let newPayload = {
@@ -389,7 +389,7 @@ export const actions = {
     queryHistogram({dispatch, commit}, payload){
         dispatch('loadingPlot', true);
         QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data
+            let queryId = response.data["query-id"]
             dispatch('checkQueryStatusV3', queryId).then(result => {
                 if(result === "finished"){
                     let newPayload = {
@@ -414,7 +414,7 @@ export const actions = {
     queryScatter({dispatch, commit}, payload){
         dispatch('loadingScatterPlot', true);
         QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data
+            let queryId = response.data["query-id"]
             dispatch('checkQueryStatusV3', queryId).then(result => {
                 if(result === "finished"){
                     let newPayload = {
