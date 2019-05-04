@@ -65,7 +65,7 @@
         else if(this.classifier == "rf")
           return "Random Forest"
         else
-          return "Recurrent Neuronal Net"
+          return "Recurrent Neural Net"
       }
     },
     computed: {
