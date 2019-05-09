@@ -394,7 +394,8 @@ export const actions = {
                 if(result === "finished"){
                     let newPayload = {
                         "query-id": queryId,
-                        "x-axis": payload.xAxis
+                        "x-axis": payload.xAxis,
+                        "type": payload.type
                     }
                     dispatch('getQueryHistogram',newPayload);
                 }
@@ -406,8 +407,14 @@ export const actions = {
     },
     getQueryHistogram({dispatch, state}, payload){
         return QueryServiceV3.getQueryHistogram(payload).then(response => {
-            dispatch('setQueryHistogram', response.data);
-            dispatch('loadingPlot', false);
+            if(payload.type === "query"){
+                dispatch('setQueryHistogram', response.data);
+                dispatch('loadingPlot', false);
+            }
+            if(payload.type === "overview"){
+                dispatch('setOverviewHistogram', response.data);
+                dispatch('loadingPlot', false);
+            }
         })
     },
 
@@ -422,7 +429,8 @@ export const actions = {
                         "x-axis": payload.xAxis,
                         "y-axis": payload.yAxis,
                         "class": payload.classs,
-                        "classifier": payload.classifier
+                        "classifier": payload.classifier,
+                        "type": payload.type
                     }
                     dispatch('getQueryScatter',newPayload);
                 }
@@ -434,8 +442,14 @@ export const actions = {
     },
     getQueryScatter({ dispatch, state }, payload){
         return QueryServiceV3.getQueryScatter(payload).then(response => {
-            dispatch('setQueryScatter', response.data);
-            dispatch('loadingScatterPlot', false);
+            if(payload.type === "overview"){
+                dispatch('setOverviewScatter', response.data);
+                dispatch('loadingScatterPlot', false);
+            }
+            if(payload.type === "query"){
+                dispatch('setQueryScatter', response.data);
+                dispatch('loadingScatterPlot', false);
+            }
         })
     },
     queryPaginated({dispatch,commit}, payload){

@@ -7,7 +7,7 @@
             <b-tab title="Random Forest">
                 <treemapclass v-bind:classifier="'rf'"/>
             </b-tab>
-            <b-tab title="Recurrent Neuronal Net">
+            <b-tab title="Recurrent Neural Net">
                 <treemapclass v-bind:classifier="'rnn'"/>
             </b-tab>
         </b-tabs>

@@ -34,7 +34,8 @@ export default {
 			yAxis: this.yAxis,
 			classs: this.cls,
 			classifier: this.classifier,
-			query_parameters: this.$store.state.search.query_parameters
+			query_parameters: this.$store.state.search.query_parameters,
+			type: this.type
 		}
 		if(this.type === "overview"){
 			payload.query_parameters = {}

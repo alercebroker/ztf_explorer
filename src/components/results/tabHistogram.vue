@@ -63,10 +63,10 @@ export default {
   methods: {
     plot(){
       if(this.type === "overview"){
-        this.$store.dispatch('queryHistogram', {query_parameters: {}, xAxis: this.selected});
+        this.$store.dispatch('queryHistogram', {query_parameters: {}, xAxis: this.selected, type: this.type});
       }
       else if(this.type === "query"){
-        this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.selected});
+        this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.selected, type: this.type});
       }
     }
   },

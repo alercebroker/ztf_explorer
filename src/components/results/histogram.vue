@@ -31,10 +31,10 @@ export default {
     },
     mounted(){
         if(this.type === "overview"){
-            this.$store.dispatch('queryHistogram', {query_parameters: {}, xAxis: this.xAxis});
+            this.$store.dispatch('queryHistogram', {query_parameters: {}, xAxis: this.xAxis, type: this.type});
         }
         else if(this.type === "query"){
-            this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.xAxis});
+            this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.xAxis, type: this.type});
         }
         
     },
