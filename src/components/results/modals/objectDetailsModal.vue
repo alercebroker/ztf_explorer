@@ -125,9 +125,9 @@
 </template>
 
 <script>
-import lightCurve from "./lightCurve.vue";
-import aladin from './aladin.vue';
-import lineclass from './plots/LineClass.vue';
+import lightCurve from "../plots/lightCurve";
+import aladin from '../cards/aladin.vue';
+import lineclass from '../plots/LineClass.vue';
 
 export default {
   name: "object-details-modal",

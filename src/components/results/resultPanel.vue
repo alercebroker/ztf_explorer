@@ -8,15 +8,15 @@
               <b-tab 
                 title="Overview Dashboard"
               >
-                <generalDashboard/>
+                <tab-overview-dashboard/>
               </b-tab>
               <b-tab title="Query Table">
-                <tabData/>
+                <tab-data/>
               </b-tab>
               <b-tab
                 title="Query Dashboard"
               >
-                <queryDashboard/>
+                <tab-query-dashboard/>
               </b-tab>
               
             </b-tabs>
@@ -30,14 +30,14 @@
 
 <script>
 import tabData from "./tabData.vue";
-import generalDashboard from "./generalDashboard.vue";
-import queryDashboard from './queryDashboard.vue';
+import tabOverviewDashboard from "./tabOverviewDashboard.vue";
+import tabQueryDashboard from './tabQueryDashboard.vue';
 export default {
-  name: "tabResult",
+  name: "result-panel",
   components: {
     tabData,
-    generalDashboard,
-    queryDashboard
+    tabOverviewDashboard,
+    tabQueryDashboard
   },
   methods: {
     

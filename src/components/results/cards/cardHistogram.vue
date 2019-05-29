@@ -14,10 +14,10 @@
 </template>
 
 <script>
-import histogram from "./histogram.vue";
+import histogram from "../plots/histogram";
 
 export default {
-  name: "tabHistogram",
+  name: "card-histogram",
   components: {
     histogram
   },

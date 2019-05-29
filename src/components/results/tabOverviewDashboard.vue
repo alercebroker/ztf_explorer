@@ -11,22 +11,22 @@
             <!--SPATIAL DISTRIBUTION OF ALL OBJECTS-->
             <b-row class="mb-3">
                 <b-col cols=12>
-                    <tab-spatial-distribution/>
+                    <card-spatial-distribution/>
                 </b-col>
             </b-row>
             <!--TREEMAP OF CLASS-->
             <b-row class="mb-3">
                 <b-col cols=12>
-                    <tabTreemap />
+                    <card-treemap />
                 </b-col>
             </b-row>
             <!--HISTOGRAM OF SOME FEATURES AND SCATTER PLOT-->
             <b-row>
                 <b-col cols=6>
-                    <tabHistogram type="overview" />
+                    <card-histogram type="overview" />
                 </b-col>
                 <b-col cols=6>
-                    <tabScatter type="overview"/>
+                    <card-scatter type="overview"/>
                 </b-col>
             </b-row>
         </b-container>
@@ -34,19 +34,19 @@
 </template>
 
 <script>
-import tabSpatialDistribution from './tabSpatialDistribution.vue';
-import tabHistogram from './tabHistogram.vue';
-import tabScatter from './tabScatter.vue';
-import tabTreemap from './tabTreemap.vue';
-import generalData from './tabGeneralData.vue';
+import cardSpatialDistribution from './cards/cardSpatialDistribution.vue';
+import cardHistogram from './cards/cardHistogram';
+import cardScatter from './cards/cardScatter.vue';
+import cardTreemap from './cards/cardTreemap';
+import cardGeneralData from './cards/cardGeneralData.vue';
 export default {
-    name:"general-dashboard",
+    name:"overview-dashboard",
     components: {
-        tabSpatialDistribution,
-        tabHistogram,
-        tabScatter,
-        tabTreemap,
-        generalData
+        cardSpatialDistribution,
+        cardHistogram,
+        cardScatter,
+        cardTreemap,
+        cardGeneralData
     }
 }
 </script>

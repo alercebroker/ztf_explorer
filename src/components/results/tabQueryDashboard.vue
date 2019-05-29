@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import  tabHistogram  from "./tabHistogram.vue";
-import  tabScatter  from "./tabScatter.vue";
+import  tabHistogram  from "./cards/cardHistogram.vue";
+import  tabScatter  from "./cards/cardScatter.vue";
 export default {
     name: "queryDashboard",
     components: {

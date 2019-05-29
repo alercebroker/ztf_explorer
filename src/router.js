@@ -4,7 +4,7 @@ import AboutUs from './views/AboutUs.vue'
 import ExploreData from "./views/ExploreData.vue"
 import HowTo from './views/HowTo.vue'
 import UserAccount from './views/UserAccount.vue'
-import ObjectModal from './components/results/objectDetailsModal.vue'
+import ObjectModal from './components/results/modals/objectDetailsModal.vue'
 
 Vue.use(Router);
 

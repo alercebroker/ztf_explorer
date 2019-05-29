@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import scatter from "./scatter.vue";
+import scatter from "../plots/scatter.vue";
 export default {
-	name: 'tabScatter',
+	name: 'card-scatter',
 	props:['type'],
 	components: {
 		scatter,

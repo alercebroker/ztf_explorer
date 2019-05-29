@@ -26,6 +26,34 @@ export const state = {
         {
             text: "Not classified",
             value: "not classified"
+        },
+        {
+            text: "Ceph",
+            value: 1
+        },
+        {
+            text: "DSCT",
+            value: 2
+        },
+        {
+            text: "EB",
+            value:3
+        },
+        {
+            text: "LPV",
+            value: 4
+        },
+        {
+            text: "RRL",
+            value:5
+        },
+        {
+            text: "Sne",
+            value: 6
+        },
+        {
+            text: "Other",
+            value: 0
         }
     ],
     classifiers: [
@@ -132,7 +160,7 @@ export const actions = {
         commit('SET_QUERY_PARAMETERS', query_parameters);
     },
     getSQL({ commit }, query_parameters){
-        QueryService.getSQL(query_parameters).then( response => {
+        QueryServiceV3.getDataframeFilters(query_parameters).then( response => {
             commit('SET_SQL', response.data);
         }).catch( error => {
             commit('SET_ERROR', error);

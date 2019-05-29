@@ -164,15 +164,15 @@
 </template>
 
 <script>
-import downloadModal from "./downloadModal.vue";
-import columnOptionsModal from './columnOptionsModal.vue';
-import objectDetailsModal from "./objectDetailsModal";
+import downloadModal from "./modals/downloadModal";
+import columnOptionsModal from './modals/columnOptionsModal.vue';
+import objectDetailsModal from "./modals/objectDetailsModal";
 
 /**
  * this component contains table and details object modal
  */
 export default {
-  name: "tabData",
+  name: "tab-data",
   components: { downloadModal, columnOptionsModal, objectDetailsModal },
   data() {
     return {

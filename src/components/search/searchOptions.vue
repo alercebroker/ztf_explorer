@@ -114,7 +114,7 @@ export default {
     }
   },
   mounted(){
-    this.$store.dispatch('queryClassList')
+    //this.$store.dispatch('queryClassList') 
   },
   methods: {
     /**
@@ -170,8 +170,8 @@ export default {
       this.removeEmpty(query_parameters);
       this.$store.dispatch('setQueryParameters', query_parameters);
       this.$store.dispatch('getSQL', query_parameters);
-      this.$store.dispatch('queryObjectsV3', {query_parameters: query_parameters, page: 1, perPage: this.$store.state.perPage});
-      this.$store.dispatch('setSelectedTab', 1)
+      // this.$store.dispatch('queryObjectsV3', {query_parameters: query_parameters, page: 1, perPage: this.$store.state.perPage});
+      // this.$store.dispatch('setSelectedTab', 1)
       window.scrollTo(0, 0);
     },
     clearQuery(){
