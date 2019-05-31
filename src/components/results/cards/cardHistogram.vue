@@ -25,30 +25,30 @@ export default {
   data() {
     return {
       buttonText: "Plot",
-      selected: "meang",
+      selected: "mean_magpsf_g",
       options: [
         {
           value: null,
           text: "-- Magnitude Band G --",
           disabled: true
         },
-        { text: "Max of g", value: "maxg" },
-        { text: "Min of g", value: "ming" },
-        { text: "Mean of g", value: "meang" },
+        { text: "Max of g", value: "max_magpsf_g" },
+        { text: "Min of g", value: "min_magpsf_g" },
+        { text: "Mean of g", value: "mean_magpsf_g" },
         //{ text: "Slopeg", value: "slopeg" },
-        { text: "First det. of g (JD)", value: "firstmagg" },
-        { text: "Last det. of g (JD)", value: "lastmagg" },
+        { text: "First det. of g (JD)", value: "first_magpsf_g" },
+        { text: "Last det. of g (JD)", value: "last_magpsf_g" },
         {
           value: null,
           text: "-- Magnitude Band R --",
           disabled: true
         },
-        { text: "Max of r", value: "maxr" },
-        { text: "Min of r", value: "minr" },
-        { text: "Mean of r", value: "meanr" },
+        { text: "Max of r", value: "max_magpsf_r" },
+        { text: "Min of r", value: "min_magpsf_r" },
+        { text: "Mean of r", value: "mean_magpsf_r" },
         //{ text: "Sloper", value: "sloper" },
-        { text: "First det. of r (JD)", value: "firstmagr" },
-        { text: "Last det. of r (JD)", value: "lastmagr" },
+        { text: "First det. of r (JD)", value: "first_magpsf_r" },
+        { text: "Last det. of r (JD)", value: "last_magpsf_r" },
         {
           value: null,
           text: "-- Dates --",
@@ -63,10 +63,10 @@ export default {
   methods: {
     plot(){
       if(this.type === "overview"){
-        this.$store.dispatch('getOverviewHistogram', this.selected);
+        this.$store.dispatch('queryHistogram', {query_parameters: {}, xAxis: this.selected, type: this.type});
       }
       else if(this.type === "query"){
-        this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.selected});
+        this.$store.dispatch('queryHistogram', {query_parameters:this.$store.state.search.query_parameters, xAxis: this.selected, type: this.type});
       }
     }
   },

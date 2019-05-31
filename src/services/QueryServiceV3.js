@@ -17,14 +17,8 @@ export default {
     getSpatialDistribution(){
         return apiClient.post('/spatial_distribution');
     },
-    getOverviewHistogram(xAxis){
-        return apiClient.post('/histogram', {"x-axis": xAxis})
-    },
     getQueryHistogram(payload){
         return apiClient.post('/query_histogram', payload);
-    },
-    getOverviewScatter(payload){
-        return apiClient.post('/scatter', payload);
     },
     getQueryScatter(payload){
         return apiClient.post('/query_scatter', payload);

@@ -7,7 +7,7 @@ export const state = {
     dates: {},
     bands: {},
     coordinates: {},
-    sql: "SELECT * FROM OBJECTS",
+    sql: "self.objects",
     interval: null,
     flagFirst: false,
     flagLast: false,
@@ -69,10 +69,6 @@ export const state = {
             text: "ML_RF",
             value: "classrf"
         },
-        {
-            text:"ML_RNN",
-            value:"classrnn"
-        }
     ],
     selectedClassifier: null,
     selectedClass: null,
@@ -127,7 +123,7 @@ export const mutations = {
         state.dates = { }
         state.bands = { }
         state.coordinates = { }
-        state.sql = "SELECT * FROM OBJECTS"
+        state.sql = "self.objects"
         state.probability = null
         state.selectedClass = null
         state.selectedClassifier = null
@@ -186,15 +182,15 @@ export const actions = {
     },
     checkQueryStatusV3({commit, dispatch}, queryId){
         return QueryServiceV3.queryStatus(queryId).then(response => {
-            if (response.data === "finished"){
+            if (response.data.status === "finished"){
                 commit('SET_ERROR', null);
                 return "finished"
             }
-            else if(response.data === "error"){
+            else if(response.data.status === "error"){
                 commit('SET_ERROR', "error")
                 return "error"
             }
-            else if(response.data === "pending"){
+            else if(response.data.status === "pending"){
                 return dispatch('checkQueryStatusV3', queryId)
             }
         }).catch(error => {
@@ -205,7 +201,7 @@ export const actions = {
     queryObjectsV3({ commit, dispatch }, payload){
         dispatch('loading', true);
         QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data
+            let queryId = response.data["query-id"]
             dispatch('checkQueryStatusV3', queryId).then(result => {
                 if(result === "finished"){
                     let newPayload = {
@@ -414,22 +410,16 @@ export const actions = {
             dispatch('setSpatialDistribution', response.data);
         });
     },
-    getOverviewHistogram({dispatch}, xAxis){
-        dispatch('loadingPlot', true);
-        return QueryServiceV3.getOverviewHistogram(xAxis).then(response => {
-            dispatch('setOverviewHistogram', response.data);
-            dispatch('loadingPlot', false);
-        })
-    },
     queryHistogram({dispatch, commit}, payload){
         dispatch('loadingPlot', true);
         QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data
+            let queryId = response.data["query-id"]
             dispatch('checkQueryStatusV3', queryId).then(result => {
                 if(result === "finished"){
                     let newPayload = {
                         "query-id": queryId,
-                        "x-axis": payload.xAxis
+                        "x-axis": payload.xAxis,
+                        "type": payload.type
                     }
                     dispatch('getQueryHistogram',newPayload);
                 }
@@ -441,27 +431,15 @@ export const actions = {
     },
     getQueryHistogram({dispatch, state}, payload){
         return QueryServiceV3.getQueryHistogram(payload).then(response => {
-            dispatch('setQueryHistogram', response.data);
+            if(payload.type == "query") dispatch('setQueryHistogram', response.data);
+            else dispatch('setOverviewHistogram', response.data);
             dispatch('loadingPlot', false);
-        })
-    },
-    getOverviewScatter({dispatch}, payload){
-        dispatch('loadingScatterPlot', true);
-        let newPayload = {
-            "x-axis": payload.xAxis,
-            "y-axis": payload.yAxis,
-            "class": payload.classs,
-            "classifier": payload.classifier
-        }
-        return QueryServiceV3.getOverviewScatter(newPayload).then(response => {
-            dispatch('setOverviewScatter', response.data);
-            dispatch('loadingScatterPlot', false);
         })
     },
     queryScatter({dispatch, commit}, payload){
         dispatch('loadingScatterPlot', true);
         QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data
+            let queryId = response.data["query-id"]
             dispatch('checkQueryStatusV3', queryId).then(result => {
                 if(result === "finished"){
                     let newPayload = {
@@ -469,7 +447,8 @@ export const actions = {
                         "x-axis": payload.xAxis,
                         "y-axis": payload.yAxis,
                         "class": payload.classs,
-                        "classifier": payload.classifier
+                        "classifier": payload.classifier,
+                        "type": payload.type
                     }
                     dispatch('getQueryScatter',newPayload);
                 }
@@ -481,7 +460,8 @@ export const actions = {
     },
     getQueryScatter({ dispatch, state }, payload){
         return QueryServiceV3.getQueryScatter(payload).then(response => {
-            dispatch('setQueryScatter', response.data);
+            if (payload.type == "query") dispatch('setQueryScatter', response.data);
+            else dispatch('setOverviewScatter', response.data)
             dispatch('loadingScatterPlot', false);
         })
     },

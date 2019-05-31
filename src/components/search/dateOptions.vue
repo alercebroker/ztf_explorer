@@ -16,15 +16,15 @@
             <b-col cols="4">
                 <input
                     class="form-control form-control-sm"
-                    id="firstjd"
-                    v-model="firstjd"
+                    id="firstmjd"
+                    v-model="firstmjd"
                 />
             </b-col>
             <b-col cols="4">
                 <input
                     class="form-control form-control-sm"
                     id="datepickerfirst"
-                    name="firstJD"
+                    name="firstgreg"
                     type="date"
                     v-model="firstGreg"
                 />
@@ -37,15 +37,15 @@
             <b-col cols="4">
                 <input
                     class="form-control form-control-sm"
-                    id="lastjd"
-                    v-model="lastjd"
+                    id="lastmjd"
+                    v-model="lastmjd"
                 />
             </b-col>
             <b-col cols="4">
                 <input
                     class="form-control form-control-sm"
                     id="datepickerlast"
-                    name="lastJD"
+                    name="lastMJD"
                     type="date"
                     v-model="lastGreg"
                 />
@@ -140,9 +140,9 @@
             },
         },
         computed: {
-            firstjd: {
+            firstmjd: {
                 get(){
-                    return this.$store.state.search.dates.firstjd
+                    return this.$store.state.search.dates.firstmjd
                 },
                 set(value){
                     if(! this.$store.state.search.flagFirst){
@@ -152,7 +152,7 @@
                         })
                         this.$store.dispatch('updateOptions', {
                             obj: "dates",
-                            keyPath: ["firstjd"],
+                            keyPath: ["firstmjd"],
                             value: value
                         })
                         this.$store.dispatch('updateOptions', {
@@ -167,9 +167,9 @@
                     })
                 }
             },
-            lastjd: {
+            lastmjd: {
                 get(){
-                    return this.$store.state.search.dates.lastjd
+                    return this.$store.state.search.dates.lastmjd
                 },
                 set(value){
                     if(! this.$store.state.search.flagLast){
@@ -179,7 +179,7 @@
                         })
                         this.$store.dispatch('updateOptions', {
                             obj: "dates",
-                            keyPath: ["lastjd"],
+                            keyPath: ["lastmjd"],
                             value: value
                         })
                         this.$store.dispatch('updateOptions', {
@@ -211,7 +211,7 @@
                         })
                         this.$store.dispatch('updateOptions',{
                             obj: "dates",
-                            keyPath: ["firstjd"],
+                            keyPath: ["firstmjd"],
                             value: this.gregorianToJd(value)
                         })
                     }
@@ -238,7 +238,7 @@
                         })
                         this.$store.dispatch('updateOptions', {
                             obj: "dates",
-                            keyPath: ["lastjd"],
+                            keyPath: ["lastmjd"],
                             value: this.gregorianToJd(value)
                         })
                     }

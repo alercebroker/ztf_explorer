@@ -109,7 +109,7 @@ export default {
   data() {
     return {
       moreOptsLabel: "More Options",
-      showSQLLabel: "Show SQL",
+      showSQLLabel: "Show Dataframe Filters",
       block: true,
     }
   },
@@ -130,7 +130,7 @@ export default {
     changeShowSQLLabel() {
       this.refreshSQL();
       this.showSQLLabel =
-        this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
+        this.showSQLLabel == "Show Dataframe Filters" ? "Hide Dataframe Filters" : "Show Dataframe Filters";
     },
     refreshSQL(){
       let query_parameters = {
@@ -170,8 +170,8 @@ export default {
       this.removeEmpty(query_parameters);
       this.$store.dispatch('setQueryParameters', query_parameters);
       this.$store.dispatch('getSQL', query_parameters);
-      // this.$store.dispatch('queryObjectsV3', {query_parameters: query_parameters, page: 1, perPage: this.$store.state.perPage});
-      // this.$store.dispatch('setSelectedTab', 1)
+      this.$store.dispatch('queryObjectsV3', {query_parameters: query_parameters, page: 1, perPage: this.$store.state.perPage});
+      this.$store.dispatch('setSelectedTab', 1)
       window.scrollTo(0, 0);
     },
     clearQuery(){

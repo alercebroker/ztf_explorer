@@ -15,7 +15,7 @@ export const state = {
         {
             key: "nobs",
             sortable: true,
-            label: "#"
+            label: "#obs"
         },
         {
             key: "radec",
@@ -35,29 +35,10 @@ export const state = {
             label: "P(RF)",
         },
         {
-            key: "classrnn",
-            label: "ML_RNN"
-        },
-        {
-            key: "pclassrnn",
-            sortable: true,
-            label: "P(RNN)"
-        },
-        {
-            key: "lastjd",
+            key: "lastmjd",
             sortable: true,
             label: "LastMJD"
-        },
-	    /*{
-            key: "ming",
-            sortable: true,
-            label: "ming"
-        },
-	    {
-            key: "minr",
-            sortable: true,
-            label: "minr"
-        }*/
+        }
     ],
     spatialDistribution: null,
     overviewHistogram: null,

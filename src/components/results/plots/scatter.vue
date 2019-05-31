@@ -34,10 +34,12 @@ export default {
 			yAxis: this.yAxis,
 			classs: this.cls,
 			classifier: this.classifier,
-			query_parameters: this.$store.state.search.query_parameters
+			query_parameters: this.$store.state.search.query_parameters,
+			type: this.type
 		}
 		if(this.type === "overview"){
-			this.$store.dispatch('getOverviewScatter', payload);
+			payload.query_parameters = {}
+			this.$store.dispatch('queryScatter', payload);
 		}
 		else if(this.type === "query"){
 			this.$store.dispatch('queryScatter', payload);
@@ -56,7 +58,10 @@ export default {
 		loading()
 		{
 			return this.$store.state.loadingScatterPlot;
-		}
+		},
+		objects(){
+            return this.$store.state.results.objects;
+        }
 	},
 	methods:{
 		clearDiv(type){
@@ -75,7 +80,20 @@ export default {
 				this.clearDiv("query");
 				Bokeh.embed.embed_item(newVal, "queryScatter");
 			}
-		}
+		},
+		objects(newVal){
+            if (newVal && this.type==="query"){
+                let payload = {
+					xAxis: this.xAxis,
+					yAxis: this.yAxis,
+					classs: this.cls,
+					classifier: this.classifier,
+					query_parameters: this.$store.state.search.query_parameters,
+					type: this.type
+				}
+				this.$store.dispatch('queryScatter', payload);
+            }
+        }
 	},
 }
 </script>
