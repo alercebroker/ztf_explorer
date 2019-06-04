@@ -19,7 +19,6 @@ import "bootstrap-vue/dist/bootstrap-vue.css"
 import highchartsMore from 'highcharts/highcharts-more'
 
 
-
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 

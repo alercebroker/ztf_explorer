@@ -109,12 +109,12 @@ export default {
   data() {
     return {
       moreOptsLabel: "More Options",
-      showSQLLabel: "Show SQL",
+      showSQLLabel: "Show Dataframe Filters",
       block: true,
     }
   },
   mounted(){
-    this.$store.dispatch('queryClassList')
+    //this.$store.dispatch('queryClassList') 
   },
   methods: {
     /**
@@ -130,7 +130,7 @@ export default {
     changeShowSQLLabel() {
       this.refreshSQL();
       this.showSQLLabel =
-        this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
+        this.showSQLLabel == "Show Dataframe Filters" ? "Hide Dataframe Filters" : "Show Dataframe Filters";
     },
     refreshSQL(){
       let query_parameters = {

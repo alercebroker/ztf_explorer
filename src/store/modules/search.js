@@ -7,10 +7,7 @@ export const state = {
     dates: {},
     bands: {},
     coordinates: {},
-    sql: "SELECT * FROM OBJECTS",
-    interval: null,
-    flagFirst: false,
-    flagLast: false,
+    sql: "self.objects",
     query_status: 0,
     error: null,
     file: null,
@@ -26,6 +23,34 @@ export const state = {
         {
             text: "Not classified",
             value: "not classified"
+        },
+        {
+            text: "Ceph",
+            value: 1
+        },
+        {
+            text: "DSCT",
+            value: 2
+        },
+        {
+            text: "EB",
+            value:3
+        },
+        {
+            text: "LPV",
+            value: 4
+        },
+        {
+            text: "RRL",
+            value:5
+        },
+        {
+            text: "Sne",
+            value: 6
+        },
+        {
+            text: "Other",
+            value: 0
         }
     ],
     classifiers: [
@@ -41,10 +66,6 @@ export const state = {
             text: "ML_RF",
             value: "classrf"
         },
-        {
-            text:"ML_RNN",
-            value:"classrnn"
-        }
     ],
     selectedClassifier: null,
     selectedClass: null,
@@ -82,9 +103,6 @@ export const mutations = {
     SET_SQL(state, sql){
         state.sql = sql;
     },
-    SET_FLAG(state, payload){
-        state[payload.flag] = payload.value;
-    },
     SET_QUERY_STATUS(state, value){
         state.query_status = value;
     },
@@ -99,7 +117,7 @@ export const mutations = {
         state.dates = { }
         state.bands = { }
         state.coordinates = { }
-        state.sql = "SELECT * FROM OBJECTS"
+        state.sql = "self.objects"
         state.probability = null
         state.selectedClass = null
         state.selectedClassifier = null
@@ -132,7 +150,7 @@ export const actions = {
         commit('SET_QUERY_PARAMETERS', query_parameters);
     },
     getSQL({ commit }, query_parameters){
-        QueryService.getSQL(query_parameters).then( response => {
+        QueryServiceV3.getDataframeFilters(query_parameters).then( response => {
             commit('SET_SQL', response.data);
         }).catch( error => {
             commit('SET_ERROR', error);
@@ -162,11 +180,11 @@ export const actions = {
                 commit('SET_ERROR', null);
                 return "finished"
             }
-            else if(response.data === "error"){
+            else if(response.data.status === "error"){
                 commit('SET_ERROR', "error")
                 return "error"
             }
-            else if(response.data === "pending"){
+            else if(response.data.status === "pending"){
                 return dispatch('checkQueryStatusV3', queryId)
             }
         }).catch(error => {
@@ -239,9 +257,6 @@ export const actions = {
             commit('SET_ERROR', error);
             dispatch('loading', false);
         })
-    },
-    updateFlag({commit}, payload){
-        commit('SET_FLAG', payload);
     },
     clearQuery({commit}){
         commit('CLEAR_QUERY');
@@ -381,101 +396,6 @@ export const actions = {
             value: probability
         })
     },
-    getSpatialDistribution({dispatch}){
-        return QueryServiceV3.getSpatialDistribution().then(response => {
-            dispatch('setSpatialDistribution', response.data);
-        });
-    },
-    queryHistogram({dispatch, commit}, payload){
-        dispatch('loadingPlot', true);
-        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data["query-id"]
-            dispatch('checkQueryStatusV3', queryId).then(result => {
-                if(result === "finished"){
-                    let newPayload = {
-                        "query-id": queryId,
-                        "x-axis": payload.xAxis,
-                        "type": payload.type
-                    }
-                    dispatch('getQueryHistogram',newPayload);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    getQueryHistogram({dispatch, state}, payload){
-        return QueryServiceV3.getQueryHistogram(payload).then(response => {
-            if(payload.type === "query"){
-                dispatch('setQueryHistogram', response.data);
-                dispatch('loadingPlot', false);
-            }
-            if(payload.type === "overview"){
-                dispatch('setOverviewHistogram', response.data);
-                dispatch('loadingPlot', false);
-            }
-        })
-    },
-
-    queryScatter({dispatch, commit}, payload){
-        dispatch('loadingScatterPlot', true);
-        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data["query-id"]
-            dispatch('checkQueryStatusV3', queryId).then(result => {
-                if(result === "finished"){
-                    let newPayload = {
-                        "query-id": queryId,
-                        "x-axis": payload.xAxis,
-                        "y-axis": payload.yAxis,
-                        "class": payload.classs,
-                        "classifier": payload.classifier,
-                        "type": payload.type
-                    }
-                    dispatch('getQueryScatter',newPayload);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    getQueryScatter({ dispatch, state }, payload){
-        return QueryServiceV3.getQueryScatter(payload).then(response => {
-            if(payload.type === "overview"){
-                dispatch('setOverviewScatter', response.data);
-                dispatch('loadingScatterPlot', false);
-            }
-            if(payload.type === "query"){
-                dispatch('setQueryScatter', response.data);
-                dispatch('loadingScatterPlot', false);
-            }
-        })
-    },
-    queryPaginated({dispatch,commit}, payload){
-        dispatch('loading', true);
-        return QueryServiceV3.paginatedQuery(payload.query_parameters, payload.page, payload.per_page).then( response => {
-            if(response.data.total === 0) commit('SET_QUERY_STATUS', 204);
-            else{
-                commit('SET_QUERY_STATUS', response.status);
-                dispatch('setObjects',response.data);
-            }
-            dispatch('loading', false);
-        })
-    },
-    getClassCounts({dispatch}){
-        return QueryServiceV3.countClass().then(response => {
-            dispatch('setClassCounts', response.data);
-        });
-    }
-}
-
-export const getters = {
-    getFilters(state){
-        return state.filters
-    },
-    getSQL(state){
-        return state.sql
-    }
+    
 }
 

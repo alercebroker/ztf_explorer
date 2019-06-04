@@ -2,12 +2,14 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import * as search from './modules/search.js';
 import * as results from './modules/results.js';
+import * as plots from './modules/plots.js'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
         search,
-        results
+        results,
+        plots
     },
     state: {
         loading: false,

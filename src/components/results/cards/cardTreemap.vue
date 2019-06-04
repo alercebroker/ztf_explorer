@@ -7,16 +7,16 @@
             <b-tab title="Random Forest">
                 <treemapclass v-bind:classifier="'rf'"/>
             </b-tab>
-            <b-tab title="Recurrent Neural Net">
+            <!-- <b-tab title="Recurrent Neural Net">
                 <treemapclass v-bind:classifier="'rnn'"/>
-            </b-tab>
+            </b-tab> -->
         </b-tabs>
     </b-card>
 </template>
 <script>
-import treemapclass from "./plots/TreemapClass.vue";
+import treemapclass from "../plots/TreemapClass";
 export default {
-    name: "tabTreemap",
+    name: "card-treemap",
     components: {
         treemapclass
     },

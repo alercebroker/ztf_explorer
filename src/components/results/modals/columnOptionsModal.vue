@@ -47,17 +47,10 @@
                   label: "#"
                 }
               },
-              { 
-                text: "Period", 
-                value: {
-                  key: "period",
-                  label: "Period"
-                }
-              },
               {
                 text: "First MJD",
                 value: {
-                  key: "firstjd",
+                  key: "firstmjd",
                   label: "FirstMJD",
                   sortable : true
                 }
@@ -65,7 +58,7 @@
               {
                 text: "Last MJD",
                 value: {
-                  key: "lastjd",
+                  key: "lastmjd",
                   label: "LastMJD",
                   sortable : true
                 }
@@ -86,25 +79,11 @@
                 }
               },
               { 
-                text: "RMS of DEC", 
-                value: {
-                  key: "rmsdec",
-                  label: "RmsDec"
-                } 
-              },
-              { 
               text: "Mean RA", 
                 value: {
                   key : "meanra" ,
                   label : "RA",
                   sortable: false
-                }
-              },
-              { 
-                text: "RMS of RA", 
-                value: {
-                  key: "rmsra",
-                  label: "RmsRA"
                 }
               },
               {
@@ -141,78 +120,52 @@
                 }
               },
               {
-                text: "Class by RNN", 
-                value: {
-                  key: "classrnn",
-                  label: "ML_RNN"
-                } 
-              },
-              {
-                text: "Probability of classifier RNN",
-                value: {
-                  key: "pclassrnn",
-                  sortable: true,
-                  label: "P(RNN)"
-                }
-              },
-              {
                 text: "-- Magnitude band g --",
                 disabled: true
               },
               { 
                 text: "First det. of mag. g", 
                 value: {
-                  key: "firstmagg",
+                  key: "first_magpsf_g",
                   label: "FirstMagG"
                 }
               },
               { 
                 text: "Last det. of mag. g", 
                 value: {
-                  key: "lastmagg",
+                  key: "last_magpsf_g",
                   label: "LastMagG"
                 }
               },
               { 	
                 text: "Min of band g", 
                 value: { 
-                  key: "ming" ,
-                  label : "ming",
+                  key: "min_magpsf_g" ,
+                  label : "MinG",
                   sortable: true
                 }
               },  
               { 
                 text: "Max of band g", 
                 value: {
-                  key: "maxg",
+                  key: "max_magpsf_g",
                   label: "MaxG"
                 } 
               },
               { 
                 text: "Mean of band g", 
                 value: {
-                  key: "meang",
+                  key: "mean_magpsf_g",
                   label: "MeanG"
                 }
               },
               { 
                 text: "Median of band g", 
                 value: {
-                  key: "mediang",
+                  key: "median_magpsf_g",
                   label: "MedianG"
                 }
               },
-              { 
-                text: "RMS of band g", 
-                value: {
-                  key: "rmsg",
-                  label: "RmsG"
-                }
-              },
-              /*{ 
-                text: "SlopeG", 
-                value: "slopeg" 
-              },*/
               {
                 text: "-- Magnitude band r --",
                 disabled: true
@@ -220,57 +173,46 @@
               { 
                 text: "Last det. of mag r", 
                 value: {
-                  key: "lastmagr",
+                  key: "last_magpsf_r",
                   label: "LastMagR"
                 }
               },
               { 
                 text: "First det. of mag r", 
                 value: {
-                  key: "firstmagr",
+                  key: "first_magpsf_r",
                   label: "FirstMagR"
                 }
               },
               { 	
                 text: "Min of band r", 
                 value: { 
-                  key: "minr" ,
-                  label : "minr",
+                  key: "min_magpsf_r" ,
+                  label : "MinR",
                   sortable: true
                   }
               },
               { 
                 text: "Max of band r", 
                 value: {
-                  key: "maxr",
+                  key: "max_magpsf_r",
                   label: "MaxR"
                 }
               },
               { 
                 text: "Mean of band r", 
                 value: {
-                  key: "meanr",
+                  key: "mean_magpsf_r",
                   label: "MeanR"
                 }
               },
               { 
                 text: "Median of band r", 
                 value: {
-                  key: "medianr",
+                  key: "median_magpsf_r",
                   label: "MedianR"
                 } 
               },
-              { 
-                text: "RMS of band r", 
-                value: {
-                  key: "rmsr",
-                  label: "RmsR"
-                } 
-              },
-              /*{ 
-                text: "SlopeR", 
-                value: "sloper" 
-              },*/
             ]
           }
         },

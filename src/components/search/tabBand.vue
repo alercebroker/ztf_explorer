@@ -86,7 +86,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"min","min"],
+                        keyPath: [this.band,"min_magpsf_","min"],
                         value: value
                     })
                 }
@@ -98,7 +98,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"min","max"],
+                        keyPath: [this.band,"min_magpsf_","max"],
                         value: value
                     })
                 }
@@ -110,7 +110,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"max","min"],
+                        keyPath: [this.band,"max_magpsf_","min"],
                         value: value
                     })
                 }
@@ -122,31 +122,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"max","max"],
-                        value: value
-                    })
-                }
-            },
-            slopeMin: {
-                get(){
-                    return this.$store.state.search.bands.slope ? this.$store.state.search.bands.slope.min : null
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "bands",
-                        keyPath: [this.band,"slope","min"],
-                        value: value
-                    })
-                }
-            },
-            slopeMax:{
-                get(){
-                    return this.$store.state.search.bands.slope ? this.$store.state.search.bands.slope.max : null
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "bands",
-                        keyPath: [this.band,"slope","max"],
+                        keyPath: [this.band,"max_magpsf_","max"],
                         value: value
                     })
                 }
@@ -158,7 +134,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"mean","min"],
+                        keyPath: [this.band,"mean_magpsf_","min"],
                         value: value
                     })
                 }
@@ -170,7 +146,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"mean","max"],
+                        keyPath: [this.band,"mean_magpsf_","max"],
                         value: value
                     })
                 }
@@ -182,7 +158,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"rms","min"],
+                        keyPath: [this.band,"rms_magpsf_","min"],
                         value: value
                     })
                 }
@@ -194,7 +170,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"rms","max"],
+                        keyPath: [this.band,"rms_magpsf_","max"],
                         value: value
                     })
                 }
@@ -206,7 +182,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"lastmag","min"],
+                        keyPath: [this.band,"lastmag_magpsf_","min"],
                         value: value
                     })
                 }
@@ -218,7 +194,7 @@
                 set(value){
                     this.$store.dispatch('updateOptions', {
                         obj: "bands",
-                        keyPath: [this.band,"lastmag","max"],
+                        keyPath: [this.band,"lastmag_magpsf_","max"],
                         value: value
                     })
                 }

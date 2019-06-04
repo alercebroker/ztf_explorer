@@ -8,23 +8,23 @@
         </div>
         <b-row v-else>
             <b-col cols="6">
-                <tabHistogram type="query"/>
+                <card-histogram type="query"/>
             </b-col>
             <b-col cols="6">
-                <tabScatter type="query"/>
+                <card-scatter type="query"/>
             </b-col>
         </b-row>
     </b-container>
 </template>
 
 <script>
-import  tabHistogram  from "./tabHistogram.vue";
-import  tabScatter  from "./tabScatter.vue";
+import  cardHistogram  from "./cards/cardHistogram.vue";
+import  cardScatter  from "./cards/cardScatter.vue";
 export default {
     name: "queryDashboard",
     components: {
-        tabScatter,
-        tabHistogram,
+        cardScatter,
+        cardHistogram,
     },
 }
 </script>

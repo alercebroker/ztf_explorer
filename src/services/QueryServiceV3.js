@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: "http://18.206.83.170:8084/v3",
+    baseURL: "http://alerce.xyz:8084/v3",
     withCredentials: false,
     headers: {
         Accept: "application/json",
@@ -11,6 +11,9 @@ const apiClient = axios.create({
 
 export default {
 
+    getDataframeFilters(query_parameters){
+        return apiClient.post('/get_sql', {query_parameters: query_parameters})
+    },
     getSpatialDistribution(){
         return apiClient.post('/spatial_distribution');
     },
