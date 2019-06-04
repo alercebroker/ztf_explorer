@@ -168,7 +168,7 @@ export default {
     onRowClicked(item) {
       this.showObjectDetailsModal = true;
       this.$store.dispatch('objectSelected', item);
-      this.$router.push({ name: 'object-details-modal', params: { id: item.oid } });
+      //this.$router.push({ name: 'object-details-modal', params: { id: item.oid } });
     },
     getUrlObject() {
       if(this.$route.params.id) {
@@ -184,7 +184,7 @@ export default {
     }
   },
   mounted: function() {
-    this.getUrlObject();
+    //this.getUrlObject();
   },
 };
 </script>

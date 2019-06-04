@@ -14,19 +14,24 @@
             <b-card-group deck class="mb-3">
               <b-card no-body class>
                   <ul v-if="$store.state.loading === false">
-                    <!--<li v-for="(value, key) in $store.state.results.objectDetails.object_details" :key="key">
-                      <strong>{{key}}</strong> : {{ typeof value === "number"? Number.parseFloat(value).toFixed(3) : value }}
-                    </li>-->
-                    <li><strong>Object:</strong> {{ $store.state.results.objectDetails.object_details.oid }}</li>
-                    <li v-if="$store.state.results.objectDetails.object_details.classxmatch"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classxmatch") }} (X-MATCH) </li>
-                    <li v-if="$store.state.results.objectDetails.object_details.classrf"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrf") }} (ML_RF) </li>
-                    <li v-if="$store.state.results.objectDetails.object_details.classrnn"><strong>Class:</strong> {{ getClass($store.state.results.objectDetails.object_details, "classrnn") }} (ML_RNN) </li>
+                    <!--ZTF id-->
+                    <li><strong>Object:</strong> {{ ztf_object.object_details.oid }}</li>
+                    <!-- Classification -->
+                    <li v-if="ztf_object.object_details.classxmatch">
+                      <strong>Class:</strong> {{ getClass(ztf_object.object_details, "classxmatch") }} (X-MATCH) 
+                    </li>
+                    <li v-if="ztf_object.object_details.classrf">
+                      <strong>Class:</strong> {{ getClass(ztf_object.object_details, "classrf") }} (ML_RF) 
+                    </li>
+                    <li v-if="ztf_object.object_details.classrnn">
+                      <strong>Class:</strong> {{ getClass(ztf_object.object_details, "classrnn") }} (ML_RNN) 
+                    </li>
+                    <!--RA/Dec-->
                     <li>
-                      <strong>RA/Dec:</strong> {{ $store.state.results.objectDetails.object_details.meanra ? $store.state.results.objectDetails.object_details.meanra.toFixed(4) : '-' }},
-                       {{ $store.state.results.objectDetails.object_details.meandec ? $store.state.results.objectDetails.object_details.meandec.toFixed(4) : '-' }}</li>
+                      <strong>RA/Dec:</strong> {{ ztf_object.object_details.meanra ? ztf_object.object_details.meanra.toFixed(4) : '-' }},{{ ztf_object.object_details.meandec ? ztf_object.object_details.meandec.toFixed(4) : '-' }}</li>
                     <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
-                    <li><strong>First date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.firstjd) }}</li>
-                    <li><strong>Last date:</strong> {{ julianIntToDate($store.state.results.objectDetails.object_details.lastjd) }}</li>
+                    <li><strong>First date:</strong> {{ julianIntToDate(ztf_object.object_details.firstmjd) }}</li>
+                    <li><strong>Last date:</strong> {{ julianIntToDate(ztf_object.object_details.lastmjd) }}</li>
                   </ul>
               </b-card>
             </b-card-group>
@@ -40,33 +45,33 @@
                   </tr>
                   <tr>
                     <td>Mean</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.meang ? $store.state.results.objectDetails.object_details.meang.toFixed(3) : '-' }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.meanr ? $store.state.results.objectDetails.object_details.meanr.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details.mean_magpsf_g ? ztf_object.object_details.mean_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details.mean_magpsf_r ? ztf_object.object_details.mean_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Median</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.mediang ? $store.state.results.objectDetails.object_details.mediang.toFixed(3) : '-' }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.medianr ? $store.state.results.objectDetails.object_details.medianr.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details.median_magpsf_g ? ztf_object.object_details.median_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details.median_magpsf_r ? ztf_object.object_details.median_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>First</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.firstmagg ? $store.state.results.objectDetails.object_details.firstmagg.toFixed(3) : '-' }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.firstmagr ? $store.state.results.objectDetails.object_details.firstmagr.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details.first_magpsf_g ? ztf_object.object_details.first_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details.first_magpsf_r ? ztf_object.object_details.first_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Last</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.lastmagg ? $store.state.results.objectDetails.object_details.lastmagg.toFixed(3) : '-' }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.lastmagr ? $store.state.results.objectDetails.object_details.lastmagr.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details.last_magpsf_g ? ztf_object.object_details.last_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details.last_magpsf_r ? ztf_object.object_details.last_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Min</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.ming ? $store.state.results.objectDetails.object_details.ming.toFixed(3) : '-' }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.minr ? $store.state.results.objectDetails.object_details.minr.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details.min_magpsf_g ? ztf_object.object_details.min_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details.min_magpsf_r ? ztf_object.object_details.min_magpsf_r.toFixed(3) : '-' }}</td> 
                   </tr>
                   <tr>
                     <td>Max</td>
-                    <td>{{ $store.state.results.objectDetails.object_details.maxg ? $store.state.results.objectDetails.object_details.maxg.toFixed(3) : '-' }}</td> 
-                    <td>{{ $store.state.results.objectDetails.object_details.maxr ? $store.state.results.objectDetails.object_details.maxr.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details.max_magpsf_g ? ztf_object.object_details.max_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details.max_magpsf_r ? ztf_object.object_details.max_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                 </table>
               </b-card>
@@ -89,7 +94,7 @@
         <b-row v-if="$store.state.results.objectDetails.probabilities" class="mt-3">
           <b-col cols="4">
             <b-card no-body class="h-100 align-middle">
-              <lineclass></lineclass>
+              <!--lineclass></lineclass>-->
             </b-card>
           </b-col>
         </b-row>
@@ -135,7 +140,7 @@ export default {
   data() {
     return {
       lazy: true,
-      classOptions: ["EBSD/D","RRL","Periodic-Other","LPV","EBC","Ceph","DSCT","CV","Novae","Pulsating-Other", "SNeIIb","SNeIa","SNeIIn","AGN","SNeIb/c","SNeII","SLSN","SNeIa-sub","TDE"],
+      //classOptions: ["EBSD/D","RRL","Periodic-Other","LPV","EBC","Ceph","DSCT","CV","Novae","Pulsating-Other", "SNeIIb","SNeIa","SNeIIn","AGN","SNeIb/c","SNeII","SLSN","SNeIa-sub","TDE"],
     }
   },
   components: {
@@ -153,6 +158,8 @@ export default {
     },
     julianIntToDate: function(n) {
       // https://stackoverflow.com/questions/29627533/conversion-of-julian-date-number-to-normal-date-utc-in-javascript
+      if (n == null)
+        return null
       var X = parseFloat(n) + 0.5 + 2400000.5;
       var Z = Math.floor(X); //Get day without time
       var F = X - Z; //Get time
@@ -184,7 +191,7 @@ export default {
     },
     closeModal: function() {
       this.$emit('modalClosed');
-      this.$router.replace("/");
+      //this.$router.replace("/");
     }
   },
   computed: {
@@ -198,7 +205,12 @@ export default {
       set(value){
         return value
       }
+    },
+    ztf_object() {
+      return this.$store.state.results.objectDetails;
     }
+  },
+  mounted: function(){
   }
 };
 </script>

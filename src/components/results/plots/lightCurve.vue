@@ -124,6 +124,26 @@ export default {
             color: "#0a9900",
             enableMouseTracking: false,
             data: [],
+          },
+          {
+            name: "r no detections",
+            value: "diffmaglim",
+            type: "scatter",
+            color: "rgba(255, 0, 0, 0.3)",
+            data: [],
+            marker: {
+              symbol: 'triangle-down'
+            }
+          },
+          {
+            name: "g no detections",
+            value: "diffmaglim",
+            type: "scatter",
+            color: "rgba(0, 255, 0, 0.3)",
+            data: [],
+            marker: {
+              symbol: 'triangle-down'
+            }
           }
         ]
       },
@@ -138,15 +158,15 @@ export default {
       var gbandError = [];
       alerts.forEach(function(item)
       {
-        if(item.magg)
+        if(item.fid == 1)
         {
-          gband.push([item.jd, item.magg]);
-          gbandError.push([item.jd, item.magg - item.rmsg, item.magg + item.rmsg]);
+          gband.push([item.jd, item.magpsf]);
+          gbandError.push([item.jd, item.magpsf - item.sigmapsf, item.magpsf + item.sigmapsf]);
         }
-        else if(item.magr)
+        else if(item.fid == 2)
         {
-          rband.push([item.jd, item.magr]);
-          rbandError.push([item.jd, item.magr - item.rmsr, item.magr + item.rmsr]);
+          rband.push([item.jd, item.magpsf]);
+          rbandError.push([item.jd, item.magpsf - item.sigmapsf, item.magpsf + item.sigmapsf]);
         }
       })
       this.chartOptions.series[0].data = rband;
@@ -154,19 +174,39 @@ export default {
       this.chartOptions.series[2].data = gband;
       this.chartOptions.series[3].data = gbandError;
     },
+    processLightCurveDataNoDet: function(nodet) {
+      var rno_det = [];
+      var gno_det = [];
+      nodet.forEach(function(item)
+      {
+        if(item.fid == 1)
+          gno_det.push([item.jd, item.diffmaglim]);
+        else if(item.fid == 2)
+          rno_det.push([item.jd, item.diffmaglim]);
+      })
+      this.chartOptions.series[4].data = rno_det;
+      this.chartOptions.series[5].data = gno_det;
+    }
   },
   computed: {
     alerts(){
       return this.$store.state.results.objectDetails.alerts;
+    },
+    no_detections(){
+      return this.$store.state.results.objectDetails.no_detections;
     }
   },
   watch: {
     alerts(newAlerts){
       this.processLightCurveData(newAlerts);
+    },
+    no_detections(newNoDet){
+      this.processLightCurveDataNoDet(newNoDet);
     }
   },
   mounted(){
     if(this.alerts)this.processLightCurveData(this.alerts);
+    if(this.no_detections)this.processLightCurveDataNoDet(this.no_detections);
   }
 };
 </script>
