@@ -57,7 +57,7 @@
     methods: {
       getValues: function(){
         var keys = Object.keys(this.$store.state.results.objectDetails.probabilities[0]);
-        var datas = this.$store.state.results.objectDetails.probabilities;
+        var datas = this.$store.state.results.objectDetails.probabilities[0];
         var categories = []
         var rf = []
         var rnn = []
@@ -66,13 +66,11 @@
           {
             let name = x.split("_")[0]
             categories.push(name)
-            rf.push(datas[0][x].toFixed(4)*100)
-            rnn.push(datas[1][x].toFixed(4)*100)
+            rf.push(datas[x].toFixed(4)*100)
           }
         })
         this.lineOptions.xAxis.categories = categories;
         this.lineOptions.series.push({name: "RF", data: rf})
-        this.lineOptions.series.push({name: "RNN", data: rnn})
       }
     },
     computed: {

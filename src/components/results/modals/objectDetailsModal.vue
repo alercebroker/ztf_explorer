@@ -15,23 +15,23 @@
               <b-card no-body class>
                   <ul v-if="$store.state.loading === false">
                     <!--ZTF id-->
-                    <li><strong>Object:</strong> {{ ztf_object.object_details.oid }}</li>
+                    <li><strong>Object:</strong> {{ ztf_object.object_details[0].oid }}</li>
                     <!-- Classification -->
-                    <li v-if="ztf_object.object_details.classxmatch">
-                      <strong>Class:</strong> {{ getClass(ztf_object.object_details, "classxmatch") }} (X-MATCH) 
+                    <li v-if="ztf_object.object_details[0].classxmatch">
+                      <strong>Class:</strong> {{ getClass(ztf_object.object_details[0], "classxmatch") }} (X-MATCH) 
                     </li>
-                    <li v-if="ztf_object.object_details.classrf">
-                      <strong>Class:</strong> {{ getClass(ztf_object.object_details, "classrf") }} (ML_RF) 
+                    <li v-if="ztf_object.object_details[0].classrf">
+                      <strong>Class:</strong> {{ getClass(ztf_object.object_details[0], "classrf") }} (ML_RF) 
                     </li>
-                    <li v-if="ztf_object.object_details.classrnn">
-                      <strong>Class:</strong> {{ getClass(ztf_object.object_details, "classrnn") }} (ML_RNN) 
+                    <li v-if="ztf_object.object_details[0].classrnn">
+                      <strong>Class:</strong> {{ getClass(ztf_object.object_details[0], "classrnn") }} (ML_RNN) 
                     </li>
                     <!--RA/Dec-->
                     <li>
-                      <strong>RA/Dec:</strong> {{ ztf_object.object_details.meanra ? ztf_object.object_details.meanra.toFixed(4) : '-' }},{{ ztf_object.object_details.meandec ? ztf_object.object_details.meandec.toFixed(4) : '-' }}</li>
-                    <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details.nobs }}</li>
-                    <li><strong>First date:</strong> {{ julianIntToDate(ztf_object.object_details.firstmjd) }}</li>
-                    <li><strong>Last date:</strong> {{ julianIntToDate(ztf_object.object_details.lastmjd) }}</li>
+                      <strong>RA/Dec:</strong> {{ ztf_object.object_details[0].meanra ? ztf_object.object_details[0].meanra.toFixed(4) : '-' }},{{ ztf_object.object_details[0].meandec ? ztf_object.object_details[0].meandec.toFixed(4) : '-' }}</li>
+                    <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.object_details[0].nobs }}</li>
+                    <li><strong>First date:</strong> {{ julianIntToDate(ztf_object.object_details[0].firstmjd) }}</li>
+                    <li><strong>Last date:</strong> {{ julianIntToDate(ztf_object.object_details[0].lastmjd) }}</li>
                   </ul>
               </b-card>
             </b-card-group>
@@ -45,33 +45,33 @@
                   </tr>
                   <tr>
                     <td>Mean</td>
-                    <td>{{ ztf_object.object_details.mean_magpsf_g ? ztf_object.object_details.mean_magpsf_g.toFixed(3) : '-' }}</td> 
-                    <td>{{ ztf_object.object_details.mean_magpsf_r ? ztf_object.object_details.mean_magpsf_r.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details[0].mean_magpsf_g ? ztf_object.object_details[0].mean_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details[0].mean_magpsf_r ? ztf_object.object_details[0].mean_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Median</td>
-                    <td>{{ ztf_object.object_details.median_magpsf_g ? ztf_object.object_details.median_magpsf_g.toFixed(3) : '-' }}</td> 
-                    <td>{{ ztf_object.object_details.median_magpsf_r ? ztf_object.object_details.median_magpsf_r.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details[0].median_magpsf_g ? ztf_object.object_details[0].median_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details[0].median_magpsf_r ? ztf_object.object_details[0].median_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>First</td>
-                    <td>{{ ztf_object.object_details.first_magpsf_g ? ztf_object.object_details.first_magpsf_g.toFixed(3) : '-' }}</td> 
-                    <td>{{ ztf_object.object_details.first_magpsf_r ? ztf_object.object_details.first_magpsf_r.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details[0].first_magpsf_g ? ztf_object.object_details[0].first_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details[0].first_magpsf_r ? ztf_object.object_details[0].first_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Last</td>
-                    <td>{{ ztf_object.object_details.last_magpsf_g ? ztf_object.object_details.last_magpsf_g.toFixed(3) : '-' }}</td> 
-                    <td>{{ ztf_object.object_details.last_magpsf_r ? ztf_object.object_details.last_magpsf_r.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details[0].last_magpsf_g ? ztf_object.object_details[0].last_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details[0].last_magpsf_r ? ztf_object.object_details[0].last_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                   <tr>
                     <td>Min</td>
-                    <td>{{ ztf_object.object_details.min_magpsf_g ? ztf_object.object_details.min_magpsf_g.toFixed(3) : '-' }}</td> 
-                    <td>{{ ztf_object.object_details.min_magpsf_r ? ztf_object.object_details.min_magpsf_r.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details[0].min_magpsf_g ? ztf_object.object_details[0].min_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details[0].min_magpsf_r ? ztf_object.object_details[0].min_magpsf_r.toFixed(3) : '-' }}</td> 
                   </tr>
                   <tr>
                     <td>Max</td>
-                    <td>{{ ztf_object.object_details.max_magpsf_g ? ztf_object.object_details.max_magpsf_g.toFixed(3) : '-' }}</td> 
-                    <td>{{ ztf_object.object_details.max_magpsf_r ? ztf_object.object_details.max_magpsf_r.toFixed(3) : '-' }}</td>
+                    <td>{{ ztf_object.object_details[0].max_magpsf_g ? ztf_object.object_details[0].max_magpsf_g.toFixed(3) : '-' }}</td> 
+                    <td>{{ ztf_object.object_details[0].max_magpsf_r ? ztf_object.object_details[0].max_magpsf_r.toFixed(3) : '-' }}</td>
                   </tr>
                 </table>
               </b-card>
@@ -91,10 +91,10 @@
           </b-col>
         </b-row>
         <!-- PROBABILITIES -->
-        <b-row v-if="$store.state.results.objectDetails.probabilities" class="mt-3">
+        <b-row v-if="$store.state.results.objectDetails.probabilities[0]" class="mt-3">
           <b-col cols="4">
             <b-card no-body class="h-100 align-middle">
-              <!--lineclass></lineclass>-->
+              <lineclass></lineclass>
             </b-card>
           </b-col>
         </b-row>
