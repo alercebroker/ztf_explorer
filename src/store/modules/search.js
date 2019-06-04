@@ -8,9 +8,6 @@ export const state = {
     bands: {},
     coordinates: {},
     sql: "self.objects",
-    interval: null,
-    flagFirst: false,
-    flagLast: false,
     query_status: 0,
     error: null,
     file: null,
@@ -105,9 +102,6 @@ export const mutations = {
     },
     SET_SQL(state, sql){
         state.sql = sql;
-    },
-    SET_FLAG(state, payload){
-        state[payload.flag] = payload.value;
     },
     SET_QUERY_STATUS(state, value){
         state.query_status = value;
@@ -264,9 +258,6 @@ export const actions = {
             dispatch('loading', false);
         })
     },
-    updateFlag({commit}, payload){
-        commit('SET_FLAG', payload);
-    },
     clearQuery({commit}){
         commit('CLEAR_QUERY');
     },
@@ -405,90 +396,6 @@ export const actions = {
             value: probability
         })
     },
-    getSpatialDistribution({dispatch}){
-        return QueryServiceV3.getSpatialDistribution().then(response => {
-            dispatch('setSpatialDistribution', response.data);
-        });
-    },
-    queryHistogram({dispatch, commit}, payload){
-        dispatch('loadingPlot', true);
-        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data["query-id"]
-            dispatch('checkQueryStatusV3', queryId).then(result => {
-                if(result === "finished"){
-                    let newPayload = {
-                        "query-id": queryId,
-                        "x-axis": payload.xAxis,
-                        "type": payload.type
-                    }
-                    dispatch('getQueryHistogram',newPayload);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    getQueryHistogram({dispatch, state}, payload){
-        return QueryServiceV3.getQueryHistogram(payload).then(response => {
-            if(payload.type == "query") dispatch('setQueryHistogram', response.data);
-            else dispatch('setOverviewHistogram', response.data);
-            dispatch('loadingPlot', false);
-        })
-    },
-    queryScatter({dispatch, commit}, payload){
-        dispatch('loadingScatterPlot', true);
-        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data["query-id"]
-            dispatch('checkQueryStatusV3', queryId).then(result => {
-                if(result === "finished"){
-                    let newPayload = {
-                        "query-id": queryId,
-                        "x-axis": payload.xAxis,
-                        "y-axis": payload.yAxis,
-                        "class": payload.classs,
-                        "classifier": payload.classifier,
-                        "type": payload.type
-                    }
-                    dispatch('getQueryScatter',newPayload);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    getQueryScatter({ dispatch, state }, payload){
-        return QueryServiceV3.getQueryScatter(payload).then(response => {
-            if (payload.type == "query") dispatch('setQueryScatter', response.data);
-            else dispatch('setOverviewScatter', response.data)
-            dispatch('loadingScatterPlot', false);
-        })
-    },
-    queryPaginated({dispatch,commit}, payload){
-        dispatch('loading', true);
-        return QueryServiceV3.paginatedQuery(payload.query_parameters, payload.page, payload.per_page).then( response => {
-            if(response.data.total === 0) commit('SET_QUERY_STATUS', 204);
-            else{
-                commit('SET_QUERY_STATUS', response.status);
-                dispatch('setObjects',response.data);
-            }
-            dispatch('loading', false);
-        })
-    },
-    getClassCounts({dispatch}){
-        return QueryServiceV3.countClass().then(response => {
-            dispatch('setClassCounts', response.data);
-        });
-    }
-}
-
-export const getters = {
-    getFilters(state){
-        return state.filters
-    },
-    getSQL(state){
-        return state.sql
-    }
+    
 }
 
