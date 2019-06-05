@@ -91,7 +91,9 @@
           </b-col>
         </b-row>
         <!-- PROBABILITIES -->
-        <b-row v-if="$store.state.results.objectDetails.probabilities[0]" class="mt-3">
+        <b-row v-if="Array.isArray($store.state.results.objectDetails.probabilities) 
+                    && $store.state.results.objectDetails.probabilities.length"
+                    class="mt-3">
           <b-col cols="4">
             <b-card no-body class="h-100 align-middle">
               <lineclass></lineclass>
