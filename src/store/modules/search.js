@@ -45,7 +45,7 @@ export const state = {
             value:5
         },
         {
-            text: "Sne",
+            text: "SNe",
             value: 6
         },
         {
