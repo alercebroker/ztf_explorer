@@ -22,7 +22,7 @@ export default {
         tooltip: {
           formatter: function() {
             var header =
-              '<span style="font-size: 13px">Modified Julian Date: ' +
+              '<span style="font-size: 13px">Phase: ' +
               this.x +
               "</span><br/>";
             var footer =
@@ -50,7 +50,7 @@ export default {
           csv: {
             columnHeaderFormatter: function(item, key){
               if (!item || key == null){
-                return "MJD";
+                return "Phase";
               }
               else if(key == 'y'){
                 return item.options.value[0] == 'r' ? "mag_r" : "mag_g";
@@ -62,9 +62,8 @@ export default {
         }, 
         xAxis: {
           name: "Dates",
-          categories: [],
           title: {
-            text: "Modified Julian Dates"
+            text: "Phase"
           },
         },
         yAxis: {
@@ -151,22 +150,23 @@ export default {
   },
 
   methods: {
-    processLightCurve: function(alerts) {
-      var rband = [];
-      var gband = [];
-      var rbandError = [];
-      var gbandError = [];
-      alerts.forEach(function(item)
-      {
-        if(item.fid == 1)
-        {
-          gband.push([item.mjd, item.magpsf]);
-          gbandError.push([item.mjd, item.magpsf - item.sigmapsf, item.magpsf + item.sigmapsf]);
+    processLightCurveFolded: function(alerts, phases) {
+      let rband = [];
+      let gband = [];
+      let rbandError = [];
+      let gbandError = [];
+      let it1 = 0
+      let it2 = 0
+      alerts.forEach(function(item) {
+        if(item.fid == 1){
+          gband.push([phases[1][it1], item.magpsf_corr]);
+          gbandError.push([phases[1][it1], item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
+          it1 += 1
         }
-        else if(item.fid == 2)
-        {
-          rband.push([item.mjd, item.magpsf]);
-          rbandError.push([item.mjd, item.magpsf - item.sigmapsf, item.magpsf + item.sigmapsf]);
+        else if(item.fid == 2) {
+          rband.push([phases[2][it2], item.magpsf_corr]);
+          rbandError.push([phases[2][it2], item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
+          it2 += 1
         }
       })
       this.chartOptions.series[0].data = rband;
@@ -174,40 +174,25 @@ export default {
       this.chartOptions.series[2].data = gband;
       this.chartOptions.series[3].data = gbandError;
     },
-    processLightCurveNoDet: function(nodet) {
-      var rno_det = [];
-      var gno_det = [];
-      nodet.forEach(function(item)
-      {
-        if(item.fid == 1)
-          gno_det.push([item.mjd, item.diffmaglim]);
-        else if(item.fid == 2)
-          rno_det.push([item.mjd, item.diffmaglim]);
-      })
-      this.chartOptions.series[4].data = rno_det;
-      this.chartOptions.series[5].data = gno_det;
-    },
-    
   },
   computed: {
     alerts(){
       return this.$store.state.results.objectDetails.alerts;
     },
-    no_detections(){
-      return this.$store.state.results.objectDetails.no_detections;
-    },
+    phases(){
+      return this.$store.state.results.objectDetails.phase;
+    }
   },
   watch: {
     alerts(newAlerts){
-      this.processLightCurve(newAlerts);
+        if(this.phases) this.processLightCurve(newAlerts);
     },
-    no_detections(newNoDet){
-      this.processLightCurveNoDet(newNoDet);
-    },
+    phases(newVal){
+      if(this.alerts)this.processLightCurveFolded(this.alerts, newVal)
+    }
   },
   mounted(){
-    if(this.alerts)this.processLightCurve(this.alerts);
-    if(this.no_detections)this.processLightCurveNoDet(this.no_detections);
+    if(this.phases && this.alerts) this.processLightCurveFolded(this.alerts, this.phases)
   }
 };
 </script>

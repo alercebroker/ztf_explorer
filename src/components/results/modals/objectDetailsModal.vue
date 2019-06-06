@@ -79,9 +79,7 @@
           </b-col>
           <!-- Curva de luz -->
           <b-col cols="7">
-            <b-card class="h-100 align-middle">
-              <light-curve></light-curve>
-            </b-card>
+            <card-light-curve />
           </b-col>
           <!-- ALADIN -->
           <b-col cols="3">
@@ -132,7 +130,7 @@
 </template>
 
 <script>
-import lightCurve from "../plots/lightCurve";
+import cardLightCurve from "../cards/cardLightCurve";
 import aladin from '../cards/aladin.vue';
 import lineclass from '../plots/LineClass.vue';
 
@@ -146,7 +144,7 @@ export default {
     }
   },
   components: {
-    lightCurve: lightCurve,
+    cardLightCurve,
     aladin,
     lineclass
   },

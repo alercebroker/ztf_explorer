@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "light-curve",
+  name: "light-curve-corr",
   data() {
     return {
       chartOptions: {
@@ -149,31 +149,7 @@ export default {
       },
     };
   },
-
   methods: {
-    processLightCurve: function(alerts) {
-      var rband = [];
-      var gband = [];
-      var rbandError = [];
-      var gbandError = [];
-      alerts.forEach(function(item)
-      {
-        if(item.fid == 1)
-        {
-          gband.push([item.mjd, item.magpsf]);
-          gbandError.push([item.mjd, item.magpsf - item.sigmapsf, item.magpsf + item.sigmapsf]);
-        }
-        else if(item.fid == 2)
-        {
-          rband.push([item.mjd, item.magpsf]);
-          rbandError.push([item.mjd, item.magpsf - item.sigmapsf, item.magpsf + item.sigmapsf]);
-        }
-      })
-      this.chartOptions.series[0].data = rband;
-      this.chartOptions.series[1].data = rbandError;
-      this.chartOptions.series[2].data = gband;
-      this.chartOptions.series[3].data = gbandError;
-    },
     processLightCurveNoDet: function(nodet) {
       var rno_det = [];
       var gno_det = [];
@@ -187,7 +163,29 @@ export default {
       this.chartOptions.series[4].data = rno_det;
       this.chartOptions.series[5].data = gno_det;
     },
-    
+    processLightCurveCorr: function(alerts) {
+      var rband = [];
+      var gband = [];
+      var rbandError = [];
+      var gbandError = [];
+      alerts.forEach(function(item)
+      {
+        if(item.fid == 1)
+        {
+          gband.push([item.mjd, item.magpsf_corr]);
+          gbandError.push([item.mjd, item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
+        }
+        else if(item.fid == 2)
+        {
+          rband.push([item.mjd, item.magpsf_corr]);
+          rbandError.push([item.mjd, item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
+        }
+      })
+      this.chartOptions.series[0].data = rband;
+      this.chartOptions.series[1].data = rbandError;
+      this.chartOptions.series[2].data = gband;
+      this.chartOptions.series[3].data = gbandError;
+    },
   },
   computed: {
     alerts(){
@@ -195,18 +193,18 @@ export default {
     },
     no_detections(){
       return this.$store.state.results.objectDetails.no_detections;
-    },
+    }
   },
   watch: {
     alerts(newAlerts){
-      this.processLightCurve(newAlerts);
+      this.processLightCurveCorr(newAlerts);
     },
     no_detections(newNoDet){
       this.processLightCurveNoDet(newNoDet);
     },
   },
   mounted(){
-    if(this.alerts)this.processLightCurve(this.alerts);
+    if(this.alerts)this.processLightCurveCorr(this.alerts);
     if(this.no_detections)this.processLightCurveNoDet(this.no_detections);
   }
 };
