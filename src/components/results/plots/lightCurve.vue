@@ -52,10 +52,12 @@ export default {
               if (!item || key == null){
                 return "MJD";
               }
-              else if(key == 'y'){
-                return item.options.value[0] == 'r' ? "mag_r" : "mag_g";
+              else if (key == "high" || key == "low") {
+                return item.options.value + "_" + key
               }
-              return item.options.value + "_" + key;
+              else{
+                return item.options.value
+              }
             }
           }
 
@@ -126,8 +128,8 @@ export default {
             data: [],
           },
           {
-            name: "r no detections",
-            value: "diffmaglim",
+            name: "r non detections",
+            value: "r diffmaglim",
             type: "scatter",
             color: "rgba(255, 0, 0, 0.3)",
             data: [],
@@ -136,8 +138,8 @@ export default {
             }
           },
           {
-            name: "g no detections",
-            value: "diffmaglim",
+            name: "g non detections",
+            value: "g diffmaglim",
             type: "scatter",
             color: "rgba(0, 255, 0, 0.3)",
             data: [],

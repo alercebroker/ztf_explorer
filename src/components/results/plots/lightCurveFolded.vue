@@ -123,26 +123,6 @@ export default {
             color: "#0a9900",
             enableMouseTracking: false,
             data: [],
-          },
-          {
-            name: "r no detections",
-            value: "diffmaglim",
-            type: "scatter",
-            color: "rgba(255, 0, 0, 0.3)",
-            data: [],
-            marker: {
-              symbol: 'triangle-down'
-            }
-          },
-          {
-            name: "g no detections",
-            value: "diffmaglim",
-            type: "scatter",
-            color: "rgba(0, 255, 0, 0.3)",
-            data: [],
-            marker: {
-              symbol: 'triangle-down'
-            }
           }
         ]
       },

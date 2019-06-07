@@ -125,44 +125,12 @@ export default {
             enableMouseTracking: false,
             data: [],
           },
-          {
-            name: "r no detections",
-            value: "diffmaglim",
-            type: "scatter",
-            color: "rgba(255, 0, 0, 0.3)",
-            data: [],
-            marker: {
-              symbol: 'triangle-down'
-            }
-          },
-          {
-            name: "g no detections",
-            value: "diffmaglim",
-            type: "scatter",
-            color: "rgba(0, 255, 0, 0.3)",
-            data: [],
-            marker: {
-              symbol: 'triangle-down'
-            }
-          }
+
         ]
       },
     };
   },
   methods: {
-    processLightCurveNoDet: function(nodet) {
-      var rno_det = [];
-      var gno_det = [];
-      nodet.forEach(function(item)
-      {
-        if(item.fid == 1)
-          gno_det.push([item.mjd, item.diffmaglim]);
-        else if(item.fid == 2)
-          rno_det.push([item.mjd, item.diffmaglim]);
-      })
-      this.chartOptions.series[4].data = rno_det;
-      this.chartOptions.series[5].data = gno_det;
-    },
     processLightCurveCorr: function(alerts) {
       var rband = [];
       var gband = [];
@@ -191,21 +159,15 @@ export default {
     alerts(){
       return this.$store.state.results.objectDetails.alerts;
     },
-    no_detections(){
-      return this.$store.state.results.objectDetails.no_detections;
-    }
   },
   watch: {
     alerts(newAlerts){
       this.processLightCurveCorr(newAlerts);
     },
-    no_detections(newNoDet){
-      this.processLightCurveNoDet(newNoDet);
-    },
+
   },
   mounted(){
     if(this.alerts)this.processLightCurveCorr(this.alerts);
-    if(this.no_detections)this.processLightCurveNoDet(this.no_detections);
   }
 };
 </script>
