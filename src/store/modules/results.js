@@ -77,9 +77,6 @@ export const mutations = {
         state.queryScatter = plot;
     },
     SET_OBJECTS(state, objects){
-        for(let key of Object.keys(objects)){
-            objects[key].id = key;
-        }
         state.objects = objects;
     },
     SET_NUM_PAGES(state,num_pages){
@@ -132,7 +129,7 @@ export const actions = {
         commit('SET_QUERY_SCATTER', plot);
     },
     setObjects({commit}, objects){
-        commit('SET_OBJECTS', JSON.parse(objects.result));
+        commit('SET_OBJECTS', objects.result);
         commit('SET_TOTAL', objects.total);
         commit('SET_NUM_PAGES', objects.num_pages)
     },

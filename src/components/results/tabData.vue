@@ -14,9 +14,9 @@
         <b-btn class="mb-3 btn-wrap-text" :block="block" v-b-modal.showDetails>Columns to show in table</b-btn>
       </b-col>
       <b-col></b-col>
-      <b-col cols="4">
+      <!-- <b-col cols="4">
         <b-btn class="mb-3 btn-wrap-text" :block="block" v-b-modal.showDownloadModal>Download</b-btn>
-      </b-col>
+      </b-col> -->
     </div>
 
     <column-options-modal />
@@ -106,7 +106,7 @@
     </div>
 
     <object-details-modal v-if="showObjectDetailsModal" :show="showObjectDetailsModal" @modalClosed="showObjectDetailsModal = false"/>
-    <download-modal />
+    <!-- <download-modal /> -->
 
   </div>
   <div v-else-if="$store.state.search.query_status === 400">
@@ -180,7 +180,10 @@ export default {
 
     pageChange(page){
       let query_parameters = this.$store.state.search.query_parameters;
-      this.$store.dispatch('queryObjectsV3', {query_parameters: query_parameters, page: page, perPage: this.$store.state.perPage});
+      this.$store.dispatch('queryObjects', {query_parameters: query_parameters, 
+                                            page: page, 
+                                            perPage: this.$store.state.perPage, 
+                                            total:this.$store.state.results.total});
     }
   },
   mounted: function() {

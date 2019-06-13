@@ -1,5 +1,5 @@
-import QueryService from '@/services/QueryService.js';
-import QueryServiceV3 from '@/services/QueryServiceV3.js'
+import QueryPSQLService from '@/services/QueryPSQLService.js';
+import QueryDaskService from '@/services/QueryDaskService.js'
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
@@ -7,7 +7,7 @@ export const state = {
     dates: {},
     bands: {},
     coordinates: {},
-    sql: "self.objects",
+    sql: "SELECT * FROM OBJECTS",
     query_status: 0,
     error: null,
     file: null,
@@ -117,7 +117,7 @@ export const mutations = {
         state.dates = { }
         state.bands = { }
         state.coordinates = { }
-        state.sql = "self.objects"
+        state.sql = "SELECT * FROM OBJECTS"
         state.probability = null
         state.selectedClass = null
         state.selectedClassifier = null
@@ -150,124 +150,35 @@ export const actions = {
         commit('SET_QUERY_PARAMETERS', query_parameters);
     },
     getSQL({ commit }, query_parameters){
-        QueryServiceV3.getDataframeFilters(query_parameters).then( response => {
-            commit('SET_SQL', response.data);
-        }).catch( error => {
-            commit('SET_ERROR', error);
+        QueryPSQLService.getSQL(query_parameters).then( response => {
+            commit('SET_SQL', response.data)
         })
     },
-    checkQueryStatus({commit, dispatch}, taskId){
-        return QueryService.checkQueryStatus(taskId).then(response => {
-            if (response.data.status === "SUCCESS") {
-                commit('SET_ERROR', null);
-                return "SUCCESS"
-            }
-            else if (response.data.status === "TIMEDOUT"){
-                commit('SET_QUERY_STATUS', 504)
-                dispatch('loading', false)
-            }
-            else if( response.data.status === "STARTED"){
-                return dispatch('checkQueryStatus', taskId)
-            }
+    queryObjects({commit, dispatch}, payload){
+        dispatch('loading', true)
+        QueryPSQLService.queryObjects(payload).then( response => {
+            commit('SET_QUERY_STATUS', response.status)
+            dispatch('setObjects', response.data)
+            dispatch('loading', false)
         }).catch(error => {
             commit('SET_ERROR', error);
-            return "ERROR"
-        })
-    },
-    checkQueryStatusV3({commit, dispatch}, queryId){
-        return QueryServiceV3.queryStatus(queryId).then(response => {
-            if (response.data.status === "finished"){
-                commit('SET_ERROR', null);
-                return "finished"
-            }
-            else if(response.data.status === "error"){
-                commit('SET_ERROR', "error")
-                return "error"
-            }
-            else if(response.data.status === "pending"){
-                return dispatch('checkQueryStatusV3', queryId)
-            }
-        }).catch(error => {
-            commit('SET_ERROR', error)
-            return "error"
-        })
-    },
-    queryObjectsV3({ commit, dispatch }, payload){
-        dispatch('loading', true);
-        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data["query-id"]
-            dispatch('checkQueryStatusV3', queryId).then(result => {
-                if(result === "finished"){
-                    let newPayload = {
-                        queryId: queryId,
-                        page: payload.page,
-                        perPage: payload.perPage
-                    }
-                    dispatch('getPaginatedResult',newPayload);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    getPaginatedResult({commit, dispatch},payload){
-        QueryServiceV3.paginatedResult(payload.queryId, payload.page, payload.perPage).then( response =>{
-            if(response.data.total === 0) commit('SET_QUERY_STATUS', 204);
-            else{
-                commit('SET_QUERY_STATUS', response.status);
-                dispatch('setObjects',response.data);
-            }
             dispatch('loading', false);
         })
     },
     queryAlerts({commit, dispatch}, object){
         dispatch('loading', true);
-        QueryService.executeObjectQuery(object.id).then( response => {
-            let taskId = response.data["task-id"]
-            dispatch('checkQueryStatus',taskId).then(result => {
-                if(result === "SUCCESS"){
-                    dispatch('getObjectDetails',taskId);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
+        
     },
     queryAlertsFromURL({commit, dispatch}, object){
         dispatch('loading', true);
-        QueryService.executeObjectQuery(object.oid).then( response => {
-            let taskId = response.data["task-id"]
-            dispatch('checkQueryStatus',taskId).then(result => {
-                if(result === "SUCCESS"){
-                    dispatch('getObjectDetails',taskId);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
+        
     },
-    getObjectDetails({commit, dispatch}, taskId){
-        QueryService.getResult(taskId).then( response => {
-            dispatch('setObjectDetails', response.data);
-            dispatch('loading', false);
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
+
     clearQuery({commit}){
         commit('CLEAR_QUERY');
     },
     getFile({commit},taskId){
-        QueryService.getResult(taskId).then(result => {
-            commit('SET_QUERY_STATUS', result.status);
-            commit('SET_FILE', result.data.result);
-        }).catch(error => {
-            commit('SET_ERROR', error);
-        })
+        
     },
     downloadFile({commit, dispatch, state}, format){
         let query_parameters = {
@@ -282,39 +193,9 @@ export const actions = {
         if(!Object.getOwnPropertyNames(state.coordinates).length === 0){
             query_parameters.coordinates = state.coordinates;
         }
-        QueryService.executeDownloadQuery(query_parameters, format).then( response => {
-            let taskId = response.data["task-id"];
-            dispatch('checkQueryStatus',taskId).then(result => {
-                if(result === "SUCCESS"){
-                    dispatch('getFile',taskId);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-        })
+        
     },
-    queryClassList({commit, dispatch}){
-        QueryService.queryClassList().then( res => {
-            console.log("res ? ")
-            let taskId = res.data["task-id"];
-            dispatch('checkQueryStatus',taskId).then( result => {
-                console.log("status", result)
-                if(result === "SUCCESS"){
-                    dispatch('getClassList', taskId);
-                }
-            })
-        }).catch( error => {
-            commit('SET_ERROR', error);
-        });
-    },
-    
-    getClassList({commit},taskId){
-        QueryService.getClassList(taskId).then(result => {
-            commit('SET_CLASSES',result.data.result);
-        }).catch(error => {
-            commit('SET_ERROR', error);
-        })
-    },
+
     setClassifier({commit, state, dispatch}, classifier){
         dispatch('setProbability', null);
         commit('SET_CLASSIFIER', classifier);

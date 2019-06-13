@@ -1,4 +1,4 @@
-import QueryServiceV3 from '@/services/QueryServiceV3.js'
+import QueryServiceV3 from '@/services/QueryDaskService.js'
 export const state = {
     error: null
 }
