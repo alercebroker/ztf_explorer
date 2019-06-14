@@ -3,8 +3,10 @@ export const state = {
         oid: null,
     },
     objectDetails: {
-        object_details: null,
-        alerts: null,
+        detections: null,
+        non_detections: null,
+        probabilities: null,
+        periods: null
     },
     selectedColumnOptions: [
         {
@@ -40,15 +42,10 @@ export const state = {
             label: "LastMJD"
         }
     ],
-    spatialDistribution: null,
-    overviewHistogram: null,
-    queryHistogram: null,
-    overviewScatter: null,
-    queryScatter: null,
+    
     objects: [],
     total: 0,
     num_pages: 0,
-    class_counts: null,
 }
 
 export const mutations = {
@@ -58,23 +55,17 @@ export const mutations = {
     SET_SELECTED_OBJECT(state, item){
         state.selectedObject = item;
     },
-    SET_OBJECT_DETAILS(state, details){
-        state.objectDetails = details;
+    SET_DETECTIONS(state, det){
+        state.objectDetails.detections = det
     },
-    SET_SPATIAL_DISTRIBUTION(state, plot){
-        state.spatialDistribution = plot;
+    SET_NON_DETECTIONS(state,nondet){
+        state.objectDetails.non_detections = nondet
     },
-    SET_OVERVIEW_HISTOGRAM(state,plot){
-        state.overviewHistogram = plot;
+    SET_PROBABILITIES(state, prob){
+        state.objectDetails.probabilities = prob
     },
-    SET_QUERY_HISTOGRAM(state,plot){
-        state.queryHistogram = plot;
-    },
-    SET_OVERVIEW_SCATTER(state,plot){
-        state.overviewScatter = plot;
-    },
-    SET_QUERY_SCATTER(state, plot){
-        state.queryScatter = plot;
+    SET_PERIODS(state, periods){
+        state.objectDetails.periods = periods
     },
     SET_OBJECTS(state, objects){
         state.objects = objects;
@@ -85,9 +76,7 @@ export const mutations = {
     SET_TOTAL(state, total){
         state.total = total;
     },
-    SET_CLASS_COUNTS(state, data){
-        state.class_counts = data;
-    }
+    
 }
 
 export const actions = {
@@ -97,11 +86,10 @@ export const actions = {
     objectSelected({commit, dispatch, state}, object){
         if(state.selectedObject.oid !== object.oid){
             commit('SET_SELECTED_OBJECT', object);
-            commit('SET_OBJECT_DETAILS', {
-                object_details: null,
-                alerts: null,
-            });
-            dispatch('queryAlerts', object);
+            dispatch('queryDetections', object);
+            dispatch('queryNonDetections', object);
+            dispatch('queryProbabilities', object);
+            dispatch('queryFeatures', object)
         }
     },
     objectSelectedFromURL({commit, dispatch, state}, object){
@@ -110,32 +98,25 @@ export const actions = {
             dispatch('queryAlertsFromURL', object);
         }
     },
-    setObjectDetails({commit}, details){
-        commit('SET_OBJECT_DETAILS', details.result);
+    setDetections({commit}, detections){
+        commit('SET_DETECTIONS', detections)
     },
-    setSpatialDistribution({commit}, plot){
-        commit('SET_SPATIAL_DISTRIBUTION', plot);
+    setNonDetections({commit}, nondetections){
+        commit('SET_NON_DETECTIONS', nondetections)
     },
-    setOverviewHistogram({commit}, plot){
-        commit('SET_OVERVIEW_HISTOGRAM', plot);
+    setProbabilities({commit}, probabilities){
+        commit('SET_PROBABILITIES', probabilities)
     },
-    setQueryHistogram({ commit }, plot){
-        commit('SET_QUERY_HISTOGRAM', plot);
+    setPeriods({commit}, periods){
+        commit('SET_PERIODS', periods)
     },
-    setOverviewScatter({commit}, plot){
-        commit('SET_OVERVIEW_SCATTER', plot);
-    },
-    setQueryScatter({ commit }, plot){
-        commit('SET_QUERY_SCATTER', plot);
-    },
+    
     setObjects({commit}, objects){
         commit('SET_OBJECTS', objects.result);
         commit('SET_TOTAL', objects.total);
         commit('SET_NUM_PAGES', objects.num_pages)
     },
-    setClassCounts({commit}, data){
-        commit('SET_CLASS_COUNTS', data);
-    },
+    
 }
 
 export const getters = {

@@ -130,23 +130,28 @@ export default {
   },
 
   methods: {
-    processLightCurveFolded: function(alerts, phases) {
+    processLightCurveFolded: function(alerts, periods) {
       let rband = [];
       let gband = [];
       let rbandError = [];
       let gbandError = [];
-      let it1 = 0
-      let it2 = 0
       alerts.forEach(function(item) {
+        if(item.magpsf_corr == null){
+          return
+        }
         if(item.fid == 1){
-          gband.push([phases[1][it1], item.magpsf_corr]);
-          gbandError.push([phases[1][it1], item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
-          it1 += 1
+          let phase = periods.periodls_1 % item.mjd
+          phase = phase / periods.periodls_1
+          gband.push([phase, item.magpsf_corr]);
+          gbandError.push([phase, item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
         }
         else if(item.fid == 2) {
-          rband.push([phases[2][it2], item.magpsf_corr]);
-          rbandError.push([phases[2][it2], item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
-          it2 += 1
+          let phase = periods.periodls_2 % item.mjd
+          console.log("MOD",phase)
+          phase = phase / periods.periodls_2
+          console.log("DIV",phase)
+          rband.push([phase, item.magpsf_corr]);
+          rbandError.push([phase, item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
         }
       })
       this.chartOptions.series[0].data = rband;
@@ -157,22 +162,22 @@ export default {
   },
   computed: {
     alerts(){
-      return this.$store.state.results.objectDetails.alerts;
+      return this.$store.state.results.objectDetails.detections;
     },
-    phases(){
-      return this.$store.state.results.objectDetails.phase;
+    periods(){
+      return this.$store.state.results.objectDetails.periods;
     }
   },
   watch: {
     alerts(newAlerts){
         if(this.phases) this.processLightCurve(newAlerts);
     },
-    phases(newVal){
+    periods(newVal){
       if(this.alerts)this.processLightCurveFolded(this.alerts, newVal)
     }
   },
   mounted(){
-    if(this.phases && this.alerts) this.processLightCurveFolded(this.alerts, this.phases)
+    if(this.periods && this.alerts) this.processLightCurveFolded(this.alerts, this.periods)
   }
 };
 </script>

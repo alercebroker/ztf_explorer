@@ -1,6 +1,6 @@
 <template>
   <div v-if="$store.state.search.error">
-    <b-alert show variant="danger">Error connecting to our servers</b-alert>
+    <b-alert show variant="danger">Error connecting to our servers {{$store.state.search.error}}</b-alert>
   </div>
   <div v-else-if="$store.state.search.query_status === 204">
     <b-alert show variant="warning">
@@ -168,7 +168,7 @@ export default {
     onRowClicked(item) {
       this.showObjectDetailsModal = true;
       this.$store.dispatch('objectSelected', item);
-      //this.$router.push({ name: 'object-details-modal', params: { id: item.oid } });
+      // this.$router.push({ name: 'object-details-modal', params: { id: item.oid } });
     },
     getUrlObject() {
       if(this.$route.params.id) {

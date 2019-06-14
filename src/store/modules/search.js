@@ -154,6 +154,16 @@ export const actions = {
             commit('SET_SQL', response.data)
         })
     },
+
+    // queryAlerts({dispatch}, object){
+    //     dispatch('loading')
+    //     Promise.all([
+    //         QueryPSQLService.queryDetections(object.oid),
+    //         QueryPSQLService.queryNonDetections(object.oid),
+    //         QueryPSQLService.queryProbabilities(object.oid),
+    //         QueryPSQLService.queryFeatures
+    //         ])
+    // },
     queryObjects({commit, dispatch}, payload){
         dispatch('loading', true)
         QueryPSQLService.queryObjects(payload).then( response => {
@@ -165,12 +175,36 @@ export const actions = {
             dispatch('loading', false);
         })
     },
-    queryAlerts({commit, dispatch}, object){
+    queryDetections({commit, dispatch}, object){
         dispatch('loading', true);
-        
+        QueryPSQLService.queryDetections(object.oid).then(det => {
+            dispatch('setDetections', det.data.result.detections)
+            dispatch('loading', false)
+        })
+    },
+    queryNonDetections({dispatch}, object){
+        dispatch('loading', true);
+        QueryPSQLService.queryNonDetections(object.oid).then(nondet => {
+            dispatch('setNonDetections', nondet.data.result.non_detections)
+            dispatch('loading', false)
+        })
+    },
+    queryProbabilities({dispatch}, object){
+        dispatch('loading', true);
+        QueryPSQLService.queryProbabilities(object.oid).then(prob => {
+            dispatch('setProbabilities', prob.data.result.probabilities)
+            dispatch('loading', false)
+        })
+    },
+    queryFeatures({dispatch}, object){
+        dispatch('loading', true);
+        QueryPSQLService.queryFeatures(object.oid).then(feat => {
+            dispatch('setPeriods', feat.data.result.period)
+            dispatch('loading', false)
+        })
     },
     queryAlertsFromURL({commit, dispatch}, object){
-        dispatch('loading', true);
+        // dispatch('loading', true);
         
     },
 

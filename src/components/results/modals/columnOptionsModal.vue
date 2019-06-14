@@ -40,11 +40,11 @@
                 }
               },
               {
-                text: "Number of alerts",
+                text: "Number of observations",
                 value: {
                   key: "nobs",
                   sortable: true,
-                  label: "#"
+                  label: "#obs"
                 }
               },
               {

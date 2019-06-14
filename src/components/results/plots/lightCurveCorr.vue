@@ -138,6 +138,9 @@ export default {
       var gbandError = [];
       alerts.forEach(function(item)
       {
+        if(item.magpsf_corr == null){
+          return
+        }
         if(item.fid == 1)
         {
           gband.push([item.mjd, item.magpsf_corr]);
@@ -157,7 +160,7 @@ export default {
   },
   computed: {
     alerts(){
-      return this.$store.state.results.objectDetails.alerts;
+      return this.$store.state.results.objectDetails.detections;
     },
   },
   watch: {

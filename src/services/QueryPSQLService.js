@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: "http://localhost:8085",
+    baseURL: "http://alerce.xyz:8085",
     withCredentials: false,
     headers: {
         Accept: "application/json",
@@ -39,18 +39,14 @@ export default {
         return apiClient.post('/get_non_detections', {oid: oid})
     },
     /**
-     * Executes query to stats of a given object id
-     * @param {*} oid: Object id
-     */
-    queryStats(oid){
-        return apiClient.post('/get_stats', {oid:oid});
-    },
-    /**
      * Executes query to search class probabilities of a given object id
      * @param {*} oid: Object id
      */
     queryProbabilities(oid){
         return apiClient.post('/get_probabilities', {oid:oid})
+    },
+    queryFeatures(oid){
+        return apiClient.post('/get_features', {oid:oid})
     },
     /**
      * Executes a query to download the list of objects previously filtered
