@@ -243,11 +243,6 @@ export const actions = {
             keyPath: ["classrf"],
             value: null
         })
-        dispatch('updateOptions',{
-            obj: "filters",
-            keyPath: ["classrnn"],
-            value: null
-        })
         if(state.selectedClass && classifier){
             dispatch('updateOptions',{
                 obj: "filters",
@@ -259,11 +254,6 @@ export const actions = {
             dispatch('updateOptions',{
                 obj: "filters",
                 keyPath: ["classxmatch"],
-                value: state.selectedClass
-            })
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: ["classrnn"],
                 value: state.selectedClass
             })
             dispatch('updateOptions',{
@@ -291,11 +281,6 @@ export const actions = {
             dispatch('updateOptions',{
                 obj: "filters",
                 keyPath: ["classrf"],
-                value: classs
-            })
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: ["classrnn"],
                 value: classs
             })
         }
