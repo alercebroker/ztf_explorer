@@ -140,16 +140,14 @@ export default {
           return
         }
         if(item.fid == 1){
-          let phase = periods.periodls_1 % item.mjd
+          let phase = item.mjd % periods.periodls_1 
           phase = phase / periods.periodls_1
           gband.push([phase, item.magpsf_corr]);
           gbandError.push([phase, item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
         }
         else if(item.fid == 2) {
-          let phase = periods.periodls_2 % item.mjd
-          console.log("MOD",phase)
+          let phase = item.mjd % periods.periodls_2 
           phase = phase / periods.periodls_2
-          console.log("DIV",phase)
           rband.push([phase, item.magpsf_corr]);
           rbandError.push([phase, item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
         }
