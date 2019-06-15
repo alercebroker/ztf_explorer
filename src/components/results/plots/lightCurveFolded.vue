@@ -23,13 +23,13 @@ export default {
           formatter: function() {
             var header =
               '<span style="font-size: 13px">Phase: ' +
-              this.x +
+              this.x.toFixed(3) +
               "</span><br/>";
             var footer =
               '<span style="font-size: 11px; font-weight: bold;">' +
               this.series.name +
               ": " +
-              this.y +
+              this.y.toFixed(3) +
               "</span>";
             return header + footer;
           },
@@ -37,6 +37,9 @@ export default {
         },
         title: {
           text: "Light Curve" 
+        },
+        subtitle:{
+          text: "Period:" + this.$store.state.results.objectDetails.periods.periodls_1.toFixed(3)
         },
         exporting: {
           enabled: true,
@@ -74,14 +77,6 @@ export default {
           reversed: true,
           startOnTick: true
         },
-        legend: {
-          //layout: "vertical",
-          //align: "left",
-          //verticalAlign: "top",
-          //floating: true,
-          //x: -10,
-          //y: -5,
-        },
         plotOptions: {
           shared: true,
           crosshairs: true,
@@ -91,7 +86,7 @@ export default {
             marker: {
               lineWidth: 1
             }
-          }
+          },
         },
         series: [
           {
@@ -124,7 +119,7 @@ export default {
             enableMouseTracking: false,
             data: [],
           }
-        ]
+        ],
       },
     };
   },

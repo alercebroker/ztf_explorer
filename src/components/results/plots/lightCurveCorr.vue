@@ -23,13 +23,13 @@ export default {
           formatter: function() {
             var header =
               '<span style="font-size: 13px">Modified Julian Date: ' +
-              this.x +
+              this.x.toFixed(3) +
               "</span><br/>";
             var footer =
               '<span style="font-size: 11px; font-weight: bold;">' +
               this.series.name +
               ": " +
-              this.y +
+              this.y.toFixed(3) +
               "</span>";
             return header + footer;
           },
