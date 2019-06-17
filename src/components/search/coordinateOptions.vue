@@ -58,6 +58,7 @@
                     type="number"
                     step="0.00001"
                     v-model="rs"
+                    min="0"
                     />
                 </b-col>
             </b-row>
