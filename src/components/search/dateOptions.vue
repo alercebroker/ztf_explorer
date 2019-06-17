@@ -51,7 +51,7 @@
                 />
             </b-col>
         </b-row>
-        <b-row>
+        <!-- <b-row>
             <b-col cols="4" class="text-center small">min</b-col>
             <b-col cols="4" class="text-center"></b-col>
             <b-col cols="4" class="text-center small">max</b-col>
@@ -81,7 +81,7 @@
                     v-model="deltamax"
                 />
             </b-col>
-        </b-row>
+        </b-row> -->
     </div>
 </template>
 
