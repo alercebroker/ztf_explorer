@@ -6,7 +6,7 @@ export const state = {
         detections: null,
         non_detections: null,
         probabilities: null,
-        periods: null
+        period: null
     },
     selectedColumnOptions: [
         {
@@ -46,6 +46,7 @@ export const state = {
     objects: [],
     total: 0,
     num_pages: 0,
+    showObjectDetailsModal: false
 }
 
 export const mutations = {
@@ -54,6 +55,9 @@ export const mutations = {
     },
     SET_SELECTED_OBJECT(state, item){
         state.selectedObject = item;
+    },
+    SET_OBJECT_DETAILS(state, detail){
+        state.objectDetails[Object.keys(detail)[0]] = detail[Object.keys(detail)[0]]
     },
     SET_DETECTIONS(state, det){
         state.objectDetails.detections = det
@@ -76,7 +80,9 @@ export const mutations = {
     SET_TOTAL(state, total){
         state.total = total;
     },
-    
+    SET_SHOW_OBJECT_DETAILS_MODAL(state, value){
+        state.showObjectDetailsModal = value
+    }
 }
 
 export const actions = {
@@ -86,10 +92,7 @@ export const actions = {
     objectSelected({commit, dispatch, state}, object){
         if(state.selectedObject.oid !== object.oid){
             commit('SET_SELECTED_OBJECT', object);
-            dispatch('queryDetections', object);
-            dispatch('queryNonDetections', object);
-            dispatch('queryProbabilities', object);
-            dispatch('queryFeatures', object)
+            dispatch('queryAlerts', object)
         }
     },
     objectSelectedFromURL({commit, dispatch, state}, object){
@@ -97,6 +100,9 @@ export const actions = {
             commit('SET_SELECTED_OBJECT', object);
             dispatch('queryAlertsFromURL', object);
         }
+    },
+    setObjectDetails({commit}, detail){
+        commit("SET_OBJECT_DETAILS", detail)
     },
     setDetections({commit}, detections){
         commit('SET_DETECTIONS', detections)
@@ -110,12 +116,14 @@ export const actions = {
     setPeriods({commit}, periods){
         commit('SET_PERIODS', periods)
     },
-    
     setObjects({commit}, objects){
         commit('SET_OBJECTS', objects.result);
         commit('SET_TOTAL', objects.total);
         commit('SET_NUM_PAGES', objects.num_pages)
     },
+    setShowObjectDetailsModal({commit}, value){
+        commit('SET_SHOW_OBJECT_DETAILS_MODAL', value)
+    }
     
 }
 
