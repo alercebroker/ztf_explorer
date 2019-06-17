@@ -11,6 +11,8 @@ export const state = {
     query_status: 0,
     error: null,
     file: null,
+    flagFirst: false,
+    flagLast: false,
     classes: [
         {
             text: "Not specified",
@@ -103,6 +105,9 @@ export const mutations = {
     SET_SQL(state, sql){
         state.sql = sql;
     },
+    SET_FLAG(state, payload){
+        state[payload.flag] = payload.value;
+},
     SET_QUERY_STATUS(state, value){
         state.query_status = value;
     },
@@ -154,7 +159,9 @@ export const actions = {
             commit('SET_SQL', response.data)
         })
     },
-
+    updateFlag({commit}, payload){
+        commit('SET_FLAG', payload);
+},
     // queryAlerts({dispatch}, object){
     //     dispatch('loading')
     //     Promise.all([
