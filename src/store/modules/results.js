@@ -46,7 +46,8 @@ export const state = {
     objects: [],
     total: 0,
     num_pages: 0,
-    showObjectDetailsModal: false
+    showObjectDetailsModal: false,
+    currentPage: 0
 }
 
 export const mutations = {
@@ -82,6 +83,9 @@ export const mutations = {
     },
     SET_SHOW_OBJECT_DETAILS_MODAL(state, value){
         state.showObjectDetailsModal = value
+    },
+    SET_CURRENT_PAGE(state, value){
+        state.currentPage = value;
     }
 }
 
@@ -126,6 +130,9 @@ export const actions = {
     },
     setShowObjectDetailsModal({commit}, value){
         commit('SET_SHOW_OBJECT_DETAILS_MODAL', value)
+    },
+    setCurrentPage({commit}, value){
+        commit('SET_CURRENT_PAGE', value);
     }
     
 }

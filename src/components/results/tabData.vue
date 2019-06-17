@@ -139,7 +139,6 @@ export default {
   data() {
     return {
       block:true,
-      currentPage: 1,
       sortBy: 'nobs',
       sortDesc: true,
       
@@ -181,6 +180,14 @@ export default {
   computed: {
     showObjectDetailsModal(){
       return this.$store.state.results.showObjectDetailsModal
+    },
+    currentPage:{
+      get(){
+        return this.$store.state.results.currentPage
+      },
+      set(value){
+        this.$store.dispatch('setCurrentPage', value)
+      }
     }
   }
 };
