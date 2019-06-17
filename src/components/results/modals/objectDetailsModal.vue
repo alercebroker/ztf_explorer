@@ -29,8 +29,8 @@
                     <!--RA/Dec-->
                     <li>
                       <strong>RA/Dec:</strong> {{ ztf_object.meanra ? ztf_object.meanra.toFixed(4) : '-' }},{{ ztf_object.meandec ? ztf_object.meandec.toFixed(4) : '-' }}</li>
-                    <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.detections.length }}</li>
-                    <li><strong>Non-Detections:</strong> {{ $store.state.results.objectDetails.non_detections.length }}</li>
+                    <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.detections ? $store.state.results.objectDetails.detections.length : '-' }}</li>
+                    <li><strong>Non-Detections:</strong> {{ $store.state.results.objectDetails.non_detections ? $store.state.results.objectDetails.non_detections.length : '-' }}</li>
                     <li><strong>First date:</strong> {{ julianIntToDate(ztf_object.firstmjd) }}</li>
                     <li><strong>Last date:</strong> {{ julianIntToDate(ztf_object.lastmjd) }}</li>
                   </ul>
@@ -90,9 +90,7 @@
           </b-col>
         </b-row>
         <!-- PROBABILITIES -->
-        <b-row v-if="Array.isArray($store.state.results.objectDetails.probabilities) 
-                    && $store.state.results.objectDetails.probabilities.length"
-                    class="mt-3">
+        <b-row class="mt-3" v-if="$store.state.results.selectedObject.classrf">
           <b-col cols="4">
             <b-card no-body class="h-100 align-middle">
               <lineclass></lineclass>

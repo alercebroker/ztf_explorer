@@ -12,9 +12,6 @@
   export default  {
     name: 'lineclass',
     props: [],
-    mounted() {
-      this.getValues();
-    },
     data() {
       return {
         lineOptions: {
@@ -29,7 +26,7 @@
             categories: []
           },
           yAxis: {
-            max: 100,
+            max: 1,
             title: {
               text: 'Probability (%)'
             }
@@ -45,7 +42,7 @@
             line: {
               dataLabels: {
                 enabled: true,
-                format: "{y:.1f} %"
+                
               },
             enableMouseTracking: true
             }
@@ -55,26 +52,57 @@
       }
     },
     methods: {
-      getValues: function(){
-        var keys = Object.keys(this.$store.state.results.objectDetails.probabilities[0]);
-        var datas = this.$store.state.results.objectDetails.probabilities[0];
+      getClass(obj, classifier){
+        return this.$store.state.search.classes.find(function(x){
+          if(x.value == obj[classifier]){
+            return x;
+          }
+        }).text;
+      },
+      getValues: function(probabilities){
+        var keys = Object.keys(probabilities);
+        var datas = this.$store.state.results.objectDetails.probabilities;
         var categories = []
         var rf = []
-        var rnn = []
         keys.forEach(function(x){
           if(x.endsWith("_prob"))
           {
             let name = x.split("_")[0]
             categories.push(name)
-            rf.push(datas[x].toFixed(4)*100)
+            rf.push(datas[x])
           }
         })
         this.lineOptions.xAxis.categories = categories;
         this.lineOptions.series.push({name: "RF", data: rf})
+        console.log("jkhdakj")
+        if(this.$store.state.results.selectedObject.classxmatch)
+        {
+          var classxmatch = this.getClass(this.$store.state.results.selectedObject, "classxmatch").toLowerCase();
+          this.lineOptions.xAxis.plotLines = [{
+            value: categories.indexOf(classxmatch),
+            dashStyle: 'dash',
+            width: 1,
+            color: '#d33',
+            label: {
+              text: 'XMATCH',
+              style: {
+                color: 'gray'
+              }
+            }
+          }]
+        }
+
       }
     },
     computed: {
-
+      probabilities(){
+        return this.$store.state.results.objectDetails.probabilities;
+      }
+    },
+    watch: {
+      probabilities(prob){
+        this.getValues(prob);
+      }
     }
 }
 </script>
