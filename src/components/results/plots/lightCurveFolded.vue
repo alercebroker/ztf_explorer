@@ -39,7 +39,7 @@ export default {
           text: "Light Curve" 
         },
         subtitle:{
-          text: "Period:" + this.$store.state.results.objectDetails.periods.periodls_1.toFixed(3)
+          text: "Period:" + this.$store.state.results.objectDetails.periods.periodls_1.toFixed(3) + " days"
         },
         exporting: {
           enabled: true,
