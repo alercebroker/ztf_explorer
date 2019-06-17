@@ -29,7 +29,8 @@
                     <!--RA/Dec-->
                     <li>
                       <strong>RA/Dec:</strong> {{ ztf_object.meanra ? ztf_object.meanra.toFixed(4) : '-' }},{{ ztf_object.meandec ? ztf_object.meandec.toFixed(4) : '-' }}</li>
-                    <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.nobs }}</li>
+                    <li><strong>Detections:</strong> {{ $store.state.results.objectDetails.detections.length }}</li>
+                    <li><strong>Non-Detections:</strong> {{ $store.state.results.objectDetails.non_detections.length }}</li>
                     <li><strong>First date:</strong> {{ julianIntToDate(ztf_object.firstmjd) }}</li>
                     <li><strong>Last date:</strong> {{ julianIntToDate(ztf_object.lastmjd) }}</li>
                   </ul>

@@ -135,6 +135,7 @@
                             class="form-control form-control-sm"
                             id="maxnobs"
                             type="number"
+                            min="0"
                             v-model="nobsMax"
                             :min="nobsMin"
                             :disabled="loading"
