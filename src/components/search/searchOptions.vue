@@ -170,7 +170,11 @@ export default {
       this.removeEmpty(query_parameters);
       this.$store.dispatch('setQueryParameters', query_parameters);
       this.$store.dispatch('getSQL', query_parameters);
-      this.$store.dispatch('queryObjects', {query_parameters: query_parameters, page: 1, perPage: this.$store.state.perPage});
+      this.$store.dispatch('queryObjects', {
+        query_parameters: query_parameters, 
+        page: 1, 
+        perPage: this.$store.state.perPage
+      });
       this.$store.dispatch('setCurrentPage', 1)
       // this.$store.dispatch('setSelectedTab', 1)
       window.scrollTo(0, 0);

@@ -47,9 +47,10 @@
         hover
         :items="Object.values($store.state.results.objects)"
         :fields="$store.state.results.selectedColumnOptions"
-        :sort-by.sync="sortBy"
-        :sort-desc.sync="sortDesc"
-         @row-clicked="onRowClicked"
+        :sort-by="sortBy"
+        :sort-desc="sortDesc"
+        @row-clicked="onRowClicked"
+        @sort-changed="onSortChanged"
       >
         <template slot="classxmatch" slot-scope="data">
           <div>{{ data.item.classxmatch != null? getClass(data.item, "classxmatch"): "-" }}</div>
@@ -141,7 +142,6 @@ export default {
       block:true,
       sortBy: 'nobs',
       sortDesc: true,
-      
     };
   },
   methods: {
@@ -164,14 +164,28 @@ export default {
       }
     },
     pageChange(page){
-      let query_parameters = this.$store.state.search.query_parameters;
-      this.$store.dispatch('queryObjects', {query_parameters: query_parameters, 
-                                            page: page, 
-                                            perPage: this.$store.state.perPage, 
-                                            total:this.$store.state.results.total});
+      this.$store.dispatch('queryObjects', {
+        query_parameters: this.$store.state.search.query_parameters, 
+        page: page, 
+        perPage: this.$store.state.perPage, 
+        total:this.$store.state.results.total,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc});
     },
     closeObjectDetailsModal(){
       this.$store.dispatch('setShowObjectDetailsModal', false)
+    },
+    onSortChanged(ctx){
+      this.sortBy = ctx.sortBy
+      this.sortDesc = ctx.sortDesc
+      this.$store.dispatch('queryObjects', {
+        query_parameters: this.$store.state.search.query_parameters, 
+        page: this.currentPage, 
+        perPage: this.$store.state.perPage, 
+        total:this.$store.state.results.total,
+        sortBy: this.sortBy,
+        sortDesc: this.sortDesc
+      })
     }
   },
   mounted: function() {
