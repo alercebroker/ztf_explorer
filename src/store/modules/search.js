@@ -154,7 +154,7 @@ export const actions = {
             commit('SET_SQL', response.data)
         })
     },
-    queryAlerts({dispatch}, object){
+    queryAlerts({commit, dispatch}, object){
         dispatch('loading', true)
         Promise.all([
             QueryPSQLService.queryDetections(object.oid),

@@ -94,6 +94,9 @@ export const actions = {
             commit('SET_SELECTED_OBJECT', object);
             dispatch('queryAlerts', object)
         }
+        else{
+            commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
+        }
     },
     objectSelectedFromURL({commit, dispatch, state}, object){
         if(state.selectedObject.oid !== object.oid){
