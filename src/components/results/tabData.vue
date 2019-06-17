@@ -1,11 +1,28 @@
 <template>
   <div v-if="$store.state.search.error">
-    <b-alert show variant="danger">Error connecting to our servers {{$store.state.search.error}}</b-alert>
+    <b-alert show variant="danger">Error connecting to our servers </b-alert>
   </div>
   <div v-else-if="$store.state.search.query_status === 204">
     <b-alert show variant="warning">
       <h3>Our position is correct but there is no Alderaan!</h3>Sorry but your search did not return any results :(
       <br>Try refining your Query
+    </b-alert>
+  </div>
+  <div v-else-if="$store.state.search.query_status === 400">
+    <b-alert show variant="warning">There is an error with your query</b-alert>
+  </div>
+  <div v-else-if="$store.state.search.query_status === 0">
+    <b-alert variant="info" show>Your search results will be displayed here</b-alert>
+  </div>
+  <div v-else-if="$store.state.search.query_status === 504">
+    <b-alert variant="warning" show>
+      <b-container>
+        <b-row>
+          <h3>Opps!</h3>
+        </b-row>
+        <b-row>It looks like the query is taking too long. Try refining your query :)</b-row>
+        <br>
+      </b-container>
     </b-alert>
   </div>
   <div v-else-if="$store.state.search.query_status === 200">
@@ -14,9 +31,6 @@
         <b-btn class="mb-3 btn-wrap-text" :block="block" v-b-modal.showDetails>Columns to show in table</b-btn>
       </b-col>
       <b-col></b-col>
-      <!-- <b-col cols="4">
-        <b-btn class="mb-3 btn-wrap-text" :block="block" v-b-modal.showDownloadModal>Download</b-btn>
-      </b-col> -->
     </div>
 
     <column-options-modal />
@@ -105,35 +119,10 @@
       </b-pagination>
     </div>
 
-    <object-details-modal v-if="showObjectDetailsModal" :show="showObjectDetailsModal" @modalClosed="showObjectDetailsModal = false"/>
+    <object-details-modal v-if="showObjectDetailsModal" :show="showObjectDetailsModal" @modalClosed="closeObjectDetailsModal"/>
     <!-- <download-modal /> -->
+  </div>
 
-  </div>
-  <div v-else-if="$store.state.search.query_status === 400">
-    <b-alert show variant="warning">There is an error with your query</b-alert>
-  </div>
-  <div v-else-if="$store.state.search.query_status === 0">
-    <b-alert variant="info" show>Your search results will be displayed here</b-alert>
-  </div>
-  <div v-else-if="$store.state.search.query_status === 504">
-    <b-alert variant="warning" show>
-      <b-container>
-        <b-row>
-          <h3>Opps!</h3>
-        </b-row>
-        <b-row>It looks like the query is taking too long. Try refining your query :)</b-row>
-        <br>
-        <!-- <b-row>
-          <b-button variant="success" size="lg" id="queueQuery" disabled>
-            Queue my Query
-          </b-button>
-        </b-row> -->
-      </b-container>
-    </b-alert>
-  </div>
-  <div v-else>
-    <b-alert variant="danger" show>Opps! there was a problem with our servers</b-alert>
-  </div>
 </template>
 
 <script>
@@ -149,7 +138,6 @@ export default {
   components: { downloadModal, columnOptionsModal, objectDetailsModal },
   data() {
     return {
-      showObjectDetailsModal: false,
       block:true,
       currentPage: 1,
       sortBy: 'nobs',
@@ -166,7 +154,6 @@ export default {
       }).text;
     },
     onRowClicked(item) {
-      this.showObjectDetailsModal = true;
       this.$store.dispatch('objectSelected', item);
       // this.$router.push({ name: 'object-details-modal', params: { id: item.oid } });
     },
@@ -177,18 +164,25 @@ export default {
         //this.$store.state.search.query_status = 200;
       }
     },
-
     pageChange(page){
       let query_parameters = this.$store.state.search.query_parameters;
       this.$store.dispatch('queryObjects', {query_parameters: query_parameters, 
                                             page: page, 
                                             perPage: this.$store.state.perPage, 
                                             total:this.$store.state.results.total});
+    },
+    closeObjectDetailsModal(){
+      this.$store.dispatch('setShowObjectDetailsModal', false)
     }
   },
   mounted: function() {
     //this.getUrlObject();
   },
+  computed: {
+    showObjectDetailsModal(){
+      return this.$store.state.results.showObjectDetailsModal
+    }
+  }
 };
 </script>
 

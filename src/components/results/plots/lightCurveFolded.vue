@@ -39,7 +39,7 @@ export default {
           text: "Light Curve" 
         },
         subtitle:{
-          text: "Period:" + this.$store.state.results.objectDetails.periods.periodls_1.toFixed(3) + " days"
+          text: "Period:" + this.$store.state.results.objectDetails.period.periodls_1.toFixed(3) + " days"
         },
         exporting: {
           enabled: true,
@@ -125,7 +125,7 @@ export default {
   },
 
   methods: {
-    processLightCurveFolded: function(alerts, periods) {
+    processLightCurveFolded: function(alerts, period) {
       let rband = [];
       let gband = [];
       let rbandError = [];
@@ -135,14 +135,14 @@ export default {
           return
         }
         if(item.fid == 1){
-          let phase = item.mjd % periods.periodls_1 
-          phase = phase / periods.periodls_1
+          let phase = item.mjd % period.periodls_1 
+          phase = phase / period.periodls_1
           gband.push([phase, item.magpsf_corr]);
           gbandError.push([phase, item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
         }
         else if(item.fid == 2) {
-          let phase = item.mjd % periods.periodls_2 
-          phase = phase / periods.periodls_2
+          let phase = item.mjd % period.periodls_2 
+          phase = phase / period.periodls_2
           rband.push([phase, item.magpsf_corr]);
           rbandError.push([phase, item.magpsf_corr - item.sigmapsf_corr, item.magpsf_corr + item.sigmapsf_corr]);
         }
@@ -157,20 +157,20 @@ export default {
     alerts(){
       return this.$store.state.results.objectDetails.detections;
     },
-    periods(){
-      return this.$store.state.results.objectDetails.periods;
+    period(){
+      return this.$store.state.results.objectDetails.period;
     }
   },
   watch: {
     alerts(newAlerts){
         if(this.phases) this.processLightCurve(newAlerts);
     },
-    periods(newVal){
+    period(newVal){
       if(this.alerts)this.processLightCurveFolded(this.alerts, newVal)
     }
   },
   mounted(){
-    if(this.periods && this.alerts) this.processLightCurveFolded(this.alerts, this.periods)
+    if(this.period && this.alerts) this.processLightCurveFolded(this.alerts, this.period)
   }
 };
 </script>

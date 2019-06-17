@@ -154,20 +154,34 @@ export const actions = {
             commit('SET_SQL', response.data)
         })
     },
-
-    // queryAlerts({dispatch}, object){
-    //     dispatch('loading')
-    //     Promise.all([
-    //         QueryPSQLService.queryDetections(object.oid),
-    //         QueryPSQLService.queryNonDetections(object.oid),
-    //         QueryPSQLService.queryProbabilities(object.oid),
-    //         QueryPSQLService.queryFeatures
-    //         ])
-    // },
+    queryAlerts({dispatch}, object){
+        dispatch('loading', true)
+        Promise.all([
+            QueryPSQLService.queryDetections(object.oid),
+            QueryPSQLService.queryNonDetections(object.oid),
+            QueryPSQLService.queryProbabilities(object.oid),
+            QueryPSQLService.queryFeatures(object.oid)
+            ])
+        .then(values => {
+            commit('SET_QUERY_STATUS', 200);
+            commit('SET_ERROR', null);
+            values.forEach((element) => {
+                dispatch('setObjectDetails', element.data.result)
+            })
+            dispatch('setShowObjectDetailsModal', true)
+            dispatch('loading', false)
+        })
+        .catch(reason => {
+            console.log("Error with alert query", reason)
+            commit('SET_ERROR', reason);
+            dispatch('loading', false);
+        })
+    },
     queryObjects({commit, dispatch}, payload){
         dispatch('loading', true)
         QueryPSQLService.queryObjects(payload).then( response => {
             commit('SET_QUERY_STATUS', response.status)
+            commit('SET_ERROR', null);
             dispatch('setObjects', response.data)
             dispatch('loading', false)
         }).catch(error => {
