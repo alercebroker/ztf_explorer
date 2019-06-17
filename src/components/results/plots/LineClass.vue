@@ -74,7 +74,6 @@
         })
         this.lineOptions.xAxis.categories = categories;
         this.lineOptions.series.push({name: "RF", data: rf})
-        console.log("jkhdakj")
         if(this.$store.state.results.selectedObject.classxmatch)
         {
           var classxmatch = this.getClass(this.$store.state.results.selectedObject, "classxmatch").toLowerCase();
