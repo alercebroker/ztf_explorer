@@ -72,7 +72,8 @@ export const state = {
     selectedClassifier: null,
     selectedClass: null,
     probability: null,
-    validSearch: true
+    validDates: true,
+    validCoords: true
 }
 
 export const mutations = {
@@ -148,6 +149,12 @@ export const mutations = {
     },
     SET_VALID_SEARCH(state, value){
         state.validSearch = value
+    },
+    SET_VALID_DATES(state, value){
+        state.validDates = value
+    },
+    SET_VALID_COORDS(state, value){
+        state.validCoords = value
     }
 }
 
@@ -319,8 +326,11 @@ export const actions = {
             value: probability
         })
     },
-    setValidSearch({commit}, value){
-        commit('SET_VALID_SEARCH', value)
+    setValidDates({commit}, value){
+        commit('SET_VALID_DATES', value)
+    },
+    setValidCoords({commit}, value){
+        commit('SET_VALID_COORDS', value)
     }
     
 }

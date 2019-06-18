@@ -77,7 +77,7 @@
                   size="lg"
                   :block="block"
                   id="searchbtn"
-                  :disabled="!$store.state.search.validSearch"
+                  :disabled="!validSearch"
                 >SEARCH</b-button>
               </b-col>
             </b-row>
@@ -182,6 +182,12 @@ export default {
     },
     clearQuery(){
       this.$store.dispatch('clearQuery');
+    }
+  },
+  computed:{
+    validSearch(){
+      console.log(this.$store.state.search.validDates && this.$store.state.search.validCoords)
+      return this.$store.state.search.validDates && this.$store.state.search.validCoords;
     }
   }
 };

@@ -245,14 +245,16 @@
             mjdState(){
                 if (this.firstmjd > 0 && this.lastmjd > 0){
                     if(this.lastmjd > this.firstmjd){
-                        this.$store.dispatch('setValidSearch', true)
+                        this.$store.dispatch('setValidDates', true)
                         return null
                     }
                     else{
-                        this.$store.dispatch('setValidSearch', false)
+                        this.$store.dispatch('setValidDates', false)
                         return false
                     }
-                    
+                }
+                else{
+                    if (this.lastmjd == "" || this.lastmjd == null) this.$store.dispatch('setValidDates', true)
                 }
             },
             today(){

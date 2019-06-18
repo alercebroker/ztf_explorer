@@ -72,18 +72,13 @@
 <script>
     export default {
         name: "coordinate-options",
-        data(){
-            return {
-                filters: [null,null,null]
-            }
-        },
+
         computed: {
             ra: {
                 get(){
                     return this.$store.state.search.coordinates.ra;
                 },
                 set(value){
-                    this.filters[0] = value
                     this.$store.dispatch('updateOptions', {
                         obj: "coordinates",
                         keyPath: ["ra"],
@@ -96,7 +91,6 @@
                     return this.$store.state.search.coordinates.dec;
                 },
                 set(value){
-                    this.filters[1] = value
                     this.$store.dispatch('updateOptions', {
                         obj: "coordinates",
                         keyPath: ["dec"],
@@ -109,7 +103,6 @@
                     return this.$store.state.search.coordinates.rs;
                 },
                 set(value){
-                    this.filters[2] = value
                     this.$store.dispatch('updateOptions', {
                         obj: "coordinates",
                         keyPath: ["rs"],
@@ -119,13 +112,12 @@
             },
             validState(){
                 let filters = [this.ra, this.dec, this.rs]
-                
                 if( filters.every(v => v!= null && v!= "") || filters.every(v => v==null || v=="")){
-                    this.$store.dispatch('setValidSearch', true);
+                    this.$store.dispatch('setValidCoords', true);
                     return null
                 }
                 else{
-                    this.$store.dispatch('setValidSearch', false);
+                    this.$store.dispatch('setValidCoords', false);
                     return false
                 }
             }
