@@ -72,6 +72,7 @@ export const state = {
     selectedClassifier: null,
     selectedClass: null,
     probability: null,
+    validSearch: true
 }
 
 export const mutations = {
@@ -145,6 +146,9 @@ export const mutations = {
     SET_PROBABILITY(state, probability){
         state.probability = probability;
     },
+    SET_VALID_SEARCH(state, value){
+        state.validSearch = value
+    }
 }
 
 export const actions = {
@@ -315,6 +319,9 @@ export const actions = {
             value: probability
         })
     },
+    setValidSearch({commit}, value){
+        commit('SET_VALID_SEARCH', value)
+    }
     
 }
 

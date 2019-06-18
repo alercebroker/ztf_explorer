@@ -22,12 +22,13 @@
                 />
             </b-col>
             <b-col cols="4">
-                <input
+                <b-form-input
                     class="form-control form-control-sm"
                     id="datepickerfirst"
                     name="firstgreg"
                     type="date"
                     v-model="firstGreg"
+                    :max="today"
                 />
             </b-col>
         </b-row>
@@ -36,10 +37,11 @@
                 <label>End Date</label>
             </b-col>
             <b-col cols="4">
-                <input
+                <b-form-input
                     class="form-control form-control-sm"
                     id="lastmjd"
                     v-model="lastmjd"
+                    :state="mjdState"
                 />
             </b-col>
             <b-col cols="4">
@@ -101,6 +103,7 @@
              * @returns {string} : date in gregorian format
              */
             jdToGregorian(MJD) {
+                if(MJD === "") return null
                 var JD = Number(MJD) + 2400000.5;
                 const y = 4716;
                 const v = 3;
@@ -139,6 +142,7 @@
              * @returns {number} : date in jualian format
              */
             gregorianToJd(gDate) {
+                if(gDate === "") return null
                 //MJD = JD − 2400000.5
                 var dateObj = new Date(gDate);
                 var mjulianDate = dateObj / 86400000 + 40588;
@@ -151,25 +155,15 @@
                     return this.$store.state.search.dates.firstmjd
                 },
                 set(value){
-                    if(!this.$store.state.search.flagFirst){
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagFirst",
-                            value: true
-                        })
-                        this.$store.dispatch('updateOptions', {
+                    this.$store.dispatch('updateOptions', {
                             obj: "dates",
                             keyPath: ["firstmjd"],
                             value: value
                         })
-                        this.$store.dispatch('updateOptions', {
-                            obj: "dates",
-                            keyPath: ["firstGreg"],
-                            value: this.jdToGregorian(value)
-                        })
-                    }
-                    this.$store.dispatch('updateFlag', {
-                    flag: "flagFirst",
-                    value: false
+                    this.$store.dispatch('updateOptions', {
+                        obj: "dates",
+                        keyPath: ["firstGreg"],
+                        value: this.jdToGregorian(value)
                     })
                 }
             },
@@ -178,25 +172,15 @@
                     return this.$store.state.search.dates.lastmjd
                 },
                 set(value){
-                    if(! this.$store.state.search.flagLast){
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagLast",
-                            value: true
-                        })
-                        this.$store.dispatch('updateOptions', {
+                    this.$store.dispatch('updateOptions', {
                             obj: "dates",
                             keyPath: ["lastmjd"],
                             value: value
                         })
-                        this.$store.dispatch('updateOptions', {
-                            obj: "dates",
-                            keyPath: ["lastGreg"],
-                            value: this.jdToGregorian(value)
-                        })
-                    }
-                    this.$store.dispatch('updateFlag', {
-                    flag: "flagLast",
-                    value: false
+                    this.$store.dispatch('updateOptions', {
+                        obj: "dates",
+                        keyPath: ["lastGreg"],
+                        value: this.jdToGregorian(value)
                     })
                 }
             },
@@ -205,27 +189,16 @@
                     return this.$store.state.search.dates.firstGreg
                 },
                 set(value){
-                    if(!this.$store.state.search.flagFirst){
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagFirst",
-                            value: true
-                        })
-                        this.$store.dispatch('updateOptions', {
+                    this.$store.dispatch('updateOptions', {
                             obj: "dates",
                             keyPath: ["firstGreg"],
                             value: value
                         })
-                        this.$store.dispatch('updateOptions',{
-                            obj: "dates",
-                            keyPath: ["firstmjd"],
-                            value: this.gregorianToJd(value)
-                        })
-                    }
-                    this.$store.dispatch('updateFlag', {
-                        flag: "flagFirst",
-                        value: false
-                        }
-                    )
+                    this.$store.dispatch('updateOptions',{
+                        obj: "dates",
+                        keyPath: ["firstmjd"],
+                        value: this.gregorianToJd(value)
+                    })
                 }
             },
             lastGreg: {
@@ -233,25 +206,15 @@
                     return this.$store.state.search.dates.lastGreg
                 },
                 set(value){
-                    if(! this.$store.state.search.flagLast){
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagLast",
-                            value: true
-                        })
-                        this.$store.dispatch('updateOptions', {
+                    this.$store.dispatch('updateOptions', {
                             obj: "dates",
                             keyPath: ["lastGreg"],
                             value: value
                         })
-                        this.$store.dispatch('updateOptions', {
-                            obj: "dates",
-                            keyPath: ["lastmjd"],
-                            value: this.gregorianToJd(value)
-                        })
-                    }
-                    this.$store.dispatch('updateFlag', {
-                        flag: "flagLast",
-                        value: false
+                    this.$store.dispatch('updateOptions', {
+                        obj: "dates",
+                        keyPath: ["lastmjd"],
+                        value: this.gregorianToJd(value)
                     })
                 }
             },
@@ -279,6 +242,24 @@
                     })
                 }
             },
+            mjdState(){
+                if (this.firstmjd > 0 && this.lastmjd > 0){
+                    if(this.lastmjd > this.firstmjd){
+                        this.$store.dispatch('setValidSearch', true)
+                        return null
+                    }
+                    else{
+                        this.$store.dispatch('setValidSearch', false)
+                        return false
+                    }
+                    
+                }
+            },
+            today(){
+                let date = new Date()
+                let formated = date.getFullYear().toString() + "-" +(date.getMonth()+1).toString() + "-" + date.getDate().toString() 
+                return formated
+            }
         }
     }
 </script>

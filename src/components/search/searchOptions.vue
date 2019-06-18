@@ -77,6 +77,7 @@
                   size="lg"
                   :block="block"
                   id="searchbtn"
+                  :disabled="!$store.state.search.validSearch"
                 >SEARCH</b-button>
               </b-col>
             </b-row>
