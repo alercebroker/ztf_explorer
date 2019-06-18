@@ -59,9 +59,8 @@
           }
         }).text;
       },
-      getValues: function(probabilities){
+      getValues(probabilities){
         var keys = Object.keys(probabilities);
-        var datas = this.$store.state.results.objectDetails.probabilities;
         var categories = []
         var rf = []
         keys.forEach(function(x){
@@ -69,7 +68,7 @@
           {
             let name = x.split("_")[0]
             categories.push(name)
-            rf.push(datas[x])
+            rf.push(probabilities[x])
           }
         })
         this.lineOptions.xAxis.categories = categories;
@@ -101,6 +100,11 @@
     watch: {
       probabilities(prob){
         this.getValues(prob);
+      }
+    },
+    mounted(){
+      if(this.probabilities){
+        this.getValues(this.probabilities)
       }
     }
 }
