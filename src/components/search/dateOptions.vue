@@ -18,6 +18,7 @@
                     class="form-control form-control-sm"
                     id="firstmjd"
                     v-model="firstmjd"
+                    min="0"
                 />
             </b-col>
             <b-col cols="4">
@@ -88,6 +89,11 @@
 <script>
     export default {
         name: "date-options",
+        data(){
+            return{
+                
+            }
+        },
         methods: {
             /**
              * receives date in julian format and convert in gregorian format
@@ -145,7 +151,7 @@
                     return this.$store.state.search.dates.firstmjd
                 },
                 set(value){
-                    if(! this.$store.state.search.flagFirst){
+                    if(!this.$store.state.search.flagFirst){
                         this.$store.dispatch('updateFlag', {
                             flag: "flagFirst",
                             value: true
@@ -199,7 +205,7 @@
                     return this.$store.state.search.dates.firstGreg
                 },
                 set(value){
-                    if(! this.$store.state.search.flagFirst){
+                    if(!this.$store.state.search.flagFirst){
                         this.$store.dispatch('updateFlag', {
                             flag: "flagFirst",
                             value: true
@@ -216,9 +222,10 @@
                         })
                     }
                     this.$store.dispatch('updateFlag', {
-                    flag: "flagFirst",
-                    value: false
-                    })
+                        flag: "flagFirst",
+                        value: false
+                        }
+                    )
                 }
             },
             lastGreg: {
@@ -242,12 +249,10 @@
                             value: this.gregorianToJd(value)
                         })
                     }
-                    //else {
-                        this.$store.dispatch('updateFlag', {
-                            flag: "flagLast",
-                            value: false
-                        })
-                    //}
+                    this.$store.dispatch('updateFlag', {
+                        flag: "flagLast",
+                        value: false
+                    })
                 }
             },
             deltamin: {

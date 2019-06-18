@@ -135,8 +135,8 @@
                             class="form-control form-control-sm"
                             id="maxnobs"
                             type="number"
+                            min="0"
                             v-model="nobsMax"
-                            :min="nobsMin"
                             :disabled="loading"
                         >
                     </b-col>
@@ -169,7 +169,6 @@
         },
         data(){
             return {
-                
             }
         },
         props: ['loading'],
@@ -211,7 +210,7 @@
                 get(){
                     return this.$store.state.search.filters.nobs ? this.$store.state.search.filters.nobs.max : null;
                 },
-                set(value){
+                set(value){ 
                     this.$store.dispatch('updateOptions', {
                         obj: "filters",
                         keyPath: ["nobs","max"],
