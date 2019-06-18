@@ -51,9 +51,6 @@ export const state = {
 }
 
 export const mutations = {
-    SET_SELECTED_COLUMN_OPTIONS(state, selected){
-        state.selectedColumnOptions = selected
-    },
     SET_SELECTED_OBJECT(state, item){
         state.selectedObject = item;
     },
@@ -86,13 +83,13 @@ export const mutations = {
     },
     SET_CURRENT_PAGE(state, value){
         state.currentPage = value;
+    },
+    SET_SELECTED_COLUMN_OPTIONS(state, selected){
+        state.selectedColumnOptions = selected
     }
 }
 
 export const actions = {
-    setSelectedColumnOptions({commit}, selected){
-        commit('SET_SELECTED_COLUMN_OPTIONS', selected);
-    },
     objectSelected({commit, dispatch, state}, object){
         if(state.selectedObject.oid !== object.oid){
             commit('SET_SELECTED_OBJECT', object);
@@ -133,6 +130,9 @@ export const actions = {
     },
     setCurrentPage({commit}, value){
         commit('SET_CURRENT_PAGE', value);
+    },
+    setSelectedColumnOptions({commit}, selected){
+        commit('SET_SELECTED_COLUMN_OPTIONS', selected)
     }
     
 }

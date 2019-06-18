@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close" :ok-only="true" @hide="onClose">
+    <b-modal id="showDetails" ok-variant="secondary" ok-title="Close" :ok-only="true">
       <b-form-group>
         <template slot="label">
           <b>Choose your options:</b>
@@ -14,7 +14,7 @@
         <b-form-checkbox-group
           id="flavors"
           stacked
-          v-model="$store.state.results.selectedColumnOptions"
+          v-model="selected"
           name="flavs"
           :options="options"
           class="ml-4"
@@ -217,11 +217,18 @@
           }
         },
         methods: {
-          onClose(){
-            this.$store.dispatch('setSelectedColumnOptions', this.$store.state.results.selectedColumnOptions);
-          },
           toggleAll(checked){
             this.$store.state.results.selectedColumnOptions = checked ? this.options.map(a => a.value).slice() : [];
+          }
+        },
+        computed: {
+          selected: {
+            get(){
+              return this.$store.state.results.selectedColumnOptions;
+            },
+            set(sel){
+              this.$store.dispatch('setSelectedColumnOptions', sel);
+            }
           }
         }
     }
