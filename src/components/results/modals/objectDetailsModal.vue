@@ -190,7 +190,7 @@ export default {
     },
     closeModal: function() {
       this.$emit('modalClosed');
-      //this.$router.replace("/");
+      this.$router.replace("/");
     }
   },
   computed: {

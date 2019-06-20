@@ -91,8 +91,8 @@ export const mutations = {
 
 export const actions = {
     objectSelected({commit, dispatch, state}, object){
-        if(state.selectedObject.oid !== object.oid){
-            commit('SET_SELECTED_OBJECT', object);
+        commit('SET_SELECTED_OBJECT', object);
+        if(state.selectedObject && state.selectedObject.oid !== object.oid){
             dispatch('queryAlerts', object)
         }
         else{

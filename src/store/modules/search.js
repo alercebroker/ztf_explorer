@@ -73,7 +73,8 @@ export const state = {
     selectedClass: null,
     probability: null,
     validDates: true,
-    validCoords: true
+    validCoords: true,
+    searched: false,
 }
 
 export const mutations = {
@@ -155,6 +156,9 @@ export const mutations = {
     },
     SET_VALID_COORDS(state, value){
         state.validCoords = value
+    },
+    SET_SEARCHED(state, value){
+        state.searched = value
     }
 }
 
@@ -169,6 +173,9 @@ export const actions = {
         QueryPSQLService.getSQL(query_parameters).then( response => {
             commit('SET_SQL', response.data)
         })
+    },
+    setQueryStatus({commit}, status){
+        commit('SET_QUERY_STATUS', status);
     },
     queryAlerts({commit, dispatch}, object){
         dispatch('loading', true)
@@ -197,6 +204,7 @@ export const actions = {
         dispatch('loading', true)
         QueryPSQLService.queryObjects(payload).then( response => {
             commit('SET_QUERY_STATUS', response.status)
+            commit('SET_SEARCHED', true);
             commit('SET_ERROR', null);
             dispatch('setObjects', response.data)
             dispatch('loading', false)
@@ -234,8 +242,27 @@ export const actions = {
         })
     },
     queryAlertsFromURL({commit, dispatch}, object){
-        // dispatch('loading', true);
-        
+        dispatch('loading', true)
+        Promise.all([
+            QueryPSQLService.queryDetections(object.oid),
+            QueryPSQLService.queryNonDetections(object.oid),
+            QueryPSQLService.queryProbabilities(object.oid),
+            QueryPSQLService.queryFeatures(object.oid)
+            ])
+        .then(values => {
+            commit('SET_QUERY_STATUS', 200);
+            commit('SET_ERROR', null);
+            values.forEach((element) => {
+                dispatch('setObjectDetails', element.data.result)
+            })
+            dispatch('setShowObjectDetailsModal', true)
+            dispatch('loading', false)
+        })
+        .catch(reason => {
+            console.log("Error with alert query", reason)
+            commit('SET_ERROR', reason);
+            dispatch('loading', false);
+        })
     },
 
     clearQuery({commit}){

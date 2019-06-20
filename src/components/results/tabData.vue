@@ -11,7 +11,7 @@
   <div v-else-if="$store.state.search.query_status === 400">
     <b-alert show variant="warning">There is an error with your query</b-alert>
   </div>
-  <div v-else-if="$store.state.search.query_status === 0">
+  <div v-else-if="!$store.state.search.searched && !$store.state.results.showObjectDetailsModal">
     <b-alert variant="info" show>Your search results will be displayed here</b-alert>
   </div>
   <div v-else-if="$store.state.search.query_status === 504">
@@ -41,7 +41,7 @@
       </div>
     </small>
     
-    <div v-show="$store.state.results.selectedColumnOptions.length">
+    <div v-if="$store.state.results.objects.length || Object.keys($store.state.results.objects).length > 0">
       <b-table
         striped
         hover
@@ -154,16 +154,15 @@ export default {
     },
     onRowClicked(item) {
       this.$store.dispatch('objectSelected', item);
-      // this.$router.push({ name: 'object-details-modal', params: { id: item.oid } });
+      this.$router.push({ name: 'object-details-modal', params: { id: item.oid } });
     },
     getUrlObject() {
       if(this.$route.params.id) {
         this.$store.dispatch('objectSelectedFromURL', {oid: this.$route.params.id});
-        this.showObjectDetailsModal = true;
-        //this.$store.state.search.query_status = 200;
       }
     },
     pageChange(page){
+      if(this.$route.params.id) return;
       this.$store.dispatch('queryObjects', {
         query_parameters: this.$store.state.search.query_parameters, 
         page: page, 
@@ -176,6 +175,7 @@ export default {
       this.$store.dispatch('setShowObjectDetailsModal', false)
     },
     onSortChanged(ctx){
+      console.log("ON SORT")
       this.sortBy = ctx.sortBy
       this.sortDesc = ctx.sortDesc
       this.$store.dispatch('queryObjects', {
@@ -189,7 +189,7 @@ export default {
     }
   },
   mounted: function() {
-    //this.getUrlObject();
+    this.getUrlObject();
   },
   computed: {
     showObjectDetailsModal(){
