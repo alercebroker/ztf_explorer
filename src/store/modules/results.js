@@ -91,13 +91,14 @@ export const mutations = {
 
 export const actions = {
     objectSelected({commit, dispatch, state}, object){
-        commit('SET_SELECTED_OBJECT', object);
         if(state.selectedObject && state.selectedObject.oid !== object.oid){
+            console.log("ENTRA")
             dispatch('queryAlerts', object)
         }
         else{
             commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
         }
+        commit('SET_SELECTED_OBJECT', object);
     },
     objectSelectedFromURL({commit, dispatch, state}, object){
         if(state.selectedObject.oid !== object.oid){

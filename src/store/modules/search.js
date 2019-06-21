@@ -242,6 +242,7 @@ export const actions = {
         })
     },
     queryAlertsFromURL({commit, dispatch}, object){
+        console.log("SE LLAMA")
         dispatch('loading', true)
         Promise.all([
             QueryPSQLService.queryDetections(object.oid),
