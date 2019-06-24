@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <v-app>
     <Header/>
     <router-view>
     </router-view>
     <Footer class="footer"/>
-  </div>
+  </v-app>
 </template>
 
 <script>

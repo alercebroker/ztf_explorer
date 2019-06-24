@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-center">
+  <!--nav class="navbar navbar-expand-lg navbar-dark bg-dark text-center">
     <router-link to="/" class="nav-link">
       <img class="img-fluid w-auto rounded" src="../assets/logos/logoW250.png">
     </router-link>
@@ -46,11 +46,18 @@
           </router-link>
         </li>
       </ul>
-      <!--button class="btn btn-outline-light my-2 my-sm-0" type="submit">
+      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
 				<i class="fas fa-user"></i> Log in
-      </button-->
+      </button>
     </div>
-  </nav>
+  </nav-->
+  <v-toolbar dark>
+    <v-img class="hidden-sm-and-down" :src="require('../assets/logos/logoW250.png')" max-width="140px" max-height="98px" alt="Logo ALeRCE"></v-img>
+    <v-spacer></v-spacer>
+    <v-toolbar-items class="hidden-sm-and-down">
+      <v-btn flat>Explore data</v-btn>
+    </v-toolbar-items>
+  </v-toolbar>
 </template>
 
 
