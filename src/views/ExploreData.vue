@@ -15,11 +15,11 @@
   <v-container fluid grid-list-md text-xs-center>
     <v-layout wrap row>
       <!--SEARCH-->
-      <v-flex xs12 md3>
+      <v-flex xs12 md3 sm4>
         <search-options :loading="$store.state.loading"/>
       </v-flex>
       <!--RESULT-->
-      <v-flex xs12 md9>
+      <v-flex xs12 md9 sm8>
         <result-panel :loading.sync="$store.state.loading" :downloading.sync="$store.state.downloading"/>
       </v-flex>
       <loading :show="$store.state.downloading" label="Downloading..."></loading>

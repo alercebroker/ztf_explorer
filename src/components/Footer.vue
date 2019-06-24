@@ -127,7 +127,7 @@
 				<v-flex text-xs-center white--text xs12>
 					&copy;2019 — <strong>ALeRCE</strong>
 				</v-flex>
-      		</v-layout>
+			</v-layout>
 		</v-container>
 	</v-footer>
 </template>

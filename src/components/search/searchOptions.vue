@@ -139,7 +139,6 @@ export default {
   },
   computed:{
     validSearch(){
-      console.log(this.$store.state.search.validDates && this.$store.state.search.validCoords)
       return this.$store.state.search.validDates && this.$store.state.search.validCoords;
     }
   }

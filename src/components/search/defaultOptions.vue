@@ -1,5 +1,85 @@
 <template>
     <div>
+        <v-layout row wrap>
+            <!--Object ID-->
+            <v-flex xs12 sm12 md12>
+                <v-text-field
+                    label="Object ID"
+                >
+                <template v-slot:prepend>
+                    dljkas
+                </template>
+                </v-text-field>
+            </v-flex>
+            <!--Class-->
+            <v-flex xs12 sm12 md6>
+                <v-combobox
+                    :items="$store.state.search.classes"
+                    label="Class"
+                    small-chips
+                    deletable-chips
+                    hide-no-data
+                >
+                </v-combobox>
+            </v-flex>
+            <!--Class-->
+            <v-flex xs12 sm12 md6>
+                <v-combobox
+                    :items="$store.state.search.classifiers"
+                    label="Classifier"
+                    clearable
+                    hide-no-data
+                >
+                </v-combobox>
+            </v-flex>
+            <!--Probabilities-->
+            <v-flex xs12 sm12 md12>
+                <v-slider
+                    v-model="slider"
+                    :label="probability"
+                    color="#E0E0E0"
+                    track-color="blue"
+                    thumb-color="blue"
+                ></v-slider>
+            </v-flex>
+            <!--Detections-->
+            <v-flex>
+                <v-subheader>Range of detections</v-subheader>
+                <v-card-text>
+                    <v-layout row>
+                    <v-flex shrink style="width: 60px">
+                        <v-text-field
+                        class="mt-0"
+                        hide-details
+                        single-line
+                        type="number"
+                        ></v-text-field>
+                    </v-flex>
+            
+                    <v-flex class="px-3">
+                        <v-range-slider
+                        :max="600"
+                        :min="20"
+                        :step="10"
+                        ></v-range-slider>
+                    </v-flex>
+            
+                    <v-flex shrink style="width: 60px">
+                        <v-text-field
+                        class="mt-0"
+                        hide-details
+                        single-line
+                        type="number"
+                        ></v-text-field>
+                    </v-flex>
+                    </v-layout>
+                </v-card-text>
+            </v-flex>
+            
+        </v-layout>
+
+
+
         <!-- OBJECT ID -->
         <b-row class="mb-3">
             <b-col cols="4">
@@ -260,7 +340,3 @@
         
     }
 </script>
-
-<style scoped>
-
-</style>
