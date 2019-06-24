@@ -146,7 +146,7 @@
         
         <b-card no-body class="mb-3">
             <b-tabs card>
-                <b-tab title="Dates" active>
+                <b-tab title="Discovery Date" active>
                     <date-options/>
                 </b-tab>
                 <b-tab title="Coordinates">

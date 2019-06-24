@@ -11,13 +11,13 @@
         </b-row>
         <b-row class="mb-2">
             <b-col cols="4">
-                <label>Start Date</label>
+                <label>Min</label>
             </b-col>
             <b-col cols="4">
                 <input
                     class="form-control form-control-sm"
-                    id="firstmjd"
-                    v-model="firstmjd"
+                    id="minfirstmjd"
+                    v-model="minFirstMJD"
                     min="0"
                 />
             </b-col>
@@ -25,66 +25,34 @@
                 <b-form-input
                     class="form-control form-control-sm"
                     id="datepickerfirst"
-                    name="firstgreg"
+                    name="minfirstgreg"
                     type="date"
-                    v-model="firstGreg"
+                    v-model="minFirstGreg"
                     :max="today"
                 />
             </b-col>
         </b-row>
         <b-row class="mb-2">
             <b-col cols="4">
-                <label>End Date</label>
+                <label>Max</label>
             </b-col>
             <b-col cols="4">
                 <b-form-input
                     class="form-control form-control-sm"
-                    id="lastmjd"
-                    v-model="lastmjd"
+                    id="maxfirstmjd"
+                    v-model="maxFirstMJD"
                     :state="mjdState"
                 />
             </b-col>
             <b-col cols="4">
                 <input
                     class="form-control form-control-sm"
-                    id="datepickerlast"
-                    name="lastMJD"
+                    id="maxfirstgreg"
                     type="date"
-                    v-model="lastGreg"
+                    v-model="maxFirstGreg"
                 />
             </b-col>
         </b-row>
-        <!-- <b-row>
-            <b-col cols="4" class="text-center small">min</b-col>
-            <b-col cols="4" class="text-center"></b-col>
-            <b-col cols="4" class="text-center small">max</b-col>
-        </b-row>
-        <b-row>
-            <b-col cols="4">
-                <input
-                    class="form-control form-control-sm"
-                    id="minjd"
-                    v-model="deltamin"
-                />
-            </b-col>
-            <b-col cols="4" class="text-center">First to Last alert
-                <v-icon
-                    v-b-tooltip.hover.right
-                    class="mb-1 mx-1"
-                    title="Time between the first alert and the last alert associated with an object"
-                    name="info-circle"
-                    color="#C0C0C0"
-                />
-                <small class="text-muted">(days)</small>
-            </b-col>
-            <b-col cols="4">
-                <input
-                    class="form-control form-control-sm"
-                    id="maxjd"
-                    v-model="deltamax"
-                />
-            </b-col>
-        </b-row> -->
     </div>
 </template>
 
@@ -150,101 +118,77 @@
             },
         },
         computed: {
-            firstmjd: {
+            minFirstMJD: {
                 get(){
-                    return this.$store.state.search.dates.firstmjd
+                    return this.$store.state.search.dates.firstmjd ? this.$store.state.search.dates.firstmjd.min : null
                 },
                 set(value){
                     this.$store.dispatch('updateOptions', {
                             obj: "dates",
-                            keyPath: ["firstmjd"],
+                            keyPath: ["firstmjd", "min"],
                             value: value
                         })
                     this.$store.dispatch('updateOptions', {
                         obj: "dates",
-                        keyPath: ["firstGreg"],
+                        keyPath: ["firstGreg", "min"],
                         value: this.jdToGregorian(value)
                     })
                 }
             },
-            lastmjd: {
+            maxFirstMJD: {
                 get(){
-                    return this.$store.state.search.dates.lastmjd
+                    return this.$store.state.search.dates.firstmjd ? this.$store.state.search.dates.firstmjd.max : null
                 },
                 set(value){
                     this.$store.dispatch('updateOptions', {
                             obj: "dates",
-                            keyPath: ["lastmjd"],
+                            keyPath: ["firstmjd", "max"],
                             value: value
                         })
                     this.$store.dispatch('updateOptions', {
                         obj: "dates",
-                        keyPath: ["lastGreg"],
+                        keyPath: ["firstGreg", "max"],
                         value: this.jdToGregorian(value)
                     })
                 }
             },
-            firstGreg: {
+            minFirstGreg: {
                 get(){
-                    return this.$store.state.search.dates.firstGreg
+                    return this.$store.state.search.dates.firstGreg ? this.$store.state.search.dates.firstGreg.min : null
                 },
                 set(value){
                     this.$store.dispatch('updateOptions', {
                             obj: "dates",
-                            keyPath: ["firstGreg"],
+                            keyPath: ["firstGreg", "min"],
                             value: value
                         })
                     this.$store.dispatch('updateOptions',{
                         obj: "dates",
-                        keyPath: ["firstmjd"],
+                        keyPath: ["firstmjd", "min"],
                         value: this.gregorianToJd(value)
                     })
                 }
             },
-            lastGreg: {
+            maxFirstGreg: {
                 get(){
-                    return this.$store.state.search.dates.lastGreg
+                    return this.$store.state.search.dates.firstGreg ? this.$store.state.search.dates.firstGreg.max : null
                 },
                 set(value){
                     this.$store.dispatch('updateOptions', {
                             obj: "dates",
-                            keyPath: ["lastGreg"],
+                            keyPath: ["firstGreg", "max"],
                             value: value
                         })
                     this.$store.dispatch('updateOptions', {
                         obj: "dates",
-                        keyPath: ["lastmjd"],
+                        keyPath: ["firstmjd", "max"],
                         value: this.gregorianToJd(value)
                     })
                 }
             },
-            deltamin: {
-                get(){
-                    return this.$store.state.search.dates.deltajd ? this.$store.state.search.dates.deltajd.min : null
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "dates",
-                        keyPath: ["deltajd","min"],
-                        value: value
-                    })
-                }
-            },
-            deltamax: {
-                get(){
-                    return this.$store.state.search.dates.deltajd ? this.$store.state.search.dates.deltajd.max : null
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "dates",
-                        keyPath: ["deltajd","max"],
-                        value: value
-                    })
-                }
-            },
             mjdState(){
-                if (this.firstmjd > 0 && this.lastmjd > 0){
-                    if(this.lastmjd > this.firstmjd){
+                if (this.minFirstMJD > 0 && this.maxFirstMJD > 0){
+                    if(this.maxFirstMJD > this.minFirstMJD){
                         this.$store.dispatch('setValidDates', true)
                         return null
                     }
@@ -254,7 +198,7 @@
                     }
                 }
                 else{
-                    if (this.lastmjd == "" || this.lastmjd == null) this.$store.dispatch('setValidDates', true)
+                    if (this.maxFirstMJD == "" || this.maxFirstMJD == null) this.$store.dispatch('setValidDates', true)
                 }
             },
             today(){
