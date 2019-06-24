@@ -4,7 +4,7 @@ import Vue from 'vue';
 export const state = {
     query_parameters: null,
     filters: {},
-    dates: {},
+    dates: {firstmjd:{}, firstGreg:{}},
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
