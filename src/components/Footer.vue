@@ -1,11 +1,10 @@
 <template>
-	<v-footer dark fixed height="auto" class="hidden-sm-and-down">
+	<v-footer dark height="auto" class="hidden-sm-and-down">
 		<v-container>
-			<v-layout justify-center row wrap>
-				<v-flex xs1 align-self-center>
+			<v-layout row wrap>
+				<v-flex xs1 align-center align-content-center justify-center>
 					<a href="http://www.ingenieria.uach.cl/institutos/informatica.html" target="blank">
 						<img
-							class="img-fluid"
 							src="../assets/footer/UACH.png"
 							style="height:25px;"
 							alt="U. Austral (Inf.)"
@@ -98,7 +97,7 @@
 							class="img-fluid"
 							src="../assets/footer/footerIACS.png"
 							style="height:25px;"
-							alt="Harverd U.(IACS)"
+							alt="Harvard U.(IACS)"
 						>
 					</a>
 				</v-flex>
@@ -122,11 +121,13 @@
 						>
 					</a>
 				</v-flex>
-			<v-divider inset></v-divider>
-        	<v-flex py-3 text-xs-center white--text xs12>
-          		&copy;2019 — <strong>ALeRCE</strong>
-        	</v-flex>
-      </v-layout>
+				<v-flex xs12>
+					<v-divider></v-divider>
+				</v-flex>
+				<v-flex text-xs-center white--text xs12>
+					&copy;2019 — <strong>ALeRCE</strong>
+				</v-flex>
+      		</v-layout>
 		</v-container>
 	</v-footer>
 </template>

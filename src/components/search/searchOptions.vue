@@ -1,99 +1,60 @@
 <template>
-  <div class="searchOptions">
-    <!-- <b-form v-on:submit.prevent="onQuerySubmit"> -->
-    <br>
-    <b-card no-body 
-    header-tag="header"
-    header="Search Options"
-    >
-    <!-- HEADER -->
-      <div slot="header">
-          <h4>Search Options</h4>
-      </div>
-    <!-- BODY -->
-      <b-card-body>
-        <b-row class="pl-3 pr-3 pb-3">
-          <b-btn
-            variant="outline-primary"
-            size="sm"
-            :block="block"
-            @click="clearQuery"
-          >Clear all options</b-btn>
-        </b-row>
-    <!-- OPTIONS -->
-        <b-form v-on:submit.prevent="onSubmitQuery">
-          <div class="filter-content">
-    <!-- DEFAULT OPTIONS -->
-            <default-options></default-options>
-    <!-- MORE OPTIONS BUTTON -->
-            <!-- <b-row class="pl-3 pr-3">
-              <b-btn
-                :block="block"
-                variant="outline-secondary"
-                v-b-toggle.AdvancedSearch
-                @click="changeMoreOptLabel()"
-              >{{ moreOptsLabel }}</b-btn>
-            </b-row> -->
-    <!-- ADVANCED SEARCH -->
-            <!-- <b-row class="pl-3 pr-3 pb-3">
-              <b-collapse id="AdvancedSearch">
-                <hr>
-                <advanced-options></advanced-options>
-
-              </b-collapse>
-            </b-row> -->
-
-            <b-row class="text-center">
-              <b-col>
-                <b-button
-                  :block="block"
-                  variant="outline-secondary"
-                  v-on:click="changeShowSQLLabel"
-                  v-b-toggle="'SQL'"
-                >{{ showSQLLabel }}</b-button>
-              </b-col>
-            </b-row>
-
-            <b-row>
-              <b-col>
-                <b-collapse id="SQL" class="mt-3">
-                  <div class="pt-2 pb-4" style="background-color:#e9ecef">
+  <div>
+    <v-card>
+      <!--HEADER-->
+      <v-toolbar color="grey lighten-4">
+        <v-toolbar-title>Search Options</v-toolbar-title>
+      </v-toolbar>
+      <!--BODY-->
+      <v-form>
+        <v-container>
+          <v-layout row wrap>
+            <!--Clear all options-->
+            <v-flex xs12 sm12 md12>
+              <v-btn outline block small color="primary" @click="clearQuery">Clear all options</v-btn>
+            </v-flex>
+            <!--Default options-->
+            <v-flex xs12 sm12 md12>
+              <default-options></default-options>
+            </v-flex>
+            <!--Show SQL-->
+            <v-flex xs12 sm12 md12>
+              <v-btn 
+                outline 
+                block 
+                small 
+                color="blue-grey" 
+                @click="showSQLLabel = !showSQLLabel">
+                {{ showSQLLabel? 'Hide': 'Show SQL' }}
+              </v-btn>
+            </v-flex>
+            <v-flex xs12 sm12 md12>
+              <div v-show="showSQLLabel" transition="scale-transition" origin="center center">
+                <div class="pt-2 pb-4" style="background-color:#e9ecef">
                     <div class="text-right mr-2 mb-1">
-                      <b-button id="refreshSQL" @click="refreshSQL">
+                      <v-btn icon @click="refreshSQL">
                         <v-icon name="redo"/>
-                      </b-button>
+                      </v-btn>
                     </div>
-                    <div class="mx-2 text-center">{{this.$store.state.search.sql}}</div>
-                  </div>
-                </b-collapse>
-              </b-col>
-            </b-row>
-
-            <b-row class="text-center my-4">
-              <b-col>
-                <b-button
-                  type="submit"
-                  variant="primary"
-                  size="lg"
-                  :block="block"
-                  id="searchbtn"
-                  :disabled="!validSearch"
-                >SEARCH</b-button>
-              </b-col>
-            </b-row>
-            
-            <b-row>
-              <b-col class="text-center">
-                <b-button variant="secondary" size="sm" id="searchbtn" disabled v-show="false">Save search</b-button>
-              </b-col>
-              <b-col class="text-center">
-                <b-button variant="warning" size="sm" disabled v-show="false">Subscribe</b-button>
-              </b-col>
-            </b-row>
-          </div>
-        </b-form>
-      </b-card-body>
-    </b-card>
+                  <div class="mx-2 text-center">{{this.$store.state.search.sql}}</div>
+                </div>
+              </div>
+            </v-flex>
+            <!--Search-->
+            <v-flex xs12 sm12 md12>
+              <v-btn 
+                block 
+                normal 
+                color="primary" 
+                @click="onSubmitQuery"
+                :disabled="!validSearch">
+                Search
+              </v-btn>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-form>
+    </v-card>
   </div>
 </template>
 
@@ -110,7 +71,7 @@ export default {
   data() {
     return {
       moreOptsLabel: "More Options",
-      showSQLLabel: "Show SQL",
+      showSQLLabel: false,
       block: true,
     }
   },
@@ -124,14 +85,6 @@ export default {
     changeMoreOptLabel() {
       this.moreOptsLabel =
         this.moreOptsLabel == "More Options" ? "Hide" : "More Options";
-    },
-    /**
-     * change option text in show sql
-     */
-    changeShowSQLLabel() {
-      this.refreshSQL();
-      this.showSQLLabel =
-        this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
     },
     refreshSQL(){
       let query_parameters = {

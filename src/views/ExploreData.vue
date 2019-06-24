@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <!--div class="container-fluid">
     <b-row>
       <b-col cols="4">
         <search-options :loading="$store.state.loading"/>
@@ -10,7 +10,22 @@
       <loading :show="$store.state.downloading" label="Downloading..."></loading>
       <loading :show="$store.state.loading" label="Searching..."></loading>
     </b-row>
-  </div>
+  </div-->
+  <!--CONTAINER-->
+  <v-container fluid grid-list-md text-xs-center>
+    <v-layout wrap row>
+      <!--SEARCH-->
+      <v-flex xs12 md3>
+        <search-options :loading="$store.state.loading"/>
+      </v-flex>
+      <!--RESULT-->
+      <v-flex xs12 md9>
+        <result-panel :loading.sync="$store.state.loading" :downloading.sync="$store.state.downloading"/>
+      </v-flex>
+      <loading :show="$store.state.downloading" label="Downloading..."></loading>
+      <loading :show="$store.state.loading" label="Searching..."></loading>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
