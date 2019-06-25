@@ -1,5 +1,34 @@
 <template>
-    <div id="js9-div"  :style="style" />
+    <td>
+        <h3>Science</h3>
+        <div style="width:300px">
+            <div class="JS9Menubar" id="JS9SciMenubar" data-width="300px" data-displays="JS9Sci"></div>
+            <div class="JS9" id="JS9Sci" data-width="300px" data-height="300px"></div>
+            <div style="margin-top: 2px;">
+                <div class="JS9Colorbar" id="JS9SciColorbar" data-displays="JS9Sci" data-width="300px"></div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <h3>Template</h3>
+        <div style="width:300px">
+            <div class="JS9Menubar" id="JS9TplMenubar" data-width="300px" data-displays="JS9Tpl"></div>
+            <div class="JS9" id="JS9Tpl" data-width="300px" data-height="300px"></div>
+            <div style="margin-top: 2px;">
+                <div class="JS9Colorbar" id="JS9TplColorbar" data-displays="JS9Tpl" data-width="300px"></div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <h3>Difference</h3>
+        <div style="width:300px">
+            <div class="JS9Menubar" id="JS9DifMenubar" data-width="300px" data-displays="JS9Dif"></div>
+            <div class="JS9" id="JS9Dif" data-width="300px" data-height="300px"></div>
+            <div style="margin-top: 2px;">
+                <div class="JS9Colorbar" id="JS9DifColorbar" data-displays="JS9Dif" data-width="300px"></div>
+            </div>
+        </div>
+    </td>
 </template>
 
 <script>
