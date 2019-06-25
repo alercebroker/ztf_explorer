@@ -43,7 +43,7 @@
                     class="form-control form-control-sm"
                     id="class"
                     v-model="selectedClass"
-                    :options="$store.state.search.classes"
+                    :options="classes"
                 />
             </b-col>
             <b-col cols="3">
@@ -63,7 +63,7 @@
                     class="form-control form-control-sm"
                     id="classifier"
                     v-model="selectedClassifier"
-                    :options="$store.state.search.classifiers"
+                    :options="classifiers"
                 />
             </b-col>
         </b-row>
@@ -223,6 +223,7 @@
                     return this.$store.state.search.selectedClassifier;
                 },
                 set(value){
+                    this.$store.dispatch('setClass', null)
                     this.$store.dispatch('setClassifier', value);
                 }
             },
@@ -238,6 +239,9 @@
                 return this.$store.state.search.classifiers;
             },
             classes(){
+                if (this.selectedClassifier === "stamps"){
+                    return this.$store.state.search.classes_stamps;
+                }
                 return this.$store.state.search.classes;
             },
             probability:{
@@ -247,11 +251,6 @@
                 set(value){
                     this.$store.dispatch('setProbability', value);
                 }
-            }
-        },
-        watch: {
-            classOptions(newVal){
-                return this.$store.state.search.classes;
             }
         },
         methods:{

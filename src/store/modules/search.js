@@ -55,6 +55,36 @@ export const state = {
             value: 0
         }
     ],
+    classes_stamps: [
+        {
+            text: "Not specified",
+            value: null
+        },
+        {
+            text: "Classified",
+            value: "classified"
+        },
+        {
+            text: "Not classified",
+            value: "not classified"
+        },
+        {
+            text: "AGN",
+            value: 0
+        },
+        {
+            text: "SNe",
+            value: 1
+        },
+        {
+            text: "Variable Star",
+            value: 2
+        },
+        {
+            text: "Asteroid",
+            value: 3
+        }
+    ],
     classifiers: [
         {
             text: "All",
@@ -68,6 +98,10 @@ export const state = {
             text: "ML_RF",
             value: "classrf"
         },
+        {
+            text: "STAMPS",
+            value: "stamps"
+        }
     ],
     selectedClassifier: null,
     selectedClass: null,
@@ -242,7 +276,6 @@ export const actions = {
         })
     },
     queryAlertsFromURL({commit, dispatch}, object){
-        console.log("SE LLAMA")
         dispatch('loading', true)
         Promise.all([
             QueryPSQLService.queryDetections(object.oid),

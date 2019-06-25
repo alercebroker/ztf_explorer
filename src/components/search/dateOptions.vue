@@ -75,7 +75,6 @@
         computed: {
             minFirstMJD: {
                 get(){
-                    console.log(this.$store.state.search.dates.firstmjd ? this.$store.state.search.dates.firstmjd.min : null)
                     return this.$store.state.search.dates.firstmjd ? this.$store.state.search.dates.firstmjd.min : null
                 },
                 set(value){
