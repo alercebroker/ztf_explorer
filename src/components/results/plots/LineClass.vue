@@ -59,20 +59,8 @@
           }
         }).text;
       },
-      getValues(probabilities){
-        var keys = Object.keys(probabilities);
-        var categories = []
-        var rf = []
-        keys.forEach(function(x){
-          if(x.endsWith("_prob"))
-          {
-            let name = x.split("_")[0]
-            categories.push(name)
-            rf.push(probabilities[x])
-          }
-        })
-        this.lineOptions.xAxis.categories = categories;
-        this.lineOptions.series.push({name: "RF", data: rf})
+
+      setXmatch(){
         if(this.$store.state.results.selectedObject.classxmatch)
         {
           var classxmatch = this.getClass(this.$store.state.results.selectedObject, "classxmatch").toLowerCase();
@@ -89,22 +77,57 @@
             }
           }]
         }
-
+      },
+      setValues(probabilities, classifier){
+        let categories = []
+        let series = []
+        Object.keys(probabilities).forEach(key => {
+          if(Object.keys(probabilities[key]).length > 0){
+            series.push({name:key, data:[]})
+            Object.keys(probabilities[key]).forEach(function(x){
+              if(x.endsWith("_prob")){
+                let name = x.split("_")[0]
+                categories.push(name)
+              }
+            })
+          }
+        })
+        this.lineOptions.xAxis.categories = categories
+        let i = 0
+        Object.keys(probabilities).forEach(key => {
+          let data = []
+          let size = categories.length
+          while(size--) data[size] = null;
+          if(Object.keys(probabilities[key]).length > 0){
+            Object.keys(probabilities[key]).forEach(function(x){
+              if(x.endsWith("_prob")){
+                data[i] = probabilities[key][x]
+                i++
+              }
+            })
+          }
+          this.lineOptions.series.push({name: key, data:data})
+        })
+        setXmatch()
       }
     },
     computed: {
       probabilities(){
-        return this.$store.state.results.objectDetails.probabilities;
+        let test = this.$store.state.results.objectDetails.probabilities;
+        test.random_forest["SNe_prob"] = 0.2
+        test.random_forest["EB_prob"] = 0.3
+        test.random_forest["Other_prob"] = 0.7
+        return test//this.$store.state.results.objectDetails.probabilities;
       }
     },
     watch: {
       probabilities(prob){
-        this.getValues(prob);
+        this.setValues(prob)
       }
     },
     mounted(){
       if(this.probabilities){
-        this.getValues(this.probabilities)
+        this.setValues(this.probabilities)
       }
     }
 }

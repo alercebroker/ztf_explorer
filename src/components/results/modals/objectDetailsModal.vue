@@ -90,7 +90,7 @@
           </b-col>
         </b-row>
         <!-- PROBABILITIES -->
-        <b-row class="mt-3" v-if="$store.state.results.selectedObject.classrf">
+        <b-row class="mt-3" >
           <b-col cols="4">
             <b-card no-body class="h-100 align-middle">
               <lineclass></lineclass>
