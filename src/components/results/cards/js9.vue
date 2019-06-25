@@ -40,34 +40,31 @@
             }
         },
         mounted(){
-            this.aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:0.1, cooFrame: "J2000d"});
-            if(this.coordinates.meanRA && this.coordinates.meanDEC) this.aladin.gotoRaDec(this.coordinates.meanRA, this.coordinates.meanDEC)
             var stamps = [
                 { "stamp":"cutoutScience","target":"JS9Sci" },
                 { "stamp":"cutoutTemplate","target":"JS9Tpl" },
                 { "stamp":"cutoutDifference","target":"JS9Dif" },
             ];
-                
+
+            function setZoom(display) {
+                JS9.SetZoom('ToFit', {display: display});
+            }
+            
             jQuery.each(stamps, function() { 
                 var stamp_key = this.stamp;
                 var target    = this.target;
-                var url="http://alerce.reuna.cl/indexer-api/GetAlertStamps?oid="+object_id+"&candid="+candidate+"&stamp_keys="+stamp_key+"&format=x-fits";
+                // aqui va la url del servicio de imagenes fits
+                var url="http://alerce.reuna.cl/indexer-api/GetAlertStamps?oid="+object_id+"&candid="+candid+"&stamp_keys="+stamp_key;
                 JS9.Preload(url, {scale: 'log', onload: setZoom},  {display: target});    
             });
         },
         watch:{
         },
         computed: {
-            coordinates() {
-                return {
-                    meanRA: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meanra : null,
-                    meanDEC: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meandec : null
-                }
-            },
-            stampsnames() {
+            stampnames() {
                  return {
-                    meanRA: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meanra : null,
-                    meanDEC: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meandec : null
+                    object_id: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.object_id : null,
+                    candid: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.candid : null
                 }
             },
             style(){
