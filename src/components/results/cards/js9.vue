@@ -42,15 +42,30 @@
         mounted(){
             this.aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:0.1, cooFrame: "J2000d"});
             if(this.coordinates.meanRA && this.coordinates.meanDEC) this.aladin.gotoRaDec(this.coordinates.meanRA, this.coordinates.meanDEC)
+            var stamps = [
+                { "stamp":"cutoutScience","target":"JS9Sci" },
+                { "stamp":"cutoutTemplate","target":"JS9Tpl" },
+                { "stamp":"cutoutDifference","target":"JS9Dif" },
+            ];
+                
+            jQuery.each(stamps, function() { 
+                var stamp_key = this.stamp;
+                var target    = this.target;
+                var url="http://alerce.reuna.cl/indexer-api/GetAlertStamps?oid="+object_id+"&candid="+candidate+"&stamp_keys="+stamp_key+"&format=x-fits";
+                JS9.Preload(url, {scale: 'log', onload: setZoom},  {display: target});    
+            });
         },
         watch:{
-            coordinates(newCoord){
-                if(this.aladin)this.aladin.gotoRaDec(newCoord.meanRA, newCoord.meanDEC)
-            }
         },
         computed: {
-            coordinates(){
+            coordinates() {
                 return {
+                    meanRA: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meanra : null,
+                    meanDEC: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meandec : null
+                }
+            },
+            stampsnames() {
+                 return {
                     meanRA: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meanra : null,
                     meanDEC: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meandec : null
                 }
