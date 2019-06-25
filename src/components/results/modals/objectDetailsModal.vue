@@ -101,8 +101,10 @@
           <b-col>
             <!-- Stamps -->
             <!-- <img src="" alt="" id="image"> -->
-            <b-card title="Stamps" v-show="false">
-              <div class="text-center">No stamps to display</div>
+            <b-card title="Stamps" v-show="true">
+              <div>
+                <js9 v-if="$store.state.loading === false"/>
+              </div>
             </b-card>
           </b-col>
         </b-row>
@@ -131,6 +133,7 @@
 <script>
 import cardLightCurve from "../cards/cardLightCurve";
 import aladin from '../cards/aladin.vue';
+import js9 from '../cards/js9.vue';
 import lineclass from '../plots/LineClass.vue';
 
 export default {
