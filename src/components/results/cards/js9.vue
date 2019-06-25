@@ -1,13 +1,13 @@
 <template>
-    <div id="aladin-lite-div"  :style="style" />
+    <div id="js9-div"  :style="style" />
 </template>
 
 <script>
     export default {
-        name: "aladin",
+        name: "js9",
         data(){
             return {
-                aladin: null
+                js9: null
             }
         },
         mounted(){

@@ -148,6 +148,7 @@ export default {
   components: {
     cardLightCurve,
     aladin,
+    js9,
     lineclass
   },
   methods: {
