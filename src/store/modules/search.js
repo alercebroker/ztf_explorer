@@ -100,7 +100,7 @@ export const state = {
         },
         {
             text: "STAMPS",
-            value: "stamps"
+            value: "classearly"
         }
     ],
     selectedClassifier: null,

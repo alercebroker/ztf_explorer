@@ -244,7 +244,7 @@ export default {
             return this.$store.state.search.classifiers;
         },
         classes() {
-            if (this.selectedClassifier === "stamps") {
+            if (this.selectedClassifier === "classearly") {
                 return this.$store.state.search.classes_stamps;
             }
             return this.$store.state.search.classes;
