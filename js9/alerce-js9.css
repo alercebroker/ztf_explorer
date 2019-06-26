@@ -1,0 +1,15 @@
+/*
+ * Alerce JS9 Styles
+ */
+
+.Alert_Direct {
+    display:inline-block;
+    width: 300px;
+    border: solid black 1px;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.Alert_Direct:hover {
+    background-color: #f2f2f2;
+}
