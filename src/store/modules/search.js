@@ -275,19 +275,32 @@ export const actions = {
             dispatch('loading', false)
         })
     },
+    queryStats({ dispatch }, object) {
+        dispatch('loading', true);
+        QueryPSQLService.queryStats(object.oid).then(stats => {
+            dispatch('setObjectDetails', stats)
+            dispatch('loading', false)
+        })
+    },
     queryAlertsFromURL({ commit, dispatch }, object) {
         dispatch('loading', true)
         Promise.all([
             QueryPSQLService.queryDetections(object.oid),
             QueryPSQLService.queryNonDetections(object.oid),
             QueryPSQLService.queryProbabilities(object.oid),
-            QueryPSQLService.queryFeatures(object.oid)
+            QueryPSQLService.queryFeatures(object.oid),
+            QueryPSQLService.queryStats(object.oid)
         ])
             .then(values => {
                 commit('SET_QUERY_STATUS', 200);
                 commit('SET_ERROR', null);
-                values.forEach((element) => {
-                    dispatch('setObjectDetails', element.data.result)
+                values.forEach((element, index) => {
+                    if (index == 4) {
+                        dispatch('objectSelected', element.data.result.stats)
+                    }
+                    else{
+                        dispatch('setObjectDetails', element.data.result)
+                    }
                 })
                 dispatch('setShowObjectDetailsModal', true)
                 dispatch('loading', false)
