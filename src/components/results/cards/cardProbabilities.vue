@@ -19,7 +19,14 @@ export default {
     },
     computed: {
         probabilities() {
-            return this.$store.state.results.objectDetails.probabilities;
+            let probabilities = this.$store.state.results.objectDetails.probabilities
+            let ret = {}
+            Object.keys(probabilities).forEach( key => {
+                if (Object.keys(probabilities[key]).length > 0){
+                    ret[key] = probabilities[key]
+                }
+            })
+            return ret
         }
     }
 };
