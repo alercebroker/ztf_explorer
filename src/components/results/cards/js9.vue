@@ -56,7 +56,7 @@
                 var stamp_key = this.stamp;
                 var target    = this.target;
                 // aqui va la url del servicio de imagenes fits
-                var url="http://alerce.reuna.cl/indexer-api/GetAlertStamps?oid="+object_id+"&candid="+candid+"&stamp_keys="+stamp_key;
+                var url="http://alerce.online/GetAlertStamps?oid="+object_id+"&candid="+candid+"&stamp_keys="+stamp_key;
                 JS9.Preload(url, {scale: 'log', onload: setZoom},  {display: target});    
             });
         },
@@ -66,6 +66,7 @@
             stampnames() {
                  return {
                     object_id: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.object_id : null,
+                    // este deberia ser el ultimo candid ?
                     candid: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.candid : null
                 }
             },
