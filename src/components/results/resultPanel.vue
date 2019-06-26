@@ -5,19 +5,19 @@
         <transition name="fade">
           <b-card no-body>
             <b-tabs card v-model="selectedTab">
-              <b-tab 
+              <!-- <b-tab 
                 title="Overview Dashboard"
               >
                 <tab-overview-dashboard/>
-              </b-tab>
+              </b-tab> -->
               <b-tab title="Query Table">
                 <tab-data/>
               </b-tab>
-              <b-tab
+              <!-- <b-tab
                 title="Query Dashboard"
               >
                 <tab-query-dashboard/>
-              </b-tab>
+              </b-tab> -->
               
             </b-tabs>
           </b-card>

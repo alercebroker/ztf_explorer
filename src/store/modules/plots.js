@@ -1,12 +1,36 @@
-import QueryServiceV3 from '@/services/QueryServiceV3.js'
+import QueryServiceV3 from '@/services/QueryDaskService.js'
 export const state = {
-    error: null
+    error: null,
+    spatialDistribution: null,
+    overviewHistogram: null,
+    queryHistogram: null,
+    overviewScatter: null,
+    queryScatter: null,
+    class_counts: null,
 }
 
 export const mutations = {
     SET_ERROR(state, error){
         state.error = error;
     },
+    SET_SPATIAL_DISTRIBUTION(state, plot){
+        state.spatialDistribution = plot;
+    },
+    SET_OVERVIEW_HISTOGRAM(state,plot){
+        state.overviewHistogram = plot;
+    },
+    SET_QUERY_HISTOGRAM(state,plot){
+        state.queryHistogram = plot;
+    },
+    SET_OVERVIEW_SCATTER(state,plot){
+        state.overviewScatter = plot;
+    },
+    SET_QUERY_SCATTER(state, plot){
+        state.queryScatter = plot;
+    },
+    SET_CLASS_COUNTS(state, data){
+        state.class_counts = data;
+    }
 }
 
 export const actions = {
@@ -75,5 +99,23 @@ export const actions = {
         return QueryServiceV3.countClass().then(response => {
             dispatch('setClassCounts', response.data);
         });
-    }
+    },
+    setSpatialDistribution({commit}, plot){
+        commit('SET_SPATIAL_DISTRIBUTION', plot);
+    },
+    setOverviewHistogram({commit}, plot){
+        commit('SET_OVERVIEW_HISTOGRAM', plot);
+    },
+    setQueryHistogram({ commit }, plot){
+        commit('SET_QUERY_HISTOGRAM', plot);
+    },
+    setOverviewScatter({commit}, plot){
+        commit('SET_OVERVIEW_SCATTER', plot);
+    },
+    setQueryScatter({ commit }, plot){
+        commit('SET_QUERY_SCATTER', plot);
+    },
+    setClassCounts({commit}, data){
+        commit('SET_CLASS_COUNTS', data);
+    },
 }

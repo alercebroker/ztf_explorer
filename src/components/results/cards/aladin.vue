@@ -22,8 +22,8 @@
         computed: {
             coordinates(){
                 return {
-                    meanRA: this.$store.state.results.objectDetails.object_details ? this.$store.state.results.objectDetails.object_details.meanra : null,
-                    meanDEC: this.$store.state.results.objectDetails.object_details ? this.$store.state.results.objectDetails.object_details.meandec : null
+                    meanRA: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meanra : null,
+                    meanDEC: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meandec : null
                 }
             },
             style(){

@@ -23,13 +23,13 @@ export default {
           formatter: function() {
             var header =
               '<span style="font-size: 13px">Modified Julian Date: ' +
-              this.x +
+              this.x.toFixed(3) +
               "</span><br/>";
             var footer =
               '<span style="font-size: 11px; font-weight: bold;">' +
               this.series.name +
               ": " +
-              this.y +
+              this.y.toFixed(3) +
               "</span>";
             return header + footer;
           },
@@ -160,6 +160,9 @@ export default {
       var gbandError = [];
       alerts.forEach(function(item)
       {
+        if(item.magpsf_corr == null || item.magpsf == null){
+          return
+        }
         if(item.fid == 1)
         {
           gband.push([item.mjd, item.magpsf]);
@@ -181,6 +184,9 @@ export default {
       var gno_det = [];
       nodet.forEach(function(item)
       {
+        if(item.diffmaglim == null || item.diffmaglim < 0){
+          return
+        }
         if(item.fid == 1)
           gno_det.push([item.mjd, item.diffmaglim]);
         else if(item.fid == 2)
@@ -193,23 +199,23 @@ export default {
   },
   computed: {
     alerts(){
-      return this.$store.state.results.objectDetails.alerts;
+      return this.$store.state.results.objectDetails.detections;
     },
-    no_detections(){
-      return this.$store.state.results.objectDetails.no_detections;
+    non_detections(){
+      return this.$store.state.results.objectDetails.non_detections;
     },
   },
   watch: {
     alerts(newAlerts){
       this.processLightCurve(newAlerts);
     },
-    no_detections(newNoDet){
+    non_detections(newNoDet){
       this.processLightCurveNoDet(newNoDet);
     },
   },
   mounted(){
     if(this.alerts)this.processLightCurve(this.alerts);
-    if(this.no_detections)this.processLightCurveNoDet(this.no_detections);
+    if(this.non_detections)this.processLightCurveNoDet(this.non_detections);
   }
 };
 </script>

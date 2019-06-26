@@ -7,8 +7,7 @@ import VueLodash from 'vue-lodash'
 
 import HighchartsVue from 'highcharts-vue'
 import Highcharts from 'highcharts'
-import histogramInit from 'highcharts/modules/histogram-bellcurve.js'
-import exportingInit from 'highcharts/modules/exporting.js' //scatter
+import exportingInit from 'highcharts/modules/exporting.js'
 import treemapInit from 'highcharts/modules/treemap.js'
 import heatmapnit from 'highcharts/modules/heatmap.js'
 import exportData from 'highcharts/modules/export-data'
@@ -29,7 +28,6 @@ Vue.use(BootstrapVue);
 Vue.use(VueLodash);
 
 highchartsMore(Highcharts);
-histogramInit(Highcharts);
 exportingInit(Highcharts);
 treemapInit(Highcharts);
 heatmapnit(Highcharts);

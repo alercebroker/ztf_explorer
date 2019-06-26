@@ -21,14 +21,14 @@
                 </b-col>
             </b-row>
             <!--HISTOGRAM OF SOME FEATURES AND SCATTER PLOT-->
-            <b-row>
+            <!-- <b-row>
                 <b-col cols=6>
                     <card-histogram type="overview" />
                 </b-col>
                 <b-col cols=6>
                     <card-scatter type="overview"/>
                 </b-col>
-            </b-row>
+            </b-row> -->
         </b-container>
     </div>
 </template>

@@ -7,7 +7,7 @@
             <b-form-radio-group
                 id="radio-group-1"
                 v-model="selected"
-                :options="options"
+                :options="$store.state.results.objectDetails.period.periodls_1 ? options : optionsNoFold"
                 name="radio-options"
             ></b-form-radio-group>
         </b-form-group>
@@ -32,6 +32,10 @@ export default {
                 { text: 'Difference Magnitude', value: 0, checked: true },
                 { text: 'Apparent Magnitude', value: 1 },
                 { text: 'Folded', value: 2}
+            ],
+            optionsNoFold: [
+                { text: 'Difference Magnitude', value: 0, checked: true },
+                { text: 'Apparent Magnitude', value: 1 },
             ]
         }
     },

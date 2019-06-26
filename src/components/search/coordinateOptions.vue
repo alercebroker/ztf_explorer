@@ -12,12 +12,13 @@
                     <small class="text-muted">(deg)</small>
                 </b-col>
                 <b-col class="mb-1">
-                    <input
+                    <b-form-input
                     class="form-control form-control-sm"
                     id="RA"
                     type="number"
                     step="0.00001"
                     v-model="ra"
+                    :state="validState"
                     />
                 </b-col>
             </b-row>
@@ -32,12 +33,13 @@
                     <small class="text-muted">(deg)</small>
                 </b-col>
                 <b-col class="mb-1">
-                    <input
+                    <b-form-input
                     class="form-control form-control-sm"
                     id="DEC"
                     type="number"
                     step="0.00001"
                     v-model="dec"
+                    :state="validState"
                     />
                 </b-col>
             </b-row>
@@ -52,12 +54,14 @@
                     <small class="text-muted">(arcsec)</small>
                 </b-col>
                 <b-col class="mb-1">
-                    <input
+                    <b-form-input
                     class="form-control form-control-sm"
                     id="RS"
                     type="number"
                     step="0.00001"
                     v-model="rs"
+                    :state="validState"
+                    min="0"
                     />
                 </b-col>
             </b-row>
@@ -68,6 +72,7 @@
 <script>
     export default {
         name: "coordinate-options",
+
         computed: {
             ra: {
                 get(){
@@ -103,6 +108,17 @@
                         keyPath: ["rs"],
                         value: value
                     })
+                }
+            },
+            validState(){
+                let filters = [this.ra, this.dec, this.rs]
+                if( filters.every(v => v!= null && v!= "") || filters.every(v => v==null || v=="")){
+                    this.$store.dispatch('setValidCoords', true);
+                    return null
+                }
+                else{
+                    this.$store.dispatch('setValidCoords', false);
+                    return false
                 }
             }
         }

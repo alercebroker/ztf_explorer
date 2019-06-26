@@ -44,7 +44,6 @@
     },
     mounted(){
       this.treemapOptions.title.text = 'Treemap of classifier ' + this.selected();
-      this.$store.dispatch('getClassCounts');
     },
     methods: {
       dataFormat(data){

@@ -1,16 +1,18 @@
-import QueryService from '@/services/QueryService.js';
-import QueryServiceV3 from '@/services/QueryServiceV3.js'
+import QueryPSQLService from '@/services/QueryPSQLService.js';
+import QueryDaskService from '@/services/QueryDaskService.js'
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
     filters: {},
-    dates: {},
+    dates: { firstmjd: {}, firstGreg: {} },
     bands: {},
     coordinates: {},
-    sql: "self.objects",
+    sql: "SELECT * FROM OBJECTS",
     query_status: 0,
     error: null,
     file: null,
+    flagFirst: false,
+    flagLast: false,
     classes: [
         {
             text: "Not specified",
@@ -34,7 +36,7 @@ export const state = {
         },
         {
             text: "EB",
-            value:3
+            value: 3
         },
         {
             text: "LPV",
@@ -42,7 +44,7 @@ export const state = {
         },
         {
             text: "RRL",
-            value:5
+            value: 5
         },
         {
             text: "SNe",
@@ -51,6 +53,36 @@ export const state = {
         {
             text: "Other",
             value: 0
+        }
+    ],
+    classes_stamps: [
+        {
+            text: "Not specified",
+            value: null
+        },
+        {
+            text: "Classified",
+            value: "classified"
+        },
+        {
+            text: "Not classified",
+            value: "not classified"
+        },
+        {
+            text: "AGN",
+            value: 0
+        },
+        {
+            text: "SNe",
+            value: 1
+        },
+        {
+            text: "Variable Star",
+            value: 2
+        },
+        {
+            text: "Asteroid",
+            value: 3
         }
     ],
     classifiers: [
@@ -66,10 +98,17 @@ export const state = {
             text: "ML_RF",
             value: "classrf"
         },
+        {
+            text: "STAMPS",
+            value: "stamps"
+        }
     ],
     selectedClassifier: null,
     selectedClass: null,
     probability: null,
+    validDates: true,
+    validCoords: true,
+    searched: false,
 }
 
 export const mutations = {
@@ -83,7 +122,7 @@ export const mutations = {
      *  value: the value to update
      * }
      */
-    UPDATE_OPTIONS(state, payload){
+    UPDATE_OPTIONS(state, payload) {
         let obj = state[payload.obj];
         let lastKeyIndex = payload.keyPath.length - 1;
         for (var i = 0; i < lastKeyIndex; ++i) {
@@ -92,37 +131,40 @@ export const mutations = {
                 obj[key] = {}
             obj = obj[key];
         }
-        if(payload.value != null)
+        if (payload.value != null)
             Vue.set(obj, payload.keyPath[lastKeyIndex], payload.value);
         else Vue.delete(obj, payload.keyPath[lastKeyIndex]);
-        
+
     },
-    SET_QUERY_PARAMETERS(state, query_parameters){
+    SET_QUERY_PARAMETERS(state, query_parameters) {
         state.query_parameters = query_parameters;
     },
-    SET_SQL(state, sql){
+    SET_SQL(state, sql) {
         state.sql = sql;
     },
-    SET_QUERY_STATUS(state, value){
+    SET_FLAG(state, payload) {
+        state[payload.flag] = payload.value;
+    },
+    SET_QUERY_STATUS(state, value) {
         state.query_status = value;
     },
-    SET_ERROR(state, error){
+    SET_ERROR(state, error) {
         state.error = error;
     },
-    SET_FILE(state, file){
+    SET_FILE(state, file) {
         state.file = file;
     },
-    CLEAR_QUERY(state){
-        state.filters = { }
-        state.dates = { }
-        state.bands = { }
-        state.coordinates = { }
-        state.sql = "self.objects"
+    CLEAR_QUERY(state) {
+        state.filters = {}
+        state.dates = {}
+        state.bands = {}
+        state.coordinates = {}
+        state.sql = "SELECT * FROM OBJECTS"
         state.probability = null
         state.selectedClass = null
         state.selectedClassifier = null
     },
-    SET_CLASSES(state, classes){
+    SET_CLASSES(state, classes) {
         classes.push(classes.shift());
         classes.map(option => {
             state.classes.push({
@@ -131,271 +173,226 @@ export const mutations = {
             })
         })
     },
-    SET_CLASSIFIER(state, classifier){
+    SET_CLASSIFIER(state, classifier) {
         state.selectedClassifier = classifier;
     },
-    SET_CLASS(state, classs){
+    SET_CLASS(state, classs) {
         state.selectedClass = classs;
     },
-    SET_PROBABILITY(state, probability){
+    SET_PROBABILITY(state, probability) {
         state.probability = probability;
     },
+    SET_VALID_SEARCH(state, value) {
+        state.validSearch = value
+    },
+    SET_VALID_DATES(state, value) {
+        state.validDates = value
+    },
+    SET_VALID_COORDS(state, value) {
+        state.validCoords = value
+    },
+    SET_SEARCHED(state, value) {
+        state.searched = value
+    }
 }
 
 export const actions = {
     updateOptions({ commit }, payload) {
         commit('UPDATE_OPTIONS', payload);
     },
-    setQueryParameters({ commit }, query_parameters){
+    setQueryParameters({ commit }, query_parameters) {
         commit('SET_QUERY_PARAMETERS', query_parameters);
     },
-    getSQL({ commit }, query_parameters){
-        QueryServiceV3.getDataframeFilters(query_parameters).then( response => {
-            commit('SET_SQL', response.data);
-        }).catch( error => {
-            commit('SET_ERROR', error);
+    getSQL({ commit }, query_parameters) {
+        QueryPSQLService.getSQL(query_parameters).then(response => {
+            commit('SET_SQL', response.data)
         })
     },
-    checkQueryStatus({commit, dispatch}, taskId){
-        return QueryService.checkQueryStatus(taskId).then(response => {
-            if (response.data.status === "SUCCESS") {
+    setQueryStatus({ commit }, status) {
+        commit('SET_QUERY_STATUS', status);
+    },
+    queryAlerts({ commit, dispatch }, object) {
+        dispatch('loading', true)
+        Promise.all([
+            QueryPSQLService.queryDetections(object.oid),
+            QueryPSQLService.queryNonDetections(object.oid),
+            QueryPSQLService.queryProbabilities(object.oid),
+            QueryPSQLService.queryFeatures(object.oid)
+        ])
+            .then(values => {
+                commit('SET_QUERY_STATUS', 200);
                 commit('SET_ERROR', null);
-                return "SUCCESS"
-            }
-            else if (response.data.status === "TIMEDOUT"){
-                commit('SET_QUERY_STATUS', 504)
+                values.forEach((element) => {
+                    dispatch('setObjectDetails', element.data.result)
+                })
+                dispatch('setShowObjectDetailsModal', true)
                 dispatch('loading', false)
-            }
-            else if( response.data.status === "STARTED"){
-                return dispatch('checkQueryStatus', taskId)
-            }
+            })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+                commit('SET_ERROR', reason);
+                dispatch('loading', false);
+            })
+    },
+    queryObjects({ commit, dispatch }, payload) {
+        dispatch('loading', true)
+        QueryPSQLService.queryObjects(payload).then(response => {
+            commit('SET_QUERY_STATUS', response.status)
+            commit('SET_SEARCHED', true);
+            commit('SET_ERROR', null);
+            dispatch('setObjects', response.data)
+            dispatch('loading', false)
         }).catch(error => {
             commit('SET_ERROR', error);
-            return "ERROR"
+            dispatch('loading', false);
         })
     },
-    checkQueryStatusV3({commit, dispatch}, queryId){
-        return QueryServiceV3.queryStatus(queryId).then(response => {
-            if (response.data.status === "finished"){
+    queryDetections({ commit, dispatch }, object) {
+        dispatch('loading', true);
+        QueryPSQLService.queryDetections(object.oid).then(det => {
+            dispatch('setDetections', det.data.result.detections)
+            dispatch('loading', false)
+        })
+    },
+    queryNonDetections({ dispatch }, object) {
+        dispatch('loading', true);
+        QueryPSQLService.queryNonDetections(object.oid).then(nondet => {
+            dispatch('setNonDetections', nondet.data.result.non_detections)
+            dispatch('loading', false)
+        })
+    },
+    queryProbabilities({ dispatch }, object) {
+        dispatch('loading', true);
+        QueryPSQLService.queryProbabilities(object.oid).then(prob => {
+            dispatch('setProbabilities', prob.data.result.probabilities)
+            dispatch('loading', false)
+        })
+    },
+    queryFeatures({ dispatch }, object) {
+        dispatch('loading', true);
+        QueryPSQLService.queryFeatures(object.oid).then(feat => {
+            dispatch('setPeriods', feat.data.result.period)
+            dispatch('loading', false)
+        })
+    },
+    queryAlertsFromURL({ commit, dispatch }, object) {
+        dispatch('loading', true)
+        Promise.all([
+            QueryPSQLService.queryDetections(object.oid),
+            QueryPSQLService.queryNonDetections(object.oid),
+            QueryPSQLService.queryProbabilities(object.oid),
+            QueryPSQLService.queryFeatures(object.oid)
+        ])
+            .then(values => {
+                commit('SET_QUERY_STATUS', 200);
                 commit('SET_ERROR', null);
-                return "finished"
-            }
-            else if(response.data.status === "error"){
-                commit('SET_ERROR', "error")
-                return "error"
-            }
-            else if(response.data.status === "pending"){
-                return dispatch('checkQueryStatusV3', queryId)
-            }
-        }).catch(error => {
-            commit('SET_ERROR', error)
-            return "error"
-        })
-    },
-    queryObjectsV3({ commit, dispatch }, payload){
-        dispatch('loading', true);
-        QueryServiceV3.queryObjects(payload.query_parameters).then( response => {
-            let queryId = response.data["query-id"]
-            dispatch('checkQueryStatusV3', queryId).then(result => {
-                if(result === "finished"){
-                    let newPayload = {
-                        queryId: queryId,
-                        page: payload.page,
-                        perPage: payload.perPage
-                    }
-                    dispatch('getPaginatedResult',newPayload);
-                }
+                values.forEach((element) => {
+                    dispatch('setObjectDetails', element.data.result)
+                })
+                dispatch('setShowObjectDetailsModal', true)
+                dispatch('loading', false)
             })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    getPaginatedResult({commit, dispatch},payload){
-        QueryServiceV3.paginatedResult(payload.queryId, payload.page, payload.perPage).then( response =>{
-            if(response.data.total === 0) commit('SET_QUERY_STATUS', 204);
-            else{
-                commit('SET_QUERY_STATUS', response.status);
-                dispatch('setObjects',response.data);
-            }
-            dispatch('loading', false);
-        })
-    },
-    queryAlerts({commit, dispatch}, object){
-        dispatch('loading', true);
-        QueryService.executeObjectQuery(object.id).then( response => {
-            let taskId = response.data["task-id"]
-            dispatch('checkQueryStatus',taskId).then(result => {
-                if(result === "SUCCESS"){
-                    dispatch('getObjectDetails',taskId);
-                }
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+                commit('SET_ERROR', reason);
+                dispatch('loading', false);
             })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
     },
-    queryAlertsFromURL({commit, dispatch}, object){
-        dispatch('loading', true);
-        QueryService.executeObjectQuery(object.oid).then( response => {
-            let taskId = response.data["task-id"]
-            dispatch('checkQueryStatus',taskId).then(result => {
-                if(result === "SUCCESS"){
-                    dispatch('getObjectDetails',taskId);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    getObjectDetails({commit, dispatch}, taskId){
-        QueryService.getResult(taskId).then( response => {
-            dispatch('setObjectDetails', response.data);
-            dispatch('loading', false);
-        }).catch(error => {
-            commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    clearQuery({commit}){
+
+    clearQuery({ commit }) {
         commit('CLEAR_QUERY');
     },
-    getFile({commit},taskId){
-        QueryService.getResult(taskId).then(result => {
-            commit('SET_QUERY_STATUS', result.status);
-            commit('SET_FILE', result.data.result);
-        }).catch(error => {
-            commit('SET_ERROR', error);
-        })
+    getFile({ commit }, taskId) {
+
     },
-    downloadFile({commit, dispatch, state}, format){
+    downloadFile({ commit, dispatch, state }, format) {
         let query_parameters = {
             filters: state.filters,
         }
-        if(!Object.getOwnPropertyNames(state.bands).length === 0){
+        if (!Object.getOwnPropertyNames(state.bands).length === 0) {
             query_parameters.bands = state.bands;
         }
-        if(!Object.getOwnPropertyNames(state.dates).length === 0){
+        if (!Object.getOwnPropertyNames(state.dates).length === 0) {
             query_parameters.dates = state.dates;
         }
-        if(!Object.getOwnPropertyNames(state.coordinates).length === 0){
+        if (!Object.getOwnPropertyNames(state.coordinates).length === 0) {
             query_parameters.coordinates = state.coordinates;
         }
-        QueryService.executeDownloadQuery(query_parameters, format).then( response => {
-            let taskId = response.data["task-id"];
-            dispatch('checkQueryStatus',taskId).then(result => {
-                if(result === "SUCCESS"){
-                    dispatch('getFile',taskId);
-                }
-            })
-        }).catch(error => {
-            commit('SET_ERROR', error);
-        })
+
     },
-    queryClassList({commit, dispatch}){
-        QueryService.queryClassList().then( res => {
-            console.log("res ? ")
-            let taskId = res.data["task-id"];
-            dispatch('checkQueryStatus',taskId).then( result => {
-                console.log("status", result)
-                if(result === "SUCCESS"){
-                    dispatch('getClassList', taskId);
-                }
-            })
-        }).catch( error => {
-            commit('SET_ERROR', error);
-        });
-    },
-    
-    getClassList({commit},taskId){
-        QueryService.getClassList(taskId).then(result => {
-            commit('SET_CLASSES',result.data.result);
-        }).catch(error => {
-            commit('SET_ERROR', error);
-        })
-    },
-    setClassifier({commit, state, dispatch}, classifier){
+
+    setClassifier({ commit, state, dispatch }, classifier) {
         dispatch('setProbability', null);
         commit('SET_CLASSIFIER', classifier);
-        dispatch('updateOptions',{
+        dispatch('updateOptions', {
             obj: "filters",
             keyPath: ["classxmatch"],
             value: null
         })
-        dispatch('updateOptions',{
+        dispatch('updateOptions', {
             obj: "filters",
             keyPath: ["classrf"],
             value: null
         })
-        dispatch('updateOptions',{
-            obj: "filters",
-            keyPath: ["classrnn"],
-            value: null
-        })
-        if(state.selectedClass && classifier){
-            dispatch('updateOptions',{
+        if (state.selectedClass && classifier) {
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: [classifier],
                 value: state.selectedClass
             })
         }
-        if(state.selectedClass && !classifier){
-            dispatch('updateOptions',{
+        if (state.selectedClass && !classifier) {
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: ["classxmatch"],
                 value: state.selectedClass
             })
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: ["classrnn"],
-                value: state.selectedClass
-            })
-            dispatch('updateOptions',{
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: ["classrf"],
                 value: state.selectedClass
             })
         }
     },
-    setClass({commit, state, dispatch}, classs){
+    setClass({ commit, state, dispatch }, classs) {
         commit('SET_CLASS', classs);
-        if(state.selectedClassifier){
-            dispatch('updateOptions',{
+        if (state.selectedClassifier) {
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: [state.selectedClassifier],
                 value: classs
             })
         }
-        else{
-            dispatch('updateOptions',{
+        else {
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: ["classxmatch"],
                 value: classs
             })
-            dispatch('updateOptions',{
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: ["classrf"],
                 value: classs
             })
-            dispatch('updateOptions',{
-                obj: "filters",
-                keyPath: ["classrnn"],
-                value: classs
-            })
         }
-        if(classs == null){
+        if (classs == null) {
             dispatch('setProbability', null)
         }
     },
-    setProbability({commit, dispatch, state}, probability){
+    setProbability({ commit, dispatch, state }, probability) {
         commit('SET_PROBABILITY', probability);
-        dispatch('updateOptions',{
+        dispatch('updateOptions', {
             obj: "filters",
-            keyPath: ['p'+state.selectedClassifier],
+            keyPath: ['p' + state.selectedClassifier],
             value: probability
         })
     },
-    
+    setValidDates({ commit }, value) {
+        commit('SET_VALID_DATES', value)
+    },
+    setValidCoords({ commit }, value) {
+        commit('SET_VALID_COORDS', value)
+    }
+
 }
 

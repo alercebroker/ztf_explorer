@@ -26,22 +26,22 @@
     <!-- DEFAULT OPTIONS -->
             <default-options></default-options>
     <!-- MORE OPTIONS BUTTON -->
-            <b-row class="pl-3 pr-3">
+            <!-- <b-row class="pl-3 pr-3">
               <b-btn
                 :block="block"
                 variant="outline-secondary"
                 v-b-toggle.AdvancedSearch
                 @click="changeMoreOptLabel()"
               >{{ moreOptsLabel }}</b-btn>
-            </b-row>
+            </b-row> -->
     <!-- ADVANCED SEARCH -->
-            <b-row class="pl-3 pr-3 pb-3">
+            <!-- <b-row class="pl-3 pr-3 pb-3">
               <b-collapse id="AdvancedSearch">
                 <hr>
                 <advanced-options></advanced-options>
 
               </b-collapse>
-            </b-row>
+            </b-row> -->
 
             <b-row class="text-center">
               <b-col>
@@ -77,6 +77,7 @@
                   size="lg"
                   :block="block"
                   id="searchbtn"
+                  :disabled="!validSearch"
                 >SEARCH</b-button>
               </b-col>
             </b-row>
@@ -109,7 +110,7 @@ export default {
   data() {
     return {
       moreOptsLabel: "More Options",
-      showSQLLabel: "Show Dataframe Filters",
+      showSQLLabel: "Show SQL",
       block: true,
     }
   },
@@ -130,7 +131,7 @@ export default {
     changeShowSQLLabel() {
       this.refreshSQL();
       this.showSQLLabel =
-        this.showSQLLabel == "Show Dataframe Filters" ? "Hide Dataframe Filters" : "Show Dataframe Filters";
+        this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
     },
     refreshSQL(){
       let query_parameters = {
@@ -170,12 +171,22 @@ export default {
       this.removeEmpty(query_parameters);
       this.$store.dispatch('setQueryParameters', query_parameters);
       this.$store.dispatch('getSQL', query_parameters);
-      this.$store.dispatch('queryObjectsV3', {query_parameters: query_parameters, page: 1, perPage: this.$store.state.perPage});
-      this.$store.dispatch('setSelectedTab', 1)
+      this.$store.dispatch('queryObjects', {
+        query_parameters: query_parameters, 
+        page: 1, 
+        perPage: this.$store.state.perPage
+      });
+      this.$store.dispatch('setCurrentPage', 1)
+      // this.$store.dispatch('setSelectedTab', 1)
       window.scrollTo(0, 0);
     },
     clearQuery(){
       this.$store.dispatch('clearQuery');
+    }
+  },
+  computed:{
+    validSearch(){
+      return this.$store.state.search.validDates && this.$store.state.search.validCoords;
     }
   }
 };

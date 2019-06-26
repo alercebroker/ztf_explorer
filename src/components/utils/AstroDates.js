@@ -3,7 +3,8 @@
 * @param MJD:date in julian format
 * @returns {string} : date in gregorian format
 */            
-function jdToGregorian(MJD) {
+function jdToGregorian(MJD){
+    if (MJD == undefined || MJD == null) return null
     var JD = Number(MJD) + 2400000.5;
     const y = 4716;
     const v = 3;
@@ -38,13 +39,11 @@ function jdToGregorian(MJD) {
  * @returns {number} : date in jualian format
  */
 function gregorianToJd(gDate) {
-    console.log("kljkjhdjas");
-    //MJD = JD − 2400000.5
+    console.log(gDate)
+    if(gDate === "" || gDate == null) return null
     var dateObj = new Date(gDate);
     var mjulianDate = dateObj / 86400000 + 40588;
     return mjulianDate;
 }
 
-export function example(){
-    console.log("kjhsad");
-}
+export {gregorianToJd, jdToGregorian}

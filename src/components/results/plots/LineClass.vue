@@ -1,84 +1,112 @@
 <template>
-
-  <b-container>
-    <div class="align-middle">
-      <highcharts :options="lineOptions"></highcharts>
-    </div>
-  </b-container>
-
+    <b-container>
+        <div class="align-middle">
+            <highcharts :options="lineOptions"></highcharts>
+        </div>
+    </b-container>
 </template>
 
 <script>
-  export default  {
-    name: 'lineclass',
-    props: [],
-    mounted() {
-      this.getValues();
-    },
+export default {
+    name: "lineclass",
+    props: ["probabilities", "classifier"],
     data() {
-      return {
-        lineOptions: {
-          chart: {
-            type: 'spline',
-            height: 250
-          },
-          title: {
-            text: 'Classification'
-          },
-          xAxis: {
-            categories: []
-          },
-          yAxis: {
-            max: 100,
-            title: {
-              text: 'Probability (%)'
+        return {
+            lineOptions: {
+                chart: {
+                    type: "spline",
+                    height: 250
+                },
+                title: {
+                    text: "Classification"
+                },
+                legend:{
+                    enabled:false
+                },
+                xAxis: {
+                    categories: []
+                },
+                yAxis: {
+                    max: 1,
+                    title: {
+                        text: "Probability (%)"
+                    }
+                },
+                tooltip: {
+                    shared: true,
+                    crosshairs: true
+                },
+                exporting: {
+                    enabled: false
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: false
+                        },
+                        enableMouseTracking: true
+                    }
+                },
+                series: []
             }
-          },
-          tooltip: {
-            shared: true,
-            crosshairs: true
-          },
-          exporting: {
-            enabled: false,
-          },
-          plotOptions: {
-            line: {
-              dataLabels: {
-                enabled: true,
-                format: "{y:.1f} %"
-              },
-            enableMouseTracking: true
-            }
-          },
-          series: []
-        }
-      }
+        };
     },
     methods: {
-      getValues: function(){
-        var keys = Object.keys(this.$store.state.results.objectDetails.probabilities[0]);
-        var datas = this.$store.state.results.objectDetails.probabilities[0];
-        var categories = []
-        var rf = []
-        var rnn = []
-        keys.forEach(function(x){
-          if(x.endsWith("_prob"))
-          {
-            let name = x.split("_")[0]
-            categories.push(name)
-            rf.push(datas[x].toFixed(4)*100)
-          }
-        })
-        this.lineOptions.xAxis.categories = categories;
-        this.lineOptions.series.push({name: "RF", data: rf})
-      }
-    },
-    computed: {
+        getClass(obj, classifier) {
+            return this.$store.state.search.classes.find(function(x) {
+                if (x.value == obj[classifier]) {
+                    return x;
+                }
+            }).text;
+        },
 
+        setValues(probabilities) {
+            let categories = [];
+            let series = [];
+            let data = [];
+            Object.keys(probabilities).forEach(key => {
+                if (key.endsWith("_prob")) {
+                    let name = key.split("_")[0];
+                    categories.push(name);
+                    data.push(probabilities[key]);
+                }
+            });
+            this.lineOptions.xAxis.categories = categories;
+            this.lineOptions.series.push({ name: this.classifier, data: data });
+            if (this.$store.state.results.selectedObject.classxmatch) {
+                var classxmatch = this.getClass(
+                    this.$store.state.results.selectedObject,
+                    "classxmatch"
+                ).toLowerCase();
+                this.lineOptions.xAxis.plotLines = [
+                    {
+                        value: categories.indexOf(classxmatch),
+                        dashStyle: "dash",
+                        width: 1,
+                        color: "#d33",
+                        label: {
+                            text: "XMATCH",
+                            style: {
+                                color: "gray"
+                            }
+                        }
+                    }
+                ];
+            }
+        }
+    },
+    watch: {
+        probabilities(prob) {
+            this.setValues(prob);
+        }
+    },
+    mounted() {
+        if (this.probabilities) {
+            this.setValues(this.probabilities);
+        }
     }
-}
+};
 </script>
 
 <style scoped>
-
 </style>
