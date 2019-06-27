@@ -17,9 +17,14 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 import highchartsMore from 'highcharts/highcharts-more'
 
-
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
+//  <link type="text/css" rel="stylesheet" href="js9support.css">
+// <link type="text/css" rel="stylesheet" href="js9.css">
+import 'js9/js9support.css'
+import 'js9/js9.min.js'
+import 'js9/js9support.min.js'
+import 'js9/js9plugins.js'
 
 Vue.config.productionTip = false;
 
