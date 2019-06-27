@@ -70,19 +70,19 @@ export const state = {
         },
         {
             text: "AGN",
-            value: 0
-        },
-        {
-            text: "SNe",
             value: 1
         },
         {
-            text: "Variable Star",
+            text: "SNe",
             value: 2
         },
         {
-            text: "Asteroid",
+            text: "Variable Star",
             value: 3
+        },
+        {
+            text: "Asteroid",
+            value: 4
         }
     ],
     classifiers: [
