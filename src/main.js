@@ -17,7 +17,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap-vue/dist/bootstrap-vue.css"
 import highchartsMore from 'highcharts/highcharts-more'
 
-
 import 'vue-awesome/icons'
 import Icon from 'vue-awesome/components/Icon'
 
@@ -33,6 +32,7 @@ treemapInit(Highcharts);
 heatmapnit(Highcharts);
 exportData(Highcharts);
 Vue.use(HighchartsVue);
+
 
 Vue.component('v-icon', Icon);
 
