@@ -7,7 +7,7 @@
         lazy="lazy"
         no-close-on-backdrop
     >
-        <div slot="modal-header"></div>
+        <!-- <div slot="modal-header"></div> -->
         <b-container fluid>
             <b-row>
                 <b-col cols="2">
@@ -118,11 +118,9 @@
                 <b-col cols="4">
                     <card-probabilities/>
                 </b-col>
-            </b-row>
-            <b-row class="mt-3">
                 <b-col>
                     <!-- Stamps -->
-                    <card-stamp/>
+                    <card-stamps/>
                 </b-col>
             </b-row>
             <b-row class="mt-3">
@@ -150,7 +148,6 @@
 <script>
 import cardLightCurve from "../cards/cardLightCurve";
 import aladin from "../cards/aladin.vue";
-import lineclass from "../plots/LineClass.vue";
 import cardProbabilities from "../cards/cardProbabilities.vue"
 import cardStamps from "../cards/cardStamps.vue"
 
