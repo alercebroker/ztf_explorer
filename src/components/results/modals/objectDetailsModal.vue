@@ -7,7 +7,7 @@
         lazy="lazy"
         no-close-on-backdrop
     >
-        <!-- <div slot="modal-header"></div> -->
+        <div slot="modal-header"></div>
         <b-container fluid>
             <b-row>
                 <b-col cols="2">

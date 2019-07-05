@@ -218,18 +218,11 @@ export const actions = {
             QueryPSQLService.queryNonDetections(object.oid),
             QueryPSQLService.queryProbabilities(object.oid),
             QueryPSQLService.queryFeatures(object.oid),
-            // QueryStampsService.queryStamp({ oid: "ZTF18aajhbfp", candid: "821270966115015004", type: "science" })
         ])
             .then(values => {
                 commit('SET_QUERY_STATUS', 200);
                 commit('SET_ERROR', null);
                 values.forEach((element, index) => {
-                    // if (index === 4) {
-                    //     dispatch('setObjectDetails', {stamp: element.data})
-                    // }
-                    // else {
-                    //     dispatch('setObjectDetails', element.data.result)
-                    // }
                     dispatch('setObjectDetails', element.data.result)
                 })
                 dispatch('setShowObjectDetailsModal', true)
