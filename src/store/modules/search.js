@@ -3,7 +3,7 @@ import QueryDaskService from '@/services/QueryDaskService.js'
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
-    filters: {},
+    filters: {nobs:{}},
     dates: {},
     bands: {},
     coordinates: {},
@@ -75,6 +75,7 @@ export const state = {
     validDates: true,
     validCoords: true,
     searched: false,
+    nobsRange: [0,600],
 }
 
 export const mutations = {
@@ -121,7 +122,7 @@ export const mutations = {
         state.file = file;
     },
     CLEAR_QUERY(state){
-        state.filters = { }
+        state.filters = {nobs:{}}
         state.dates = { }
         state.bands = { }
         state.coordinates = { }
@@ -129,6 +130,7 @@ export const mutations = {
         state.probability = null
         state.selectedClass = null
         state.selectedClassifier = null
+        state.nobsRange = [0,600]
     },
     SET_CLASSES(state, classes){
         classes.push(classes.shift());
@@ -159,6 +161,9 @@ export const mutations = {
     },
     SET_SEARCHED(state, value){
         state.searched = value
+    },
+    SET_NOBS_RANGE(state, value){
+        state.nobsRange = value
     }
 }
 
@@ -359,7 +364,19 @@ export const actions = {
     },
     setValidCoords({commit}, value){
         commit('SET_VALID_COORDS', value)
+    },
+    setNobsRange({commit, dispatch}, range){
+        commit('SET_NOBS_RANGE', range)
+        dispatch('updateOptions', {
+            obj: "filters",
+            keyPath: ["nobs", "min"],
+            value: range[0]
+        });
+        dispatch('updateOptions', {
+            obj: "filters",
+            keyPath: ["nobs", "max"],
+            value: range[1]
+        });
     }
-    
 }
 
