@@ -1,10 +1,10 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
-import QueryDaskService from '@/services/QueryDaskService.js'
+import QueryStampsService from '@/services/QueryStampsService.js';
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
     filters: {nobs:{}},
-    dates: {},
+    dates: { firstmjd: {}, firstGreg: {} },
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
@@ -36,7 +36,7 @@ export const state = {
         },
         {
             text: "EB",
-            value:3
+            value: 3
         },
         {
             text: "LPV",
@@ -44,7 +44,7 @@ export const state = {
         },
         {
             text: "RRL",
-            value:5
+            value: 5
         },
         {
             text: "SNe",
@@ -53,6 +53,36 @@ export const state = {
         {
             text: "Other",
             value: 0
+        }
+    ],
+    classes_stamps: [
+        {
+            text: "Not specified",
+            value: null
+        },
+        {
+            text: "Classified",
+            value: "classified"
+        },
+        {
+            text: "Not classified",
+            value: "not classified"
+        },
+        {
+            text: "AGN",
+            value: 1
+        },
+        {
+            text: "SNe",
+            value: 2
+        },
+        {
+            text: "Variable Star",
+            value: 3
+        },
+        {
+            text: "Asteroid",
+            value: 4
         }
     ],
     classifiers: [
@@ -68,6 +98,10 @@ export const state = {
             text: "ML_RF",
             value: "classrf"
         },
+        {
+            text: "STAMPS",
+            value: "classearly"
+        }
     ],
     selectedClassifier: null,
     selectedClass: null,
@@ -89,7 +123,7 @@ export const mutations = {
      *  value: the value to update
      * }
      */
-    UPDATE_OPTIONS(state, payload){
+    UPDATE_OPTIONS(state, payload) {
         let obj = state[payload.obj];
         let lastKeyIndex = payload.keyPath.length - 1;
         for (var i = 0; i < lastKeyIndex; ++i) {
@@ -98,27 +132,27 @@ export const mutations = {
                 obj[key] = {}
             obj = obj[key];
         }
-        if(payload.value != null)
+        if (payload.value != null)
             Vue.set(obj, payload.keyPath[lastKeyIndex], payload.value);
         else Vue.delete(obj, payload.keyPath[lastKeyIndex]);
-        
+
     },
-    SET_QUERY_PARAMETERS(state, query_parameters){
+    SET_QUERY_PARAMETERS(state, query_parameters) {
         state.query_parameters = query_parameters;
     },
-    SET_SQL(state, sql){
+    SET_SQL(state, sql) {
         state.sql = sql;
     },
-    SET_FLAG(state, payload){
+    SET_FLAG(state, payload) {
         state[payload.flag] = payload.value;
-},
-    SET_QUERY_STATUS(state, value){
+    },
+    SET_QUERY_STATUS(state, value) {
         state.query_status = value;
     },
-    SET_ERROR(state, error){
+    SET_ERROR(state, error) {
         state.error = error;
     },
-    SET_FILE(state, file){
+    SET_FILE(state, file) {
         state.file = file;
     },
     CLEAR_QUERY(state){
@@ -132,7 +166,7 @@ export const mutations = {
         state.selectedClassifier = null
         state.nobsRange = [0,600]
     },
-    SET_CLASSES(state, classes){
+    SET_CLASSES(state, classes) {
         classes.push(classes.shift());
         classes.map(option => {
             state.classes.push({
@@ -141,25 +175,25 @@ export const mutations = {
             })
         })
     },
-    SET_CLASSIFIER(state, classifier){
+    SET_CLASSIFIER(state, classifier) {
         state.selectedClassifier = classifier;
     },
-    SET_CLASS(state, classs){
+    SET_CLASS(state, classs) {
         state.selectedClass = classs;
     },
-    SET_PROBABILITY(state, probability){
+    SET_PROBABILITY(state, probability) {
         state.probability = probability;
     },
-    SET_VALID_SEARCH(state, value){
+    SET_VALID_SEARCH(state, value) {
         state.validSearch = value
     },
-    SET_VALID_DATES(state, value){
+    SET_VALID_DATES(state, value) {
         state.validDates = value
     },
-    SET_VALID_COORDS(state, value){
+    SET_VALID_COORDS(state, value) {
         state.validCoords = value
     },
-    SET_SEARCHED(state, value){
+    SET_SEARCHED(state, value) {
         state.searched = value
     },
     SET_NOBS_RANGE(state, value){
@@ -171,43 +205,43 @@ export const actions = {
     updateOptions({ commit }, payload) {
         commit('UPDATE_OPTIONS', payload);
     },
-    setQueryParameters({ commit }, query_parameters){
+    setQueryParameters({ commit }, query_parameters) {
         commit('SET_QUERY_PARAMETERS', query_parameters);
     },
-    getSQL({ commit }, query_parameters){
-        QueryPSQLService.getSQL(query_parameters).then( response => {
+    getSQL({ commit }, query_parameters) {
+        QueryPSQLService.getSQL(query_parameters).then(response => {
             commit('SET_SQL', response.data)
         })
     },
-    setQueryStatus({commit}, status){
+    setQueryStatus({ commit }, status) {
         commit('SET_QUERY_STATUS', status);
     },
-    queryAlerts({commit, dispatch}, object){
+    queryAlerts({ commit, dispatch }, object) {
         dispatch('loading', true)
         Promise.all([
             QueryPSQLService.queryDetections(object.oid),
             QueryPSQLService.queryNonDetections(object.oid),
             QueryPSQLService.queryProbabilities(object.oid),
-            QueryPSQLService.queryFeatures(object.oid)
-            ])
-        .then(values => {
-            commit('SET_QUERY_STATUS', 200);
-            commit('SET_ERROR', null);
-            values.forEach((element) => {
-                dispatch('setObjectDetails', element.data.result)
+            QueryPSQLService.queryFeatures(object.oid),
+        ])
+            .then(values => {
+                commit('SET_QUERY_STATUS', 200);
+                commit('SET_ERROR', null);
+                values.forEach((element, index) => {
+                    dispatch('setObjectDetails', element.data.result)
+                })
+                dispatch('setShowObjectDetailsModal', true)
+                dispatch('loading', false)
             })
-            dispatch('setShowObjectDetailsModal', true)
-            dispatch('loading', false)
-        })
-        .catch(reason => {
-            console.log("Error with alert query", reason)
-            commit('SET_ERROR', reason);
-            dispatch('loading', false);
-        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+                commit('SET_ERROR', reason);
+                dispatch('loading', false);
+            })
     },
-    queryObjects({commit, dispatch}, payload){
+    queryObjects({ commit, dispatch }, payload) {
         dispatch('loading', true)
-        QueryPSQLService.queryObjects(payload).then( response => {
+        QueryPSQLService.queryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
             commit('SET_SEARCHED', true);
             commit('SET_ERROR', null);
@@ -218,151 +252,162 @@ export const actions = {
             dispatch('loading', false);
         })
     },
-    queryDetections({commit, dispatch}, object){
+    queryDetections({ commit, dispatch }, object) {
         dispatch('loading', true);
         QueryPSQLService.queryDetections(object.oid).then(det => {
             dispatch('setDetections', det.data.result.detections)
             dispatch('loading', false)
         })
     },
-    queryNonDetections({dispatch}, object){
+    queryNonDetections({ dispatch }, object) {
         dispatch('loading', true);
         QueryPSQLService.queryNonDetections(object.oid).then(nondet => {
             dispatch('setNonDetections', nondet.data.result.non_detections)
             dispatch('loading', false)
         })
     },
-    queryProbabilities({dispatch}, object){
+    queryProbabilities({ dispatch }, object) {
         dispatch('loading', true);
         QueryPSQLService.queryProbabilities(object.oid).then(prob => {
             dispatch('setProbabilities', prob.data.result.probabilities)
             dispatch('loading', false)
         })
     },
-    queryFeatures({dispatch}, object){
+    queryFeatures({ dispatch }, object) {
         dispatch('loading', true);
         QueryPSQLService.queryFeatures(object.oid).then(feat => {
             dispatch('setPeriods', feat.data.result.period)
             dispatch('loading', false)
         })
     },
-    queryAlertsFromURL({commit, dispatch}, object){
-        console.log("SE LLAMA")
+    queryStats({ dispatch }, object) {
+        dispatch('loading', true);
+        QueryPSQLService.queryStats(object.oid).then(stats => {
+            dispatch('setObjectDetails', stats)
+            dispatch('loading', false)
+        })
+    },
+    queryAlertsFromURL({ commit, dispatch }, object) {
         dispatch('loading', true)
         Promise.all([
             QueryPSQLService.queryDetections(object.oid),
             QueryPSQLService.queryNonDetections(object.oid),
             QueryPSQLService.queryProbabilities(object.oid),
-            QueryPSQLService.queryFeatures(object.oid)
-            ])
-        .then(values => {
-            commit('SET_QUERY_STATUS', 200);
-            commit('SET_ERROR', null);
-            values.forEach((element) => {
-                dispatch('setObjectDetails', element.data.result)
+            QueryPSQLService.queryFeatures(object.oid),
+            QueryPSQLService.queryStats(object.oid)
+        ])
+            .then(values => {
+                commit('SET_QUERY_STATUS', 200);
+                commit('SET_ERROR', null);
+                values.forEach((element, index) => {
+                    if (index == 4) {
+                        dispatch('objectSelected', element.data.result.stats)
+                    }
+                    else {
+                        dispatch('setObjectDetails', element.data.result)
+                    }
+                })
+                dispatch('setShowObjectDetailsModal', true)
+                dispatch('loading', false)
             })
-            dispatch('setShowObjectDetailsModal', true)
-            dispatch('loading', false)
-        })
-        .catch(reason => {
-            console.log("Error with alert query", reason)
-            commit('SET_ERROR', reason);
-            dispatch('loading', false);
-        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+                commit('SET_ERROR', reason);
+                dispatch('loading', false);
+            })
     },
-
-    clearQuery({commit}){
+    clearQuery({ commit }) {
         commit('CLEAR_QUERY');
     },
-    getFile({commit},taskId){
-        
+    getFile({ commit }, taskId) {
+
     },
-    downloadFile({commit, dispatch, state}, format){
+    downloadFile({ commit, dispatch, state }, format) {
         let query_parameters = {
             filters: state.filters,
         }
-        if(!Object.getOwnPropertyNames(state.bands).length === 0){
+        if (!Object.getOwnPropertyNames(state.bands).length === 0) {
             query_parameters.bands = state.bands;
         }
-        if(!Object.getOwnPropertyNames(state.dates).length === 0){
+        if (!Object.getOwnPropertyNames(state.dates).length === 0) {
             query_parameters.dates = state.dates;
         }
-        if(!Object.getOwnPropertyNames(state.coordinates).length === 0){
+        if (!Object.getOwnPropertyNames(state.coordinates).length === 0) {
             query_parameters.coordinates = state.coordinates;
         }
-        
+
     },
 
-    setClassifier({commit, state, dispatch}, classifier){
+    setClassifier({ commit, state, dispatch }, classifier) {
         dispatch('setProbability', null);
         commit('SET_CLASSIFIER', classifier);
-        dispatch('updateOptions',{
+        dispatch('updateOptions', {
             obj: "filters",
             keyPath: ["classxmatch"],
             value: null
         })
-        dispatch('updateOptions',{
+        dispatch('updateOptions', {
             obj: "filters",
             keyPath: ["classrf"],
             value: null
         })
-        if(state.selectedClass && classifier){
-            dispatch('updateOptions',{
+        if (state.selectedClass && classifier) {
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: [classifier],
                 value: state.selectedClass
             })
         }
-        if(state.selectedClass && !classifier){
-            dispatch('updateOptions',{
+        if (state.selectedClass && !classifier) {
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: ["classxmatch"],
                 value: state.selectedClass
             })
-            dispatch('updateOptions',{
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: ["classrf"],
                 value: state.selectedClass
             })
         }
     },
-    setClass({commit, state, dispatch}, classs){
+    setClass({ commit, state, dispatch }, classs) {
         commit('SET_CLASS', classs);
-        if(state.selectedClassifier){
-            dispatch('updateOptions',{
+        if (state.selectedClassifier) {
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: [state.selectedClassifier],
                 value: classs
             })
         }
-        else{
-            dispatch('updateOptions',{
+        else {
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: ["classxmatch"],
                 value: classs
             })
-            dispatch('updateOptions',{
+            dispatch('updateOptions', {
                 obj: "filters",
                 keyPath: ["classrf"],
                 value: classs
             })
         }
-        if(classs == null){
+        if (classs == null) {
             dispatch('setProbability', null)
         }
     },
-    setProbability({commit, dispatch, state}, probability){
+    setProbability({ commit, dispatch, state }, probability) {
         commit('SET_PROBABILITY', probability);
-        dispatch('updateOptions',{
+        dispatch('updateOptions', {
             obj: "filters",
-            keyPath: ['p'+state.selectedClassifier],
+            keyPath: ['p' + state.selectedClassifier],
             value: probability
         })
     },
-    setValidDates({commit}, value){
+    setValidDates({ commit }, value) {
         commit('SET_VALID_DATES', value)
     },
-    setValidCoords({commit}, value){
+    setValidCoords({ commit }, value) {
         commit('SET_VALID_COORDS', value)
     },
     setNobsRange({commit, dispatch}, range){

@@ -37,6 +37,7 @@ heatmapnit(Highcharts);
 exportData(Highcharts);
 Vue.use(HighchartsVue);
 
+
 Vue.component('v-icon', Icon);
 
 new Vue({

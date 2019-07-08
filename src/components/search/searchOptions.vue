@@ -94,7 +94,7 @@ export default {
     data() {
         return {
             moreOptsLabel: "More Options",
-            showSQLLabel: false,
+            showSQLLabel: "Show SQL",
             block: true
         };
     },
@@ -108,6 +108,14 @@ export default {
         changeMoreOptLabel() {
             this.moreOptsLabel =
                 this.moreOptsLabel == "More Options" ? "Hide" : "More Options";
+        },
+        /**
+         * change option text in show sql
+         */
+        changeShowSQLLabel() {
+            this.refreshSQL();
+            this.showSQLLabel =
+                this.showSQLLabel == "Show SQL" ? "Hide SQL" : "Show SQL";
         },
         refreshSQL() {
             let query_parameters = {
@@ -129,7 +137,7 @@ export default {
                     this.removeEmpty(val);
                     if (Object.keys(val).length === 0) delete obj[key];
                 } else {
-                    if (val == null || val == "") delete obj[key];
+                    if (val == null || val === "") delete obj[key];
                 }
             });
         },
