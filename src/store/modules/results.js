@@ -47,7 +47,7 @@ export const state = {
     total: 0,
     num_pages: 0,
     showObjectDetailsModal: false,
-    currentPage: 0
+    currentPage: 0,
 }
 
 export const mutations = {
@@ -92,7 +92,6 @@ export const mutations = {
 export const actions = {
     objectSelected({commit, dispatch, state}, object){
         if(state.selectedObject && state.selectedObject.oid !== object.oid){
-            console.log("ENTRA")
             dispatch('queryAlerts', object)
         }
         else{

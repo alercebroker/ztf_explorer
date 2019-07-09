@@ -1,5 +1,5 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
-import QueryDaskService from '@/services/QueryDaskService.js'
+import QueryStampsService from '@/services/QueryStampsService.js';
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
@@ -217,12 +217,12 @@ export const actions = {
             QueryPSQLService.queryDetections(object.oid),
             QueryPSQLService.queryNonDetections(object.oid),
             QueryPSQLService.queryProbabilities(object.oid),
-            QueryPSQLService.queryFeatures(object.oid)
+            QueryPSQLService.queryFeatures(object.oid),
         ])
             .then(values => {
                 commit('SET_QUERY_STATUS', 200);
                 commit('SET_ERROR', null);
-                values.forEach((element) => {
+                values.forEach((element, index) => {
                     dispatch('setObjectDetails', element.data.result)
                 })
                 dispatch('setShowObjectDetailsModal', true)
@@ -298,7 +298,7 @@ export const actions = {
                     if (index == 4) {
                         dispatch('objectSelected', element.data.result.stats)
                     }
-                    else{
+                    else {
                         dispatch('setObjectDetails', element.data.result)
                     }
                 })
@@ -311,7 +311,6 @@ export const actions = {
                 dispatch('loading', false);
             })
     },
-
     clearQuery({ commit }) {
         commit('CLEAR_QUERY');
     },

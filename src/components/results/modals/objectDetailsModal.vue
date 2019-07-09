@@ -118,14 +118,9 @@
                 <b-col cols="4">
                     <card-probabilities/>
                 </b-col>
-            </b-row>
-            <b-row class="mt-3">
                 <b-col>
                     <!-- Stamps -->
-                    <!-- <img src="" alt="" id="image"> -->
-                    <b-card title="Stamps" v-show="false">
-                        <div class="text-center">No stamps to display</div>
-                    </b-card>
+                    <card-stamps-png/>
                 </b-col>
             </b-row>
             <b-row class="mt-3">
@@ -153,8 +148,8 @@
 <script>
 import cardLightCurve from "../cards/cardLightCurve";
 import aladin from "../cards/aladin.vue";
-import lineclass from "../plots/LineClass.vue";
 import cardProbabilities from "../cards/cardProbabilities.vue"
+import cardStampsPng from "../cards/cardStampsPng.vue"
 
 export default {
     name: "object-details-modal",
@@ -168,7 +163,8 @@ export default {
     components: {
         cardLightCurve,
         aladin,
-        cardProbabilities
+        cardProbabilities,
+        cardStampsPng
     },
     methods: {
         getClass(obj, classifier) {

@@ -49,7 +49,7 @@ export default {
         return apiClient.post('/get_features', { oid: oid })
     },
     queryStats(oid) {
-        return apiClient.post('/get_stats', {oid: oid})
+        return apiClient.post('/get_stats', { oid: oid })
     },
     /**
      * Executes a query to download the list of objects previously filtered
