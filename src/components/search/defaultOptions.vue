@@ -172,7 +172,6 @@ export default {
     data() {
         return {};
     },
-    props: ["loading"],
     computed: {
         /**
          * Here, each computed property gets the state of a given parameter and sets it as the view changes
