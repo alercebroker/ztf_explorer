@@ -8,13 +8,13 @@
                 <p class="small">Date</p>
             </v-flex>
             <v-flex xs6>
-                <v-text-field label="Min MJD" class="mt-8" v-model="minFirstMJD" min="0" />
+                <v-text-field label="Min MJD" class="mt-8" v-model="minFirstMJD" min="0" type="number"/>
             </v-flex>
             <v-flex xs6>
                 <v-text-field label="Min Greg" v-model="minFirstGreg" ></v-text-field>
             </v-flex>
             <v-flex xs6>
-                <v-text-field label="Max MJD" class="mt-8" v-model="maxFirstMJD" min="0" />
+                <v-text-field label="Max MJD" class="mt-8" v-model="maxFirstMJD" min="0" type="number"/>
             </v-flex>
             <v-flex xs6>
                 <v-text-field label="Min Greg" v-model="maxFirstGreg" ></v-text-field>
