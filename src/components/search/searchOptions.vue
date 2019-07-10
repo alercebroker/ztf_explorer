@@ -2,8 +2,8 @@
     <div>
         <v-card>
             <!--HEADER-->
-            <v-toolbar color="grey lighten-4">
-                <v-toolbar-title>Search Options</v-toolbar-title>
+            <v-toolbar :dark="true">
+                <v-toolbar-title >Search Options</v-toolbar-title>
             </v-toolbar>
             <!--BODY-->
             <v-form>
@@ -24,16 +24,22 @@
                             <default-options></default-options>
                         </v-flex>
                         <!-- Date and coordinate options -->
-                        <b-card no-body class="mb-3">
-                            <b-tabs card>
-                                <b-tab title="Dates" active>
+                        <v-card>
+                            <v-tabs color="grey lighten-4">
+                                <v-tab>
+                                    Discovery Date
+                                </v-tab>
+                                <v-tab-item>
                                     <date-options />
-                                </b-tab>
-                                <b-tab title="Coordinates">
+                                </v-tab-item>
+                                <v-tab>
+                                    Coordinates
+                                </v-tab>
+                                <v-tab-item>
                                     <coordinate-options />
-                                </b-tab>
-                            </b-tabs>
-                        </b-card>
+                                </v-tab-item>
+                            </v-tabs>
+                        </v-card>
                         <!--Show SQL-->
                         <v-flex xs12 sm12 md12>
                             <v-btn
@@ -95,7 +101,8 @@ export default {
         return {
             moreOptsLabel: "More Options",
             showSQLLabel: "Show SQL",
-            block: true
+            block: true,
+            activeTab:null
         };
     },
     mounted() {

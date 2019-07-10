@@ -3,12 +3,6 @@
         <v-form ref="form" v-model="validation" lazy-validation>
             <v-layout row wrap>
                 <v-flex xs6>
-                    <p class="small">Modified Julian Date</p>
-                </v-flex>
-                <v-flex xs6>
-                    <p class="small">Date</p>
-                </v-flex>
-                <v-flex xs6>
                     <v-text-field
                         label="Min MJD"
                         class="mt-8"
