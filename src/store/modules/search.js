@@ -246,7 +246,7 @@ export const actions = {
             dispatch('loading', false);
         })
     },
-    queryDetections({ commit, dispatch }, object) {
+    queryDetections({ dispatch }, object) {
         dispatch('loading', true);
         QueryPSQLService.queryDetections(object.oid).then(det => {
             dispatch('setDetections', det.data.result.detections)
