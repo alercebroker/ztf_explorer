@@ -3,7 +3,7 @@ import QueryStampsService from '@/services/QueryStampsService.js';
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
-    filters: {nobs:{}},
+    filters: { nobs: {} },
     dates: { firstmjd: {}, firstGreg: {} },
     bands: {},
     coordinates: {},
@@ -11,8 +11,6 @@ export const state = {
     query_status: 0,
     error: null,
     file: null,
-    flagFirst: false,
-    flagLast: false,
     classes: [
         {
             text: "Not specified",
@@ -106,10 +104,9 @@ export const state = {
     selectedClassifier: null,
     selectedClass: null,
     probability: null,
-    validDates: true,
-    validCoords: true,
+    valid: true,
     searched: false,
-    nobsRange: [0,600],
+    nobsRange: [0, 1000],
 }
 
 export const mutations = {
@@ -155,16 +152,16 @@ export const mutations = {
     SET_FILE(state, file) {
         state.file = file;
     },
-    CLEAR_QUERY(state){
-        state.filters = {nobs:{}}
-        state.dates = { }
-        state.bands = { }
-        state.coordinates = { }
+    CLEAR_QUERY(state) {
+        state.filters = { nobs: {} }
+        state.dates = { firstmjd: {}, firstGreg: {} }
+        state.bands = {}
+        state.coordinates = {}
         state.sql = "SELECT * FROM OBJECTS"
         state.probability = null
         state.selectedClass = null
         state.selectedClassifier = null
-        state.nobsRange = [0,600]
+        state.nobsRange = [0, 1000]
     },
     SET_CLASSES(state, classes) {
         classes.push(classes.shift());
@@ -187,16 +184,13 @@ export const mutations = {
     SET_VALID_SEARCH(state, value) {
         state.validSearch = value
     },
-    SET_VALID_DATES(state, value) {
-        state.validDates = value
-    },
     SET_VALID_COORDS(state, value) {
         state.validCoords = value
     },
     SET_SEARCHED(state, value) {
         state.searched = value
     },
-    SET_NOBS_RANGE(state, value){
+    SET_NOBS_RANGE(state, value) {
         state.nobsRange = value
     }
 }
@@ -404,13 +398,10 @@ export const actions = {
             value: probability
         })
     },
-    setValidDates({ commit }, value) {
-        commit('SET_VALID_DATES', value)
-    },
     setValidCoords({ commit }, value) {
         commit('SET_VALID_COORDS', value)
     },
-    setNobsRange({commit, dispatch}, range){
+    setNobsRange({ commit, dispatch }, range) {
         commit('SET_NOBS_RANGE', range)
         dispatch('updateOptions', {
             obj: "filters",

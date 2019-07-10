@@ -3,7 +3,7 @@
         <v-layout row wrap>
             <!--Object ID-->
             <v-flex xs12 sm12 md12>
-                <v-text-field label="Object ID" />
+                <v-text-field label="Object ID" v-model="oid" />
             </v-flex>
             <!--Classifier-->
             <v-flex xs12 sm12 md6>
@@ -57,7 +57,7 @@
                         </v-flex>
 
                         <v-flex class="px-3">
-                            <v-range-slider v-model="nobs" :max="600" :min="0" :step="1"></v-range-slider>
+                            <v-range-slider v-model="nobs" :max="1000" :min="0" :step="1"></v-range-slider>
                         </v-flex>
 
                         <v-flex shrink>
@@ -85,7 +85,6 @@ export default {
     data() {
         return {};
     },
-    props: ["loading"],
     computed: {
         /**
          * Here, each computed property gets the state of a given parameter and sets it as the view changes
@@ -166,11 +165,6 @@ export default {
             set(value) {
                 this.$store.dispatch("setProbability", value);
             }
-        }
-    },
-    watch: {
-        classOptions(newVal) {
-            return this.$store.state.search.classes;
         }
     },
     methods: {}

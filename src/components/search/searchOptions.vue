@@ -171,8 +171,7 @@ export default {
     computed: {
         validSearch() {
             return (
-                this.$store.state.search.validDates &&
-                this.$store.state.search.validCoords
+                this.$store.state.search.valid
             );
         }
     }
