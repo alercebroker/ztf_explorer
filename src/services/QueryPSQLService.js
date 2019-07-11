@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: "http://ztf.alerce.online/query",
+    baseURL: "http://ztf.alerce.online",
     withCredentials: false,
     headers: {
         Accept: "application/json",
