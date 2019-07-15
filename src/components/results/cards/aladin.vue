@@ -11,7 +11,7 @@
             }
         },
         mounted(){
-            this.aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:0.1, cooFrame: "J2000d"});
+            this.aladin = A.aladin('#aladin-lite-div', {survey: "P/PanSTARRS/DR1/color-z-zg-g", fov:0.05, cooFrame: "J2000d"});
             if(this.coordinates.meanRA && this.coordinates.meanDEC) this.aladin.gotoRaDec(this.coordinates.meanRA, this.coordinates.meanDEC)
         },
         watch:{
@@ -38,5 +38,5 @@
 </script>
 
 <style scoped>
-    
+
 </style>
