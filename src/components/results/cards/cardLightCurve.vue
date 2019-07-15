@@ -1,20 +1,11 @@
 <template>
-    <b-card>
-        <light-curve v-if="selected == 0"/>
-        <light-curve-corr v-if="selected == 1"/>
-        <light-curve-folded v-if="selected == 2"/>
-        <b-form-group >
-            <b-form-radio-group
-                id="radio-group-1"
-                v-model="selected"
-                :options="$store.state.results.objectDetails.period.periodls_1 ? options : optionsNoFold"
-                name="radio-options"
-            ></b-form-radio-group>
-        </b-form-group>
-    </b-card>
+    <div class="overlay">
+        <lightcurvePlot></lightcurvePlot>
+    </div>
 </template>
 
 <script>
+import lightcurvePlot from '../plots/LightCurve'
 import lightCurveCorr from '../plots/lightCurveCorr'
 import lightCurveFolded from '../plots/lightCurveFolded'
 import lightCurve from '../plots/lightCurve'
@@ -23,7 +14,8 @@ export default {
     components: {
         lightCurveCorr,
         lightCurveFolded,
-        lightCurve
+        lightCurve,
+        lightcurvePlot
     },
     data(){
         return {
