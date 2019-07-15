@@ -23,7 +23,7 @@
                         min-width="290px"
                     >
                         <v-text-field
-                            v-model="minFirstGreg"
+                            v-model="computedMinFirstGreg"
                             label="Min first greg date"
                             prepend-icon="event"
                             readonly
@@ -38,6 +38,7 @@
                             :allowed-dates="minDates"
                         >
                             <v-spacer></v-spacer>
+                            <v-btn flat color="primary" @click="minFirstGreg = null">Clear</v-btn>
                             <v-btn flat color="primary" @click="menu = false">Close</v-btn>
                         </v-date-picker>
                     </v-menu>
@@ -46,7 +47,7 @@
                     <v-text-field
                         label="Max MJD"
                         class="mt-8"
-                        v-model="maxFirstMJD"
+                        v-model="maxFirstMjd"
                         min="0"
                         type="number"
                     />
@@ -63,7 +64,7 @@
                         min-width="290px"
                     >
                         <v-text-field
-                            v-model="maxFirstGreg"
+                            v-model="computedMaxFirstGreg"
                             label="Max first greg date"
                             prepend-icon="event"
                             readonly
@@ -78,6 +79,7 @@
                             :allowed-dates="maxDates"
                         >
                             <v-spacer></v-spacer>
+                            <v-btn flat color="primary" @click="maxFirstGreg = null">Clear</v-btn>
                             <v-btn flat color="primary" @click="menu2 = false">Close</v-btn>
                         </v-date-picker>
                     </v-menu>
@@ -102,18 +104,23 @@ export default {
     methods: {
         minDates(val) {
             if (this.maxFirstGreg != null) return val <= this.maxFirstGreg;
-            else return val
+            else return val;
         },
-        maxDates(val){
+        maxDates(val) {
             if (this.minFirstGreg != null) return val >= this.minFirstGreg;
-            else return val
+            else return val;
+        },
+        formatDate(date) {
+            if (!date) return null;
+
+            const [year, month, day] = date.split("-");
+            return `${month}/${day}/${year}`;
         }
     },
     computed: {
         minFirstMJD: {
             get() {
-                return Object.keys(this.$store.state.search.dates.firstmjd)
-                    .length > 0
+                return this.$store.state.search.dates.firstmjd
                     ? this.$store.state.search.dates.firstmjd.min
                     : null;
             },
@@ -130,10 +137,9 @@ export default {
                 });
             }
         },
-        maxFirstMJD: {
+        maxFirstMjd: {
             get() {
-                return Object.keys(this.$store.state.search.dates.firstmjd)
-                    .length > 0
+                return this.$store.state.search.dates.firstmjd
                     ? this.$store.state.search.dates.firstmjd.max
                     : null;
             },
@@ -152,8 +158,7 @@ export default {
         },
         minFirstGreg: {
             get() {
-                return Object.keys(this.$store.state.search.dates.firstGreg)
-                    .length > 0
+                return this.$store.state.search.dates.firstGreg
                     ? this.$store.state.search.dates.firstGreg.min
                     : null;
             },
@@ -172,8 +177,7 @@ export default {
         },
         maxFirstGreg: {
             get() {
-                return Object.keys(this.$store.state.search.dates.firstGreg)
-                    .length > 0
+                return this.$store.state.search.dates.firstGreg
                     ? this.$store.state.search.dates.firstGreg.max
                     : null;
             },
@@ -189,6 +193,12 @@ export default {
                     value: gregorianToJd(value)
                 });
             }
+        },
+        computedMinFirstGreg() {
+            return this.formatDate(this.minFirstGreg);
+        },
+        computedMaxFirstGreg() {
+            return this.formatDate(this.maxFirstGreg);
         }
     }
 };

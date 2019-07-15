@@ -233,7 +233,7 @@ export const actions = {
                 dispatch('loading', false);
             })
     },
-    queryObjects({ commit, dispatch }, payload) {
+    queryObjects({ commit, dispatch, state}, payload) {
         dispatch('loading', true)
         QueryPSQLService.queryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)

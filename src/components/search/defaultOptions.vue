@@ -41,37 +41,31 @@
                 ></v-slider>
             </v-flex>
             <!--Detections-->
-            <v-flex>
-                <v-subheader>Number of detections range</v-subheader>
-                <v-card-text>
-                    <v-layout row>
-                        <v-flex shrink>
-                            <v-text-field
-                                class="mt-0"
-                                hide-details
-                                single-line
-                                type="number"
-                                v-model="nobsMin"
-                                placeholder="min"
-                            ></v-text-field>
-                        </v-flex>
+            <v-flex xs12>
+                Number of detections range
+            </v-flex>
+            <v-flex xs3 sm3 md3>
+                <v-text-field
+                    class="mt-0"
+                    hide-details
+                    type="number"
+                    v-model="nobsMin"
+                    label="min"
+                ></v-text-field>
+            </v-flex>
 
-                        <v-flex class="px-3">
-                            <v-range-slider v-model="nobs" :max="1000" :min="0" :step="1"></v-range-slider>
-                        </v-flex>
+            <v-flex xs6 sm6 md6>
+                <v-range-slider v-model="nobs" :max="1000" :min="0" :step="1"></v-range-slider>
+            </v-flex>
 
-                        <v-flex shrink>
-                            <v-text-field
-                                class="mt-0"
-                                hide-details
-                                single-line
-                                type="number"
-                                placeholder="max"
-                                v-model="nobsMax"
-                            ></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-card-text>
+            <v-flex xs3 sm3 md3>
+                <v-text-field
+                    class="mt-0"
+                    hide-details
+                    type="number"
+                    label="max"
+                    v-model="nobsMax"
+                ></v-text-field>
             </v-flex>
         </v-layout>
     </div>
@@ -122,7 +116,7 @@ export default {
                     : null;
             },
             set(value) {
-                this.$store.dispatch("setNobsRange", [value, this.nobsMax]);
+                this.$store.dispatch("setNobsRange", [value, 1000]);
             }
         },
         nobsMax: {
@@ -132,7 +126,7 @@ export default {
                     : null;
             },
             set(value) {
-                this.$store.dispatch("setNobsRange", [this.nobsMin, value]);
+                this.$store.dispatch("setNobsRange", [0, value]);
             }
         },
         selectedClassifier: {

@@ -2,8 +2,8 @@
 * receives date in julian format and convert in gregorian format
 * @param MJD:date in julian format
 * @returns {string} : date in gregorian format
-*/            
-function jdToGregorian(MJD){
+*/
+function jdToGregorian(MJD) {
     if (MJD == undefined || MJD == null) return null
     var JD = Number(MJD) + 2400000.5;
     const y = 4716;
@@ -19,7 +19,7 @@ function jdToGregorian(MJD){
     const p = 1461;
     const C = -38;
     var f =
-    JD + j + Math.floor((Math.floor((4 * JD + B) / 146097) * 3) / 4) + C;
+        JD + j + Math.floor((Math.floor((4 * JD + B) / 146097) * 3) / 4) + C;
     var e = r * f + v;
     var g = Math.floor((e % p) / r);
     var h = u * g + w;
@@ -39,11 +39,16 @@ function jdToGregorian(MJD){
  * @returns {number} : date in jualian format
  */
 function gregorianToJd(gDate) {
-    console.log(gDate)
     if(gDate === "" || gDate == null) return null
-    var dateObj = new Date(gDate);
-    var mjulianDate = dateObj / 86400000 + 40588;
-    return mjulianDate;
+    let dateObj = new Date(gDate);
+    let d = new Date(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate());
+    var x = Math.floor((14 - d.getMonth()) / 12);
+    var y = d.getFullYear() + 4800 - x;
+    var z = d.getMonth() - 3 + 12 * x;
+
+    var n = d.getDate() + Math.floor(((153 * z) + 2) / 5) + (365 * y) + Math.floor(y / 4) + Math.floor(y / 400) - Math.floor(y / 100) - 32015 - 2400000.5;
+
+    return n;
 }
 
-export {gregorianToJd, jdToGregorian}
+export { gregorianToJd, jdToGregorian }

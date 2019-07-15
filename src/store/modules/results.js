@@ -10,36 +10,130 @@ export const state = {
     },
     selectedColumnOptions: [
         {
-            key: "oid",
+            value: "oid",
             sortable: false,
-            label: "Object ID"
+            text: "Object ID",
+            show: true
         },
         {
-            key: "nobs",
+            value: "nobs",
             sortable: true,
-            label: "#obs"
+            text: "#obs",
+            show: true
         },
         {
-            key: "radec",
-            label: "RA/Dec"
+            value: "lastmjd",
+            sortable: true,
+            text: "LastMJD",
+            show: true
         },
         {
-            key: "classxmatch",
-            label: "X-MATCH"
+            value: "radec",
+            text: "RA/Dec",
+            show: true
         },
         {
-            key: "classrf",
-            label: "ML_RF"
+            value: "classxmatch",
+            sortable: false,
+            text: "X-MATCH",
+            show: true
+        },
+        {
+            value: "classrf",
+            sortable: false,
+            text: "ML_RF",
+            show: true
         },
         {   
-            key: "pclassrf",
+            value: "pclassrf",
             sortable: true,
-            label: "P(RF)",
+            text: "P(RF)",
+            show: true
         },
         {
-            key: "lastmjd",
+            value: "firstmjd",
+            text: "FirstMJD",
             sortable: true,
-            label: "LastMJD"
+            show: false
+        },
+        {
+            value: "deltajd",
+            text: "DeltaMJD",
+            show: false
+        },
+        {
+            value: "meandec",
+            text: "Dec",
+            sortable: false,
+            show: false
+        },
+        {
+            value: "meanra",
+            text: "RA",
+            sortable: false,
+            show: false
+        },
+        {
+            value: "first_magpsf_g",
+            text: "FirstMagG",
+            show: false
+        },
+        {
+            value: "last_magpsf_g",
+            text: "LastMagG",
+            show: false
+        },
+        {
+            value: "min_magpsf_g",
+            text: "MinG",
+            sortable: true,
+            show: false
+        },
+        {
+            value: "max_magpsf_g",
+            text: "MaxG",
+            show: false
+        },
+        {
+            value: "mean_magpsf_g",
+            text: "MeanG",
+            show: false
+        },
+        {
+            value: "median_magpsf_g",
+            text: "MedianG",
+            show: false
+        },
+        {
+            value: "last_magpsf_r",
+            text: "LastMagR",
+            show: false
+        },
+        {
+            value: "first_magpsf_r",
+            text: "FirstMagR",
+            show: false
+        },
+        {
+            value: "min_magpsf_r",
+            text: "MinR",
+            sortable: true,
+            show: false
+        },
+        {
+            value: "max_magpsf_r",
+            text: "MaxR",
+            show: false
+        },
+        {
+            value: "mean_magpsf_r",
+            text: "MeanR",
+            show: false
+        },
+        {
+            value: "median_magpsf_r",
+            text: "MedianR",
+            show: false
         }
     ],
     

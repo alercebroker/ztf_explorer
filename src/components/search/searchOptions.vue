@@ -165,7 +165,8 @@ export default {
             this.$store.dispatch("queryObjects", {
                 query_parameters: query_parameters,
                 page: 1,
-                perPage: this.$store.state.perPage
+                perPage: this.$store.state.perPage,
+                sortBy: "lastmjd"
             });
             this.$store.dispatch("setCurrentPage", 1);
             // this.$store.dispatch('setSelectedTab', 1)
