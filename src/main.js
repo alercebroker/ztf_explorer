@@ -22,12 +22,11 @@ import Icon from 'vue-awesome/components/Icon'
 
 import ECharts from 'vue-echarts'
 // import ECharts modules manually to reduce bundle size
-import 'echarts/lib/chart/bar'
-import 'echarts/lib/component/tooltip'
-import 'echarts/lib/chart/line'
 import 'echarts/lib/chart/scatter'
-import 'echarts/lib/component/polar'
 import 'echarts/lib/chart/candlestick'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/dataZoom'
+import 'echarts/lib/component/legend'
 Vue.component('v-chart', ECharts)
 
 Vue.config.productionTip = false;

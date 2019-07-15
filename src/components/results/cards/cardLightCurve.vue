@@ -1,20 +1,14 @@
 <template>
-    <div class="overlay">
-        <lightcurvePlot></lightcurvePlot>
+    <div class="overlay" style="height: 100%; width=100%">
+        <lightcurvePlot style="height: 100%; width=100%"></lightcurvePlot>
     </div>
 </template>
 
 <script>
 import lightcurvePlot from '../plots/LightCurve'
-import lightCurveCorr from '../plots/lightCurveCorr'
-import lightCurveFolded from '../plots/lightCurveFolded'
-import lightCurve from '../plots/lightCurve'
 export default {
     name: "card-light-curve",
     components: {
-        lightCurveCorr,
-        lightCurveFolded,
-        lightCurve,
         lightcurvePlot
     },
     data(){
@@ -35,7 +29,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .overlay {
     position: relative;
     width: 100%;
