@@ -1,6 +1,6 @@
 <template>
-    <div class="overlay" style="height: 100%; width=100%">
-        <lightcurvePlot style="height: 100%; width=100%"></lightcurvePlot>
+    <div class="overlay">
+        <lightcurvePlot></lightcurvePlot>
     </div>
 </template>
 

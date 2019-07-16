@@ -24,6 +24,8 @@ import ECharts from 'vue-echarts'
 // import ECharts modules manually to reduce bundle size
 import 'echarts/lib/chart/scatter'
 import 'echarts/lib/chart/candlestick'
+import 'echarts/lib/chart/custom'
+import 'echarts/lib/component/title'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/dataZoom'
 import 'echarts/lib/component/legend'

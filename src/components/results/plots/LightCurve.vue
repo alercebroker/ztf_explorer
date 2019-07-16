@@ -1,5 +1,8 @@
 <template>
+  <b-container>
+    {{ scatter.series[0].dimensions }}
     <v-chart :options="scatter"/>
+  </b-container>
 </template>
 
 <script>
@@ -13,9 +16,26 @@ export default {
         },
         tooltip: {
           trigger: 'axis',
-          
-          position: function (pt) {
-            return [pt[0], '10%'];
+          axisPointer: {
+            type: "cross",
+            label: {
+                backgroundColor: '#505765'
+            }
+          },
+          formatter: function (params) {
+            console.log(params)
+            var colorSpan = color => '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + color + '"></span>';
+            var colorSpanError = color => ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' + color + '"></span>';
+            let rez = "candid: " + params[0].value[2] + "<br>"
+            rez += colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
+            rez += colorSpanError(params[0].color) + "error: ±" + (params[1].value[2] - params[0].value[1])
+            return rez;
+          }
+        },
+        axisPointer: {
+            link: {xAxisIndex: 'all'},
+            label: {
+                backgroundColor: '#777'
             }
         },
         xAxis: {
@@ -30,6 +50,8 @@ export default {
         },
         yAxis: {
           name: "Magnitude",
+          min: 'dataMin',
+          max: 'dataMax',
           type: 'value',
           scale: true,
           inverse: true,
@@ -63,44 +85,40 @@ export default {
             data: [],
             type: 'scatter',
             scale: true,
-            color: "#ff0000",
-            symbolSize: 4
+            color: "#22d100",
+            symbolSize: 4,
+            encode: {
+              x: 0,
+              y: 1
+            }
           },
           {
             name: "r magnitude",
             data: [],
             type: 'scatter',
             scale: true,
+            color: "#ff0000",
+            symbolSize: 4,
+            encode: {
+              x: 0,
+              y: 1
+            }
+          },
+          {
+            name: "g magnitude",
+            data: [],
+            type: 'custom',
+            scale: true,
             color: "#22d100",
-            symbolSize: 4
+            renderItem: this.renderError,
           },
           {
-            name: "g magnitude error",
+            name: "r magnitude",
             data: [],
-            type: 'candlestick',
+            type: 'custom',
             scale: true,
-            itemStyle: {
-              normal: {
-                color: "#ff0000",
-                color0: "#ff0000",
-                borderColor: null,
-                borderColor0: null
-              }
-            },
-          },
-          {
-            name: "r magnitude error",
-            data: [],
-            type: 'candlestick',
-            scale: true,
-            itemStyle: {
-              normal: {
-                color: "#22d100",
-                color0: "#22d100",
-                borderColor: null,
-                borderColor0: null
-              }
-            },
+            color: "#ff0000",
+            renderItem: this.renderError,
           },
         ]
       }
@@ -111,11 +129,45 @@ export default {
   },
   methods:{
     makegraph(alerts) {
-      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr]})
-      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr]})
-      this.scatter.series[2].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.magpsf_corr, x.magpsf_corr-x.sigmapsf_corr, x.magpsf_corr+x.sigmapsf_corr]})
-      this.scatter.series[3].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.magpsf_corr, x.magpsf_corr-x.sigmapsf_corr, x.magpsf_corr+x.sigmapsf_corr]})
-      this.scatter.resize()
+      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.candid_str]})
+      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.candid_str]})
+      this.scatter.series[2].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr-x.sigmapsf_corr, x.magpsf_corr+x.sigmapsf_corr]})
+      this.scatter.series[3].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr-x.sigmapsf_corr, x.magpsf_corr+x.sigmapsf_corr]})
+    },
+    renderError(params, api){
+      var xValue = api.value(0);
+      var highPoint = api.coord([xValue, api.value(1)]);
+      var lowPoint = api.coord([xValue, api.value(2)]);
+      var halfWidth = api.size([1, 0])[0] * 0.1;
+      var style = api.style({
+          stroke: api.visual('color'),
+          fill: null
+      });
+      return {
+          type: 'group',
+          children: [{
+              type: 'line',
+              shape: {
+                  x1: highPoint[0] - halfWidth, y1: highPoint[1],
+                  x2: highPoint[0] + halfWidth, y2: highPoint[1]
+              },
+              style: style
+              }, {
+              type: 'line',
+              shape: {
+                  x1: highPoint[0], y1: highPoint[1],
+                  x2: lowPoint[0], y2: lowPoint[1]
+              },
+              style: style
+              }, {
+              type: 'line',
+              shape: {
+                  x1: lowPoint[0] - halfWidth, y1: lowPoint[1],
+                  x2: lowPoint[0] + halfWidth, y2: lowPoint[1]
+              },
+              style: style
+          }]
+      };
     }
   },
   computed: {
@@ -131,12 +183,5 @@ export default {
 }
 </script>
 <style scoped>
-.echarts {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 </style>
