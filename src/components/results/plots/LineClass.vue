@@ -1,9 +1,7 @@
 <template>
-    <b-container>
-        <div class="align-middle">
-            <highcharts :options="lineOptions"></highcharts>
-        </div>
-    </b-container>
+    <div>
+        <highcharts :options="lineOptions"></highcharts>
+    </div>
 </template>
 
 <script>
@@ -20,8 +18,8 @@ export default {
                 title: {
                     text: "Classification"
                 },
-                legend:{
-                    enabled:false
+                legend: {
+                    enabled: false
                 },
                 xAxis: {
                     categories: []
@@ -74,10 +72,8 @@ export default {
             this.lineOptions.xAxis.categories = categories;
             this.lineOptions.series.push({ name: this.classifier, data: data });
             if (this.$store.state.results.selectedObject.classxmatch) {
-                var classxmatch = this.getClass(
-                    this.$store.state.results.selectedObject,
-                    "classxmatch"
-                ).toLowerCase();
+                var classxmatch = this.$store.state.results.selectedObject
+                    .classxmatch;
                 this.lineOptions.xAxis.plotLines = [
                     {
                         value: categories.indexOf(classxmatch),

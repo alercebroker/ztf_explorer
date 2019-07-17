@@ -1,6 +1,6 @@
 <template>
     <v-container grid-list-md text-xs-left>
-        <v-form ref="form" v-model="validation" lazy-validation>
+        <v-form v-model="validation" lazy-validation>
             <v-layout row wrap>
                 <v-flex xs6>
                     <v-text-field
@@ -9,6 +9,7 @@
                         v-model="minFirstMJD"
                         min="0"
                         type="number"
+                        step="0.5"
                     />
                 </v-flex>
                 <v-flex xs6>
@@ -50,6 +51,7 @@
                         v-model="maxFirstMjd"
                         min="0"
                         type="number"
+                        step="0.5"
                     />
                 </v-flex>
                 <v-flex xs6>
@@ -98,7 +100,9 @@ export default {
         return {
             menu: false,
             menu2: false,
-            validation: true
+            validation: true,
+            minGregDate: null,
+            maxGregDate: null
         };
     },
     methods: {
@@ -130,11 +134,7 @@ export default {
                     keyPath: ["firstmjd", "min"],
                     value: value
                 });
-                this.$store.dispatch("updateOptions", {
-                    obj: "dates",
-                    keyPath: ["firstGreg", "min"],
-                    value: jdToGregorian(value)
-                });
+                this.minGregDate = jdToGregorian(value)
             }
         },
         maxFirstMjd: {
@@ -149,25 +149,15 @@ export default {
                     keyPath: ["firstmjd", "max"],
                     value: value
                 });
-                this.$store.dispatch("updateOptions", {
-                    obj: "dates",
-                    keyPath: ["firstGreg", "max"],
-                    value: jdToGregorian(value)
-                });
+                this.maxGregDate = jdToGregorian(value)
             }
         },
         minFirstGreg: {
             get() {
-                return this.$store.state.search.dates.firstGreg
-                    ? this.$store.state.search.dates.firstGreg.min
-                    : null;
+                return this.minGregDate;
             },
             set(value) {
-                this.$store.dispatch("updateOptions", {
-                    obj: "dates",
-                    keyPath: ["firstGreg", "min"],
-                    value: value
-                });
+                this.minGregDate = value;
                 this.$store.dispatch("updateOptions", {
                     obj: "dates",
                     keyPath: ["firstmjd", "min"],
@@ -177,16 +167,10 @@ export default {
         },
         maxFirstGreg: {
             get() {
-                return this.$store.state.search.dates.firstGreg
-                    ? this.$store.state.search.dates.firstGreg.max
-                    : null;
+                return this.maxGregDate;
             },
             set(value) {
-                this.$store.dispatch("updateOptions", {
-                    obj: "dates",
-                    keyPath: ["firstGreg", "max"],
-                    value: value
-                });
+                this.maxGregDate = value;
                 this.$store.dispatch("updateOptions", {
                     obj: "dates",
                     keyPath: ["firstmjd", "max"],

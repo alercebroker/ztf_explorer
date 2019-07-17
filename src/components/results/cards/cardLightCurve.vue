@@ -1,23 +1,22 @@
 <template>
-    <b-card>
-        <light-curve v-if="selected == 0"/>
-        <light-curve-corr v-if="selected == 1"/>
-        <light-curve-folded v-if="selected == 2"/>
-        <b-form-group >
-            <b-form-radio-group
-                id="radio-group-1"
-                v-model="selected"
-                :options="$store.state.results.objectDetails.period.periodls_1 ? options : optionsNoFold"
-                name="radio-options"
-            ></b-form-radio-group>
-        </b-form-group>
-    </b-card>
+    <v-card>
+        <v-card-text>
+            <light-curve v-if="selected == 1" />
+            <light-curve-corr v-if="selected == 2" />
+            <light-curve-folded v-if="selected == 3" />
+        </v-card-text>
+        <v-card-actions>
+            <v-radio-group v-model="selected" row>
+                <v-radio v-for="(option, index) in options" :key="index+1" :label="option" :value="index+1"></v-radio>
+            </v-radio-group>
+        </v-card-actions>
+    </v-card>
 </template>
 
 <script>
-import lightCurveCorr from '../plots/lightCurveCorr'
-import lightCurveFolded from '../plots/lightCurveFolded'
-import lightCurve from '../plots/lightCurve'
+import lightCurveCorr from "../plots/lightCurveCorr";
+import lightCurveFolded from "../plots/lightCurveFolded";
+import lightCurve from "../plots/lightCurve";
 export default {
     name: "card-light-curve",
     components: {
@@ -25,31 +24,20 @@ export default {
         lightCurveFolded,
         lightCurve
     },
-    data(){
+    data() {
         return {
-            selected: 0,
-            options: [
-                { text: 'Difference Magnitude', value: 0, checked: true },
-                { text: 'Apparent Magnitude', value: 1 },
-                { text: 'Folded', value: 2}
-            ],
-            optionsNoFold: [
-                { text: 'Difference Magnitude', value: 0, checked: true },
-                { text: 'Apparent Magnitude', value: 1 },
-            ]
-        }
+            selected: 1,
+        };
     },
-
-}
+    computed: {
+        options() {
+            return this.$store.state.results.objectDetails.period.periodls_1
+                ? ["Difference Magnitude", "Apparent Magnitude", "Folded"]
+                : ["Difference Magnitude", "Apparent Magnitude"];
+        }
+    }
+};
 </script>
 
 <style>
-.overlay {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 </style>

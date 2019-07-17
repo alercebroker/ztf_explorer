@@ -1,36 +1,19 @@
+var julian = require('julian');
+
 /**
 * receives date in julian format and convert in gregorian format
 * @param MJD:date in julian format
 * @returns {string} : date in gregorian format
 */
-function jdToGregorian(MJD) {
-    if (MJD == undefined || MJD == null) return null
-    var JD = Number(MJD) + 2400000.5;
-    const y = 4716;
-    const v = 3;
-    const j = 1401;
-    const u = 5;
-    const m = 2;
-    const s = 153;
-    const n = 12;
-    const w = 2;
-    const r = 4;
-    const B = 274277;
-    const p = 1461;
-    const C = -38;
-    var f =
-        JD + j + Math.floor((Math.floor((4 * JD + B) / 146097) * 3) / 4) + C;
-    var e = r * f + v;
-    var g = Math.floor((e % p) / r);
-    var h = u * g + w;
-    var D = Math.floor((h % s) / u) + 1;
-    var M = ((Math.floor(h / s) + m) % n) + 1;
-    var Y = Math.floor(e / p) - y + Math.floor((n + m - M) / n);
-    var day = ("0" + D).slice(-2);
-    var month = ("0" + M).slice(-2);
-    var year = ("000" + Y).slice(-4);
-    var today = year + "-" + month + "-" + day;
-    return today;
+function jdToGregorian(mjd) {
+    if (mjd == undefined || mjd == null) return null
+    let jd = Number(mjd) + 2400000
+    let date = julian.toDate(jd)
+    let year = date.getUTCFullYear()
+    let month = date.getUTCMonth() + 1
+    if (month < 10) month = "0"+month
+    let day = date.getUTCDate()
+    return year+"-"+month+"-"+day
 }
 
 /**
@@ -41,14 +24,7 @@ function jdToGregorian(MJD) {
 function gregorianToJd(gDate) {
     if(gDate === "" || gDate == null) return null
     let dateObj = new Date(gDate);
-    let d = new Date(dateObj.getUTCFullYear(), dateObj.getUTCMonth(), dateObj.getUTCDate());
-    var x = Math.floor((14 - d.getMonth()) / 12);
-    var y = d.getFullYear() + 4800 - x;
-    var z = d.getMonth() - 3 + 12 * x;
-
-    var n = d.getDate() + Math.floor(((153 * z) + 2) / 5) + (365 * y) + Math.floor(y / 4) + Math.floor(y / 400) - Math.floor(y / 100) - 32015 - 2400000.5;
-
-    return n;
+    return julian(dateObj) - 2400000
 }
 
 export { gregorianToJd, jdToGregorian }

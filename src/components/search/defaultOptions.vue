@@ -7,37 +7,31 @@
             </v-flex>
             <!--Classifier-->
             <v-flex xs12 sm12 md6>
-                <v-combobox
-                    :items="$store.state.search.classifiers"
+                <v-select
+                    :items="classifiers"
                     v-model="selectedClassifier"
                     label="Classifier"
-                    clearable
                     hide-no-data
-                ></v-combobox>
+                ></v-select>
             </v-flex>
             <!--Class-->
             <v-flex xs12 sm12 md6>
-                <v-combobox
-                    :items="$store.state.search.classes"
+                <v-select
+                    :items="classes"
+                    v-model="selectedClass"
                     label="Class"
-                    small-chips
-                    deletable-chips
-                    hide-no-data
-                ></v-combobox>
+                ></v-select>
             </v-flex>
             <!--Probabilities-->
             <v-flex
                 xs12
                 sm12
                 md12
-                v-if="selectedClassifier && selectedClassifier.value!=='classxmatch'"
+                v-if="selectedClassifier && selectedClassifier!=='classxmatch'"
             >
                 <v-slider
                     v-model="probability"
-                    label="Probability"
-                    color="#E0E0E0"
-                    track-color="blue"
-                    thumb-color="blue"
+                    :label="probLabel"
                 ></v-slider>
             </v-flex>
             <!--Detections-->
@@ -131,10 +125,10 @@ export default {
         },
         selectedClassifier: {
             get() {
+                console.log("classifier", this.$store.state.search.selectedClassifier)
                 return this.$store.state.search.selectedClassifier;
             },
             set(value) {
-                console.log("VALUE", value);
                 this.$store.dispatch("setClassifier", value);
             }
         },
@@ -150,6 +144,7 @@ export default {
             return this.$store.state.search.classifiers;
         },
         classes() {
+            if (this.selectedClassifier==="classearly") return this.$store.state.search.classes_stamps
             return this.$store.state.search.classes;
         },
         probability: {
@@ -159,6 +154,9 @@ export default {
             set(value) {
                 this.$store.dispatch("setProbability", value);
             }
+        },
+        probLabel(){
+            return this.probability ? "Probability >=" + this.probability + " %": "Probability >= 0 %"
         }
     },
     methods: {}

@@ -1,14 +1,14 @@
 <template>
-    <b-card>
-        <b-tabs content-class="mt-3">
-            <b-tab 
-                v-for="(value, name, index) in probabilities" 
-                v-bind:key="index"
-                :title="name">
-                    <line-class :classifier="name" :probabilities="value"/>
-                </b-tab>
-        </b-tabs>
-    </b-card>
+    <v-card>
+        <v-tabs>
+            <v-tab v-for="(value, name, index) in probabilities" v-bind:key="index">
+                {{name}}
+            </v-tab>
+            <v-tab-item v-for="(value, name, index) in probabilities" v-bind:key="index">
+                <line-class :classifier="name" :probabilities="value" />
+            </v-tab-item>
+        </v-tabs>
+    </v-card>
 </template>
 
 <script>
@@ -19,14 +19,15 @@ export default {
     },
     computed: {
         probabilities() {
-            let probabilities = this.$store.state.results.objectDetails.probabilities
-            let ret = {}
-            Object.keys(probabilities).forEach( key => {
-                if (Object.keys(probabilities[key]).length > 0){
-                    ret[key] = probabilities[key]
+            let probabilities = this.$store.state.results.objectDetails
+                .probabilities;
+            let ret = {};
+            Object.keys(probabilities).forEach(key => {
+                if (Object.keys(probabilities[key]).length > 0) {
+                    ret[key] = probabilities[key];
                 }
-            })
-            return ret
+            });
+            return ret;
         }
     }
 };

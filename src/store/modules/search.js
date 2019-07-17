@@ -4,7 +4,7 @@ import Vue from 'vue';
 export const state = {
     query_parameters: null,
     filters: { nobs: {} },
-    dates: { firstmjd: {}, firstGreg: {} },
+    dates: { firstmjd: {}},
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
@@ -81,6 +81,10 @@ export const state = {
         {
             text: "Asteroid",
             value: 4
+        },
+        {
+            text: "Bogus",
+            value: 5
         }
     ],
     classifiers: [

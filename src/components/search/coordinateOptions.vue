@@ -1,130 +1,84 @@
 <template>
-    <div name="coordinates">
-        <b-container>
-            <b-row class="mb-3">
-                <b-col cols="6">RA
-                    <v-icon
-                    v-b-tooltip.hover.right
-                    title="Right Ascension"
-                    name="info-circle"
-                    color="#C0C0C0"
-                    ></v-icon>
-                    <small class="text-muted">(deg)</small>
-                </b-col>
-                <b-col class="mb-1">
-                    <b-form-input
-                    class="form-control form-control-sm"
-                    id="RA"
-                    type="number"
-                    step="0.00001"
-                    v-model="ra"
-                    :state="validState"
+    <v-form >
+        <v-container fluid>
+            <v-layout align-center justify-center row wrap>
+                <v-flex xs12>
+                    <v-text-field
+                        type="number"
+                        step="0.00001"
+                        v-model="ra"
+                        label="RA (deg)"
                     />
-                </b-col>
-            </b-row>
-            <b-row class="mb-3">
-                <b-col cols="6">DEC
-                     <v-icon
-                    v-b-tooltip.hover.right
-                    title="Declination"
-                    name="info-circle"
-                    color="#C0C0C0"
-                    ></v-icon>
-                    <small class="text-muted">(deg)</small>
-                </b-col>
-                <b-col class="mb-1">
-                    <b-form-input
-                    class="form-control form-control-sm"
-                    id="DEC"
-                    type="number"
-                    step="0.00001"
-                    v-model="dec"
-                    :state="validState"
+                </v-flex>
+                <v-flex xs12>
+                    <v-text-field
+                        label="DEC (deg)"
+                        type="number"
+                        step="0.00001"
+                        v-model="dec"
                     />
-                </b-col>
-            </b-row>
-            <b-row class="mb-3">
-                <b-col cols="6">Radius
-                    <v-icon
-                    v-b-tooltip.hover.right
-                    title="Cone search radius"
-                    name="info-circle"
-                    color="#C0C0C0"
-                    ></v-icon>
-                    <small class="text-muted">(arcsec)</small>
-                </b-col>
-                <b-col class="mb-1">
-                    <b-form-input
-                    class="form-control form-control-sm"
-                    id="RS"
-                    type="number"
-                    step="0.00001"
-                    v-model="rs"
-                    :state="validState"
-                    min="0"
+                </v-flex>
+                <v-flex xs12>
+                    <v-text-field
+                        label="Radius (arcsec)"
+                        type="number"
+                        step="0.00001"
+                        v-model="rs"
+                        min="0"
                     />
-                </b-col>
-            </b-row>
-        </b-container>
-    </div>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-form>
 </template>   
 
 <script>
-    export default {
-        name: "coordinate-options",
-
-        computed: {
-            ra: {
-                get(){
-                    return this.$store.state.search.coordinates.ra;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "coordinates",
-                        keyPath: ["ra"],
-                        value: value
-                    })
-                }
+export default {
+    name: "coordinate-options",
+    data() {
+        return {            
+        };
+    },
+    computed: {
+        ra: {
+            get() {
+                return this.$store.state.search.coordinates.ra;
             },
-            dec: {
-                get(){
-                    return this.$store.state.search.coordinates.dec;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "coordinates",
-                        keyPath: ["dec"],
-                        value: value
-                    })
-                }
+            set(value) {
+                this.$store.dispatch("updateOptions", {
+                    obj: "coordinates",
+                    keyPath: ["ra"],
+                    value: value
+                });
+            }
+        },
+        dec: {
+            get() {
+                return this.$store.state.search.coordinates.dec;
             },
-            rs: {
-                get(){
-                    return this.$store.state.search.coordinates.rs;
-                },
-                set(value){
-                    this.$store.dispatch('updateOptions', {
-                        obj: "coordinates",
-                        keyPath: ["rs"],
-                        value: value
-                    })
-                }
+            set(value) {
+                this.$store.dispatch("updateOptions", {
+                    obj: "coordinates",
+                    keyPath: ["dec"],
+                    value: value
+                });
+            }
+        },
+        rs: {
+            get() {
+                return this.$store.state.search.coordinates.rs;
             },
-            validState(){
-                let filters = [this.ra, this.dec, this.rs]
-                if( filters.every(v => v!= null && v!= "") || filters.every(v => v==null || v=="")){
-                    this.$store.dispatch('setValidCoords', true);
-                    return null
-                }
-                else{
-                    this.$store.dispatch('setValidCoords', false);
-                    return false
-                }
+            set(value) {
+                this.$store.dispatch("updateOptions", {
+                    obj: "coordinates",
+                    keyPath: ["rs"],
+                    value: value
+                });
             }
         }
     }
+};
 </script>
 
 <style scoped>
-
 </style>

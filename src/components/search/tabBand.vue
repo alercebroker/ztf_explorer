@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-row>
+        <!-- <b-row>
             <b-col cols="4" class="text-center small">min</b-col>
             <b-col cols="4" class="text-center"> </b-col>
             <b-col cols="4" class="text-center small">max</b-col>
@@ -25,49 +25,34 @@
                 <input id="maxMax" class="form-control form-control-sm" type="number" v-model="maxMax" />
             </b-col>
         </b-row>
-        <!-- <br>
-        <b-row class="mb-3">
-            <b-col cols="4">
-                <input id="slopeMin" class="form-control form-control-sm" type="number" v-model="slopeMin" />
-            </b-col>
-            <b-col cols="4" class="text-center"> Slope <v-icon v-b-tooltip.hover.right title="Range of allowed slopes between each consecutive pair of alerts of a source." name="info-circle" color="#C0C0C0"></v-icon> <br><small class="text-muted">(mag/day)</small></b-col>
-            <b-col cols="4">
-                <input id="slopeMax" class="form-control form-control-sm" type="number" v-model="slopeMax" />
-            </b-col>
-        </b-row> -->
+
         <b-row class="mb-2">
             <b-col cols="4">
                 <input id="meanMin" class="form-control form-control-sm" type="number" step="0.01" v-model="meanMin" />
-                <!-- <input class="form-control form-control-sm" v-model="mean.min" min="0" type="number" :max="mean.max" id="minMeanAny"/> -->
             </b-col>
             <b-col cols="4" class="text-center"> Mean <v-icon v-b-tooltip.hover.right title="Range of values for the mean magnitude of a source." name="info-circle" color="#C0C0C0"></v-icon></b-col>
             <b-col cols="4">
                 <input id="meanMax" class="form-control form-control-sm" type="number" step="0.01" v-model="meanMax" />
-                <!-- <input class="form-control form-control-sm" v-model="mean.max" :min="mean.min" type="number" id="maxMeanAny"/> -->
             </b-col>
         </b-row>
         <b-row class="mb-2">
             <b-col cols="4">
                 <input id="rmsMin" class="form-control form-control-sm" type="number" step="0.01" v-model="rmsMin" />
-                <!-- <input class="form-control form-control-sm" v-model="rms.min" min="0" type="number" :max="rms.max" id="minRmsAny"/> -->
             </b-col>
             <b-col cols="4" class="text-center"> RMS <v-icon v-b-tooltip.hover.right title="Root Mean Square" name="info-circle" color="#C0C0C0"></v-icon></b-col>
             <b-col cols="4">
                 <input id="rmsMax" class="form-control form-control-sm" type="number" step="0.01" v-model="rmsMax" />
-                <!-- <input class="form-control form-control-sm" v-model="rms.max" :min="rms.min" type="number" id="maxRmsAny"/> -->
             </b-col>
         </b-row>
         <b-row>
             <b-col cols="4">
                 <input id="lastMin" class="form-control form-control-sm" type="number" v-model="lastMin" />
-                <!-- <input class="form-control form-control-sm" v-model="last.min" min="0" type="number" :max="last.max" id="minlastU"/> -->
             </b-col>
             <b-col cols="4" class="text-center"> Last detected magn. <v-icon v-b-tooltip.hover.right title="Range of values for the magnitude of the latest alert of a source." name="info-circle" color="#C0C0C0"></v-icon></b-col>
             <b-col cols="4">
                 <input id="lastMax" class="form-control form-control-sm" type="number" v-model="lastMax"/>
-                <!-- <input class="form-control form-control-sm" v-model="last.max" :min="last.min" type="number" id="maxlastU"/> -->
             </b-col>
-        </b-row>
+        </b-row> -->
     </div>
 </template>
 
