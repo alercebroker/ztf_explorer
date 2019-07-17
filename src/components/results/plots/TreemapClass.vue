@@ -1,6 +1,6 @@
 <template>
 
-  <b-container>
+  <v-container>
     <div v-if="classCounts" class="align-middle">
       <highcharts :options="treemapOptions"></highcharts>
     </div>
@@ -9,7 +9,7 @@
         <atom-spinner :animation-duration="2000" :size="200" color="#0779D8"/> 
       </div>
     </div>
-  </b-container>
+  </v-container>
 
 </template>
 
