@@ -1,5 +1,7 @@
 <template>
-    <div id="aladin-lite-div"  :style="style" />
+    <v-sheet elevation="2" height="100%">
+        <div id="aladin-lite-div"  :style="style" />
+    </v-sheet>
 </template>
 
 <script>
@@ -11,7 +13,7 @@
             }
         },
         mounted(){
-            this.aladin = A.aladin('#aladin-lite-div', {survey: "P/DSS2/color", fov:0.1, cooFrame: "J2000d"});
+            this.aladin = A.aladin('#aladin-lite-div', {survey: "P/PanSTARRS/DR1/color-z-zg-g", fov:0.03, cooFrame: "J2000d"});
             if(this.coordinates.meanRA && this.coordinates.meanDEC) this.aladin.gotoRaDec(this.coordinates.meanRA, this.coordinates.meanDEC)
         },
         watch:{
