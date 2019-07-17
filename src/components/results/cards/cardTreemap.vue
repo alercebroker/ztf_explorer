@@ -1,5 +1,6 @@
 <template>
-    <b-card>
+<div></div>
+   <!-- <b-card>
         <b-tabs content-class="mt-3">
             <b-tab title="XMATCH" active>
                 <treemapclass v-bind:classifier="'xmatch'"/>
@@ -7,11 +8,11 @@
             <b-tab title="Random Forest">
                 <treemapclass v-bind:classifier="'rf'"/>
             </b-tab>
-            <!-- <b-tab title="Recurrent Neural Net">
+            <b-tab title="Recurrent Neural Net">
                 <treemapclass v-bind:classifier="'rnn'"/>
-            </b-tab> -->
+            </b-tab>
         </b-tabs>
-    </b-card>
+    </b-card> -->
 </template>
 <script>
 import treemapclass from "../plots/TreemapClass";

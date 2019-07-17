@@ -1,5 +1,6 @@
 <template>
-    <b-card-group deck class="mb-2">
+    <div></div>
+    <!-- <b-card-group deck class="mb-2">
         <b-card bg-variant="secondary" text-variant="white" class="text-center">
             <b-card-body>
                 <span class="fas fa-meteor fa-3x"></span>
@@ -37,11 +38,11 @@
             </b-card-body>
             <div slot="footer"><small>Last updated 3 mins ago</small></div>
         </b-card>
-    </b-card-group>
+    </b-card-group>-->
 </template>
 <script>
 export default {
     name: "generalData"
-}
+};
 </script>
 

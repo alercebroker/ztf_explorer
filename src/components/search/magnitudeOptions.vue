@@ -1,5 +1,6 @@
 <template>
-    <div name="bands">
+    <div></div>
+    <!-- <div name="bands">
         <b-form-group class="without-margin">
             <b-row>
                 <b-col>
@@ -39,24 +40,24 @@
                 </b-tabs>
             </b-card>
         </transition>
-    </div>
+    </div>-->
 </template>
 
 <script>
-    import tabBand from './tabBand.vue';
-    export default {
-        components: {
-            tabBand
-        },
-        name: "magnitude-options",
-        data(){
-            return{
-                selectedBand: 0,
-                anyBand: false,
-                bands: ['g','r']
-            }
-        }
+import tabBand from "./tabBand.vue";
+export default {
+    components: {
+        tabBand
+    },
+    name: "magnitude-options",
+    data() {
+        return {
+            selectedBand: 0,
+            anyBand: false,
+            bands: ["g", "r"]
+        };
     }
+};
 </script>
 
 <style scoped>

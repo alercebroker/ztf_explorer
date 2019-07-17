@@ -1,24 +1,24 @@
 <template>
-    <b-card title="Spatial Distribution">
+    <div></div>
+    <!-- <b-card title="Spatial Distribution">
         <spatial-distribution/>
-    </b-card>
+    </b-card>-->
 </template>
 
 <script>
-import spatialDistribution from '../plots/spatialDistribution'
+import spatialDistribution from "../plots/spatialDistribution";
 export default {
     name: "card-spatial-distribution",
     components: {
         spatialDistribution
     },
-    data(){
-        return {
-        }
+    data() {
+        return {};
     },
-    mounted(){
-        this.$store.dispatch('getSpatialDistribution');
-    },
-}
+    mounted() {
+        this.$store.dispatch("getSpatialDistribution");
+    }
+};
 </script>
 
 <style>
