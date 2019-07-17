@@ -38,9 +38,12 @@
                 class="elevation-1"
                 pagination.sync="pagination"
                 hide-actions
+                v-model="selected"
             >
                 <template v-slot:items="props">
-                    <td v-for="header in headers" :key="header.value">{{props.item[header.value]}}</td>
+                    <tr @click="onRowClicked(props.item)">
+                    <td v-for="header in headers" :key="header.value" >{{props.item[header.value]}}</td>
+                    </tr>
                 </template>
             </v-data-table>
         </v-flex>
@@ -77,7 +80,8 @@ export default {
         return {
             block: true,
             sortDesc: true,
-            pagination: { sortBy: "lastmjd", descending: true }
+            pagination: { sortBy: "lastmjd", descending: true },
+            selected : []
         };
     },
     methods: {
