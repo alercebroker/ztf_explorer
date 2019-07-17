@@ -12,9 +12,6 @@ import treemapInit from 'highcharts/modules/treemap.js'
 import heatmapnit from 'highcharts/modules/heatmap.js'
 import exportData from 'highcharts/modules/export-data'
 
-import BootstrapVue from 'bootstrap-vue'
-import "bootstrap/dist/css/bootstrap.min.css"
-import "bootstrap-vue/dist/bootstrap-vue.css"
 import highchartsMore from 'highcharts/highcharts-more'
 import Vuetify from 'vuetify'
 
@@ -27,7 +24,6 @@ import Icon from 'vue-awesome/components/Icon'
 Vue.config.productionTip = false;
 
 Vue.use(Router);
-Vue.use(BootstrapVue);
 Vue.use(VueLodash);
 
 highchartsMore(Highcharts);
