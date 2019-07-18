@@ -23,7 +23,6 @@ export default {
             }
           },
           formatter: function (params) {
-            console.log(params)
             var colorSpan = color => '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + color + '"></span>';
             var colorSpanError = color => ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' + color + '"></span>';
             let rez = "candid: " + params[0].value[2] + "<br>"
@@ -40,8 +39,6 @@ export default {
         },
         xAxis: {
           name: "Modified Julian Dates",
-          min: 'dataMin',
-          max: 'dataMax',
           scale: true,
           splitNumber: 15,
           splitLine: {
@@ -50,8 +47,6 @@ export default {
         },
         yAxis: {
           name: "Magnitude",
-          min: 'dataMin',
-          max: 'dataMax',
           type: 'value',
           scale: true,
           inverse: true,
