@@ -1,42 +1,62 @@
 <template>
-    <v-container fluid pa-2>
+    <v-container fluid pt-0 pl-2 pr-2 pb-2>
         <result-panel
             :loading.sync="$store.state.loading"
             :downloading.sync="$store.state.downloading"
         />
         <loading :show="$store.state.downloading" label="Downloading..."></loading>
         <loading :show="$store.state.loading" label="Searching..."></loading>
-        <v-navigation-drawer
-            clipped
-            app
-            hide-overlay
-            :mini-variant="mini"
-            width="400"
-            mini-variant-width="30"
-            v-model="drawer"
-            disable-resize-watcher
-        >
-            <v-toolbar dark color="grey darken-3" dense v-if="!mini">
-                <v-list class="pa-0">
-                    <v-list-tile avatar>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Search Options</v-list-tile-title>
-                        </v-list-tile-content>
-                        <v-list-tile-action>
-                            <v-btn icon @click.stop="mini = !mini"><v-icon>chevron_left</v-icon></v-btn>
-                        </v-list-tile-action>
-                    </v-list-tile>
-                </v-list>
-            </v-toolbar>
-            <search-options v-if="!mini" />
-            <v-sheet class="d-flex" height="100%" color="grey lighten-2" v-else>
-                <v-layout justify-center align-center>
-                    <v-btn icon @click.stop="mini = !mini">
-                        <v-icon>chevron_right</v-icon>
-                    </v-btn>
-                </v-layout>
-            </v-sheet>
-        </v-navigation-drawer>
+        <v-hover>
+            <v-navigation-drawer
+                clipped
+                app
+                hide-overlay
+                :mini-variant="mini"
+                width="400"
+                mini-variant-width="30"
+                v-model="drawer"
+                disable-resize-watcher
+                slot-scope="{ hover }"
+                :class="`elevation-${hover && mini? 5 : 0}`"
+            >
+                <v-toolbar dark color="grey darken-3" dense v-if="!mini">
+                    <v-list class="pa-0">
+                        <v-list-tile avatar>
+                            <v-list-tile-content>
+                                <v-list-tile-title>Search Options</v-list-tile-title>
+                            </v-list-tile-content>
+                            <v-list-tile-action>
+                                <v-tooltip left>
+                                    <template v-slot:activator="{ on }">
+                                        <v-btn icon v-on="on" @click.stop="mini = !mini">
+                                            <v-icon>chevron_left</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Hide</span>
+                                </v-tooltip>
+                            </v-list-tile-action>
+                        </v-list-tile>
+                    </v-list>
+                </v-toolbar>
+                <search-options v-if="!mini" />
+                <v-sheet
+                    class="d-flex"
+                    height="100%"
+                    color="grey lighten-2"
+                    @click.stop="mini=!mini"
+                    v-else
+                >
+                    <v-tooltip right>
+                        <template v-slot:activator="{on}">
+                            <v-layout justify-center align-center v-on="on">
+                                <v-icon>chevron_right</v-icon>
+                            </v-layout>
+                        </template>
+                        <span>Show</span>
+                    </v-tooltip>
+                </v-sheet>
+            </v-navigation-drawer>
+        </v-hover>
     </v-container>
 </template>
 

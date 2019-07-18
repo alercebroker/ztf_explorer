@@ -39,7 +39,7 @@
                         <div style="background-color:#e9ecef">
                             <div>
                                 <v-btn icon @click="refreshSQL">
-                                    <v-icon name="redo" />
+                                    <v-icon>refresh</v-icon>
                                 </v-btn>
                             </div>
                             <div>{{this.$store.state.search.sql}}</div>

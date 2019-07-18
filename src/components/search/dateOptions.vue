@@ -134,7 +134,6 @@ export default {
                     keyPath: ["firstmjd", "min"],
                     value: value
                 });
-                this.minGregDate = jdToGregorian(value)
             }
         },
         maxFirstMjd: {
@@ -149,7 +148,6 @@ export default {
                     keyPath: ["firstmjd", "max"],
                     value: value
                 });
-                this.maxGregDate = jdToGregorian(value)
             }
         },
         minFirstGreg: {
@@ -183,6 +181,14 @@ export default {
         },
         computedMaxFirstGreg() {
             return this.formatDate(this.maxFirstGreg);
+        }
+    },
+    watch: {
+        maxFirstMjd(value) {
+            this.maxGregDate = jdToGregorian(value);
+        },
+        minFirstMJD(value) {
+            this.minGregDate = jdToGregorian(value);
         }
     }
 };
