@@ -1,5 +1,5 @@
 <template>
-    <v-container grid-list-md text-xs-left>
+    <v-container pa-2 ma-0>
         <v-form v-model="validation" lazy-validation>
             <v-layout row wrap>
                 <v-flex xs6>

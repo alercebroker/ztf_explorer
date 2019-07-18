@@ -39,6 +39,7 @@
                 pagination.sync="pagination"
                 hide-actions
                 v-model="selected"
+                no-data-text="-"
             >
                 <template v-slot:items="props">
                     <tr @click="onRowClicked(props.item)">
@@ -203,9 +204,6 @@ ul > li {
     list-style: none;
 }
 
-table > tbody tr {
-    cursor: pointer;
-}
 
 #details {
     max-height: 200px;

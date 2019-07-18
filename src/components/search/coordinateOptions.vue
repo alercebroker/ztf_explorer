@@ -1,6 +1,6 @@
 <template>
     <v-form >
-        <v-container fluid>
+        <v-container fluid pa-2 ma-0>
             <v-layout align-center justify-center row wrap>
                 <v-flex xs12>
                     <v-text-field

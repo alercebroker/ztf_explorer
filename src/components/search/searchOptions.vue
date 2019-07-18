@@ -1,93 +1,71 @@
 <template>
-    <div>
-        <v-card>
-            <!--HEADER-->
-            <v-toolbar :dark="true">
-                <v-toolbar-title >Search Options</v-toolbar-title>
-            </v-toolbar>
-            <!--BODY-->
-            <v-form>
-                <v-container>
-                    <v-layout row wrap>
-                        <!--Clear all options-->
-                        <v-flex xs12 sm12 md12>
-                            <v-btn
-                                outline
-                                block
-                                small
-                                color="primary"
-                                @click="clearQuery"
-                            >Clear all options</v-btn>
-                        </v-flex>
-                        <!--Default options-->
-                        <v-flex xs12 sm12 md12>
-                            <default-options></default-options>
-                        </v-flex>
-                        <!-- Date and coordinate options -->
-                        <v-card>
-                            <v-tabs color="grey lighten-4">
-                                <v-tab>
-                                    Discovery Date
-                                </v-tab>
-                                <v-tab-item>
-                                    <date-options />
-                                </v-tab-item>
-                                <v-tab>
-                                    Coordinates
-                                </v-tab>
-                                <v-tab-item>
-                                    <coordinate-options />
-                                </v-tab-item>
-                            </v-tabs>
-                        </v-card>
-                        <!--Show SQL-->
-                        <v-flex xs12 sm12 md12>
-                            <v-btn
-                                outline
-                                block
-                                small
-                                color="blue-grey"
-                                @click="showSQLLabel = !showSQLLabel"
-                            >{{ showSQLLabel? 'Hide': 'Show SQL' }}</v-btn>
-                        </v-flex>
-                        <v-flex xs12 sm12 md12>
-                            <div
-                                v-show="showSQLLabel"
-                                transition="scale-transition"
-                                origin="center center"
-                            >
-                                <div class="pt-2 pb-4" style="background-color:#e9ecef">
-                                    <div class="text-right mr-2 mb-1">
-                                        <v-btn icon @click="refreshSQL">
-                                            <v-icon name="redo" />
-                                        </v-btn>
-                                    </div>
-                                    <div class="mx-2 text-center">{{this.$store.state.search.sql}}</div>
-                                </div>
+    <!--BODY-->
+    <v-form>
+        <v-container pa-2>
+            <v-layout row wrap>
+                <!--Clear all options-->
+                <v-flex xs12 sm12 md12 pb-0 pt-0>
+                    <v-btn outline block small color="primary" @click="clearQuery">Clear all options</v-btn>
+                </v-flex>
+                <!--Default options-->
+                <v-flex xs12 sm12 md12 pb-0 pt-0>
+                    <default-options></default-options>
+                </v-flex>
+                <!-- Date and coordinate options -->
+                <v-card>
+                    <v-tabs color="grey lighten-4">
+                        <v-tab>Discovery Date</v-tab>
+                        <v-tab-item>
+                            <date-options />
+                        </v-tab-item>
+                        <v-tab>Coordinates</v-tab>
+                        <v-tab-item>
+                            <coordinate-options />
+                        </v-tab-item>
+                    </v-tabs>
+                </v-card>
+                <!--Show SQL-->
+                <v-flex xs12 sm12 md12 pb-0>
+                    <v-btn
+                        outline
+                        block
+                        small
+                        color="blue-grey"
+                        @click="showSQLLabel = !showSQLLabel"
+                    >{{ showSQLLabel? 'Hide': 'Show SQL' }}</v-btn>
+                </v-flex>
+                <v-flex xs12 sm12 md12 pb-0>
+                    <div v-show="showSQLLabel">
+                        <div style="background-color:#e9ecef">
+                            <div>
+                                <v-btn icon @click="refreshSQL">
+                                    <v-icon name="redo" />
+                                </v-btn>
                             </div>
-                        </v-flex>
-                        <!--Search-->
-                        <v-flex xs12 sm12 md12>
-                            <v-btn
-                                block
-                                normal
-                                color="primary"
-                                @click="onSubmitQuery"
-                                :disabled="!validSearch"
-                            >Search</v-btn>
-                        </v-flex>
-                    </v-layout>
-                </v-container>
-            </v-form>
-        </v-card>
-    </div>
+                            <div>{{this.$store.state.search.sql}}</div>
+                        </div>
+                    </div>
+                </v-flex>
+                <!--Search-->
+                <v-flex xs12 sm12 md12>
+                    <v-btn
+                        block
+                        normal
+                        color="primary"
+                        @click="onSubmitQuery"
+                        :disabled="!validSearch"
+                    >Search</v-btn>
+                </v-flex>
+            </v-layout>
+        </v-container>
+    </v-form>
 </template>
 
 
 <script>
 import defaultOptions from "./defaultOptions.vue";
-import dateOptions from "./dateOptions"
-import coordinateOptions from './coordinateOptions.vue';
+import dateOptions from "./dateOptions";
+import coordinateOptions from "./coordinateOptions.vue";
 import advancedOptions from "./advancedOptions.vue";
 export default {
     name: "search-options",
@@ -100,9 +78,9 @@ export default {
     data() {
         return {
             moreOptsLabel: "More Options",
-            showSQLLabel: "Show SQL",
+            showSQLLabel: false,
             block: true,
-            activeTab:null
+            activeTab: null
         };
     },
     mounted() {
@@ -178,9 +156,7 @@ export default {
     },
     computed: {
         validSearch() {
-            return (
-                this.$store.state.search.valid
-            );
+            return this.$store.state.search.valid;
         }
     }
 };

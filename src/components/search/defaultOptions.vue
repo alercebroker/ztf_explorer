@@ -1,74 +1,44 @@
 <template>
-    <div>
-        <v-layout row wrap>
-            <!--Object ID-->
-            <v-flex xs12 sm12 md12>
-                <v-text-field label="Object ID" v-model="oid" />
-            </v-flex>
-            <!--Classifier-->
-            <v-flex xs12 sm12 md6>
-                <v-select
-                    :items="classifiers"
-                    v-model="selectedClassifier"
-                    label="Classifier"
-                    hide-no-data
-                ></v-select>
-            </v-flex>
-            <!--Class-->
-            <v-flex xs12 sm12 md6>
-                <v-select
-                    :items="classes"
-                    v-model="selectedClass"
-                    label="Class"
-                ></v-select>
-            </v-flex>
-            <!--Probabilities-->
-            <v-flex
-                xs12
-                sm12
-                md12
-                v-if="selectedClassifier && selectedClassifier!=='classxmatch'"
-            >
-                <v-slider
-                    v-model="probability"
-                    :label="probLabel"
-                ></v-slider>
-            </v-flex>
-            <!--Detections-->
-            <v-flex xs12>
-                Number of detections range
-            </v-flex>
-            <v-flex xs3 sm3 md3>
-                <v-text-field
-                    class="mt-0"
-                    hide-details
-                    type="number"
-                    v-model="nobsMin"
-                    label="min"
-                ></v-text-field>
-            </v-flex>
+    <v-layout row wrap >
+        <!--Object ID-->
+        <v-flex xs12 sm12 md12>
+            <v-text-field label="Object ID" v-model="oid" />
+        </v-flex>
+        <!--Classifier-->
+        <v-flex xs12 sm12 md6>
+            <v-select
+                :items="classifiers"
+                v-model="selectedClassifier"
+                label="Classifier"
+                hide-no-data
+            ></v-select>
+        </v-flex>
+        <!--Class-->
+        <v-flex xs12 sm12 md6>
+            <v-select :items="classes" v-model="selectedClass" label="Class"></v-select>
+        </v-flex>
+        <!--Probabilities-->
+        <v-flex xs12 sm12 md12 v-if="selectedClassifier && selectedClassifier!=='classxmatch'">
+            <v-slider v-model="probability" :max="1" :step="0.01" :label="probLabel"></v-slider>
+        </v-flex>
+        <!--Detections-->
+        <v-flex xs12 >Number of detections range</v-flex>
+        <v-flex xs3 sm3 md3>
+            <v-text-field   type="number" v-model="nobsMin" label="min"></v-text-field>
+        </v-flex>
+        <v-flex xs6 sm6 md6 pl-3 pr-3>
+            <v-range-slider v-model="nobs" :max="1000" :min="0" :step="1"></v-range-slider>
+        </v-flex>
 
-            <v-flex xs6 sm6 md6>
-                <v-range-slider v-model="nobs" :max="1000" :min="0" :step="1"></v-range-slider>
-            </v-flex>
-
-            <v-flex xs3 sm3 md3>
-                <v-text-field
-                    class="mt-0"
-                    hide-details
-                    type="number"
-                    label="max"
-                    v-model="nobsMax"
-                ></v-text-field>
-            </v-flex>
-        </v-layout>
-    </div>
+        <v-flex xs3 sm3 md3>
+            <v-text-field  type="number" label="max" v-model="nobsMax"></v-text-field>
+        </v-flex>
+    </v-layout>
 </template>
 
 <script>
 export default {
     name: "default-options",
-    props: ["loading"],
     components: {},
     data() {
         return {};
@@ -125,7 +95,10 @@ export default {
         },
         selectedClassifier: {
             get() {
-                console.log("classifier", this.$store.state.search.selectedClassifier)
+                console.log(
+                    "classifier",
+                    this.$store.state.search.selectedClassifier
+                );
                 return this.$store.state.search.selectedClassifier;
             },
             set(value) {
@@ -144,7 +117,8 @@ export default {
             return this.$store.state.search.classifiers;
         },
         classes() {
-            if (this.selectedClassifier==="classearly") return this.$store.state.search.classes_stamps
+            if (this.selectedClassifier === "classearly")
+                return this.$store.state.search.classes_stamps;
             return this.$store.state.search.classes;
         },
         probability: {
@@ -155,8 +129,10 @@ export default {
                 this.$store.dispatch("setProbability", value);
             }
         },
-        probLabel(){
-            return this.probability ? "Probability >=" + this.probability + " %": "Probability >= 0 %"
+        probLabel() {
+            return this.probability
+                ? "Probability >=" + this.probability
+                : "Probability >= 0";
         }
     },
     methods: {}
