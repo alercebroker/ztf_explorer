@@ -1,28 +1,13 @@
 <template>
-    <v-card>
-        <v-card-text>
-            <light-curve v-if="selected == 1" />
-            <light-curve-corr v-if="selected == 2" />
-            <light-curve-folded v-if="selected == 3" />
-        </v-card-text>
-        <v-card-actions>
-            <v-radio-group v-model="selected" row>
-                <v-radio v-for="(option, index) in options" :key="index+1" :label="option" :value="index+1"></v-radio>
-            </v-radio-group>
-        </v-card-actions>
-    </v-card>
+        <lightcurvePlot></lightcurvePlot>
 </template>
 
 <script>
-import lightCurveCorr from "../plots/lightCurveCorr";
-import lightCurveFolded from "../plots/lightCurveFolded";
-import lightCurve from "../plots/lightCurve";
+import lightcurvePlot from '../plots/LightCurve'
 export default {
     name: "card-light-curve",
     components: {
-        lightCurveCorr,
-        lightCurveFolded,
-        lightCurve
+        lightcurvePlot
     },
     data() {
         return {
@@ -39,5 +24,6 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+
 </style>

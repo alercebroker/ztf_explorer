@@ -1,14 +1,12 @@
 <template>
-    <v-card>
-        <v-tabs>
+    <v-tabs>
             <v-tab v-for="(value, name, index) in probabilities" v-bind:key="index">
                 {{name}}
             </v-tab>
             <v-tab-item v-for="(value, name, index) in probabilities" v-bind:key="index">
                 <line-class :classifier="name" :probabilities="value" />
             </v-tab-item>
-        </v-tabs>
-    </v-card>
+    </v-tabs>
 </template>
 
 <script>

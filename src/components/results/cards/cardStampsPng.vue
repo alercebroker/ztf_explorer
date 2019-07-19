@@ -1,47 +1,25 @@
 <template>
     <v-card>
-        <v-card-title class="headline">Stamps</v-card-title>
-        <v-container fluid>
-            <v-layout row wrap >
-                <v-flex xs12 md4 pa-2>
-                    <v-card> 
-                        <v-card-title>Science</v-card-title>
-                        <v-card-text>
-                            <img :src="science" :style="imgStyle" />
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-                <v-flex xs12 md4 pa-2>
-                    <v-card>
-                        <v-card-title>Template</v-card-title>
-                        <v-card-text>
-                            <img :src="template" :style="imgStyle" />
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-                <v-flex xs12 md4 pa-2>
-                    <v-card>
-                        <v-card-title>Difference</v-card-title>
-                        <v-card-text>
-                            <img :src="difference" :style="imgStyle" />
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-            </v-layout>
-        </v-container>
+      <v-layout row wrap >
+          <v-flex xs4 class="text-xs-center">
+            <h5>Science</h5>
+            <img :src="science" class="stampImg" />
+          </v-flex>
+          <v-flex xs4 class="text-xs-center">
+            <h5>Template</h5>
+            <img :src="template" class="stampImg" />
+          </v-flex>
+          <v-flex xs4 class="text-xs-center">
+            <h5>Difference</h5>
+            <img :src="difference" class="stampImg" />
+          </v-flex>
+      </v-layout>
     </v-card>
 </template>
 
 <script>
 export default {
     name: "card-stamps-png",
-    data() {
-        return {
-            imgStyle: {
-                width: "100%"
-            }
-        };
-    },
     computed: {
         object() {
             return this.$store.state.results.selectedObject.oid;
@@ -82,5 +60,9 @@ export default {
 </script>
 
 <style scoped>
-
+  .stampImg{
+    height:100%;
+    width:auto;
+    max-height:150px;
+  }
 </style>

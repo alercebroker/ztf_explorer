@@ -67,8 +67,8 @@
 </template>
 
 <script>
-import downloadModal from "./modals/downloadModal";
-import columnOptionsModal from "./modals/columnOptionsModal.vue";
+// import downloadModal from "./modals/downloadModal";
+// import columnOptionsModal from "./modals/columnOptionsModal.vue";
 import objectDetailsModal from "./modals/objectDetailsModal";
 
 /**
@@ -76,7 +76,11 @@ import objectDetailsModal from "./modals/objectDetailsModal";
  */
 export default {
     name: "tab-data",
-    components: { downloadModal, columnOptionsModal, objectDetailsModal },
+    components: {
+      // downloadModal,
+      // columnOptionsModal,
+      objectDetailsModal
+    },
     data() {
         return {
             block: true,

@@ -1,7 +1,5 @@
 <template>
-    <v-sheet elevation="2" height="100%">
-        <div id="aladin-lite-div"  :style="style" />
-    </v-sheet>
+    <div id="aladin-lite-div"  />
 </template>
 
 <script>
@@ -27,18 +25,16 @@
                     meanRA: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meanra : null,
                     meanDEC: this.$store.state.results.selectedObject ? this.$store.state.results.selectedObject.meandec : null
                 }
-            },
-            style(){
-                return {
-                    'align': "center",
-                    'width': "100%",
-                    'height': "100%"
-                }
             }
         }
     }
 </script>
 
 <style scoped>
-    
+#aladin-lite-div{
+  height:"100%";
+  width:"100%";
+  min-height: 250px;
+
+}
 </style>

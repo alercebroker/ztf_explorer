@@ -66,12 +66,10 @@
 import defaultOptions from "./defaultOptions.vue";
 import dateOptions from "./dateOptions";
 import coordinateOptions from "./coordinateOptions.vue";
-import advancedOptions from "./advancedOptions.vue";
 export default {
     name: "search-options",
     components: {
         defaultOptions,
-        advancedOptions,
         dateOptions,
         coordinateOptions
     },
