@@ -11,14 +11,10 @@
 
 <script>
 import tabData from "./tabData.vue";
-import tabOverviewDashboard from "./tabOverviewDashboard.vue";
-import tabQueryDashboard from "./tabQueryDashboard.vue";
 export default {
     name: "result-panel",
     components: {
-        tabData,
-        tabOverviewDashboard,
-        tabQueryDashboard
+        tabData
     },
     methods: {},
     computed: {
