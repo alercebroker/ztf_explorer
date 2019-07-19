@@ -1,6 +1,10 @@
 <template>
     <v-card>
-        <v-tabs dark>
+        <v-tabs dark color="toolbar" :value="selectedTab">
+            <v-tab>Overview</v-tab>
+            <v-tab-item>
+                <overview-cards />
+            </v-tab-item>
             <v-tab>Query Table</v-tab>
             <v-tab-item>
                 <tab-data />
@@ -11,10 +15,12 @@
 
 <script>
 import tabData from "./tabData.vue";
+import overviewCards from "./cards/overviewCards.vue"
 export default {
     name: "result-panel",
     components: {
-        tabData
+        tabData,
+        overviewCards
     },
     methods: {},
     computed: {
