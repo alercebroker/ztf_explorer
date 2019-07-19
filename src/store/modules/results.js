@@ -42,24 +42,24 @@ export const state = {
             value: "classxmatch",
             sortable: false,
             text: "Crossmatch",
-            show: false
+            show: true
         },
         {
             value: "classrf",
             sortable: false,
             text: "Random Forest Class",
-            show: false
+            show: true
         },
         {   
             value: "pclassrf",
             sortable: true,
             text: "Random Forest Probability",
-            show: false
+            show: true
         },
         {
             value: "deltajd",
-            text: "DeltaMJD",
-            show: false
+            text: "DeltaMJD (days)",
+            show: true
         },
         {
             value: "meandec",
