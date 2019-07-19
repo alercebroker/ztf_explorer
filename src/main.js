@@ -14,9 +14,21 @@ import exportData from 'highcharts/modules/export-data'
 
 import highchartsMore from 'highcharts/highcharts-more'
 import Vuetify from 'vuetify'
+import colors from 'vuetify/es5/util/colors'
 
-Vue.use(Vuetify,{
-    iconfont: 'md'
+Vue.use(Vuetify, {
+    iconfont: 'md',
+    theme: {
+        header: colors.grey.darken4,
+        toolbar: colors.grey.darken4,
+        primary: colors.indigo.base,
+        secondary: colors.indigo.lighten1,
+        accent: colors.indigo.base,
+        error: colors.red.base,
+        warning: colors.amber.base,
+        info: colors.indigo.base,
+        success: colors.teal.base
+    }
 })
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
