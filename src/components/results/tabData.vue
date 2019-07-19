@@ -28,9 +28,20 @@
     >
         <v-flex xs12>
             <v-toolbar flat color="white">
-                <v-toolbar-title>Found {{ $store.state.results.total }} results</v-toolbar-title>
+                <v-toolbar-title>
+                    <v-layout column wrap pt-3>
+                        <v-flex xs6>Found {{ $store.state.results.total }} results</v-flex>
+                        <v-flex xs6>
+                            <column-options-modal />
+                        </v-flex>
+                    </v-layout>
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <column-options-modal />
+                <v-pagination
+                    v-model="currentPage"
+                    :length="$store.state.results.num_pages"
+                    :total-visible="5"
+                ></v-pagination>
             </v-toolbar>
             <v-data-table
                 :headers="headers"
@@ -42,18 +53,14 @@
                 no-data-text="-"
             >
                 <template v-slot:items="props">
-                    <tr @click="onRowClicked(props.item)" >
-                    <td v-for="header in headers" :key="header.value" >{{props.item[header.value]}}</td>
+                    <tr @click="onRowClicked(props.item)">
+                        <td
+                            v-for="header in headers"
+                            :key="header.value"
+                        >{{props.item[header.value]}}</td>
                     </tr>
                 </template>
             </v-data-table>
-        </v-flex>
-        <v-flex xs12>
-            <v-pagination
-                v-model="currentPage"
-                :length="$store.state.results.num_pages"
-                :total-visible="5"
-            ></v-pagination>
         </v-flex>
 
         <object-details-modal
@@ -67,8 +74,7 @@
 </template>
 
 <script>
-// import downloadModal from "./modals/downloadModal";
-// import columnOptionsModal from "./modals/columnOptionsModal.vue";
+import columnOptionsModal from "./modals/columnOptionsModal.vue";
 import objectDetailsModal from "./modals/objectDetailsModal";
 
 /**
@@ -77,15 +83,19 @@ import objectDetailsModal from "./modals/objectDetailsModal";
 export default {
     name: "tab-data",
     components: {
-      // downloadModal,
-      // columnOptionsModal,
-      objectDetailsModal
+        // downloadModal,
+        columnOptionsModal,
+        objectDetailsModal
     },
     data() {
         return {
             block: true,
-            pagination: { sortBy: "lastmjd", descending: false, rowsPerPage: -1},
-            selected : []
+            pagination: {
+                sortBy: "lastmjd",
+                descending: false,
+                rowsPerPage: -1
+            },
+            selected: []
         };
     },
     methods: {
@@ -114,7 +124,7 @@ export default {
         },
         closeObjectDetailsModal() {
             this.$store.dispatch("setShowObjectDetailsModal", false);
-        },
+        }
     },
     mounted: function() {
         this.getUrlObject();
@@ -174,10 +184,8 @@ export default {
 </script>
 
 <style>
-
 td {
     height: 35px !important;
     max-width: 50px;
 }
-
 </style>
