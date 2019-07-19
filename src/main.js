@@ -20,6 +20,18 @@ Vue.use(Vuetify,{
 })
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 
+import ECharts from 'vue-echarts'
+// import ECharts modules manually to reduce bundle size
+import 'echarts/lib/chart/scatter'
+import 'echarts/lib/chart/candlestick'
+import 'echarts/lib/chart/custom'
+import 'echarts/lib/chart/radar'
+import 'echarts/lib/component/title'
+import 'echarts/lib/component/tooltip'
+import 'echarts/lib/component/dataZoom'
+import 'echarts/lib/component/legend'
+Vue.component('v-chart', ECharts)
+
 Vue.config.productionTip = false;
 
 Vue.use(Router);
