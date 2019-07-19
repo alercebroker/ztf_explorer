@@ -13,12 +13,18 @@ export const state = {
             value: "oid",
             sortable: false,
             text: "Object ID",
-            show: true
+            show: true,
         },
         {
             value: "nobs",
+            sortable: false,
+            text: "Observations",
+            show: true,
+        },
+        {
+            value: "firstmjd",
+            text: "FirstMJD",
             sortable: true,
-            text: "#obs",
             show: true
         },
         {
@@ -29,31 +35,25 @@ export const state = {
         },
         {
             value: "radec",
-            text: "RA/Dec",
+            text: "RA/Dec (degrees)",
             show: true
         },
         {
             value: "classxmatch",
             sortable: false,
-            text: "X-MATCH",
-            show: true
+            text: "Crossmatch",
+            show: false
         },
         {
             value: "classrf",
             sortable: false,
-            text: "ML_RF",
-            show: true
+            text: "Random Forest Class",
+            show: false
         },
         {   
             value: "pclassrf",
             sortable: true,
-            text: "P(RF)",
-            show: true
-        },
-        {
-            value: "firstmjd",
-            text: "FirstMJD",
-            sortable: true,
+            text: "Random Forest Probability",
             show: false
         },
         {
@@ -63,13 +63,13 @@ export const state = {
         },
         {
             value: "meandec",
-            text: "Dec",
+            text: "Dec (degrees)",
             sortable: false,
             show: false
         },
         {
             value: "meanra",
-            text: "RA",
+            text: "RA (degrees)",
             sortable: false,
             show: false
         },

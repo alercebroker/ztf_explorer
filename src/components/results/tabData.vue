@@ -36,13 +36,13 @@
                 :headers="headers"
                 :items="objects"
                 class="elevation-1"
-                pagination.sync="pagination"
+                :pagination.sync="pagination"
                 hide-actions
                 v-model="selected"
                 no-data-text="-"
             >
                 <template v-slot:items="props">
-                    <tr @click="onRowClicked(props.item)">
+                    <tr @click="onRowClicked(props.item)" >
                     <td v-for="header in headers" :key="header.value" >{{props.item[header.value]}}</td>
                     </tr>
                 </template>
@@ -80,8 +80,7 @@ export default {
     data() {
         return {
             block: true,
-            sortDesc: true,
-            pagination: { sortBy: "lastmjd", descending: true },
+            pagination: { sortBy: "lastmjd", descending: false, rowsPerPage: -1},
             selected : []
         };
     },
@@ -112,18 +111,6 @@ export default {
         closeObjectDetailsModal() {
             this.$store.dispatch("setShowObjectDetailsModal", false);
         },
-        onSortChanged(ctx) {
-            this.sortBy = ctx.sortBy;
-            this.sortDesc = ctx.sortDesc;
-            this.$store.dispatch("queryObjects", {
-                query_parameters: this.$store.state.search.query_parameters,
-                page: this.currentPage,
-                perPage: this.$store.state.perPage,
-                total: this.$store.state.results.total,
-                sortBy: this.sortBy,
-                sortDesc: this.sortDesc
-            });
-        }
     },
     mounted: function() {
         this.getUrlObject();
@@ -175,7 +162,7 @@ export default {
                 perPage: this.$store.state.perPage,
                 total: this.$store.state.results.total,
                 sortBy: this.pagination.sortBy,
-                sortDesc: this.pagination.descending
+                sortDesc: !this.pagination.descending
             });
         }
     }
@@ -183,30 +170,10 @@ export default {
 </script>
 
 <style>
-.modal-fullscreen .modal {
-    padding: 0 !important;
-}
-.modal-fullscreen .modal-dialog {
-    max-width: 90%;
-    /* height: 90%; */
-    /* margin: 0; */
-}
-.modal-fullscreen .modal-content {
-    border: 0;
-    border-radius: 0;
-    min-height: 100%;
-    height: auto;
-}
-.btn-wrap-text {
-    white-space: normal !important;
-}
-ul > li {
-    list-style: none;
+
+td {
+    height: 35px !important;
+    max-width: 50px;
 }
 
-
-#details {
-    max-height: 200px;
-    overflow-y: auto;
-}
 </style>
