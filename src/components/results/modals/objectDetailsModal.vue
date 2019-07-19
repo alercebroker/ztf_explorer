@@ -1,6 +1,6 @@
 <template>
     <v-dialog id="objectModal" v-model="showModal">
-      <v-tabs  dark slider-color="blue">
+      <v-tabs  dark color="toolbar">
       <v-tab ripple>
         General Information
       </v-tab>
@@ -104,9 +104,11 @@
                   </v-flex> -->
 
                 </v-layout>
-
-
               </v-card-text> <!-- end inside modal-->
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click.stop="closeModal">Close</v-btn>
+              </v-card-actions>
           </v-card>
         </v-tab-item>
       </v-tabs>
