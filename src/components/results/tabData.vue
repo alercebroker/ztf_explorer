@@ -28,32 +28,39 @@
     >
         <v-flex xs12>
             <v-toolbar flat color="white">
-                <v-toolbar-title>Found {{ $store.state.results.total }} results</v-toolbar-title>
+                <v-toolbar-title>
+                    <v-layout column wrap pt-3>
+                        <v-flex xs6>Found {{ $store.state.results.total }} results</v-flex>
+                        <v-flex xs6>
+                            <column-options-modal />
+                        </v-flex>
+                    </v-layout>
+                </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <column-options-modal />
+                <v-pagination
+                    v-model="currentPage"
+                    :length="$store.state.results.num_pages"
+                    :total-visible="5"
+                ></v-pagination>
             </v-toolbar>
             <v-data-table
                 :headers="headers"
                 :items="objects"
                 class="elevation-1"
-                pagination.sync="pagination"
+                :pagination.sync="pagination"
                 hide-actions
                 v-model="selected"
                 no-data-text="-"
             >
                 <template v-slot:items="props">
                     <tr @click="onRowClicked(props.item)">
-                    <td v-for="header in headers" :key="header.value" >{{props.item[header.value]}}</td>
+                        <td
+                            v-for="header in headers"
+                            :key="header.value"
+                        >{{props.item[header.value]}}</td>
                     </tr>
                 </template>
             </v-data-table>
-        </v-flex>
-        <v-flex xs12>
-            <v-pagination
-                v-model="currentPage"
-                :length="$store.state.results.num_pages"
-                :total-visible="5"
-            ></v-pagination>
         </v-flex>
 
         <object-details-modal
@@ -67,8 +74,7 @@
 </template>
 
 <script>
-// import downloadModal from "./modals/downloadModal";
-// import columnOptionsModal from "./modals/columnOptionsModal.vue";
+import columnOptionsModal from "./modals/columnOptionsModal.vue";
 import objectDetailsModal from "./modals/objectDetailsModal";
 
 /**
@@ -77,16 +83,19 @@ import objectDetailsModal from "./modals/objectDetailsModal";
 export default {
     name: "tab-data",
     components: {
-      // downloadModal,
-      // columnOptionsModal,
-      objectDetailsModal
+        // downloadModal,
+        columnOptionsModal,
+        objectDetailsModal
     },
     data() {
         return {
             block: true,
-            sortDesc: true,
-            pagination: { sortBy: "lastmjd", descending: true },
-            selected : []
+            pagination: {
+                sortBy: "lastmjd",
+                descending: false,
+                rowsPerPage: -1
+            },
+            selected: []
         };
     },
     methods: {
@@ -115,18 +124,6 @@ export default {
         },
         closeObjectDetailsModal() {
             this.$store.dispatch("setShowObjectDetailsModal", false);
-        },
-        onSortChanged(ctx) {
-            this.sortBy = ctx.sortBy;
-            this.sortDesc = ctx.sortDesc;
-            this.$store.dispatch("queryObjects", {
-                query_parameters: this.$store.state.search.query_parameters,
-                page: this.currentPage,
-                perPage: this.$store.state.perPage,
-                total: this.$store.state.results.total,
-                sortBy: this.sortBy,
-                sortDesc: this.sortDesc
-            });
         }
     },
     mounted: function() {
@@ -179,7 +176,7 @@ export default {
                 perPage: this.$store.state.perPage,
                 total: this.$store.state.results.total,
                 sortBy: this.pagination.sortBy,
-                sortDesc: this.pagination.descending
+                sortDesc: !this.pagination.descending
             });
         }
     }
@@ -187,30 +184,8 @@ export default {
 </script>
 
 <style>
-.modal-fullscreen .modal {
-    padding: 0 !important;
-}
-.modal-fullscreen .modal-dialog {
-    max-width: 90%;
-    /* height: 90%; */
-    /* margin: 0; */
-}
-.modal-fullscreen .modal-content {
-    border: 0;
-    border-radius: 0;
-    min-height: 100%;
-    height: auto;
-}
-.btn-wrap-text {
-    white-space: normal !important;
-}
-ul > li {
-    list-style: none;
-}
-
-
-#details {
-    max-height: 200px;
-    overflow-y: auto;
+td {
+    height: 35px !important;
+    max-width: 50px;
 }
 </style>

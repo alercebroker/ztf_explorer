@@ -10,7 +10,6 @@
   "dependencies": {
     "@mdi/font": "^3.8.95",
     "axios": "^0.18.0",
-    "bootstrap-vue": "^2.0.0-rc.11",
     "echarts": "^4.2.1",
     "epic-spinners": "^1.0.4",
     "highcharts": "^6.2.0",

@@ -17,9 +17,9 @@
                 v-model="drawer"
                 disable-resize-watcher
                 slot-scope="{ hover }"
-                :class="`elevation-${hover && mini? 5 : 0}`"
+                :class="`elevation-${hover && mini? 24 : 0}`"
             >
-                <v-toolbar dark color="grey darken-3" dense v-if="!mini">
+                <v-toolbar dark color="toolbar" dense v-if="!mini">
                     <v-list class="pa-0">
                         <v-list-tile avatar>
                             <v-list-tile-content>
@@ -42,14 +42,14 @@
                 <v-sheet
                     class="d-flex"
                     height="100%"
-                    color="grey lighten-2"
+                    color="toolbar"
                     @click.stop="mini=!mini"
                     v-else
                 >
                     <v-tooltip right>
                         <template v-slot:activator="{on}">
                             <v-layout justify-center align-center v-on="on">
-                                <v-icon>chevron_right</v-icon>
+                                <v-icon color="white">chevron_right</v-icon>
                             </v-layout>
                         </template>
                         <span>Show</span>

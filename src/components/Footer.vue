@@ -1,8 +1,8 @@
 <template>
-    <v-footer dark height="auto" pl-0 app >
-        <v-layout row wrap>
-            <v-flex xs1 align-center align-content-center justify-center>
-                <a href="http://www.ingenieria.uach.cl/institutos/informatica.html" target="blank">
+    <v-footer height="auto" absolute pa-0 app>
+        <v-layout flat tile class="text-xs-center">
+            <v-flex xs1>
+                <a mx-3 icon href="http://www.ingenieria.uach.cl/institutos/informatica.html">
                     <img
                         src="../assets/footer/UACH.png"
                         style="height:25px;"
@@ -11,7 +11,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://www.ing.uc.cl/ciencia-de-la-computacion/" target="blank">
+                <a mx-3 icon href="http://www.ing.uc.cl/ciencia-de-la-computacion/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/footerPUC.png"
@@ -21,7 +21,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://www.cmm.uchile.cl/" target="blank">
+                <a mx-3 icon href="http://www.cmm.uchile.cl/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/CMM.png"
@@ -31,7 +31,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://die.cl/" target="blank">
+                <a mx-3 icon href="http://die.cl/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/footerDIE.png"
@@ -41,7 +41,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://www.inf.udec.cl/" target="blank">
+                <a mx-3 icon href="http://www.inf.udec.cl/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/udec.png"
@@ -51,7 +51,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://astrofisicamas.cl/" target="blank">
+                <a mx-3 icon href="http://astrofisicamas.cl/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/MAS.png"
@@ -61,7 +61,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://fisica.unab.cl/" target="blank">
+                <a mx-3 icon href="http://fisica.unab.cl/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/unab.png"
@@ -71,7 +71,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://www.reuna.cl/" target="blank">
+                <a mx-3 icon href="http://www.reuna.cl/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/footerReuna.png"
@@ -81,7 +81,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://cd3.caltech.edu/" target="blank">
+                <a mx-3 icon href="http://cd3.caltech.edu/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/footerCaltech.png"
@@ -91,7 +91,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="https://iacs.seas.harvard.edu/" target="blank">
+                <a mx-3 icon href="https://iacs.seas.harvard.edu/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/footerIACS.png"
@@ -101,7 +101,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://www.seas.harvard.edu/" target="blank">
+                <a mx-3 icon href="http://www.seas.harvard.edu/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/footerSEAS.png"
@@ -111,7 +111,7 @@
                 </a>
             </v-flex>
             <v-flex xs1>
-                <a href="http://dirac.astro.washington.edu/" target="blank">
+                <a mx-3 icon href="http://dirac.astro.washington.edu/">
                     <img
                         class="img-fluid"
                         src="../assets/footer/footerWashington.png"
@@ -119,13 +119,6 @@
                         alt="U. of Washington (Dirac)"
                     />
                 </a>
-            </v-flex>
-            <v-flex xs12>
-                <v-divider></v-divider>
-            </v-flex>
-            <v-flex text-xs-center white--text xs12>
-                &copy;2019 —
-                <strong>ALeRCE</strong>
             </v-flex>
         </v-layout>
     </v-footer>

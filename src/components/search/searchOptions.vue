@@ -30,13 +30,13 @@
                         outline
                         block
                         small
-                        color="blue-grey"
+                        color="primary"
                         @click="showSQLLabel = !showSQLLabel"
                     >{{ showSQLLabel? 'Hide': 'Show SQL' }}</v-btn>
                 </v-flex>
                 <v-flex xs12 sm12 md12 pb-0>
                     <div v-show="showSQLLabel">
-                        <div style="background-color:#e9ecef">
+                        <div style="background-color:#BDBDBD">
                             <div>
                                 <v-btn icon @click="refreshSQL">
                                     <v-icon>refresh</v-icon>
@@ -145,7 +145,7 @@ export default {
                 sortBy: "lastmjd"
             });
             this.$store.dispatch("setCurrentPage", 1);
-            // this.$store.dispatch('setSelectedTab', 1)
+            this.$store.dispatch('setSelectedTab', 1)
             window.scrollTo(0, 0);
         },
         clearQuery() {
