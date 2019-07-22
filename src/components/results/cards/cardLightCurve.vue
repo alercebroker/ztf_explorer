@@ -1,5 +1,9 @@
 <template>
-        <lightcurvePlot></lightcurvePlot>
+  <v-card>
+    <v-card-text>
+      <lightcurvePlot></lightcurvePlot>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>

@@ -34,7 +34,7 @@
 #aladin-lite-div{
   height:"100%";
   width:"100%";
-  min-height: 250px;
+  min-height: 200px;
 
 }
 </style>
