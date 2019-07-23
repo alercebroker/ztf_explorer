@@ -1,133 +1,140 @@
 <template>
     <v-dialog id="objectModal" v-model="showModal">
       <v-tabs  dark color="toolbar">
-      <v-tab ripple>
-        General Information
-      </v-tab>
+        <v-tab ripple>
+          General Information
+        </v-tab>
       <v-tab-item>
-          <v-card >
-              <v-card-text id="objectModalInside"> <!-- start inside modal-->
-                <v-layout row wrap>
-                  <v-flex xs12 md3  >
-                    <v-card>
-                      <v-card-text>
-                        <v-layout column wrap >
-                          <v-flex >
-                            <ul>
-                              <!--ZTF id-->
-                              <li>
-                                <strong>Object:</strong>
-                                {{ ztf_object.oid }}
-                              </li>
-                              <!-- Classification -->
-                              <li v-if="ztf_object.classxmatch">
-                                <strong>Class:</strong>
-                                {{ ztf_object.classxmatch }} (X-MATCH)
-                              </li>
-                              <li v-if="ztf_object.classrf">
-                                <strong>Class:</strong>
-                                {{ ztf_object.classrf }} (ML_RF)
-                              </li>
-                              <li v-if="ztf_object.classrnn">
-                                <strong>Class:</strong>
-                                {{ ztf_object.classrnn }} (ML_RNN)
-                              </li>
-                              <li v-if="ztf_object.classrnn">
-                                <strong>Class:</strong>
-                                {{ ztf_object.classrnn }} (ML_RNN)
-                              </li>
-                              <!--RA/Dec-->
-                              <li>
-                                <v-layout column wrap>
-                                  <v-flex xs6>
-                                    <strong>RA:</strong>{{ ztf_object.meanra ? ztf_object.meanra : '-' }},
-                                  </v-flex>
-                                  <v-flex xs6>
-                                    <strong>DEC:</strong>{{ ztf_object.meandec ? ztf_object.meandec : '-' }}
-                                  </v-flex>
+        <v-card>
+          <v-card-text id="objectModalInside"> <!-- start inside modal-->
+            <v-layout row wrap>
+              <v-flex xs12 md3  >
+                <v-card>
+                  <v-card-text>
+                    <v-layout column wrap >
+                      <v-flex >
+                        <ul>
+                          <!--ZTF id-->
+                          <li>
+                            <strong>Object:</strong>
+                            {{ ztf_object.oid }}
+                          </li>
+                          <!-- Classification -->
+                          <li v-if="ztf_object.classxmatch">
+                            <strong>Class:</strong>
+                            {{ ztf_object.classxmatch }} (X-MATCH)
+                          </li>
+                          <li v-if="ztf_object.classrf">
+                            <strong>Class:</strong>
+                            {{ ztf_object.classrf }} (ML_RF)
+                          </li>
+                          <li v-if="ztf_object.classrnn">
+                            <strong>Class:</strong>
+                            {{ ztf_object.classrnn }} (ML_RNN)
+                          </li>
+                          <li v-if="ztf_object.classrnn">
+                            <strong>Class:</strong>
+                            {{ ztf_object.classrnn }} (ML_RNN)
+                          </li>
+                          <!--RA/Dec-->
+                          <li>
+                            <v-layout column wrap>
+                              <v-flex xs6>
+                                <strong>RA:</strong>{{ ztf_object.meanra ? ztf_object.meanra : '-' }},
+                              </v-flex>
+                              <v-flex xs6>
+                                <strong>DEC:</strong>{{ ztf_object.meandec ? ztf_object.meandec : '-' }}
+                              </v-flex>
 
-                                </v-layout>
-                              </li>
-                              <li>
-                                <span class="font-weight-bold">Detections:</span>
-                                {{ $store.state.results.objectDetails.detections ? $store.state.results.objectDetails.detections.length : '-' }}
-                              </li>
-                              <li>
-                                <span class="font-weight-bold">Non-Detections:</span>
-                                {{ $store.state.results.objectDetails.non_detections ? $store.state.results.objectDetails.non_detections.length : '-' }}
-                              </li>
-                              <li>
-                                <span class="font-weight-bold">Discovery Date:</span>
-                                {{ mjdToDate(ztf_object.firstmjd) }}
-                              </li>
-                              <li>
-                                <span class="font-weight-bold">Last Detection:</span>
-                                {{ mjdToDate(ztf_object.lastmjd) }}
-                              </li>
-                            </ul>
-                          </v-flex>
-                          <v-divider></v-divider>
-                          <v-flex xs12 class="text-xs-center">
-                                <v-btn small :href="nedUrl" target="_blank" dark color="green">NED</v-btn>
-                                <v-btn small :href="simbadUrl" target="_blank" dark color="primary">SIMBAD</v-btn>
-                                <v-btn small :href="tnsUrl" target="_blank" dark color="orange">TNS</v-btn>
-                          </v-flex>
-                        </v-layout>
-                    </v-card-text>
-                  </v-card>
-
-                  </v-flex>
-                  <v-flex xs12 md6><!-- start light curve flex-->
-                    <card-light-curve v-if="$store.state.loading === false" />
-                  </v-flex><!-- end light curve flex-->
-                  <!-- ALADIN -->
-                  <v-flex xs12 md3>
-                    <aladin v-if="$store.state.loading === false" />
-                  </v-flex>
-                </v-layout>
-                <v-layout row wrap>
-                  <v-flex xs12 md4>
-                    <v-card height="100%">
-                      <v-card-text style="padding: 0 0 0 0;">
-                          <v-data-table
-                          :headers="headers"
-                          :items="magnitudeItems"
-                          class="elevation-1"
-                          hide-actions
-                          >
-                          <template v-slot:items="props">
-                            <td
-                            v-for="header in headers"
-                            :key="header.value"
-                            >{{typeof props.item[header.value] == 'number'? Math.round(props.item[header.value]*1000)/1000 : props.item[header.value] }} </td>
-                          </template>
-                        </v-data-table>
-                      </v-card-text>
-                    </v-card>
-                  </v-flex>
-
-
-
-                  <v-flex xs12 md4>
-                    <!-- PROBABILITIES -->
-                    <card-probabilities />
-                  </v-flex>
-                  <v-spacer></v-spacer>
-
-
-                  <v-flex xs12 md4>
-                      <card-stamps-png />
-                  </v-flex>
-                </v-layout>
-              </v-card-text> <!-- end inside modal-->
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click.stop="closeModal">Close</v-btn>
-              </v-card-actions>
-          </v-card>
-        </v-tab-item>
-      </v-tabs>
-    </v-dialog>
+                            </v-layout>
+                          </li>
+                          <!--Detections-->
+                          <li>
+                            <span class="font-weight-bold">Detections:</span>
+                            {{ $store.state.results.objectDetails.detections ? $store.state.results.objectDetails.detections.length : '-' }}
+                          </li>
+                          <!--Non-detections-->
+                          <li>
+                            <span class="font-weight-bold">Non-Detections:</span>
+                            {{ $store.state.results.objectDetails.non_detections ? $store.state.results.objectDetails.non_detections.length : '-' }}
+                          </li>
+                          <!--Dates-->
+                          <li>
+                            <span class="font-weight-bold">Discovery Date:</span>
+                            {{ mjdToDate(ztf_object.firstmjd) }}
+                          </li>
+                          <li>
+                            <span class="font-weight-bold">Last Detection:</span>
+                            {{ mjdToDate(ztf_object.lastmjd) }}
+                          </li>
+                        </ul>
+                      </v-flex>
+                      <v-divider></v-divider>
+                      <v-flex xs12 class="text-xs-center">
+                            <v-btn small :href="nedUrl" target="_blank" dark color="green">NED</v-btn>
+                            <v-btn small :href="simbadUrl" target="_blank" dark color="primary">SIMBAD</v-btn>
+                            <v-btn small :href="tnsUrl" target="_blank" dark color="orange">TNS</v-btn>
+                      </v-flex>
+                    </v-layout>
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+              <!--LIGHT CURVE-->    
+              <v-flex xs12 md6>
+                <!--If the screen is mobile-->
+                <v-flex hidden-xs-only>
+                  <card-light-curve v-if="$store.state.loading === false" />
+                </v-flex>
+                <!--If the screen is upper-->
+                <v-flex hidden-sm-and-up>
+                  <v-alert :value="true" type="warning" fluid>
+                    Flip your mobile
+                  </v-alert>
+                </v-flex>
+              </v-flex>
+              <!-- ALADIN -->
+              <v-flex xs12 md3>
+                <aladin v-if="$store.state.loading === false" />
+              </v-flex>
+            </v-layout>
+            <v-layout row wrap>
+              <v-flex xs12 md4>
+                <v-card height="100%">
+                  <v-card-text style="padding: 0 0 0 0;">
+                      <v-data-table
+                      :headers="headers"
+                      :items="magnitudeItems"
+                      class="elevation-1"
+                      hide-actions
+                      >
+                      <template v-slot:items="props">
+                        <td
+                        v-for="header in headers"
+                        :key="header.value"
+                        >{{typeof props.item[header.value] == 'number'? Math.round(props.item[header.value]*1000)/1000 : props.item[header.value] }} </td>
+                      </template>
+                    </v-data-table>
+                  </v-card-text>
+                </v-card>
+              </v-flex>
+              <v-flex xs12 md4>
+                <!-- PROBABILITIES -->
+                <card-probabilities />
+              </v-flex>
+              <v-spacer></v-spacer>
+              <v-flex xs12 md4>
+                  <card-stamps-png />
+              </v-flex>
+            </v-layout>
+          </v-card-text> <!-- end inside modal-->
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" @click.stop="closeModal">Close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
+  </v-dialog>
 </template>
 
 <script>
