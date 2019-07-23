@@ -8,8 +8,12 @@ export default {
   data(){
     return {
       scatter: {
+        title: {
+          text: "Light Curve",
+        },
         legend: {
-          data: ['g magnitude', 'r magnitude']
+          data: ['g magnitude', 'r magnitude', 'g non-detections', 'r non-detections'],
+          left: 'center',
         },
         tooltip: {
           trigger: 'axis',
@@ -22,10 +26,16 @@ export default {
           formatter: function (params) {
             var colorSpan = color => '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + color + '"></span>';
             var colorSpanError = color => ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' + color + '"></span>';
-            let rez = "candid: " + params[0].value[2] + "<br>"
-            rez += colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
-            rez += colorSpanError(params[0].color) + "error: ±" + (params[1].value[2] - params[0].value[1])
-            return rez;
+            let serie = params[0].seriesName
+            if(serie == 'r non-detections' || serie == 'g non-detections') {
+              return colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
+            }
+            else if(serie = "r magnitude" || serie == "g magnitude") {
+              let rez = "candid: " + params[0].value[2] + "<br>"
+              rez += colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
+              rez += colorSpanError(params[0].color) + "error: ±" + (params[1].value[2] - params[0].value[1])
+              return rez;
+            }
           }
         },
         axisPointer: {
@@ -34,41 +44,36 @@ export default {
                 backgroundColor: '#777'
             }
         },
+        //ZTF18abakkts
         xAxis: {
           name: "Modified Julian Dates",
+          nameLocation: "center",
           scale: true,
-          splitNumber: 15,
           splitLine: {
             show: false,
+          },
+          nameTextStyle: {
+            padding: 7
           }
         },
         yAxis: {
           name: "Magnitude",
+          nameLocation: "center",
           type: 'value',
           scale: true,
           inverse: true,
-          splitLine: {
-            show: false,
+          nameTextStyle: {
+            padding: 15
           }
         },
         dataZoom: [
           {
-            type: 'slider',
-            show: true,
-            xAxisIndex: [0],
-          },
-          {
-            type: 'slider',
-            show: true,
-            yAxisIndex: [0],
+            show: false,
+            realtime: true,
           },
           {
             type: 'inside',
-            xAxisIndex: [0],
-          },
-          {
-            type: 'inside',
-            yAxisIndex: [0],
+            realtime: true,
           }
         ],
         series: [
@@ -78,7 +83,7 @@ export default {
             type: 'scatter',
             scale: true,
             color: "#22d100",
-            symbolSize: 4,
+            symbolSize: 6,
             encode: {
               x: 0,
               y: 1
@@ -90,7 +95,7 @@ export default {
             type: 'scatter',
             scale: true,
             color: "#ff0000",
-            symbolSize: 4,
+            symbolSize: 6,
             encode: {
               x: 0,
               y: 1
@@ -111,6 +116,24 @@ export default {
             scale: true,
             color: "#ff0000",
             renderItem: this.renderError,
+          },
+          {
+            name: "g non-detections",
+            data: [],
+            type: 'scatter',
+            scale: true,
+            color: "rgba(0, 255, 0, 0.5)",
+            symbolSize: 5,
+            symbol: "triangle"
+          },
+          {
+            name: "r non-detections",
+            data: [],
+            type: 'scatter',
+            scale: true,
+            color: "rgba(255, 0, 0, 0.5)",
+            symbolSize: 5,
+            symbol: "triangle"
           },
         ]
       }
@@ -121,10 +144,12 @@ export default {
   },
   methods:{
     makegraph(alerts) {
-      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.candid_str]})
-      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.candid_str]})
-      this.scatter.series[2].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr-x.sigmapsf_corr, x.magpsf_corr+x.sigmapsf_corr]})
-      this.scatter.series[3].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr-x.sigmapsf_corr, x.magpsf_corr+x.sigmapsf_corr]})
+      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf, x.candid_str]})
+      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf, x.candid_str]})
+      this.scatter.series[2].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf]})
+      this.scatter.series[3].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf]})
+      this.scatter.series[4].data = alerts.non_detections.filter(function(x) {return x.fid == 1 && x.diffmaglim > 10 }).map(function (x) {return [x.mjd, x.diffmaglim]})
+      this.scatter.series[5].data = alerts.non_detections.filter(function(x) {return x.fid == 2 && x.diffmaglim > 10 }).map(function (x) {return [x.mjd, x.diffmaglim]})
     },
     renderError(params, api){
       var xValue = api.value(0);
@@ -174,7 +199,7 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style>
 .echarts {
   margin: auto;
   width: 100%;
