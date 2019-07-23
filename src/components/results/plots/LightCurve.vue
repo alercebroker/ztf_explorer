@@ -1,5 +1,5 @@
 <template>
-    <v-chart :options="scatter"/>
+    <v-chart :options="scatter" autoresize/>
 </template>
 
 <script>
