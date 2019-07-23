@@ -3,10 +3,7 @@
     <v-form>
         <v-container pa-2>
             <v-layout row wrap>
-                <!--Clear all options-->
-                <v-flex xs12 sm12 md12 pb-0 pt-0>
-                    <v-btn outline block small color="primary" @click="clearQuery">Clear all options</v-btn>
-                </v-flex>
+
                 <!--Default options-->
                 <v-flex xs12 sm12 md12 pb-0 pt-0>
                     <default-options></default-options>
@@ -46,11 +43,16 @@
                         </div>
                     </div>
                 </v-flex>
+                <!--Clear all options-->
+                <v-flex xs12 sm12 md12 pb-0 pt-0>
+                    <v-btn  block small dark @click="clearQuery">Clear all options</v-btn>
+                </v-flex>
                 <!--Search-->
                 <v-flex xs12 sm12 md12>
                     <v-btn
                         block
                         normal
+                        raised
                         color="primary"
                         @click="onSubmitQuery"
                         :disabled="!validSearch"

@@ -9,7 +9,7 @@
               <v-card-text id="objectModalInside"> <!-- start inside modal-->
                 <v-layout row wrap>
                   <v-flex xs12 md3  >
-                    <v-card>
+                    <v-card class="text-xs-center" height="98%">
                       <v-card-text>
                         <v-layout column wrap >
                           <v-flex >
@@ -85,7 +85,14 @@
                     <aladin v-if="$store.state.loading === false" />
                   </v-flex>
                 </v-layout>
+
                 <v-layout row wrap>
+
+                  <v-flex xs12 md4 hidden-sm-and-up>
+                      <card-stamps-png />
+                  </v-flex>
+
+
                   <v-flex xs12 md4>
                     <v-card height="100%">
                       <v-card-text style="padding: 0 0 0 0;">
@@ -115,7 +122,7 @@
                   <v-spacer></v-spacer>
 
 
-                  <v-flex xs12 md4>
+                  <v-flex xs12 md4 hidden-sm-and-down>
                       <card-stamps-png />
                   </v-flex>
                 </v-layout>
@@ -237,6 +244,7 @@ export default {
 ul {
     padding: 3px;
     margin: 0px;
+    list-style-type: none;
 }
 #objectModal{
   margin: 2px 2px 2px 2px;
