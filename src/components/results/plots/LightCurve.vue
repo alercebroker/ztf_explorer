@@ -10,10 +10,14 @@ export default {
       scatter: {
         title: {
           text: "Light Curve",
+          left: "center",
+          textStyle: {
+            fontWeight: "lighter"
+          }
         },
         legend: {
           data: ['g', 'r', 'g non-detections', 'r non-detections'],
-          left: 'center',
+          bottom: 0,
         },
         tooltip: {
           trigger: 'axis',
@@ -60,6 +64,9 @@ export default {
           nameLocation: "center",
           type: 'value',
           scale: true,
+          splitLine: {
+            show: false,
+          },
           inverse: true,
           nameTextStyle: {
             padding: 25
