@@ -1,9 +1,9 @@
 <template>
     <v-dialog id="objectModal" v-model="showModal">
       <v-tabs  dark color="toolbar">
-      <v-tab ripple>
-        General Information
-      </v-tab>
+        <v-tab ripple>
+          General Information
+        </v-tab>
       <v-tab-item>
           <v-card id="objectModalCard">
               <v-card-text id="objectModalInside"> <!-- start inside modal-->
@@ -75,11 +75,20 @@
                         </v-layout>
                     </v-card-text>
                   </v-card>
-
+                </v-flex>
+                  <!--LIGHT CURVE-->
+                  <v-flex xs12 md6>
+                    <!--If the screen is mobile-->
+                    <v-flex hidden-xs-only>
+                      <card-light-curve v-if="$store.state.loading === false" />
+                    </v-flex>
+                    <!--If the screen is upper-->
+                    <v-flex hidden-sm-and-up>
+                      <v-alert :value="true" type="warning" fluid>
+                          <span class="title"<v-icon>screen_rotation</v-icon>  to see the light curve.</span>
+                      </v-alert>
+                    </v-flex>
                   </v-flex>
-                  <v-flex xs12 md6><!-- start light curve flex-->
-                    <card-light-curve v-if="$store.state.loading === false" />
-                  </v-flex><!-- end light curve flex-->
                   <!-- ALADIN -->
                   <v-flex xs12 md3>
                     <aladin v-if="$store.state.loading === false" />

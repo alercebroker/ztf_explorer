@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "lightcurvePlot",
+  name: "lightcurveFoldedPlot",
   data(){
     return {
       scatter: {
@@ -20,8 +20,8 @@ export default {
           }
         },
         legend: {
-          data: ['g', 'r', 'g non-detections', 'r non-detections'],
-          bottom: 0,
+          data: ['g', 'r'],
+          bottom: 0
         },
         tooltip: {
           trigger: 'axis',
@@ -35,10 +35,7 @@ export default {
             var colorSpan = color => '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + color + '"></span>';
             var colorSpanError = color => ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' + color + '"></span>';
             let serie = params[0].seriesName
-            if(serie == 'r non-detections' || serie == 'g non-detections') {
-              return colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
-            }
-            else if(serie = "r" || serie == "g") {
+            if(serie = "r" || serie == "g") {
               let rez = "candid: " + params[0].value[2] + "<br>"
               rez += colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
               rez += colorSpanError(params[0].color) + "error: ±" + (params[1].value[2] - params[0].value[1])
@@ -53,7 +50,7 @@ export default {
             }
         },
         xAxis: {
-          name: "Modified Julian Dates",
+          name: "Phase",
           nameLocation: "center",
           scale: true,
           splitLine: {
@@ -73,7 +70,7 @@ export default {
           },
           inverse: true,
           nameTextStyle: {
-            padding: 25
+            padding: 30
           }
         },
         dataZoom: [
@@ -126,40 +123,35 @@ export default {
             scale: true,
             color: "#ff0000",
             renderItem: this.renderError,
-          },
-          {
-            name: "g non-detections",
-            data: [],
-            type: 'scatter',
-            scale: true,
-            color: "rgba(0, 255, 0, 0.5)",
-            symbolSize: 5,
-            symbol: "triangle"
-          },
-          {
-            name: "r non-detections",
-            data: [],
-            type: 'scatter',
-            scale: true,
-            color: "rgba(255, 0, 0, 0.5)",
-            symbolSize: 5,
-            symbol: "triangle"
-          },
+          }
         ]
       }
     }
   },
   mounted(){
-    if(this.alerts) this.makegraph(this.alerts);
+      if(this.alerts && this.period) this.makegraph(this.alerts, this.period);
   },
   methods:{
-    makegraph(alerts) {
-      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf, x.candid_str]})
-      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf, x.candid_str]})
-      this.scatter.series[2].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf]})
-      this.scatter.series[3].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf]})
-      this.scatter.series[4].data = alerts.non_detections.filter(function(x) {return x.fid == 1 && x.diffmaglim > 10 }).map(function (x) {return [x.mjd, x.diffmaglim]})
-      this.scatter.series[5].data = alerts.non_detections.filter(function(x) {return x.fid == 2 && x.diffmaglim > 10 }).map(function (x) {return [x.mjd, x.diffmaglim]})
+    makegraph(alerts, period) {
+        let gbandError = [];
+        let rbandError = [];
+        this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(
+            function(x) 
+            {
+                let phase = (x.mjd % period.periodls_1)/period.periodls_1;
+                gbandError.push([phase, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf])
+                return [phase, x.magpsf_corr, x.candid_str];
+            });
+        this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(
+            function(x) 
+            {
+                let phase = (x.mjd % period.periodls_2)/ period.periodls_2;
+                rbandError.push([phase, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf])
+                return [phase, x.magpsf_corr, x.candid_str];
+            });
+        this.scatter.series[2].data = gbandError;
+        this.scatter.series[3].data = rbandError;
+        this.scatter.title.subtext = "Period: " + this.$store.state.results.objectDetails.period.periodls_1.toFixed(3) +" days"
     },
     renderError(params, api){
       var xValue = api.value(0);
@@ -175,8 +167,8 @@ export default {
           children: [{
               type: 'line',
               shape: {
-                  x1: highPoint[0] - halfWidth, y1: highPoint[1],
-                  x2: highPoint[0] + halfWidth, y2: highPoint[1]
+                  x1: halfWidth, y1: highPoint[1],
+                  x2: halfWidth, y2: highPoint[1]
               },
               style: style
               }, {
@@ -189,8 +181,8 @@ export default {
               }, {
               type: 'line',
               shape: {
-                  x1: lowPoint[0] - halfWidth, y1: lowPoint[1],
-                  x2: lowPoint[0] + halfWidth, y2: lowPoint[1]
+                  x1: halfWidth, y1: lowPoint[1],
+                  x2: halfWidth, y2: lowPoint[1]
               },
               style: style
           }]
@@ -199,13 +191,16 @@ export default {
   },
   computed: {
     alerts() {
-      return this.$store.state.results.objectDetails
+        return this.$store.state.results.objectDetails
     },
+    period() {
+        return this.$store.state.results.objectDetails.period;
+    }
   },
   watch: {
     alerts(newval) {
       this.makegraph();
-    }
+    },
   }
 }
 </script>
