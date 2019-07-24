@@ -1,5 +1,5 @@
 <template>
-    <v-dialog id="objectModal" v-model="showModal">
+    <v-dialog id="objectModal" v-model="showModal" @input="closeModal">
       <v-tabs  dark color="toolbar">
       <v-tab ripple>
         General Information
