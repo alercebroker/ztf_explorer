@@ -1,19 +1,26 @@
 <template>
-    <v-card>
-      <v-layout row wrap >
+    <v-card height="100%">
+      <v-card-title>
+        <span class="title">Discovery Stamps</span>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text >
+        <v-layout row wrap>
           <v-flex xs4 class="text-xs-center">
             <h5>Science</h5>
-            <img :src="science" class="stampImg" />
+
+            <v-img contain :src="science" class="stampImg"/></v-img>
           </v-flex>
           <v-flex xs4 class="text-xs-center">
             <h5>Template</h5>
-            <img :src="template" class="stampImg" />
+            <v-img contain :src="template" class="stampImg" /></v-img>
           </v-flex>
           <v-flex xs4 class="text-xs-center">
             <h5>Difference</h5>
-            <img :src="difference" class="stampImg" />
+            <v-img contain :src="difference" class="stampImg" /></v-img>
           </v-flex>
-      </v-layout>
+        </v-layout>
+      </v-card-text>
     </v-card>
 </template>
 
@@ -60,9 +67,4 @@ export default {
 </script>
 
 <style scoped>
-  .stampImg{
-    height:100%;
-    width:auto;
-    max-height:150px;
-  }
 </style>
