@@ -8,6 +8,10 @@ export default {
   data(){
     return {
       scatter: {
+        grid: {
+          left: "7%",
+          right: "5%" 
+        },
         title: {
           text: "Light Curve",
           left: "center",
