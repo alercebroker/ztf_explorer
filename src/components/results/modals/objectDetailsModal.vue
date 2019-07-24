@@ -5,63 +5,63 @@
         General Information
       </v-tab>
       <v-tab-item>
-          <v-card >
+          <v-card id="objectModalCard">
               <v-card-text id="objectModalInside"> <!-- start inside modal-->
                 <v-layout row wrap>
                   <v-flex xs12 md3  >
-                    <v-card class="text-xs-center" height="98%">
+                    <v-card height="98%">
                       <v-card-text>
                         <v-layout column wrap >
                           <v-flex >
                             <ul>
                               <!--ZTF id-->
-                              <li>
-                                <strong>Object:</strong>
+                              <li :style="fontStyle" >
+                                <span class="custom-selector font-weight-black">Object:</span>
                                 {{ ztf_object.oid }}
                               </li>
                               <!-- Classification -->
-                              <li v-if="ztf_object.classxmatch">
-                                <strong>Class:</strong>
+                              <li :style="fontStyle" v-if="ztf_object.classxmatch">
+                                <span class="font-weight-black">Class:</span>
                                 {{ ztf_object.classxmatch }} (X-MATCH)
                               </li>
-                              <li v-if="ztf_object.classrf">
-                                <strong>Class:</strong>
+                              <li :style="fontStyle" v-if="ztf_object.classrf">
+                                <span class="font-weight-black">Class:</span>
                                 {{ ztf_object.classrf }} (ML_RF)
                               </li>
-                              <li v-if="ztf_object.classrnn">
-                                <strong>Class:</strong>
+                              <li :style="fontStyle" v-if="ztf_object.classrnn">
+                                <span class="font-weight-black">Class:</span>
                                 {{ ztf_object.classrnn }} (ML_RNN)
                               </li>
-                              <li v-if="ztf_object.classrnn">
-                                <strong>Class:</strong>
+                              <li :style="fontStyle" v-if="ztf_object.classrnn">
+                                <span class="font-weight-black">Class:</span>
                                 {{ ztf_object.classrnn }} (ML_RNN)
                               </li>
                               <!--RA/Dec-->
                               <li>
                                 <v-layout column wrap>
-                                  <v-flex xs6>
-                                    <strong>RA:</strong>{{ ztf_object.meanra ? ztf_object.meanra : '-' }},
+                                  <v-flex :style="fontStyle" xs6>
+                                    <span class="font-weight-black ">RA:</span>{{ ztf_object.meanra ? ztf_object.meanra : '-' }},
                                   </v-flex>
-                                  <v-flex xs6>
-                                    <strong>DEC:</strong>{{ ztf_object.meandec ? ztf_object.meandec : '-' }}
+                                  <v-flex :style="fontStyle" xs6>
+                                    <span class="font-weight-black">DEC:</span>{{ ztf_object.meandec ? ztf_object.meandec : '-' }}
                                   </v-flex>
 
                                 </v-layout>
                               </li>
-                              <li>
-                                <span class="font-weight-bold">Detections:</span>
+                              <li :style="fontStyle">
+                                <span  class="font-weight-black">Detections:</span>
                                 {{ $store.state.results.objectDetails.detections ? $store.state.results.objectDetails.detections.length : '-' }}
                               </li>
-                              <li>
-                                <span class="font-weight-bold">Non-Detections:</span>
+                              <li :style="fontStyle">
+                                <span class="font-weight-black">Non-Detections:</span>
                                 {{ $store.state.results.objectDetails.non_detections ? $store.state.results.objectDetails.non_detections.length : '-' }}
                               </li>
-                              <li>
-                                <span class="font-weight-bold">Discovery Date:</span>
+                              <li :style="fontStyle">
+                                <span class="font-weight-black">Discovery Date:</span>
                                 {{ mjdToDate(ztf_object.firstmjd) }}
                               </li>
-                              <li>
-                                <span class="font-weight-bold">Last Detection:</span>
+                              <li :style="fontStyle">
+                                <span class="font-weight-black">Last Detection:</span>
                                 {{ mjdToDate(ztf_object.lastmjd) }}
                               </li>
                             </ul>
@@ -95,6 +95,11 @@
 
                   <v-flex xs12 md4>
                     <v-card height="100%">
+                      <v-card-title primary-title>
+                        <span class="title"> Magnitude Statistics</span>
+
+                      </v-card-title>
+                      <v-divider></v-divider>
                       <v-card-text style="padding: 0 0 0 0;">
                           <v-data-table
                           :headers="headers"
@@ -234,6 +239,13 @@ export default {
         },
         simbadUrl(){
           return this.ztf_object ? 'http://simbad.u-strasbg.fr/simbad/sim-coo?Coord='+this.ztf_object.meanra+"%20"+this.ztf_object.meandec+'&Radius.unit=arcsec&Radius=10' : "#";
+        },
+        fontStyle(){
+          switch (this.$vuetify.breakpoint.name) {
+            case 'xs': return 'font-size:1em';
+            case 'md': return 'font-size:1em';
+            default: return 'font-size:1.4em';
+          }
         }
     },
     mounted: function() {}
@@ -249,7 +261,7 @@ ul {
 #objectModal{
   margin: 2px 2px 2px 2px;
 }
-.v-card{
+.v-card:not(#objectModalCard){
   margin:4px 4px 4px 4px;
 }
 #objectModalInside{
