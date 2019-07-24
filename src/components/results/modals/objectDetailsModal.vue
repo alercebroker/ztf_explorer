@@ -1,6 +1,6 @@
 <template>
     <v-dialog id="objectModal" v-model="showModal" @input="closeModal">
-      <v-tabs  dark color="toolbar">
+      <v-tabs  dark>
         <v-tab ripple>
           General Information
         </v-tab>
@@ -85,7 +85,7 @@
                     <!--If the screen is upper-->
                     <v-flex hidden-sm-and-up>
                       <v-alert :value="true" type="warning" fluid>
-                          <span class="title"<v-icon>screen_rotation</v-icon>  to see the light curve.</span>
+                          <span class="title"><v-icon>screen_rotation</v-icon>  to see the light curve.</span>
                       </v-alert>
                     </v-flex>
                   </v-flex>
@@ -106,22 +106,14 @@
                     <v-card height="100%">
                       <v-card-title primary-title>
                         <span class="title"> Magnitude Statistics</span>
-
                       </v-card-title>
                       <v-divider></v-divider>
                       <v-card-text style="padding: 0 0 0 0;">
                           <v-data-table
                           :headers="headers"
                           :items="magnitudeItems"
-                          class="elevation-1"
-                          hide-actions
+                          hide-default-footer
                           >
-                          <template v-slot:items="props">
-                            <td
-                            v-for="header in headers"
-                            :key="header.value"
-                            >{{typeof props.item[header.value] == 'number'? Math.round(props.item[header.value]*1000)/1000 : props.item[header.value] }} </td>
-                          </template>
                         </v-data-table>
                       </v-card-text>
                     </v-card>
@@ -143,7 +135,7 @@
               </v-card-text> <!-- end inside modal-->
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.stop="closeModal">Close</v-btn>
+                <v-btn text color="primary" @click.stop="closeModal">Close</v-btn>
               </v-card-actions>
           </v-card>
         </v-tab-item>
@@ -210,33 +202,33 @@ export default {
             return [
                 {
                     Item: "Mean",
-                    g: this.ztf_object.mean_magpsf_g,
-                    r: this.ztf_object.mean_magpsf_r
+                    g: this.ztf_object.mean_magpsf_g ? this.ztf_object.mean_magpsf_g.toFixed(3) : "-",
+                    r: this.ztf_object.mean_magpsf_r ? this.ztf_object.mean_magpsf_r.toFixed(3): "-"
                 },
                 {
                     Item: "Median",
-                    g: this.ztf_object.median_magpsf_g,
-                    r: this.ztf_object.median_magpsf_r
+                    g: this.ztf_object.median_magpsf_g ? this.ztf_object.median_magpsf_g.toFixed(3) : "-",
+                    r: this.ztf_object.median_magpsf_r ? this.ztf_object.median_magpsf_r.toFixed(3): "-"
                 },
                 {
                     Item: "First",
-                    g: this.ztf_object.first_magpsf_g,
-                    r: this.ztf_object.first_magpsf_r
+                    g: this.ztf_object.first_magpsf_g ? this.ztf_object.first_magpsf_g.toFixed(3) : "-",
+                    r: this.ztf_object.first_magpsf_r ? this.ztf_object.first_magpsf_r.toFixed(3): "-"
                 },
                 {
                     Item: "Last",
-                    g: this.ztf_object.last_magpsf_g,
-                    r: this.ztf_object.last_magpsf_r
+                    g: this.ztf_object.last_magpsf_g ? this.ztf_object.last_magpsf_g.toFixed(3) : "-",
+                    r: this.ztf_object.last_magpsf_r ? this.ztf_object.last_magpsf_r.toFixed(3): "-"
                 },
                 {
                     Item: "Min",
-                    g: this.ztf_object.min_magpsf_g,
-                    r: this.ztf_object.min_magpsf_r
+                    g: this.ztf_object.min_magpsf_g ? this.ztf_object.min_magpsf_g.toFixed(3) : "-",
+                    r: this.ztf_object.min_magpsf_r ? this.ztf_object.min_magpsf_r.toFixed(3): "-"
                 },
                 {
                     Item: "Max",
-                    g: this.ztf_object.max_magpsf_g,
-                    r: this.ztf_object.max_magpsf_r
+                    g: this.ztf_object.max_magpsf_g ? this.ztf_object.max_magpsf_g.toFixed(3) : "-",
+                    r: this.ztf_object.max_magpsf_r ? this.ztf_object.max_magpsf_r.toFixed(3): "-"
                 }
             ];
         },
