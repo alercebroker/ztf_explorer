@@ -46,21 +46,13 @@
             <v-data-table
                 :headers="headers"
                 :items="objects"
+                :options.sync="options"
+                :server-items-length="$store.state.results.total"
+                @click:row="onRowClicked"
                 class="elevation-1"
-                :pagination.sync="pagination"
-                hide-actions
-                v-model="selected"
-                no-data-text="-"
-            >
-                <template v-slot:items="props">
-                    <tr @click="onRowClicked(props.item)">
-                        <td
-                            v-for="header in headers"
-                            :key="header.value"
-                        >{{props.item[header.value]}}</td>
-                    </tr>
-                </template>
-            </v-data-table>
+                hide-default-footer
+                dense
+            ></v-data-table>
         </v-flex>
 
         <object-details-modal
@@ -89,18 +81,14 @@ export default {
     },
     data() {
         return {
-            block: true,
-            pagination: {
-                sortBy: "lastmjd",
-                descending: false,
-                rowsPerPage: -1
-            },
-            selected: []
+            options: {
+                sortBy: ["lastmjd"],
+                sortDesc: [true]
+            }
         };
     },
     methods: {
         getClass(obj) {
-            // console.log("onj",obj)
             let ret = this.$store.state.search.classes.find(function(x) {
                 if (x.value == obj) {
                     return x;
@@ -109,6 +97,7 @@ export default {
             return ret ? ret.text : "-";
         },
         onRowClicked(item) {
+            item = this.$store.state.results.objects[item.oid];
             this.$store.dispatch("objectSelected", item);
             this.$router.push({
                 name: "object-details-modal",
@@ -124,7 +113,8 @@ export default {
         },
         closeObjectDetailsModal() {
             this.$store.dispatch("setShowObjectDetailsModal", false);
-        }
+        },
+
     },
     mounted: function() {
         this.getUrlObject();
@@ -142,11 +132,13 @@ export default {
             }
         },
         objects() {
-            let objects = this.$store.state.results.objects;
+            let objects = JSON.parse(
+                JSON.stringify(this.$store.state.results.objects)
+            );
             Object.values(objects).forEach(obj => {
                 Object.keys(obj).forEach(key => {
-                    if (key.startsWith("class") && obj[key] != null) {
-                        obj[key] = this.getClass(obj[key], key);
+                    if (key.startsWith("class") && key !== "classearly") {
+                        obj[key] = this.getClass(obj[key]);
                     }
                     if (
                         typeof obj[key] === "number" &&
@@ -175,8 +167,18 @@ export default {
                 page: value,
                 perPage: this.$store.state.perPage,
                 total: this.$store.state.results.total,
-                sortBy: this.pagination.sortBy,
-                sortDesc: !this.pagination.descending
+                sortBy: this.options.sortBy[0],
+                sortDesc: this.options.sortDesc[0]
+            });
+        },
+        options(value){
+            this.$store.dispatch("queryObjects", {
+                query_parameters: this.$store.state.search.query_parameters,
+                page: this.currentPage,
+                perPage: this.$store.state.perPage,
+                total: this.$store.state.results.total,
+                sortBy: value.sortBy[0],
+                sortDesc: value.sortDesc[0]
             });
         }
     }
@@ -184,8 +186,4 @@ export default {
 </script>
 
 <style>
-td {
-    height: 35px !important;
-    max-width: 50px;
-}
 </style>

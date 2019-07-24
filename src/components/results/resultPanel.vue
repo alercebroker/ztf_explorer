@@ -1,6 +1,6 @@
 <template>
-    <v-card>
-        <v-tabs dark color="toolbar" :value="selectedTab">
+    <v-card flat>
+        <v-tabs dark background-color="toolbar" :value="selectedTab">
             <v-tab>Overview</v-tab>
             <v-tab-item>
                 <overview-cards />

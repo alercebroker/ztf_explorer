@@ -1,12 +1,12 @@
 <template>
     <v-dialog v-model="dialog" scrollable max-width="300px">
         <template v-slot:activator="{ on }">
-            <v-btn small flat color="primary" v-on="on">Select Columns</v-btn>
+            <v-btn small text color="primary" v-on="on">Select Columns</v-btn>
         </template>
-        <v-card justify-center>
+        <v-card >
             <v-card-title primary-title class="headline">Select Columns</v-card-title>
-            <v-card-text style="height: 500px;">
-                <v-layout row wrap justify-center>
+            <v-card-text >
+                <v-layout row wrap>
                     <v-flex xs12 v-for="option in options" :key="option.value">
                         <v-checkbox v-model="option.show" :label="option.text"></v-checkbox>
                     </v-flex>
@@ -15,7 +15,7 @@
             <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" flat @click="dialog = false">Close</v-btn>
+                <v-btn color="primary" text @click="dialog = false">Close</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -29,13 +29,6 @@ export default {
             dialog: false,
             allSelected: false
         };
-    },
-    methods: {
-        toggleAll(checked) {
-            this.$store.state.results.selectedColumnOptions = checked
-                ? this.options.map(a => a.value).slice()
-                : [];
-        }
     },
     computed: {
         options() {

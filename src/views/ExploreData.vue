@@ -11,6 +11,7 @@
                 clipped
                 app
                 hide-overlay
+                permanent
                 :mini-variant="mini"
                 width="400"
                 mini-variant-width="30"
@@ -20,23 +21,16 @@
                 :class="`elevation-${hover && mini? 24 : 0}`"
             >
                 <v-toolbar dark color="toolbar" dense v-if="!mini">
-                    <v-list class="pa-0">
-                        <v-list-tile avatar>
-                            <v-list-tile-content>
-                                <v-list-tile-title>Search Options</v-list-tile-title>
-                            </v-list-tile-content>
-                            <v-list-tile-action>
-                                <v-tooltip left>
-                                    <template v-slot:activator="{ on }">
-                                        <v-btn icon v-on="on" @click.stop="mini = !mini">
-                                            <v-icon>chevron_left</v-icon>
-                                        </v-btn>
-                                    </template>
-                                    <span>Hide</span>
-                                </v-tooltip>
-                            </v-list-tile-action>
-                        </v-list-tile>
-                    </v-list>
+                    <v-toolbar-title>Search Options</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-tooltip left>
+                        <template v-slot:activator="{ on }">
+                            <v-btn icon v-on="on" @click.stop="mini = !mini">
+                                <v-icon>chevron_left</v-icon>
+                            </v-btn>
+                        </template>
+                        <span>Hide</span>
+                    </v-tooltip>
                 </v-toolbar>
                 <search-options v-if="!mini" />
                 <v-sheet

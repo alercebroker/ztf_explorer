@@ -1,9 +1,9 @@
 <template>
-    <v-footer height="auto" absolute pa-0 app>
+    <v-footer inset app>
         <v-layout row wrap  >
               <v-flex xs1 grow
               v-for="link in links"
-              :key = "link"
+              :key = link.link
               >
               <a :href="link.link">
                 <v-img  max-height="25px" contain :alt="link.alt" :src="link.image"> </v-img>

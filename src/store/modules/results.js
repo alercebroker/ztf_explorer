@@ -17,7 +17,7 @@ export const state = {
         },
         {
             value: "nobs",
-            sortable: false,
+            sortable: true,
             text: "Observations",
             show: true,
         },
@@ -36,12 +36,25 @@ export const state = {
         {
             value: "radec",
             text: "RA/Dec (degrees)",
+            sortable: false,
             show: true
         },
         {
             value: "classxmatch",
             sortable: false,
             text: "Crossmatch",
+            show: true
+        },
+        {
+            value: "classearly",
+            sortable: false,
+            text: "Early Classifier Class",
+            show: true
+        },
+        {
+            value: "pclassearly",
+            sortable: true,
+            text: "Early Classifier Probability",
             show: true
         },
         {
@@ -59,7 +72,7 @@ export const state = {
         {
             value: "deltajd",
             text: "DeltaMJD (days)",
-            show: true
+            show: false
         },
         {
             value: "meandec",

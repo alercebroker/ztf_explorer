@@ -1,11 +1,10 @@
 <template>
-    <v-container pa-2 ma-0>
+    <v-container pa-0 ma-0 >
         <v-form v-model="validation" lazy-validation>
-            <v-layout row wrap>
+            <v-layout align-center justify-center fill-height row wrap>
                 <v-flex xs6>
                     <v-text-field
                         label="Min MJD"
-                        class="mt-8"
                         v-model="minFirstMJD"
                         min="0"
                         type="number"
@@ -16,38 +15,37 @@
                     <v-menu
                         v-model="menu"
                         :close-on-content-click="true"
-                        lazy
                         transition="scale-transition"
                         offset-y
-                        :nudge-right="40"
                         full-width
                         min-width="290px"
                     >
-                        <v-text-field
-                            v-model="computedMinFirstGreg"
-                            label="Min first greg date"
-                            prepend-icon="event"
-                            readonly
-                            slot="activator"
-                        ></v-text-field>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                v-model="computedMinFirstGreg"
+                                label="Min first greg date"
+                                prepend-icon="event"
+                                readonly
+                                v-on="on"
+                            ></v-text-field>
+                        </template>
+
                         <v-date-picker
                             v-model="minFirstGreg"
                             no-title
                             scrollable
-                            actions
                             first-day-of-week="1"
                             :allowed-dates="minDates"
                         >
                             <v-spacer></v-spacer>
-                            <v-btn flat color="primary" @click="minFirstGreg = null">Clear</v-btn>
-                            <v-btn flat color="primary" @click="menu = false">Close</v-btn>
+                            <v-btn text color="primary" @click="minFirstGreg = null">Clear</v-btn>
+                            <v-btn text color="primary" @click="menu = false">Close</v-btn>
                         </v-date-picker>
                     </v-menu>
                 </v-flex>
                 <v-flex xs6>
                     <v-text-field
                         label="Max MJD"
-                        class="mt-8"
                         v-model="maxFirstMjd"
                         min="0"
                         type="number"
@@ -58,20 +56,21 @@
                     <v-menu
                         v-model="menu2"
                         :close-on-content-click="true"
-                        lazy
                         transition="scale-transition"
                         offset-y
-                        :nudge-right="40"
                         full-width
                         min-width="290px"
                     >
-                        <v-text-field
-                            v-model="computedMaxFirstGreg"
-                            label="Max first greg date"
-                            prepend-icon="event"
-                            readonly
-                            slot="activator"
-                        ></v-text-field>
+                        <template v-slot:activator="{ on }">
+                            <v-text-field
+                                v-model="computedMaxFirstGreg"
+                                label="Max first greg date"
+                                prepend-icon="event"
+                                readonly
+                                v-on="on"
+                            ></v-text-field>
+                        </template>
+
                         <v-date-picker
                             v-model="maxFirstGreg"
                             no-title
@@ -81,8 +80,8 @@
                             :allowed-dates="maxDates"
                         >
                             <v-spacer></v-spacer>
-                            <v-btn flat color="primary" @click="maxFirstGreg = null">Clear</v-btn>
-                            <v-btn flat color="primary" @click="menu2 = false">Close</v-btn>
+                            <v-btn text color="primary" @click="maxFirstGreg = null">Clear</v-btn>
+                            <v-btn text color="primary" @click="menu2 = false">Close</v-btn>
                         </v-date-picker>
                     </v-menu>
                 </v-flex>

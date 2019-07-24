@@ -1,7 +1,7 @@
 <template>
     <!--BODY-->
     <v-form>
-        <v-container pa-2>
+        <v-container pl-8 pr-8>
             <v-layout row wrap>
 
                 <!--Default options-->
@@ -10,7 +10,7 @@
                 </v-flex>
                 <!-- Date and coordinate options -->
                 <v-card>
-                    <v-tabs color="grey lighten-4">
+                    <v-tabs >
                         <v-tab>Discovery Date</v-tab>
                         <v-tab-item>
                             <date-options />
@@ -24,7 +24,8 @@
                 <!--Show SQL-->
                 <v-flex xs12 sm12 md12 pb-0>
                     <v-btn
-                        outline
+                        outlined
+                        tile
                         block
                         small
                         color="primary"
@@ -45,13 +46,14 @@
                 </v-flex>
                 <!--Clear all options-->
                 <v-flex xs12 sm12 md12 pb-0 pt-0>
-                    <v-btn  block small dark @click="clearQuery">Clear all options</v-btn>
+                    <v-btn  block tile small dark @click="clearQuery">Clear all options</v-btn>
                 </v-flex>
                 <!--Search-->
                 <v-flex xs12 sm12 md12>
                     <v-btn
                         block
                         normal
+                        tile
                         raised
                         color="primary"
                         @click="onSubmitQuery"
