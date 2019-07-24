@@ -40,7 +40,7 @@
                               <li>
                                 <v-layout column wrap>
                                   <v-flex :style="fontStyle" xs6>
-                                    <span class="font-weight-black ">RA:</span>{{ ztf_object.meanra ? ztf_object.meanra : '-' }},
+                                    <span class="font-weight-black ">RA:</span>{{ ztf_object.meanra ? ztf_object.meanra : '-' }}
                                   </v-flex>
                                   <v-flex :style="fontStyle" xs6>
                                     <span class="font-weight-black">DEC:</span>{{ ztf_object.meandec ? ztf_object.meandec : '-' }}

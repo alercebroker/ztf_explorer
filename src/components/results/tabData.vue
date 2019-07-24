@@ -152,7 +152,7 @@ export default {
                         typeof obj[key] === "number" &&
                         !Number.isInteger(obj[key])
                     )
-                        obj[key] = obj[key];//.toFixed(3);
+                        obj[key] = obj[key].toFixed(3);
                 });
                 obj["radec"] = obj.meanra + ", " + obj.meandec;
             });

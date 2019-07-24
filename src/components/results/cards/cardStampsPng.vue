@@ -37,7 +37,7 @@ export default {
         },
         science() {
             return (
-                "http://avro.alerce.onlin/get_stamp?oid=" +
+                "http://avro.alerce.online/get_stamp?oid=" +
                 this.object +
                 "&candid=" +
                 this.candid +
@@ -46,7 +46,7 @@ export default {
         },
         difference() {
             return (
-                "http://avro.alerce.onlin/get_stamp?oid=" +
+                "http://avro.alerce.online/get_stamp?oid=" +
                 this.object +
                 "&candid=" +
                 this.candid +
@@ -55,7 +55,7 @@ export default {
         },
         template() {
             return (
-                "http://avro.alerce.onlin/get_stamp?oid=" +
+                "http://avro.alerce.online/get_stamp?oid=" +
                 this.object +
                 "&candid=" +
                 this.candid +
