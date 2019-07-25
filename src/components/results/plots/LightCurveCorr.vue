@@ -35,7 +35,7 @@ export default {
             var colorSpan = color => '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + color + '"></span>';
             var colorSpanError = color => ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' + color + '"></span>';
             var rowTable = (col1, col2, col3) => "<tr> <td>" + col1 + "</td> <td>" + col2 + "</td> <td>" + col3 + "</td> </tr>"
-            var calendarIcon = color => "<i class='material-icons' style='font-size:13px;color:" + color +";'>calendar_today</i>"
+            var calendarIcon = color => "<i class='material-icons' style='font-size:13px;color:" + color +";'>alarm</i>"
             let serie = params[0].seriesName
             let table = "<table> <tr> <th></th> <th></th> <th></th></tr>"
             if(serie = "r" || serie == "g") {

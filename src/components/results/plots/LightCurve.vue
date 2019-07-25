@@ -35,7 +35,7 @@ export default {
             var colorSpan = color => '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + color + '"></span>';
             var colorSpanError = color => ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' + color + '"></span>';
             var rowTable = (col1, col2, col3) => "<tr> <td>" + col1 + "</td> <td>" + col2 + "</td> <td>" + col3 + "</td> </tr>"
-            var calendarIcon = color => "<i class='material-icons' style='font-size:13px;color:" + color +";'>calendar_today</i>"
+            var calendarIcon = color => "<i class='material-icons' style='font-size:13px;color:" + color +";'>alarm</i>"
             let serie = params[0].seriesName
             let table = "<table> <tr> <th></th> <th></th> <th></th></tr>"
 
@@ -44,7 +44,7 @@ export default {
               table += rowTable(calendarIcon(params[0].color), "MJD: ", params[0].value[0])
               return table + "</table>";
             }
-            else if(serie = "r" || serie == "g") {
+            else if(serie == "r" || serie == "g") {
               table += rowTable("", "candid: ", params[0].value[2])              
               table += rowTable(colorSpan(params[0].color), params[0].seriesName + ": ", params[0].value[1])
               table += rowTable(colorSpanError(params[0].color), "error: ±", (params[1].value[2] - params[0].value[1]))
