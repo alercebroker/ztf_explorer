@@ -81,7 +81,7 @@
                                 <card-stamps-png />
                             </v-flex>
 
-                            <v-flex xs12 md3>
+                            <v-flex xs12 md4>
                                 <v-card height="100%">
                                     <v-card-title primary-title>
                                         <span class="title">Magnitude Statistics</span>
@@ -96,12 +96,13 @@
                                     </v-card-text>
                                 </v-card>
                             </v-flex>
-                            <v-flex xs12 md6 hidden-sm-and-down>
-                                <card-stamps-png />
-                            </v-flex>
-                            <v-flex xs12 md3>
+
+                            <v-flex xs12 md4>
                                 <!-- PROBABILITIES -->
                                 <card-probabilities />
+                            </v-flex>
+                            <v-flex xs12 md4 hidden-sm-and-down>
+                                <card-stamps-png />
                             </v-flex>
                         </v-layout>
                     </v-card-text>
@@ -166,7 +167,10 @@ export default {
     computed: {
         showModal: {
             get() {
-                console.log("show modal", this.$store.state.results.showObjectDetailsModal)
+                console.log(
+                    "show modal",
+                    this.$store.state.results.showObjectDetailsModal
+                );
                 return this.$store.state.results.showObjectDetailsModal;
             },
             set(value) {
@@ -324,8 +328,7 @@ export default {
             }
         }
     },
-    mounted: function() {},
-
+    mounted: function() {}
 };
 </script>
 
