@@ -38,7 +38,7 @@ export default {
             var calendarIcon = color => "<i class='material-icons' style='font-size:13px;color:" + color +";'>alarm</i>"
             let serie = params[0].seriesName
             let table = "<table> <tr> <th></th> <th></th> <th></th></tr>"
-            if(serie = "r" || serie == "g") {
+            if(serie == "r" || serie == "g") {
               table += rowTable("", "candid: ", params[0].value[2])              
               table += rowTable(colorSpan(params[0].color), params[0].seriesName + ": ", params[0].value[1])
               table += rowTable(colorSpanError(params[0].color), "error: ±", (params[1].value[2] - params[0].value[1]))

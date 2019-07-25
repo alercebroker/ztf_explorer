@@ -16,6 +16,7 @@ export default {
                 },
                 tooltip:{
                     formatter: function(params){
+                        if(params.name == "xmatch"){ return ""}
                         var rowTable = (col1, col2) => "<tr> <td>" + col1 + "</td> <td>" + col2 + "</td> </tr>"
                         let table = "<table> <tr> <th>Class</th> <th>(%)</th></tr>"
                         for (var i = 0; i < params.value.length; i++) { table += rowTable(params.name[i], params.value[i]) }
@@ -68,6 +69,36 @@ export default {
             })
             this.polar.series[0].data.push({value: data, name: names});
         },
+        getXMATCH() {
+            var classxmatch = this.$store.state.results.selectedObject.classxmatch;
+            var xmatch = []
+            if(classxmatch && this.classifier != 1) {
+                xmatch = Array(10).fill(0)
+                xmatch[classxmatch] = 1
+                this.polar.series[0]
+                .data.push(
+                    {
+                        value: xmatch,
+                        name: "xmatch",
+                        lineStyle: {
+                            normal: {
+                                type: 'dashed'
+                            }
+                        },
+                        symbolSize: 1,
+                        tooltip: false,
+                        label: {
+                        normal: {
+                            show: true,
+                            formatter:function(params) {
+                                return params.value == 1 ? "XMATCH" : "";
+                                }
+                            }
+                        }
+                    }
+                );
+            }
+        }
     }
 };
 </script>
