@@ -140,9 +140,8 @@ export default {
             type: 'scatter',
             scale: true,
             color: "rgba(0, 255, 0, 0.5)",
-            symbolSize: 5,
-            symbol: "triangle",
-            symbolRotate: 180
+            symbolSize: 6,
+            symbol: "path://M0,49.017c0-13.824,11.207-25.03,25.03-25.03h438.017c13.824,0,25.029,11.207,25.029,25.03L262.81,455.745c0,0-18.772,18.773-37.545,0C206.494,436.973,0,49.017,0,49.017z",
           },
           {
             name: "r non-detections",
@@ -150,9 +149,8 @@ export default {
             type: 'scatter',
             scale: true,
             color: "rgba(255, 0, 0, 0.5)",
-            symbolSize: 5,
-            symbol: "triangle",
-            symbolRotate: 180
+            symbolSize: 6,
+            symbol: "path://M0,49.017c0-13.824,11.207-25.03,25.03-25.03h438.017c13.824,0,25.029,11.207,25.029,25.03L262.81,455.745c0,0-18.772,18.773-37.545,0C206.494,436.973,0,49.017,0,49.017z",
           },
         ]
       }
