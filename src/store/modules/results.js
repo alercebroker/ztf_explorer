@@ -155,6 +155,11 @@ export const state = {
     num_pages: 0,
     showObjectDetailsModal: false,
     currentPage: 0,
+    recentObjects: 'counting...',
+    recentAlerts: 'counting...',
+    xmatchedCount: 'counting...',
+    rfCount: 'counting...',
+    earlyCount: 'counting...'
 }
 
 export const mutations = {
@@ -193,6 +198,21 @@ export const mutations = {
     },
     SET_SELECTED_COLUMN_OPTIONS(state, selected){
         state.selectedColumnOptions = selected
+    },
+    SET_RECENT_OBJECTS(state, count){
+        state.recentObjects = count;
+    },
+    SET_RECENT_ALERTS(state, count){
+        state.recentAlerts = count;
+    },
+    SET_XMATCHED_COUNT(state, count){
+        state.xmatchedCount = count;
+    },
+    SET_RF_COUNT(state, count){
+        state.rfCount = count;
+    },
+    SET_EARLY_COUNT(state, count){
+        state.earlyCount = count;
     }
 }
 
@@ -240,6 +260,21 @@ export const actions = {
     },
     setSelectedColumnOptions({commit}, selected){
         commit('SET_SELECTED_COLUMN_OPTIONS', selected)
+    },
+    setRecentObjects({commit}, count){
+        commit('SET_RECENT_OBJECTS', count)
+    },
+    setRecentAlerts({commit}, count){
+        commit('SET_RECENT_ALERTS', count)
+    },
+    setXmatchedCount({commit}, count){
+        commit('SET_XMATCHED_COUNT', count)
+    },
+    setRfCount({commit}, count){
+        commit('SET_RF_COUNT', count)
+    },
+    setEarlyCount({commit}, count){
+        commit('SET_EARLY_COUNT', count)
     }
     
 }

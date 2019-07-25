@@ -417,6 +417,27 @@ export const actions = {
             keyPath: ["nobs", "max"],
             value: range[1]
         });
+    },
+    getRecentObjects({dispatch}, payload){
+        QueryPSQLService.queryRecentObjects(payload.mjd, payload.hours).then(response => {
+            dispatch('setRecentObjects', response.data.result.count);
+        })
+    },
+    getRecentAlerts({dispatch}, payload){
+        QueryPSQLService.queryRecentAlerts(payload.mjd, payload.hours).then(response => {
+            dispatch('setRecentAlerts', response.data.result.count);
+        })
+    },
+    getClassifiedCounts({dispatch}, payload){
+        QueryPSQLService.queryObjects(payload.xmatchParams).then( response => {
+            dispatch('setXmatchedCount', response.data.total);
+        })
+        QueryPSQLService.queryObjects(payload.rfParams).then( response => {
+            dispatch('setRfCount', response.data.total);
+        })
+        QueryPSQLService.queryObjects(payload.earlyParams).then( response => {
+            dispatch('setEarlyCount', response.data.total);
+        })
     }
 }
 
