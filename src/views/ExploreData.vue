@@ -3,7 +3,6 @@
         <result-panel
             :loading.sync="$store.state.loading"
             :downloading.sync="$store.state.downloading"
-            v-if="!$route.params.id"
         />
         <loading :show="$store.state.downloading" label="Downloading..."></loading>
         <loading :show="$store.state.loading" label="Searching..."></loading>

@@ -3,7 +3,7 @@
         <v-tabs dark background-color="toolbar" :value="selectedTab">
             <v-tab>Overview</v-tab>
             <v-tab-item>
-                <overview-cards />
+                <overview-cards v-if="!$route.params.id || $store.state.search.searched"/>
             </v-tab-item>
             <v-tab>Query Table</v-tab>
             <v-tab-item>
