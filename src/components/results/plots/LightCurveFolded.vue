@@ -139,14 +139,14 @@ export default {
             function(x) 
             {
                 let phase = (x.mjd % period.periodls_1)/period.periodls_1;
-                gbandError.push([phase, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf])
+                gbandError.push([phase, x.magpsf_corr-x.sigmapsf, x.magpsf_corr+x.sigmapsf])
                 return [phase, x.magpsf_corr, x.candid_str];
             });
         this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(
             function(x) 
             {
                 let phase = (x.mjd % period.periodls_2)/ period.periodls_2;
-                rbandError.push([phase, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf])
+                rbandError.push([phase, x.magpsf_corr-x.sigmapsf, x.magpsf_corr+x.sigmapsf])
                 return [phase, x.magpsf_corr, x.candid_str];
             });
         this.scatter.series[2].data = gbandError;
