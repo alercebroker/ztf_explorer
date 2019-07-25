@@ -34,12 +34,16 @@ export default {
           formatter: function (params) {
             var colorSpan = color => '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + color + '"></span>';
             var colorSpanError = color => ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' + color + '"></span>';
+            var rowTable = (col1, col2, col3) => "<tr> <td>" + col1 + "</td> <td>" + col2 + "</td> <td>" + col3 + "</td> </tr>"
+            var calendarIcon = color => "<i class='material-icons' style='font-size:13px;color:" + color +";'>alarm</i>"
             let serie = params[0].seriesName
-            if(serie = "r" || serie == "g") {
-              let rez = "candid: " + params[0].value[2] + "<br>"
-              rez += colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
-              rez += colorSpanError(params[0].color) + "error: ±" + (params[1].value[2] - params[0].value[1])
-              return rez;
+            let table = "<table> <tr> <th></th> <th></th> <th></th></tr>"
+            if(serie == "r" || serie == "g") {
+              table += rowTable("", "candid: ", params[0].value[2])              
+              table += rowTable(colorSpan(params[0].color), params[0].seriesName + ": ", params[0].value[1])
+              table += rowTable(colorSpanError(params[0].color), "error: ±", (params[1].value[2] - params[0].value[1]))
+              table += rowTable(calendarIcon(params[0].color), "MJD: ", params[0].value[0])
+              return table + "</table>";
             }
           }
         },
@@ -139,14 +143,14 @@ export default {
             function(x) 
             {
                 let phase = (x.mjd % period.periodls_1)/period.periodls_1;
-                gbandError.push([phase, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf])
+                gbandError.push([phase, x.magpsf_corr-x.sigmapsf, x.magpsf_corr+x.sigmapsf])
                 return [phase, x.magpsf_corr, x.candid_str];
             });
         this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(
             function(x) 
             {
                 let phase = (x.mjd % period.periodls_2)/ period.periodls_2;
-                rbandError.push([phase, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf])
+                rbandError.push([phase, x.magpsf_corr-x.sigmapsf, x.magpsf_corr+x.sigmapsf])
                 return [phase, x.magpsf_corr, x.candid_str];
             });
         this.scatter.series[2].data = gbandError;
