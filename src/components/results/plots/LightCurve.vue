@@ -134,7 +134,8 @@ export default {
             scale: true,
             color: "rgba(0, 255, 0, 0.5)",
             symbolSize: 5,
-            symbol: "triangle"
+            symbol: "triangle",
+            symbolRotate: 180
           },
           {
             name: "r non-detections",
@@ -143,7 +144,8 @@ export default {
             scale: true,
             color: "rgba(255, 0, 0, 0.5)",
             symbolSize: 5,
-            symbol: "triangle"
+            symbol: "triangle",
+            symbolRotate: 180
           },
         ]
       }
