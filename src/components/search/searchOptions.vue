@@ -139,9 +139,11 @@ export default {
                 dates: this.$store.state.search.dates,
                 coordinates: this.$store.state.search.coordinates
             };
-            if(this.$store.state.search.filters.oid == "supernova"){
-              window.open('https://www.youtube.com/watch?v=TlLmypmt_ls', '_blank');
-              return
+            if(this.$store.state.search.filters.oid){
+              if(this.$store.state.search.filters.oid.toLowerCase() == "supernova"){
+                window.open('https://www.youtube.com/watch?v=TlLmypmt_ls', '_blank');
+                return
+              }
             }
             this.removeEmpty(query_parameters);
             this.$store.dispatch("setQueryParameters", query_parameters);
