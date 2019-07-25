@@ -6,8 +6,9 @@
           {{name}}
         </v-tab>
         <v-tab-item v-for="(value, name, index) in probabilities" v-bind:key="index">
-          <line-class :classifier="name" :probabilities="value" />
+          <polarradar :classifier="name" :probabilities="value" />
         </v-tab-item>
+
       </v-tabs>
     </v-card-text>
   </v-card>
@@ -16,9 +17,11 @@
 
 <script>
 import lineClass from "../plots/LineClass.vue";
+import polarradar from "../plots/PolarRadar.vue"
 export default {
     components: {
-        lineClass
+        lineClass,
+        polarradar
     },
     computed: {
         probabilities() {

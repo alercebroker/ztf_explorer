@@ -34,15 +34,22 @@ export default {
           formatter: function (params) {
             var colorSpan = color => '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' + color + '"></span>';
             var colorSpanError = color => ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' + color + '"></span>';
+            var rowTable = (col1, col2, col3) => "<tr> <td>" + col1 + "</td> <td>" + col2 + "</td> <td>" + col3 + "</td> </tr>"
+            var calendarIcon = color => "<i class='material-icons' style='font-size:13px;color:" + color +";'>alarm</i>"
             let serie = params[0].seriesName
+            let table = "<table> <tr> <th></th> <th></th> <th></th></tr>"
+
             if(serie == 'r non-detections' || serie == 'g non-detections') {
-              return colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
+              table += rowTable(colorSpan(params[0].color), params[0].seriesName+":", params[0].value[1]);
+              table += rowTable(calendarIcon(params[0].color), "MJD: ", params[0].value[0])
+              return table + "</table>";
             }
-            else if(serie = "r" || serie == "g") {
-              let rez = "candid: " + params[0].value[2] + "<br>"
-              rez += colorSpan(params[0].color) + params[0].seriesName + ": " + params[0].value[1] + "<br>"
-              rez += colorSpanError(params[0].color) + "error: ±" + (params[1].value[2] - params[0].value[1])
-              return rez;
+            else if(serie == "r" || serie == "g") {
+              table += rowTable("", "candid: ", params[0].value[2])              
+              table += rowTable(colorSpan(params[0].color), params[0].seriesName + ": ", params[0].value[1])
+              table += rowTable(colorSpanError(params[0].color), "error: ±", (params[1].value[2] - params[0].value[1]))
+              table += rowTable(calendarIcon(params[0].color), "MJD: ", params[0].value[0])
+              return table + "</table>";
             }
           }
         },
@@ -133,8 +140,8 @@ export default {
             type: 'scatter',
             scale: true,
             color: "rgba(0, 255, 0, 0.5)",
-            symbolSize: 5,
-            symbol: "triangle"
+            symbolSize: 6,
+            symbol: "path://M0,49.017c0-13.824,11.207-25.03,25.03-25.03h438.017c13.824,0,25.029,11.207,25.029,25.03L262.81,455.745c0,0-18.772,18.773-37.545,0C206.494,436.973,0,49.017,0,49.017z",
           },
           {
             name: "r non-detections",
@@ -142,8 +149,8 @@ export default {
             type: 'scatter',
             scale: true,
             color: "rgba(255, 0, 0, 0.5)",
-            symbolSize: 5,
-            symbol: "triangle"
+            symbolSize: 6,
+            symbol: "path://M0,49.017c0-13.824,11.207-25.03,25.03-25.03h438.017c13.824,0,25.029,11.207,25.029,25.03L262.81,455.745c0,0-18.772,18.773-37.545,0C206.494,436.973,0,49.017,0,49.017z",
           },
         ]
       }
