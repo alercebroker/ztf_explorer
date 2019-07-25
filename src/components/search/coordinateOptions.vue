@@ -1,7 +1,7 @@
 <template>
     <v-form >
-        <v-container fluid pa-2 ma-0>
-            <v-layout align-center justify-center row wrap>
+        <v-container pa-0 ma-0>
+            <v-layout row wrap>
                 <v-flex xs12>
                     <v-text-field
                         type="number"
@@ -10,7 +10,7 @@
                         label="RA (deg)"
                     />
                 </v-flex>
-                <v-flex xs12>
+                <v-flex xs12 >
                     <v-text-field
                         label="DEC (deg)"
                         type="number"

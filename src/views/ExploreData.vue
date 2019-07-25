@@ -32,7 +32,7 @@
                         <span>Hide</span>
                     </v-tooltip>
                 </v-toolbar>
-                <search-options v-if="!mini" />
+                <search-options v-if="!mini" @onSearch="onSearch" />
                 <v-sheet
                     class="d-flex"
                     height="100%"
@@ -51,6 +51,7 @@
                 </v-sheet>
             </v-navigation-drawer>
         </v-hover>
+        <object-details-modal @modalClosed="closeObjectDetailsModal" />
     </v-container>
 </template>
 
@@ -58,6 +59,8 @@
 import searchOptions from "../components/search/searchOptions.vue";
 import resultPanel from "../components/results/resultPanel.vue";
 import loading from "vue-full-loading";
+import objectDetailsModal from "@/components/results/modals/objectDetailsModal";
+
 
 /**This component connect searchOption and tabResult
  * call component loading when variable loading or dowloading is true
@@ -68,7 +71,8 @@ export default {
     components: {
         searchOptions,
         resultPanel,
-        loading
+        loading,
+        objectDetailsModal
     },
     data() {
         return {
@@ -76,6 +80,23 @@ export default {
             mini: false
         };
     },
-    methods: {}
+    methods: {
+        onSearch() {
+            this.mini = true;
+        },
+        getUrlObject() {
+            if (this.$route.params.id) {
+                this.$store.dispatch("objectSelectedFromURL", {
+                    oid: this.$route.params.id
+                });
+            }
+        },
+        closeObjectDetailsModal() {
+            this.$store.dispatch("setShowObjectDetailsModal", false);
+        }
+    },
+    mounted: function() {
+        this.getUrlObject();
+    }
 };
 </script>

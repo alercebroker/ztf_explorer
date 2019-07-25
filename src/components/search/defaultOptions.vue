@@ -131,8 +131,8 @@ export default {
         },
         probLabel() {
             return this.probability
-                ? "Probability >=" + this.probability
-                : "Probability >= 0";
+                ? "Probability >=" + this.probability.toFixed(2)
+                : "Probability >= 0.00";
         }
     },
     methods: {}

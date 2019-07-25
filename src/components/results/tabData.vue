@@ -54,20 +54,11 @@
                 dense
             ></v-data-table>
         </v-flex>
-
-        <object-details-modal
-            v-if="showObjectDetailsModal"
-            :show="showObjectDetailsModal"
-            @modalClosed="closeObjectDetailsModal"
-        />
-
-        <!-- <download-modal /> -->
     </v-layout>
 </template>
 
 <script>
 import columnOptionsModal from "./modals/columnOptionsModal.vue";
-import objectDetailsModal from "./modals/objectDetailsModal";
 
 /**
  * this component contains table and details object modal
@@ -77,7 +68,6 @@ export default {
     components: {
         // downloadModal,
         columnOptionsModal,
-        objectDetailsModal
     },
     data() {
         return {
@@ -104,20 +94,10 @@ export default {
                 params: { id: item.oid }
             });
         },
-        getUrlObject() {
-            if (this.$route.params.id) {
-                this.$store.dispatch("objectSelectedFromURL", {
-                    oid: this.$route.params.id
-                });
-            }
-        },
-        closeObjectDetailsModal() {
-            this.$store.dispatch("setShowObjectDetailsModal", false);
-        },
+
 
     },
     mounted: function() {
-        this.getUrlObject();
     },
     computed: {
         showObjectDetailsModal() {

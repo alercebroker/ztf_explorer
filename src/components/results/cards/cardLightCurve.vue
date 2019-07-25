@@ -1,8 +1,8 @@
 <template>
-  <v-card fluid>
-    <v-container fluid pa-0>
-      <v-layout wrap align-content-center>
-        <v-flex xs12>
+  <v-card >
+    <v-container pa-0>
+      <v-layout row wrap fill-height>
+        <v-flex xs12 d-flex>
           <div class="curve">
             <lightcurvePlot v-if="selected == 'radio-1'"></lightcurvePlot>
             <lightcurveCorrPlot v-else-if="selected == 'radio-2'"></lightcurveCorrPlot>

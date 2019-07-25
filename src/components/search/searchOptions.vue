@@ -22,7 +22,7 @@
                     </v-tabs>
                 </v-card>
                 <!--Show SQL-->
-                <v-flex xs12 sm12 md12 pb-0>
+                <v-flex xs12 sm12 md12 >
                     <v-btn
                         outlined
                         tile
@@ -45,11 +45,11 @@
                     </div>
                 </v-flex>
                 <!--Clear all options-->
-                <v-flex xs12 sm12 md12 pb-0 pt-0>
+                <v-flex xs12 sm12 md12 pb-0 pt-2>
                     <v-btn  block tile small dark @click="clearQuery">Clear all options</v-btn>
                 </v-flex>
                 <!--Search-->
-                <v-flex xs12 sm12 md12>
+                <v-flex xs12 sm12 md12 pt-2>
                     <v-btn
                         block
                         normal
@@ -86,7 +86,6 @@ export default {
         };
     },
     mounted() {
-        //this.$store.dispatch('queryClassList')
     },
     methods: {
         /**
@@ -155,6 +154,7 @@ export default {
             this.$store.dispatch("setCurrentPage", 1);
             this.$store.dispatch('setSelectedTab', 1)
             window.scrollTo(0, 0);
+            this.$emit('onSearch');
         },
         clearQuery() {
             this.$store.dispatch("clearQuery");
@@ -173,7 +173,7 @@ export default {
 .fade-leave-active {
     transition: opacity 2.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter, .fade-leave-to  {
     transition: opacity 2.5s;
 }
 </style>

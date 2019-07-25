@@ -1,7 +1,7 @@
 <template>
   <v-card height="100%">
     <v-card-text>
-      <v-tabs dark>
+      <v-tabs background-color="transparent" color="toolbar">
         <v-tab v-for="(value, name, index) in probabilities" v-bind:key="index">
           {{name}}
         </v-tab>
