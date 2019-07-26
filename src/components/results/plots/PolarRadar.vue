@@ -53,7 +53,7 @@ export default {
     },
     mounted() {
         this.getValues();
-        this.getXMATCH();
+        // this.getXMATCH();
     },
     methods: {
         getValues() {
@@ -69,36 +69,36 @@ export default {
             })
             this.polar.series[0].data.push({value: data, name: names});
         },
-        getXMATCH() {
-            var classxmatch = this.$store.state.results.selectedObject.classxmatch;
-            var xmatch = []
-            if(classxmatch && this.classifier != 1) {
-                xmatch = Array(10).fill(0)
-                xmatch[classxmatch] = 1
-                this.polar.series[0]
-                .data.push(
-                    {
-                        value: xmatch,
-                        name: "xmatch",
-                        lineStyle: {
-                            normal: {
-                                type: 'dashed'
-                            }
-                        },
-                        symbolSize: 1,
-                        tooltip: false,
-                        label: {
-                        normal: {
-                            show: true,
-                            formatter:function(params) {
-                                return params.value == 1 ? "XMATCH" : "";
-                                }
-                            }
-                        }
-                    }
-                );
-            }
-        }
+        // getXMATCH() {
+        //     var classxmatch = this.$store.state.results.selectedObject.classxmatch;
+        //     var xmatch = []
+        //     if(classxmatch && this.classifier != 1) {
+        //         xmatch = Array(10).fill(0)
+        //         xmatch[classxmatch] = 1
+        //         this.polar.series[0]
+        //         .data.push(
+        //             {
+        //                 value: xmatch,
+        //                 name: "xmatch",
+        //                 lineStyle: {
+        //                     normal: {
+        //                         type: 'dashed'
+        //                     }
+        //                 },
+        //                 symbolSize: 1,
+        //                 tooltip: false,
+        //                 label: {
+        //                 normal: {
+        //                     show: true,
+        //                     formatter:function(params) {
+        //                         return params.value == 1 ? "XMATCH" : "";
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         );
+        //     }
+        // }
     }
 };
 </script>
