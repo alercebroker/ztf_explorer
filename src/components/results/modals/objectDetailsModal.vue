@@ -1,5 +1,5 @@
 <template>
-    <v-dialog id="objectModal" v-model="showModal" @input="closeModal">
+    <v-dialog id="objectModal" v-model="showModal" @input="closeModal" :fullscreen="$vuetify.breakpoint.xsOnly">
         <v-tabs dark background-color="toolbar">
             <v-tab ripple>General Information</v-tab>
             <v-tab-item>

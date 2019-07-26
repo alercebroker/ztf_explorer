@@ -1,6 +1,6 @@
 <template>
     <v-container fluid pt-0 pl-2 pr-2 pb-2>
-        <v-tabs v-if="$vuetify.breakpoint.xsOnly" background-color="toolbar">
+        <v-tabs v-if="$vuetify.breakpoint.xsOnly" background-color="toolbar" dark>
             <v-tab>Search</v-tab>
             <v-tab-item>
                 <search-options></search-options>
@@ -11,6 +11,9 @@
                     :loading.sync="$store.state.loading"
                     :downloading.sync="$store.state.downloading"
                 ></result-panel>
+                <loading :show="$store.state.downloading" label="Downloading..."></loading>
+                <loading :show="$store.state.loading" label="Searching..."></loading>
+                <object-details-modal @modalClosed="closeObjectDetailsModal" />
             </v-tab-item>
         </v-tabs>
         <div v-else>

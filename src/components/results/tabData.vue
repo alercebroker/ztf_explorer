@@ -30,8 +30,8 @@
             <v-toolbar flat color="white">
                 <v-toolbar-title>
                     <v-layout column wrap pt-3>
-                        <v-flex xs6>Found {{ $store.state.results.total }} results</v-flex>
-                        <v-flex xs6>
+                        <v-flex xs12 md6>Found {{ $store.state.results.total }} results</v-flex>
+                        <v-flex xs12 md6>
                             <column-options-modal />
                         </v-flex>
                     </v-layout>
@@ -41,6 +41,7 @@
                     v-model="currentPage"
                     :length="$store.state.results.num_pages"
                     :total-visible="5"
+                    v-show="$vuetify.breakpoint.mdAndUp"
                 ></v-pagination>
             </v-toolbar>
             <v-data-table
@@ -52,7 +53,14 @@
                 class="elevation-1"
                 hide-default-footer
                 dense
+                :mobile-breakpoint="250"
             ></v-data-table>
+            <v-pagination
+                v-model="currentPage"
+                :length="$store.state.results.num_pages"
+                :total-visible="5"
+                v-show="$vuetify.breakpoint.xsOnly"
+            ></v-pagination>
         </v-flex>
     </v-layout>
 </template>
@@ -67,7 +75,7 @@ export default {
     name: "tab-data",
     components: {
         // downloadModal,
-        columnOptionsModal,
+        columnOptionsModal
     },
     data() {
         return {
@@ -93,12 +101,9 @@ export default {
                 name: "object-details-modal",
                 params: { id: item.oid }
             });
-        },
-
-
+        }
     },
-    mounted: function() {
-    },
+    mounted: function() {},
     computed: {
         showObjectDetailsModal() {
             return this.$store.state.results.showObjectDetailsModal;
@@ -151,7 +156,7 @@ export default {
                 sortDesc: this.options.sortDesc[0]
             });
         },
-        options(value){
+        options(value) {
             this.$store.dispatch("queryObjects", {
                 query_parameters: this.$store.state.search.query_parameters,
                 page: this.currentPage,
