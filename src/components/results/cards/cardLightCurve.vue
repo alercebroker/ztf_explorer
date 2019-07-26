@@ -1,6 +1,5 @@
 <template>
   <v-card >
-    <v-container pa-0>
       <v-layout row wrap fill-height>
         <v-flex xs12 d-flex>
           <div class="curve">
@@ -17,7 +16,6 @@
           </v-radio-group>
         </v-flex>
       </v-layout>
-    </v-container>
   </v-card>
 </template>
 

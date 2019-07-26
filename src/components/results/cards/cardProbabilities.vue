@@ -1,12 +1,16 @@
 <template>
-  <v-card height="100%">
-    <v-card-text>
+  <v-card id="probCard" height="100%">
+    <v-card-text id="probCardText">
       <v-tabs background-color="transparent" color="toolbar">
         <v-tab v-for="(value, name, index) in probabilities" v-bind:key="index">
           {{name}}
         </v-tab>
-        <v-tab-item v-for="(value, name, index) in probabilities" v-bind:key="index">
-          <polarradar :classifier="name" :probabilities="value" />
+        <v-tab-item  v-for="(value, name, index) in probabilities" v-bind:key="index">
+          <v-layout row wrap>
+            <v-flex md6 offset-md-3 >
+              <polarradar :classifier="name" :probabilities="value" />
+            </v-flex>
+          </v-layout>
         </v-tab-item>
 
       </v-tabs>
@@ -40,4 +44,10 @@ export default {
 </script>
 
 <style>
+#probCard{
+  padding: 0 0 0 0;
+}
+#probCardText{
+  padding: 0 0 0 0;
+}
 </style>

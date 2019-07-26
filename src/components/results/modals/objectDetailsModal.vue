@@ -18,11 +18,12 @@
                                                     hide-default-footer
                                                     hide-default-header
                                                     dense
+                                                    mobile-breakpoint="250"
                                                 ></v-data-table>
                                             </v-flex>
-                                            <v-flex xs12 pt-4>
-                                                <v-layout>
-                                                    <v-flex xs4>
+                                            <v-flex xs12 pt-10 width="100%">
+                                                <v-layout align-center >
+                                                    <v-flex xs4 class="text-md-center">
                                                         <v-btn
                                                             small
                                                             :href="nedUrl"
@@ -31,7 +32,7 @@
                                                             color="green"
                                                         >NED</v-btn>
                                                     </v-flex>
-                                                    <v-flex xs4>
+                                                    <v-flex xs4 class="text-md-center">
                                                         <v-btn
                                                             small
                                                             :href="simbadUrl"
@@ -40,7 +41,7 @@
                                                             color="primary"
                                                         >SIMBAD</v-btn>
                                                     </v-flex>
-                                                    <v-flex xs4>
+                                                    <v-flex xs4 class="text-md-center">
                                                         <v-btn
                                                             small
                                                             :href="tnsUrl"
@@ -89,9 +90,11 @@
                                     <v-divider></v-divider>
                                     <v-card-text style="padding: 0 0 0 0;">
                                         <v-data-table
+                                            mobile-breakpoint="250"
                                             :headers="headers"
                                             :items="magnitudeItems"
                                             hide-default-footer
+                                            dense
                                         ></v-data-table>
                                     </v-card-text>
                                 </v-card>

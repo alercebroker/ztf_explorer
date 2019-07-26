@@ -18,7 +18,7 @@ export default {
                     formatter: function(params){
                         if(params.name == "xmatch"){ return ""}
                         var rowTable = (col1, col2) => "<tr> <td>" + col1 + "</td> <td>" + col2 + "</td> </tr>"
-                        let table = "<table> <tr> <th>Class</th> <th>(%)</th></tr>"
+                        let table = "<table> <tr> <th>Class</th> <th>(Score)</th></tr>"
                         for (var i = 0; i < params.value.length; i++) { table += rowTable(params.name[i], params.value[i]) }
                         return table + "</table>"
                     }
@@ -42,7 +42,7 @@ export default {
                 },
                 series: [
                     {
-                        name: 'Probabilities (%)',
+                        name: 'Probabilities (Score)',
                         type: 'radar',
                         areaStyle: {normal: {}},
                         data : []
@@ -105,9 +105,9 @@ export default {
 
 <style scoped>
 .echarts {
-  margin: auto;
   width: 100%;
   height: 100%;
-  min-height: 350px;
+  min-height: 250px;
+  margin-top: 15px;
 }
 </style>
