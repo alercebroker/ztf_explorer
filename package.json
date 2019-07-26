@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "compression-webpack-plugin": "^3.0.0",
     "deepmerge": "^4.0.0",
     "echarts": "^4.2.1",
     "epic-spinners": "^1.0.4",

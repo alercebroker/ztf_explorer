@@ -1,34 +1,22 @@
 <template>
-    <v-form >
-        <v-container pa-0 ma-0>
-            <v-layout row wrap>
-                <v-flex xs12>
-                    <v-text-field
-                        type="number"
-                        step="0.00001"
-                        v-model="ra"
-                        label="RA (deg)"
-                    />
-                </v-flex>
-                <v-flex xs12 >
-                    <v-text-field
-                        label="DEC (deg)"
-                        type="number"
-                        step="0.00001"
-                        v-model="dec"
-                    />
-                </v-flex>
-                <v-flex xs12>
-                    <v-text-field
-                        label="Radius (arcsec)"
-                        type="number"
-                        step="0.00001"
-                        v-model="rs"
-                        min="0"
-                    />
-                </v-flex>
-            </v-layout>
-        </v-container>
+    <v-form pa-0>
+        <v-layout row wrap>
+            <v-flex xs12>
+                <v-text-field type="number" step="0.00001" v-model="ra" label="RA (deg)" />
+            </v-flex>
+            <v-flex xs12>
+                <v-text-field label="DEC (deg)" type="number" step="0.00001" v-model="dec" />
+            </v-flex>
+            <v-flex xs12>
+                <v-text-field
+                    label="Radius (arcsec)"
+                    type="number"
+                    step="0.00001"
+                    v-model="rs"
+                    min="0"
+                />
+            </v-flex>
+        </v-layout>
     </v-form>
 </template>   
 
@@ -36,8 +24,7 @@
 export default {
     name: "coordinate-options",
     data() {
-        return {            
-        };
+        return {};
     },
     computed: {
         ra: {

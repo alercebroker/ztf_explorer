@@ -194,7 +194,6 @@ export default {
             this.$router.replace("/");
         },
         mjdToDate(mjd) {
-            console.log("DATE", jdToDate(mjd));
             return jdToDate(mjd).toUTCString();
         },
         changeMjdButtonText() {

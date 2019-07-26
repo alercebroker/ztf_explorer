@@ -1,32 +1,29 @@
 <template>
-    <div v-if="$store.state.search.error">
-        <v-alert :value="true" type="error">Error connecting to our servers</v-alert>
-    </div>
-    <div v-else-if="$store.state.search.query_status === 204">
-        <v-alert :value="true" type="warning">
-            <h3>Our position is correct but there is no Alderaan!</h3>Sorry but your search did not return any results :(
-            <br />Try refining your Query
-        </v-alert>
-    </div>
-    <div v-else-if="$store.state.search.query_status === 400">
-        <v-alert :value="true" type="warning">There is an error with your query</v-alert>
-    </div>
-    <div v-else-if="!$store.state.search.searched && !$store.state.results.showObjectDetailsModal">
-        <v-alert type="info" :value="true">Your search results will be displayed here</v-alert>
-    </div>
-    <div v-else-if="$store.state.search.query_status === 504">
-        <v-alert type="warning" :value="true">
-            <h3>Opps!</h3>It looks like the query is taking too long. Try refining your query :)
-        </v-alert>
-    </div>
-    <v-layout
-        v-else-if="$store.state.search.query_status === 200"
-        row
-        wrap
-        align-start
-        justify-start
-    >
-        <v-flex xs12>
+    <v-layout row wrap pl-4 pr-4 pt-2 pb-5>
+        <v-flex v-if="$store.state.search.error">
+            <v-alert :value="true" type="error">Error connecting to our servers</v-alert>
+        </v-flex>
+        <v-flex v-else-if="$store.state.search.query_status === 204">
+            <v-alert :value="true" type="warning">
+                <h3>Our position is correct but there is no Alderaan!</h3>Sorry but your search did not return any results :(
+                <br />Try refining your Query
+            </v-alert>
+        </v-flex>
+        <v-flex v-else-if="$store.state.search.query_status === 400">
+            <v-alert :value="true" type="warning">There is an error with your query</v-alert>
+        </v-flex>
+        <v-flex
+            v-else-if="!$store.state.search.searched && !$store.state.results.showObjectDetailsModal"
+        >
+            <v-alert type="info" :value="true">Your search results will be displayed here</v-alert>
+        </v-flex>
+        <v-flex v-else-if="$store.state.search.query_status === 504">
+            <v-alert type="warning" :value="true">
+                <h3>Opps!</h3>It looks like the query is taking too long. Try refining your query :)
+            </v-alert>
+        </v-flex>
+
+        <v-flex xs12 v-else-if="$store.state.search.query_status === 200">
             <v-toolbar flat color="white">
                 <v-toolbar-title>
                     <v-layout column wrap pt-3>

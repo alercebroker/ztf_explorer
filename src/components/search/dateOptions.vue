@@ -1,93 +1,91 @@
 <template>
-    <v-container pa-0 ma-0>
-        <v-form v-model="validation" lazy-validation>
-            <v-layout align-center justify-center fill-height row wrap>
-                <v-flex xs6>
-                    <v-text-field
-                        label="Min MJD"
-                        v-model="minFirstMJD"
-                        min="0"
-                        type="number"
-                        step="0.5"
-                    />
-                </v-flex>
-                <v-flex xs6>
-                    <v-menu
-                        v-model="menu"
-                        :close-on-content-click="true"
-                        transition="scale-transition"
-                        offset-y
-                        full-width
-                        min-width="290px"
-                    >
-                        <template v-slot:activator="{ on }">
-                            <v-text-field
-                                v-model="computedMinFirstGreg"
-                                label="Min first greg date"
-                                prepend-icon="event"
-                                readonly
-                                v-on="on"
-                            ></v-text-field>
-                        </template>
+    <v-form v-model="validation" lazy-validation>
+        <v-layout align-center justify-center fill-height row wrap>
+            <v-flex xs6>
+                <v-text-field
+                    label="Min MJD"
+                    v-model="minFirstMJD"
+                    min="0"
+                    type="number"
+                    step="0.5"
+                />
+            </v-flex>
+            <v-flex xs6>
+                <v-menu
+                    v-model="menu"
+                    :close-on-content-click="true"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px"
+                >
+                    <template v-slot:activator="{ on }">
+                        <v-text-field
+                            v-model="computedMinFirstGreg"
+                            label="Min first greg date"
+                            prepend-icon="event"
+                            readonly
+                            v-on="on"
+                        ></v-text-field>
+                    </template>
 
-                        <v-date-picker
-                            v-model="minFirstGreg"
-                            no-title
-                            scrollable
-                            first-day-of-week="1"
-                            :allowed-dates="minDates"
-                        >
-                            <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="minFirstGreg = null">Clear</v-btn>
-                            <v-btn text color="primary" @click="menu = false">Close</v-btn>
-                        </v-date-picker>
-                    </v-menu>
-                </v-flex>
-                <v-flex xs6>
-                    <v-text-field
-                        label="Max MJD"
-                        v-model="maxFirstMjd"
-                        min="0"
-                        type="number"
-                        step="0.5"
-                    />
-                </v-flex>
-                <v-flex xs6>
-                    <v-menu
-                        v-model="menu2"
-                        :close-on-content-click="true"
-                        transition="scale-transition"
-                        offset-y
-                        full-width
-                        min-width="290px"
+                    <v-date-picker
+                        v-model="minFirstGreg"
+                        no-title
+                        scrollable
+                        first-day-of-week="1"
+                        :allowed-dates="minDates"
                     >
-                        <template v-slot:activator="{ on }">
-                            <v-text-field
-                                v-model="computedMaxFirstGreg"
-                                label="Max first greg date"
-                                prepend-icon="event"
-                                readonly
-                                v-on="on"
-                            ></v-text-field>
-                        </template>
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="minFirstGreg = null">Clear</v-btn>
+                        <v-btn text color="primary" @click="menu = false">Close</v-btn>
+                    </v-date-picker>
+                </v-menu>
+            </v-flex>
+            <v-flex xs6>
+                <v-text-field
+                    label="Max MJD"
+                    v-model="maxFirstMjd"
+                    min="0"
+                    type="number"
+                    step="0.5"
+                />
+            </v-flex>
+            <v-flex xs6>
+                <v-menu
+                    v-model="menu2"
+                    :close-on-content-click="true"
+                    transition="scale-transition"
+                    offset-y
+                    full-width
+                    min-width="290px"
+                >
+                    <template v-slot:activator="{ on }">
+                        <v-text-field
+                            v-model="computedMaxFirstGreg"
+                            label="Max first greg date"
+                            prepend-icon="event"
+                            readonly
+                            v-on="on"
+                        ></v-text-field>
+                    </template>
 
-                        <v-date-picker
-                            v-model="maxFirstGreg"
-                            no-title
-                            scrollable
-                            actions
-                            first-day-of-week="1"
-                            :allowed-dates="maxDates"
-                        >
-                            <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="maxFirstGreg = null">Clear</v-btn>
-                            <v-btn text color="primary" @click="menu2 = false">Close</v-btn>
-                        </v-date-picker>
-                    </v-menu>
-                </v-flex>
-            </v-layout>
-        </v-form>
-    </v-container>
+                    <v-date-picker
+                        v-model="maxFirstGreg"
+                        no-title
+                        scrollable
+                        actions
+                        first-day-of-week="1"
+                        :allowed-dates="maxDates"
+                    >
+                        <v-spacer></v-spacer>
+                        <v-btn text color="primary" @click="maxFirstGreg = null">Clear</v-btn>
+                        <v-btn text color="primary" @click="menu2 = false">Close</v-btn>
+                    </v-date-picker>
+                </v-menu>
+            </v-flex>
+        </v-layout>
+    </v-form>
 </template>
 
 <script>

@@ -40,12 +40,11 @@ exportData(Highcharts);
 Vue.use(HighchartsVue);
 
 new Vue({
-    el: '#app',
     router,
     store,
     vuetify,
     components: {
         app: App
     },
-    render: h => h('app')
-});
+    render: h => h(App)
+}).$mount('#app');

@@ -1,5 +1,5 @@
 <template>
-    <v-footer app >
+    <v-footer app inset>
         <v-layout row wrap  >
               <v-flex xs1 grow
               v-for="link in links"

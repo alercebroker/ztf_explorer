@@ -13,7 +13,10 @@
                 ></result-panel>
                 <loading :show="$store.state.downloading" label="Downloading..."></loading>
                 <loading :show="$store.state.loading" label="Searching..."></loading>
-                <object-details-modal @modalClosed="closeObjectDetailsModal" />
+                <object-details-modal
+                    @modalClosed="closeObjectDetailsModal"
+                    v-if="$store.state.results.showObjectDetailsModal"
+                />
             </v-tab-item>
         </v-tabs>
         <div v-else>
@@ -68,7 +71,10 @@
                     </v-sheet>
                 </v-navigation-drawer>
             </v-hover>
-            <object-details-modal @modalClosed="closeObjectDetailsModal" />
+            <object-details-modal
+                @modalClosed="closeObjectDetailsModal"
+                v-if="$store.state.results.showObjectDetailsModal"
+            />
         </div>
     </v-container>
 </template>
