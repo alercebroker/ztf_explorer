@@ -428,15 +428,11 @@ export const actions = {
             dispatch('setRecentAlerts', response.data.result.count);
         })
     },
-    getClassifiedCounts({dispatch}, payload){
-        QueryPSQLService.queryObjects(payload.xmatchParams).then( response => {
-            dispatch('setXmatchedCount', response.data.total);
-        })
-        QueryPSQLService.queryObjects(payload.rfParams).then( response => {
-            dispatch('setRfCount', response.data.total);
-        })
-        QueryPSQLService.queryObjects(payload.earlyParams).then( response => {
-            dispatch('setEarlyCount', response.data.total);
+    getClassifiedCounts({dispatch}){
+        QueryPSQLService.queryClassifiedObjects().then( response => {
+            dispatch('setXmatchedCount', response.data.result.xmatch);
+            dispatch('setRfCount', response.data.result.rf);
+            dispatch('setEarlyCount', response.data.result.early);
         })
     }
 }

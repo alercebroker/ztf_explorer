@@ -113,39 +113,7 @@ export default {
             mjd: gregorianToJd(this.getDate()),
             hours: 24
         });
-        let classifiedParameters = {
-            xmatchParams: {
-                query_parameters: {
-                    filters: {
-                        classxmatch: "classified"
-                    }
-                },
-                page: 1,
-                perPage: this.$store.state.perPage,
-                sortBy: "lastmjd"
-            },
-            rfParams: {
-                query_parameters: {
-                    filters: {
-                        classrf: "classified"
-                    }
-                },
-                page: 1,
-                perPage: this.$store.state.perPage,
-                sortBy: "lastmjd"
-            },
-            earlyParams: {
-                query_parameters: {
-                    filters: {
-                        classearly: "classified"
-                    }
-                },
-                page: 1,
-                perPage: this.$store.state.perPage,
-                sortBy: "lastmjd"
-            }
-        };
-        this.$store.dispatch("getClassifiedCounts", classifiedParameters);
+        this.$store.dispatch("getClassifiedCounts");
     }
 };
 </script>
