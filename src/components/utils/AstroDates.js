@@ -27,4 +27,10 @@ function gregorianToJd(gDate) {
     return julian(dateObj) - 2400000
 }
 
-export { gregorianToJd, jdToGregorian }
+function jdToDate(mjd) {
+    if (mjd == undefined || mjd == null) return null
+    let jd = Number(mjd) + 2400000
+    return julian.toDate(jd)
+}
+
+export { gregorianToJd, jdToGregorian, jdToDate }

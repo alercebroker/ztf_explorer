@@ -1,5 +1,5 @@
 <template>
-    <v-container pa-0 ma-0 >
+    <v-container pa-0 ma-0>
         <v-form v-model="validation" lazy-validation>
             <v-layout align-center justify-center fill-height row wrap>
                 <v-flex xs6>
@@ -115,7 +115,6 @@ export default {
         },
         formatDate(date) {
             if (!date) return null;
-
             const [year, month, day] = date.split("-");
             return `${month}/${day}/${year}`;
         }

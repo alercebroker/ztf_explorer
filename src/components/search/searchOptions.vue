@@ -1,68 +1,63 @@
 <template>
     <!--BODY-->
-    <v-form>
-        <v-container pl-8 pr-8>
-            <v-layout row wrap>
-
-                <!--Default options-->
-                <v-flex xs12 sm12 md12 pb-0 pt-0>
-                    <default-options></default-options>
-                </v-flex>
-                <!-- Date and coordinate options -->
-                <v-card>
-                    <v-tabs >
-                        <v-tab>Discovery Date</v-tab>
-                        <v-tab-item>
-                            <date-options />
-                        </v-tab-item>
-                        <v-tab>Coordinates</v-tab>
-                        <v-tab-item>
-                            <coordinate-options />
-                        </v-tab-item>
-                    </v-tabs>
-                </v-card>
-                <!--Show SQL-->
-                <v-flex xs12 sm12 md12 >
-                    <v-btn
-                        outlined
-                        tile
-                        block
-                        small
-                        color="primary"
-                        @click="showSQLLabel = !showSQLLabel"
-                    >{{ showSQLLabel? 'Hide': 'Show SQL' }}</v-btn>
-                </v-flex>
-                <v-flex xs12 sm12 md12 pb-0>
-                    <div v-show="showSQLLabel">
-                        <div style="background-color:#BDBDBD">
-                            <div>
-                                <v-btn icon @click="refreshSQL">
-                                    <v-icon>refresh</v-icon>
-                                </v-btn>
-                            </div>
-                            <div>{{this.$store.state.search.sql}}</div>
-                        </div>
+    <v-layout row wrap pl-10 pr-10 v-on:keyup.enter="onSubmitQuery">
+        <!--Default options-->
+        <v-flex xs12 sm12 md12 pb-0 pt-0>
+            <default-options></default-options>
+        </v-flex>
+        <!-- Date and coordinate options -->
+        <v-card>
+            <v-tabs>
+                <v-tab>Discovery Date</v-tab>
+                <v-tab-item>
+                    <date-options />
+                </v-tab-item>
+                <v-tab>Coordinates</v-tab>
+                <v-tab-item>
+                    <coordinate-options />
+                </v-tab-item>
+            </v-tabs>
+        </v-card>
+        <!--Show SQL-->
+        <v-flex xs12 sm12 md12>
+            <v-btn
+                outlined
+                tile
+                block
+                small
+                color="primary"
+                @click="showSQLLabel = !showSQLLabel"
+            >{{ showSQLLabel? 'Hide': 'Show SQL' }}</v-btn>
+        </v-flex>
+        <v-flex xs12 sm12 md12 pb-0>
+            <div v-show="showSQLLabel">
+                <div style="background-color:#BDBDBD">
+                    <div>
+                        <v-btn icon @click="refreshSQL">
+                            <v-icon>refresh</v-icon>
+                        </v-btn>
                     </div>
-                </v-flex>
-                <!--Clear all options-->
-                <v-flex xs12 sm12 md12 pb-0 pt-2>
-                    <v-btn  block tile small dark @click="clearQuery">Clear all options</v-btn>
-                </v-flex>
-                <!--Search-->
-                <v-flex xs12 sm12 md12 pt-2>
-                    <v-btn
-                        block
-                        normal
-                        tile
-                        raised
-                        color="primary"
-                        @click="onSubmitQuery"
-                        :disabled="!validSearch"
-                    >Search</v-btn>
-                </v-flex>
-            </v-layout>
-        </v-container>
-    </v-form>
+                    <div>{{this.$store.state.search.sql}}</div>
+                </div>
+            </div>
+        </v-flex>
+        <!--Clear all options-->
+        <v-flex xs12 sm12 md12 pb-0 pt-2>
+            <v-btn block tile small dark @click="clearQuery">Clear all options</v-btn>
+        </v-flex>
+        <!--Search-->
+        <v-flex xs12 sm12 md12 pt-2>
+            <v-btn
+                block
+                normal
+                tile
+                raised
+                color="primary"
+                @click="onSubmitQuery"
+                :disabled="!validSearch"
+            >Search</v-btn>
+        </v-flex>
+    </v-layout>
 </template>
 
 
@@ -85,8 +80,7 @@ export default {
             activeTab: null
         };
     },
-    mounted() {
-    },
+    mounted() {},
     methods: {
         /**
          * change option avanced label
@@ -138,11 +132,17 @@ export default {
                 dates: this.$store.state.search.dates,
                 coordinates: this.$store.state.search.coordinates
             };
-            if(this.$store.state.search.filters.oid){
-              if(this.$store.state.search.filters.oid.toLowerCase() == "supernova"){
-                window.open('https://www.youtube.com/watch?v=TlLmypmt_ls', '_blank');
-                return
-              }
+            if (this.$store.state.search.filters.oid) {
+                if (
+                    this.$store.state.search.filters.oid.toLowerCase() ==
+                    "supernova"
+                ) {
+                    window.open(
+                        "https://www.youtube.com/watch?v=TlLmypmt_ls",
+                        "_blank"
+                    );
+                    return;
+                }
             }
             this.removeEmpty(query_parameters);
             this.$store.dispatch("setQueryParameters", query_parameters);
@@ -154,13 +154,13 @@ export default {
                 sortBy: "lastmjd"
             });
             this.$store.dispatch("setCurrentPage", 1);
-            this.$store.dispatch('setSelectedTab', 1)
+            this.$store.dispatch("setSelectedTab", 1);
             window.scrollTo(0, 0);
-            this.$emit('onSearch');
+            this.$emit("onSearch");
         },
         clearQuery() {
             this.$store.dispatch("clearQuery");
-        }
+        },
     },
     computed: {
         validSearch() {
@@ -175,7 +175,8 @@ export default {
 .fade-leave-active {
     transition: opacity 2.5s;
 }
-.fade-enter, .fade-leave-to  {
+.fade-enter,
+.fade-leave-to {
     transition: opacity 2.5s;
 }
 </style>

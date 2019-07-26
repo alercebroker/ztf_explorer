@@ -3,16 +3,14 @@
       <v-layout row wrap fill-height>
         <v-flex xs12 d-flex>
           <div class="curve">
-            <lightcurvePlot v-if="selected == 'radio-1'"></lightcurvePlot>
-            <lightcurveCorrPlot v-else-if="selected == 'radio-2'"></lightcurveCorrPlot>
-            <lightcurveFoldedPlot v-else-if="selected == 'radio-3'"></lightcurveFoldedPlot>
+            <lightcurvePlot v-if="selected == 0"></lightcurvePlot>
+            <lightcurveCorrPlot v-else-if="selected == 1"></lightcurveCorrPlot>
+            <lightcurveFoldedPlot v-else-if="selected == 2"></lightcurveFoldedPlot>
           </div>
         </v-flex>
         <v-flex xs8 offset-xs2 fluid>
           <v-radio-group v-model="selected" row ma-0>
-            <v-radio label="Difference magnitude" value="radio-1"></v-radio>
-            <v-radio label="Apparent magnitude" value="radio-2"></v-radio>
-            <v-radio label="Folded" value="radio-3"></v-radio>
+            <v-radio v-for='(option, index) in options' :key="index" :label="option" :value="index"></v-radio>
           </v-radio-group>
         </v-flex>
       </v-layout>
@@ -32,7 +30,7 @@ export default {
     },
     data() {
         return {
-            selected: "radio-1",
+            selected: 0,
         };
     },
     computed: {

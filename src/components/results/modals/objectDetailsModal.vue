@@ -18,12 +18,25 @@
                                                     hide-default-footer
                                                     hide-default-header
                                                     dense
-                                                    mobile-breakpoint="250"
+                                                    :mobile-breakpoint="250"
                                                 ></v-data-table>
+                                            </v-flex>
+                                            <v-flex xs3 offset-xs9>
+                                                <v-btn
+                                                    text
+                                                    color="primary"
+                                                    @click="changeMjdButtonText"
+                                                >{{mjdButtonText}}</v-btn>
                                             </v-flex>
                                             <v-flex xs12 pt-10 width="100%">
                                                 <v-layout wrap>
-                                                    <v-flex xs12 sm4 pl-1  pr-1 class="text-md-center">
+                                                    <v-flex
+                                                        xs12
+                                                        sm4
+                                                        pl-1
+                                                        pr-1
+                                                        class="text-md-center"
+                                                    >
                                                         <v-btn
                                                             block
                                                             small
@@ -33,7 +46,13 @@
                                                             color="green"
                                                         >NED</v-btn>
                                                     </v-flex>
-                                                    <v-flex xs12 sm4 pl-1  pr-1 class="text-md-center">
+                                                    <v-flex
+                                                        xs12
+                                                        sm4
+                                                        pl-1
+                                                        pr-1
+                                                        class="text-md-center"
+                                                    >
                                                         <v-btn
                                                             block
                                                             small
@@ -43,7 +62,13 @@
                                                             color="primary"
                                                         >SIMBAD</v-btn>
                                                     </v-flex>
-                                                    <v-flex xs12 sm4 pl-1  pr-1 class="text-md-center">
+                                                    <v-flex
+                                                        xs12
+                                                        sm4
+                                                        pl-1
+                                                        pr-1
+                                                        class="text-md-center"
+                                                    >
                                                         <v-btn
                                                             small
                                                             block
@@ -93,7 +118,7 @@
                                     <v-divider></v-divider>
                                     <v-card-text style="padding: 0 0 0 0;">
                                         <v-data-table
-                                            mobile-breakpoint="250"
+                                            :mobile-breakpoint="250"
                                             :headers="headers"
                                             :items="magnitudeItems"
                                             hide-default-footer
@@ -128,7 +153,7 @@ import cardLightCurve from "../cards/cardLightCurve";
 import aladin from "../cards/aladin.vue";
 import cardProbabilities from "../cards/cardProbabilities.vue";
 import cardStampsPng from "../cards/cardStampsPng.vue";
-import { jdToGregorian } from "../../utils/AstroDates.js";
+import { jdToDate } from "../../utils/AstroDates.js";
 
 export default {
     name: "object-details-modal",
@@ -143,7 +168,8 @@ export default {
             infoHeaders: [
                 { text: "Column", value: "column" },
                 { text: "Value", value: "value" }
-            ]
+            ],
+            mjdButtonText: "View MJD"
         };
     },
     components: {
@@ -167,7 +193,31 @@ export default {
             this.$router.replace("/");
         },
         mjdToDate(mjd) {
-            return jdToGregorian(mjd);
+            console.log("DATE", jdToDate(mjd));
+            return jdToDate(mjd).toUTCString();
+        },
+        changeMjdButtonText() {
+            if (this.mjdButtonText === "View MJD") {
+                this.mjdButtonText = "View Date";
+                let discovery = this.generalInformation.find(function(element) {
+                    return element.column === "Discovery Date";
+                });
+                discovery.value = this.ztf_object.firstmjd;
+                let last = this.generalInformation.find(function(element) {
+                    return element.column === "Last Detection";
+                });
+                last.value = this.ztf_object.lastmjd;
+            } else {
+                this.mjdButtonText = "View MJD";
+                let discovery = this.generalInformation.find(function(element) {
+                    return element.column === "Discovery Date";
+                });
+                discovery.value = this.mjdToDate(this.ztf_object.firstmjd);
+                let last = this.generalInformation.find(function(element) {
+                    return element.column === "Last Detection";
+                });
+                last.value = this.mjdToDate(this.ztf_object.lastmjd);
+            }
         }
     },
     computed: {

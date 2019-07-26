@@ -135,6 +135,8 @@ export default {
                 : "Probability >= 0.00";
         }
     },
-    methods: {}
+    methods: {
+        
+    }
 };
 </script>
