@@ -21,9 +21,10 @@
                                                     :mobile-breakpoint="250"
                                                 ></v-data-table>
                                             </v-flex>
-                                            <v-flex xs3 offset-xs9>
+                                            <v-flex xs12>
                                                 <v-btn
                                                     text
+                                                    block
                                                     color="primary"
                                                     @click="changeMjdButtonText"
                                                 >{{mjdButtonText}}</v-btn>
