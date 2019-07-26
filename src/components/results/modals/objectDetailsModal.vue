@@ -22,9 +22,10 @@
                                                 ></v-data-table>
                                             </v-flex>
                                             <v-flex xs12 pt-10 width="100%">
-                                                <v-layout align-center >
-                                                    <v-flex xs4 class="text-md-center">
+                                                <v-layout wrap>
+                                                    <v-flex xs12 sm4 pl-1  pr-1 class="text-md-center">
                                                         <v-btn
+                                                            block
                                                             small
                                                             :href="nedUrl"
                                                             target="_blank"
@@ -32,8 +33,9 @@
                                                             color="green"
                                                         >NED</v-btn>
                                                     </v-flex>
-                                                    <v-flex xs4 class="text-md-center">
+                                                    <v-flex xs12 sm4 pl-1  pr-1 class="text-md-center">
                                                         <v-btn
+                                                            block
                                                             small
                                                             :href="simbadUrl"
                                                             target="_blank"
@@ -41,9 +43,10 @@
                                                             color="primary"
                                                         >SIMBAD</v-btn>
                                                     </v-flex>
-                                                    <v-flex xs4 class="text-md-center">
+                                                    <v-flex xs12 sm4 pl-1  pr-1 class="text-md-center">
                                                         <v-btn
                                                             small
+                                                            block
                                                             :href="tnsUrl"
                                                             target="_blank"
                                                             dark
