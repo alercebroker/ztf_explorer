@@ -18,12 +18,11 @@ function jdToGregorian(mjd) {
 
 /**
  * receives date in gregorian format and convert in julian format
- * @param gDate:date in gregorian format
+ * @param dateObj:date Object
  * @returns {number} : date in jualian format
  */
-function gregorianToJd(gDate) {
-    if(gDate === "" || gDate == null) return null
-    let dateObj = new Date(gDate);
+function gregorianToJd(dateObj) {
+    if(dateObj == null) return null
     return julian(dateObj) - 2400000
 }
 

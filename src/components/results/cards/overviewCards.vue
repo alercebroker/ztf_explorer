@@ -93,22 +93,15 @@ export default {
         }
     },
     methods: {
-        getDate() {
-            let today = new Date();
-            let year = today.getUTCFullYear();
-            let day = today.getUTCDate();
-            let month = today.getUTCMonth() + 1;
-            today = year + "-" + month + "-" + day;
-            return today;
-        }
+
     },
     mounted() {
         this.$store.dispatch("getRecentObjects", {
-            mjd: gregorianToJd(this.getDate()),
+            mjd: gregorianToJd(new Date()),
             hours: 24
         });
         this.$store.dispatch("getRecentAlerts", {
-            mjd: gregorianToJd(this.getDate()),
+            mjd: gregorianToJd(new Date()),
             hours: 24
         });
         this.$store.dispatch("getClassifiedCounts");
