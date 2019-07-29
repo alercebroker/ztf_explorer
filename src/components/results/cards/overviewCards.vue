@@ -96,12 +96,14 @@ export default {
 
     },
     mounted() {
+        let today = new Date();
+        let mjd = gregorianToJd(new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth()+1, today.getUTCDate())))
         this.$store.dispatch("getRecentObjects", {
-            mjd: gregorianToJd(new Date()),
+            mjd: mjd,
             hours: 24
         });
         this.$store.dispatch("getRecentAlerts", {
-            mjd: gregorianToJd(new Date()),
+            mjd: mjd,
             hours: 24
         });
         this.$store.dispatch("getClassifiedCounts");
