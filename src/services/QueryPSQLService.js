@@ -64,4 +64,14 @@ export default {
         return apiClient.post('/download', param);
     },
 
+    queryRecentObjects(mjd, hours) {
+        return apiClient.post('/recent_objects', { mjd: mjd, hours: hours })
+    },
+    queryRecentAlerts(mjd, hours) {
+        return apiClient.post('/recent_alerts', { mjd: mjd, hours: hours })
+    },
+    queryClassifiedObjects(){
+        return apiClient.post('/classified_objects');
+    }
+
 };

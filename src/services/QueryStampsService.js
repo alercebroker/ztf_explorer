@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: "http://stamps.alerce.online:8087",
+    baseURL: "http://avro.alerce.online",
     withCredentials: false,
     headers: {
         Accept: "application/octet-stream",

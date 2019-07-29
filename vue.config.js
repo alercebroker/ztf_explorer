@@ -1,12 +1,13 @@
+const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
 module.exports = {
-    // options...
-    baseUrl: process.env.NODE_ENV === 'production' ?
-        '/vue/' : '/',
-
-	configureWebpack: {
-                plugins: [new CompressionWebpackPlugin()]
-        }
-
+    configureWebpack: {
+        plugins: [
+          new VuetifyLoaderPlugin(),
+          new CompressionWebpackPlugin()
+        ],
+      },
+    publicPath: process.env.NODE_ENV === 'production' ?
+        '/vue/' : '/'
 }

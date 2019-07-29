@@ -1,174 +1,45 @@
 <template>
-    <div>
-        <!-- OBJECT ID -->
-        <b-row class="mb-3">
-            <b-col cols="4">
-                <label for="oid">
-                    <b>Object ID</b>
-                    <v-icon
-                        class="ml-2"
-                        v-b-tooltip.hover.right
-                        title="Unique ID for each object in ALeRCE database"
-                        name="info-circle"
-                        color="#C0C0C0"
-                    ></v-icon>
-                </label>
-            </b-col>
-            <b-col cols="8">
-                <input
-                    type="text"
-                    class="form-control form-control-sm"
-                    id="oid"
-                    v-model="oid"
-                    :disabled="loading"
-                >
-            </b-col>
-        </b-row>
-        <!-- CLASS -->
-        <b-row class="mb-3">
-            <b-col cols="2">
-                <label for="class">
-                    <b>Class</b>
-                    <v-icon
-                        class="ml-2"
-                        v-b-tooltip.hover.right
-                        title="Return objects of a certain class. Each object belongs to its most likely class according to a classification model."
-                        name="info-circle"
-                        color="#C0C0C0"
-                    ></v-icon>
-                </label>
-            </b-col>
-            <b-col cols="3">
-                <b-form-select
-                    class="form-control form-control-sm"
-                    id="class"
-                    v-model="selectedClass"
-                    :options="classes"
-                />
-            </b-col>
-            <b-col cols="3">
-                <label for="classifier">
-                    <b>Classifier</b>
-                    <v-icon
-                        class="ml-2"
-                        v-b-tooltip.hover.right
-                        title="Classification Model Used"
-                        name="info-circle"
-                        color="#C0C0C0"
-                    ></v-icon>
-                </label>
-            </b-col>
-            <b-col cols="4">
-                <b-form-select
-                    class="form-control form-control-sm"
-                    id="classifier"
-                    v-model="selectedClassifier"
-                    :options="classifiers"
-                />
-            </b-col>
-        </b-row>
-        <b-row
-            class="mb-3"
-            cols="6"
-            v-if="selectedClassifier == 'classrf' || selectedClassifier == 'classrnn'"
-        >
-            <b-col>
-                <label for="probability">
-                    <b>Probability</b>
-                    <v-icon
-                        class="ml-2"
-                        v-b-tooltip.hover.right
-                        title="Minimum probability obtained by the machine learning algorithm"
-                        name="info-circle"
-                        color="#C0C0C0"
-                    ></v-icon>
-                </label>
-            </b-col>
-            <b-col cols="2">&ge;</b-col>
-            <b-col>
-                <input
-                    type="number"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    class="form-control form-control-sm"
-                    id="probability"
-                    v-model="probability"
-                    :disabled="loading"
-                >
-            </b-col>
-        </b-row>
-        <!-- NUMBER OF ALERTS -->
-        <b-row class="mb-2">
-            <b-col cols="4">
-                <b>Number of alerts</b>
-                <v-icon
-                    v-b-tooltip.hover.right
-                    class="ml-3"
-                    title="Number of alerts associated with an object"
-                    name="info-circle"
-                    color="#C0C0C0"
-                ></v-icon>
-            </b-col>
-            <b-col cols="4">
-                <b-row>
-                    <b-col cols="3" class="text-left">
-                        <label>Min</label>
-                    </b-col>
-                    <b-col cols="9" class="text-left">
-                        <input
-                            class="form-control form-control-sm"
-                            id="minnobs"
-                            type="number"
-                            min="0"
-                            v-model="nobsMin"
-                            :disabled="loading"
-                        >
-                    </b-col>
-                </b-row>
-            </b-col>
-            <b-col cols="4">
-                <b-row>
-                    <b-col cols="3" class="text-left">
-                        <label>Max</label>
-                    </b-col>
-                    <b-col cols="9" class="text-left">
-                        <input
-                            class="form-control form-control-sm"
-                            id="maxnobs"
-                            type="number"
-                            min="0"
-                            v-model="nobsMax"
-                            :disabled="loading"
-                        >
-                    </b-col>
-                </b-row>
-            </b-col>
-        </b-row>
+    <v-layout row wrap >
+        <!--Object ID-->
+        <v-flex xs12 sm12 md12>
+            <v-text-field label="Object ID" v-model="oid" />
+        </v-flex>
+        <!--Classifier-->
+        <v-flex xs12 sm12 md6>
+            <v-select
+                :items="classifiers"
+                v-model="selectedClassifier"
+                label="Classifier"
+                hide-no-data
+            ></v-select>
+        </v-flex>
+        <!--Class-->
+        <v-flex xs12 sm12 md6>
+            <v-select :items="classes" v-model="selectedClass" label="Class"></v-select>
+        </v-flex>
+        <!--Probabilities-->
+        <v-flex xs12 sm12 md12 v-if="selectedClassifier && selectedClassifier!=='classxmatch'">
+            <v-slider v-model="probability" :max="1" :step="0.01" :label="probLabel"></v-slider>
+        </v-flex>
+        <!--Detections-->
+        <v-flex xs12 >Number of detections range</v-flex>
+        <v-flex xs3 sm3 md3>
+            <v-text-field   type="number" v-model="nobsMin" label="min"></v-text-field>
+        </v-flex>
+        <v-flex xs6 sm6 md6 pl-3 pr-3>
+            <v-range-slider v-model="nobs" :max="1000" :min="0" :step="1"></v-range-slider>
+        </v-flex>
 
-        <b-card no-body class="mb-3">
-            <b-tabs card>
-                <b-tab title="Discovery Date" active>
-                    <date-options/>
-                </b-tab>
-                <b-tab title="Coordinates">
-                    <coordinate-options/>
-                </b-tab>
-            </b-tabs>
-        </b-card>
-    </div>
+        <v-flex xs3 sm3 md3>
+            <v-text-field  type="number" label="max" v-model="nobsMax"></v-text-field>
+        </v-flex>
+    </v-layout>
 </template>
 
 <script>
-import dateOptions from "./dateOptions.vue";
-import coordinateOptions from "./coordinateOptions.vue";
 export default {
     name: "default-options",
-    props: ["loading"],
-    components: {
-        dateOptions,
-        coordinateOptions
-    },
+    components: {},
     data() {
         return {};
     },
@@ -194,6 +65,14 @@ export default {
                 });
             }
         },
+        nobs: {
+            get() {
+                return this.$store.state.search.nobsRange;
+            },
+            set(value) {
+                this.$store.dispatch("setNobsRange", value);
+            }
+        },
         nobsMin: {
             get() {
                 return this.$store.state.search.filters.nobs
@@ -201,11 +80,7 @@ export default {
                     : null;
             },
             set(value) {
-                this.$store.dispatch("updateOptions", {
-                    obj: "filters",
-                    keyPath: ["nobs", "min"],
-                    value: value
-                });
+                this.$store.dispatch("setNobsRange", [value, 1000]);
             }
         },
         nobsMax: {
@@ -215,19 +90,18 @@ export default {
                     : null;
             },
             set(value) {
-                this.$store.dispatch("updateOptions", {
-                    obj: "filters",
-                    keyPath: ["nobs", "max"],
-                    value: value
-                });
+                this.$store.dispatch("setNobsRange", [0, value]);
             }
         },
         selectedClassifier: {
             get() {
+                console.log(
+                    "classifier",
+                    this.$store.state.search.selectedClassifier
+                );
                 return this.$store.state.search.selectedClassifier;
             },
             set(value) {
-                this.$store.dispatch("setClass", null);
                 this.$store.dispatch("setClassifier", value);
             }
         },
@@ -243,9 +117,8 @@ export default {
             return this.$store.state.search.classifiers;
         },
         classes() {
-            if (this.selectedClassifier === "classearly") {
+            if (this.selectedClassifier === "classearly")
                 return this.$store.state.search.classes_stamps;
-            }
             return this.$store.state.search.classes;
         },
         probability: {
@@ -255,11 +128,15 @@ export default {
             set(value) {
                 this.$store.dispatch("setProbability", value);
             }
+        },
+        probLabel() {
+            return this.probability
+                ? "Probability >=" + this.probability.toFixed(2)
+                : "Probability >= 0.00";
         }
     },
-    methods: {}
+    methods: {
+        
+    }
 };
 </script>
-
-<style scoped>
-</style>

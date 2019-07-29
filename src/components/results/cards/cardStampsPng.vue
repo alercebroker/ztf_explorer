@@ -1,32 +1,33 @@
 <template>
-    <b-card id="main" title="Stamps">
-        <b-container fluid>
-            <b-card-group deck class="mb-3">
-                <b-card border-variant="light" header="Science" class="text-center">
-                    <img :src="science" :style="imgStyle"/>
-                </b-card>
-                <b-card border-variant="light" header="Template" class="text-center">
-                    <img :src="template" :style="imgStyle"/>
-                </b-card>
-                <b-card border-variant="light" header="Difference" class="text-center">
-                    <img :src="difference" :style="imgStyle" />
-                </b-card>
-            </b-card-group>
-        </b-container>
-    </b-card>
+    <v-card height="100%">
+      <v-card-title>
+        <span class="title">Discovery Stamps</span>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text >
+        <v-layout row wrap>
+          <v-flex xs4 class="text-xs-center">
+            <h5>Science</h5>
+
+            <v-img contain :src="science" class="stampImg"/></v-img>
+          </v-flex>
+          <v-flex xs4 class="text-xs-center">
+            <h5>Template</h5>
+            <v-img contain :src="template" class="stampImg" /></v-img>
+          </v-flex>
+          <v-flex xs4 class="text-xs-center">
+            <h5>Difference</h5>
+            <v-img contain :src="difference" class="stampImg" /></v-img>
+          </v-flex>
+        </v-layout>
+      </v-card-text>
+    </v-card>
 </template>
 
 <script>
 export default {
     name: "card-stamps-png",
-    data(){
-        return{
-            imgStyle: {
-                width:"100%"
-            }
-        }
-    },
-    computed:{ 
+    computed: {
         object() {
             return this.$store.state.results.selectedObject.oid;
         },
@@ -34,19 +35,36 @@ export default {
             return this.$store.state.results.objectDetails.detections[0]
                 .candid_str;
         },
-        science(){
-            return "http://stamps.alerce.online:8087/get_stamp?oid="+ this.object + "&candid="+ this.candid+ "&type=science&format=png"
+        science() {
+            return (
+                "http://avro.alerce.online/get_stamp?oid=" +
+                this.object +
+                "&candid=" +
+                this.candid +
+                "&type=science&format=png"
+            );
         },
-        difference(){
-            return "http://stamps.alerce.online:8087/get_stamp?oid="+ this.object + "&candid="+ this.candid+ "&type=difference&format=png"
+        difference() {
+            return (
+                "http://avro.alerce.online/get_stamp?oid=" +
+                this.object +
+                "&candid=" +
+                this.candid +
+                "&type=difference&format=png"
+            );
         },
-        template(){
-            return "http://stamps.alerce.online:8087/get_stamp?oid="+ this.object + "&candid="+ this.candid+ "&type=template&format=png"
+        template() {
+            return (
+                "http://avro.alerce.online/get_stamp?oid=" +
+                this.object +
+                "&candid=" +
+                this.candid +
+                "&type=template&format=png"
+            );
         }
     }
 };
 </script>
 
-<style>
+<style scoped>
 </style>
-

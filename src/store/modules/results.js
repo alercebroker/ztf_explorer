@@ -10,36 +10,143 @@ export const state = {
     },
     selectedColumnOptions: [
         {
-            key: "oid",
+            value: "oid",
             sortable: false,
-            label: "Object ID"
+            text: "Object ID",
+            show: true,
         },
         {
-            key: "nobs",
+            value: "nobs",
             sortable: true,
-            label: "#obs"
+            text: "Observations",
+            show: true,
         },
         {
-            key: "radec",
-            label: "RA/Dec"
+            value: "firstmjd",
+            text: "FirstMJD",
+            sortable: true,
+            show: true
         },
         {
-            key: "classxmatch",
-            label: "X-MATCH"
+            value: "lastmjd",
+            sortable: true,
+            text: "LastMJD",
+            show: true
         },
         {
-            key: "classrf",
-            label: "ML_RF"
+            value: "radec",
+            text: "RA/Dec (degrees)",
+            sortable: false,
+            show: true
+        },
+        {
+            value: "classxmatch",
+            sortable: false,
+            text: "Crossmatch",
+            show: true
+        },
+        {
+            value: "classearly",
+            sortable: false,
+            text: "Early Classifier Class",
+            show: true
+        },
+        {
+            value: "pclassearly",
+            sortable: true,
+            text: "Early Classifier Probability",
+            show: true
+        },
+        {
+            value: "classrf",
+            sortable: false,
+            text: "Random Forest Class",
+            show: true
         },
         {   
-            key: "pclassrf",
+            value: "pclassrf",
             sortable: true,
-            label: "P(RF)",
+            text: "Random Forest Probability",
+            show: true
         },
         {
-            key: "lastmjd",
+            value: "deltajd",
+            text: "DeltaMJD (days)",
+            show: false
+        },
+        {
+            value: "meandec",
+            text: "Dec (degrees)",
+            sortable: false,
+            show: false
+        },
+        {
+            value: "meanra",
+            text: "RA (degrees)",
+            sortable: false,
+            show: false
+        },
+        {
+            value: "first_magpsf_g",
+            text: "FirstMagG",
+            show: false
+        },
+        {
+            value: "last_magpsf_g",
+            text: "LastMagG",
+            show: false
+        },
+        {
+            value: "min_magpsf_g",
+            text: "MinG",
             sortable: true,
-            label: "LastMJD"
+            show: false
+        },
+        {
+            value: "max_magpsf_g",
+            text: "MaxG",
+            show: false
+        },
+        {
+            value: "mean_magpsf_g",
+            text: "MeanG",
+            show: false
+        },
+        {
+            value: "median_magpsf_g",
+            text: "MedianG",
+            show: false
+        },
+        {
+            value: "last_magpsf_r",
+            text: "LastMagR",
+            show: false
+        },
+        {
+            value: "first_magpsf_r",
+            text: "FirstMagR",
+            show: false
+        },
+        {
+            value: "min_magpsf_r",
+            text: "MinR",
+            sortable: true,
+            show: false
+        },
+        {
+            value: "max_magpsf_r",
+            text: "MaxR",
+            show: false
+        },
+        {
+            value: "mean_magpsf_r",
+            text: "MeanR",
+            show: false
+        },
+        {
+            value: "median_magpsf_r",
+            text: "MedianR",
+            show: false
         }
     ],
     
@@ -48,6 +155,11 @@ export const state = {
     num_pages: 0,
     showObjectDetailsModal: false,
     currentPage: 0,
+    recentObjects: 'counting...',
+    recentAlerts: 'counting...',
+    xmatchedCount: 'counting...',
+    rfCount: 'counting...',
+    earlyCount: 'counting...'
 }
 
 export const mutations = {
@@ -86,6 +198,21 @@ export const mutations = {
     },
     SET_SELECTED_COLUMN_OPTIONS(state, selected){
         state.selectedColumnOptions = selected
+    },
+    SET_RECENT_OBJECTS(state, count){
+        state.recentObjects = count;
+    },
+    SET_RECENT_ALERTS(state, count){
+        state.recentAlerts = count;
+    },
+    SET_XMATCHED_COUNT(state, count){
+        state.xmatchedCount = count;
+    },
+    SET_RF_COUNT(state, count){
+        state.rfCount = count;
+    },
+    SET_EARLY_COUNT(state, count){
+        state.earlyCount = count;
     }
 }
 
@@ -133,6 +260,21 @@ export const actions = {
     },
     setSelectedColumnOptions({commit}, selected){
         commit('SET_SELECTED_COLUMN_OPTIONS', selected)
+    },
+    setRecentObjects({commit}, count){
+        commit('SET_RECENT_OBJECTS', count)
+    },
+    setRecentAlerts({commit}, count){
+        commit('SET_RECENT_ALERTS', count)
+    },
+    setXmatchedCount({commit}, count){
+        commit('SET_XMATCHED_COUNT', count)
+    },
+    setRfCount({commit}, count){
+        commit('SET_RF_COUNT', count)
+    },
+    setEarlyCount({commit}, count){
+        commit('SET_EARLY_COUNT', count)
     }
     
 }

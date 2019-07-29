@@ -1,33 +1,125 @@
 <template>
-  <div class="container-fluid">
-    <b-row>
-      <b-col cols="4">
-        <search-options :loading="$store.state.loading"/>
-      </b-col>
-      <b-col cols="8">
-        <result-panel :loading.sync="$store.state.loading" :downloading.sync="$store.state.downloading"/>
-      </b-col>
-      <loading :show="$store.state.downloading" label="Downloading..."></loading>
-      <loading :show="$store.state.loading" label="Searching..."></loading>
-    </b-row>
-  </div>
+    <v-container fluid pt-0 pl-2 pr-2 pb-2>
+        <v-tabs v-if="$vuetify.breakpoint.xsOnly" background-color="toolbar" dark>
+            <v-tab>Search</v-tab>
+            <v-tab-item>
+                <search-options></search-options>
+            </v-tab-item>
+            <v-tab>Results</v-tab>
+            <v-tab-item>
+                <result-panel
+                    :loading.sync="$store.state.loading"
+                    :downloading.sync="$store.state.downloading"
+                ></result-panel>
+                <loading :show="$store.state.downloading" label="Downloading..."></loading>
+                <loading :show="$store.state.loading" label="Searching..."></loading>
+                <object-details-modal
+                    @modalClosed="closeObjectDetailsModal"
+                    v-if="$store.state.results.showObjectDetailsModal"
+                />
+            </v-tab-item>
+        </v-tabs>
+        <div v-else>
+            <result-panel
+                :loading.sync="$store.state.loading"
+                :downloading.sync="$store.state.downloading"
+            />
+            <loading :show="$store.state.downloading" label="Downloading..."></loading>
+            <loading :show="$store.state.loading" label="Searching..."></loading>
+            <v-hover>
+                <v-navigation-drawer
+                    clipped
+                    app
+                    hide-overlay
+                    permanent
+                    :mini-variant="mini"
+                    width="400"
+                    mini-variant-width="30"
+                    v-model="drawer"
+                    disable-resize-watcher
+                    slot-scope="{ hover }"
+                    :class="`elevation-${hover && mini? 24 : 0}`"
+                >
+                    <v-toolbar dark color="toolbar" dense v-if="!mini">
+                        <v-toolbar-title>Search Options</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-tooltip left>
+                            <template v-slot:activator="{ on }">
+                                <v-btn icon v-on="on" @click.stop="mini = !mini">
+                                    <v-icon>chevron_left</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>Hide</span>
+                        </v-tooltip>
+                    </v-toolbar>
+                    <search-options v-if="!mini" @onSearch="onSearch" />
+                    <v-sheet
+                        class="d-flex"
+                        height="100%"
+                        color="toolbar"
+                        @click.stop="mini=!mini"
+                        v-else
+                    >
+                        <v-tooltip right>
+                            <template v-slot:activator="{on}">
+                                <v-layout justify-center align-center v-on="on">
+                                    <v-icon color="white">chevron_right</v-icon>
+                                </v-layout>
+                            </template>
+                            <span>Show</span>
+                        </v-tooltip>
+                    </v-sheet>
+                </v-navigation-drawer>
+            </v-hover>
+            <object-details-modal
+                @modalClosed="closeObjectDetailsModal"
+                v-if="$store.state.results.showObjectDetailsModal"
+            />
+        </div>
+    </v-container>
 </template>
 
 <script>
-import searchOptions from '../components/search/searchOptions.vue';
+import searchOptions from "../components/search/searchOptions.vue";
 import resultPanel from "../components/results/resultPanel.vue";
 import loading from "vue-full-loading";
+import objectDetailsModal from "@/components/results/modals/objectDetailsModal";
 
 /**This component connect searchOption and tabResult
  * call component loading when variable loading or dowloading is true
  */
 export default {
-  name: "ExploreData",
-  props: {},
-  components: {
-    searchOptions,
-    resultPanel,
-    loading
-  },
+    name: "explore-data",
+    props: {},
+    components: {
+        searchOptions,
+        resultPanel,
+        loading,
+        objectDetailsModal
+    },
+    data() {
+        return {
+            drawer: true,
+            mini: false
+        };
+    },
+    methods: {
+        onSearch() {
+            this.mini = true;
+        },
+        getUrlObject() {
+            if (this.$route.params.id) {
+                this.$store.dispatch("objectSelectedFromURL", {
+                    oid: this.$route.params.id
+                });
+            }
+        },
+        closeObjectDetailsModal() {
+            this.$store.dispatch("setShowObjectDetailsModal", false);
+        }
+    },
+    mounted: function() {
+        this.getUrlObject();
+    }
 };
 </script>

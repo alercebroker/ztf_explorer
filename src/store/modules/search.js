@@ -3,16 +3,14 @@ import QueryStampsService from '@/services/QueryStampsService.js';
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
-    filters: {},
-    dates: { firstmjd: {}, firstGreg: {} },
+    filters: { nobs: {} },
+    dates: { firstmjd: {}},
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
     query_status: 0,
     error: null,
     file: null,
-    flagFirst: false,
-    flagLast: false,
     classes: [
         {
             text: "Not specified",
@@ -83,6 +81,10 @@ export const state = {
         {
             text: "Asteroid",
             value: 4
+        },
+        {
+            text: "Bogus",
+            value: 5
         }
     ],
     classifiers: [
@@ -106,9 +108,9 @@ export const state = {
     selectedClassifier: null,
     selectedClass: null,
     probability: null,
-    validDates: true,
-    validCoords: true,
+    valid: true,
     searched: false,
+    nobsRange: [0, 1000],
 }
 
 export const mutations = {
@@ -155,14 +157,15 @@ export const mutations = {
         state.file = file;
     },
     CLEAR_QUERY(state) {
-        state.filters = {}
-        state.dates = {}
+        state.filters = { nobs: {} }
+        state.dates = { firstmjd: {}, firstGreg: {} }
         state.bands = {}
         state.coordinates = {}
         state.sql = "SELECT * FROM OBJECTS"
         state.probability = null
         state.selectedClass = null
         state.selectedClassifier = null
+        state.nobsRange = [0, 1000]
     },
     SET_CLASSES(state, classes) {
         classes.push(classes.shift());
@@ -185,14 +188,14 @@ export const mutations = {
     SET_VALID_SEARCH(state, value) {
         state.validSearch = value
     },
-    SET_VALID_DATES(state, value) {
-        state.validDates = value
-    },
     SET_VALID_COORDS(state, value) {
         state.validCoords = value
     },
     SET_SEARCHED(state, value) {
         state.searched = value
+    },
+    SET_NOBS_RANGE(state, value) {
+        state.nobsRange = value
     }
 }
 
@@ -234,7 +237,7 @@ export const actions = {
                 dispatch('loading', false);
             })
     },
-    queryObjects({ commit, dispatch }, payload) {
+    queryObjects({ commit, dispatch, state}, payload) {
         dispatch('loading', true)
         QueryPSQLService.queryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
@@ -247,7 +250,7 @@ export const actions = {
             dispatch('loading', false);
         })
     },
-    queryDetections({ commit, dispatch }, object) {
+    queryDetections({ dispatch }, object) {
         dispatch('loading', true);
         QueryPSQLService.queryDetections(object.oid).then(det => {
             dispatch('setDetections', det.data.result.detections)
@@ -399,12 +402,38 @@ export const actions = {
             value: probability
         })
     },
-    setValidDates({ commit }, value) {
-        commit('SET_VALID_DATES', value)
-    },
     setValidCoords({ commit }, value) {
         commit('SET_VALID_COORDS', value)
+    },
+    setNobsRange({ commit, dispatch }, range) {
+        commit('SET_NOBS_RANGE', range)
+        dispatch('updateOptions', {
+            obj: "filters",
+            keyPath: ["nobs", "min"],
+            value: range[0]
+        });
+        dispatch('updateOptions', {
+            obj: "filters",
+            keyPath: ["nobs", "max"],
+            value: range[1]
+        });
+    },
+    getRecentObjects({dispatch}, payload){
+        QueryPSQLService.queryRecentObjects(payload.mjd, payload.hours).then(response => {
+            dispatch('setRecentObjects', response.data.result.count);
+        })
+    },
+    getRecentAlerts({dispatch}, payload){
+        QueryPSQLService.queryRecentAlerts(payload.mjd, payload.hours).then(response => {
+            dispatch('setRecentAlerts', response.data.result.count);
+        })
+    },
+    getClassifiedCounts({dispatch}){
+        QueryPSQLService.queryClassifiedObjects().then( response => {
+            dispatch('setXmatchedCount', response.data.result.xmatch);
+            dispatch('setRfCount', response.data.result.rf);
+            dispatch('setEarlyCount', response.data.result.early);
+        })
     }
-
 }
 

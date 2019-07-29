@@ -1,55 +1,74 @@
 <template>
-    <b-card>
-        <light-curve v-if="selected == 0"/>
-        <light-curve-corr v-if="selected == 1"/>
-        <light-curve-folded v-if="selected == 2"/>
-        <b-form-group >
-            <b-form-radio-group
-                id="radio-group-1"
-                v-model="selected"
-                :options="$store.state.results.objectDetails.period.periodls_1 ? options : optionsNoFold"
-                name="radio-options"
-            ></b-form-radio-group>
-        </b-form-group>
-    </b-card>
+  <v-card >
+        <v-flex xs12>
+          <div class="curve">
+            <lightcurvePlot v-if="selected == 0"></lightcurvePlot>
+            <lightcurveCorrPlot v-else-if="selected == 1"></lightcurveCorrPlot>
+            <lightcurveFoldedPlot v-else-if="selected == 2"></lightcurveFoldedPlot>
+          </div>
+        </v-flex>
+        <v-layout wrap justify-space-around>
+            <v-radio-group v-model="selected" row ma-0>
+              <v-radio v-for='(option, index) in options' :key="index" :label="option" :value="index"></v-radio>
+              <v-btn small outlined  color="green" @click="download"> <v-icon left small>cloud_download</v-icon> Download </v-btn>        
+            </v-radio-group>
+        </v-layout>
+      
+  </v-card>
 </template>
 
 <script>
-import lightCurveCorr from '../plots/lightCurveCorr'
-import lightCurveFolded from '../plots/lightCurveFolded'
-import lightCurve from '../plots/lightCurve'
+import lightcurvePlot from '../plots/LightCurve'
+import lightcurveCorrPlot from '../plots/LightCurveCorr'
+import lightcurveFoldedPlot from '../plots/LightCurveFolded'
 export default {
     name: "card-light-curve",
     components: {
-        lightCurveCorr,
-        lightCurveFolded,
-        lightCurve
+        lightcurvePlot,
+        lightcurveCorrPlot,
+        lightcurveFoldedPlot
     },
-    data(){
+    data() {
         return {
             selected: 0,
-            options: [
-                { text: 'Difference Magnitude', value: 0, checked: true },
-                { text: 'Apparent Magnitude', value: 1 },
-                { text: 'Folded', value: 2}
-            ],
-            optionsNoFold: [
-                { text: 'Difference Magnitude', value: 0, checked: true },
-                { text: 'Apparent Magnitude', value: 1 },
-            ]
+        };
+    },
+    computed: {
+        options() {
+            return this.$store.state.results.objectDetails.period.periodls_1
+                ? ["Difference Magnitude", "Apparent Magnitude", "Folded"]
+                : ["Difference Magnitude", "Apparent Magnitude"];
         }
     },
-
-}
+    methods: {
+      download () {
+        /* https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable */
+        let arrayOfJson = this.$store.state.results.objectDetails.detections
+        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        const header = Object.keys(arrayOfJson[0])
+        let csv = arrayOfJson.map(row => header.map(fieldName => 
+        JSON.stringify(row[fieldName], replacer)).join(','))
+        csv.unshift(header.join(','))
+        csv = csv.join('\r\n')
+        // Create link and download
+        var link = document.createElement('a');
+        link.setAttribute('href', 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv));
+        let today = new Date().toISOString()
+        console.log(today)
+        let filename = this.$store.state.results.selectedObject.oid + "_" + today + ".csv"
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+};
 </script>
-
 <style>
-.overlay {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.curve {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
 }
 </style>
