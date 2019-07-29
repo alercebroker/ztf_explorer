@@ -1,25 +1,26 @@
 <template>
     <!--BODY-->
-    <v-layout row wrap pl-10 pr-10 v-on:keyup.enter="onSubmitQuery">
+    <v-layout row wrap v-on:keyup.enter="onSubmitQuery">
         <!--Default options-->
-        <v-flex xs12 sm12 md12 pb-0 pt-0>
+        <v-flex xs10 offset-xs1 pb-0 pt-0>
             <default-options></default-options>
         </v-flex>
         <!-- Date and coordinate options -->
-        <v-card>
+
+          <v-card>
             <v-tabs>
-                <v-tab>Discovery Date</v-tab>
-                <v-tab-item>
-                    <date-options />
-                </v-tab-item>
-                <v-tab>Coordinates</v-tab>
-                <v-tab-item>
-                    <coordinate-options />
-                </v-tab-item>
+              <v-tab>Discovery Date</v-tab>
+              <v-tab-item>
+                <date-options />
+              </v-tab-item>
+              <v-tab>Coordinates</v-tab>
+              <v-tab-item>
+                <coordinate-options />
+              </v-tab-item>
             </v-tabs>
-        </v-card>
+          </v-card>
         <!--Show SQL-->
-        <v-flex xs12 sm12 md12>
+        <v-flex xs10 pt-2 offset-xs1>
             <v-btn
                 outlined
                 tile
@@ -29,7 +30,7 @@
                 @click="showSQLLabel = !showSQLLabel"
             >{{ showSQLLabel? 'Hide': 'Show SQL' }}</v-btn>
         </v-flex>
-        <v-flex xs12 sm12 md12 pb-0>
+        <v-flex xs10 offset-xs1 pb-0>
             <div v-show="showSQLLabel">
                 <div style="background-color:#BDBDBD">
                     <div>
@@ -42,11 +43,11 @@
             </div>
         </v-flex>
         <!--Clear all options-->
-        <v-flex xs12 sm12 md12 pb-0 pt-2>
+        <v-flex xs10 offset-xs1 pb-0 pt-2>
             <v-btn block tile small dark @click="clearQuery">Clear all options</v-btn>
         </v-flex>
         <!--Search-->
-        <v-flex xs12 sm12 md12 pt-2>
+        <v-flex xs10 offset-xs1 pt-2>
             <v-btn
                 block
                 normal

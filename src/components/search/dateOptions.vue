@@ -1,7 +1,7 @@
 <template>
     <v-form v-model="validation" lazy-validation>
         <v-layout align-center justify-center fill-height row wrap>
-            <v-flex xs6>
+            <v-flex xs5 offset-md1>
                 <v-text-field
                     label="Min MJD"
                     v-model="minFirstMJD"
@@ -44,7 +44,7 @@
                     </v-card>
                 </v-menu>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs5 offset-md1>
                 <v-text-field
                     label="Max MJD"
                     v-model="maxFirstMjd"
