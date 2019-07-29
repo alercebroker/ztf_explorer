@@ -88,17 +88,20 @@
                             <!--LIGHT CURVE-->
                             <v-flex xs12 md6>
                                 <!--If the screen is mobile-->
-                                <v-flex hidden-xs-only>
-                                    <card-light-curve v-if="$store.state.loading === false" />
-                                </v-flex>
-                                <!--If the screen is upper-->
-                                <v-flex hidden-sm-and-up>
-                                    <v-alert :value="true" type="warning" fluid>
-                                        <span class="title">
-                                            <v-icon>screen_rotation</v-icon>to see the light curve.
-                                        </span>
-                                    </v-alert>
-                                </v-flex>
+                                <v-layout>
+                                    <v-flex hidden-xs-only>
+                                        <card-light-curve v-if="$store.state.loading === false" />
+                                    </v-flex>
+                                    
+                                    <!--If the screen is upper-->
+                                    <v-flex hidden-sm-and-up>
+                                        <v-alert :value="true" type="warning" fluid>
+                                            <span class="title">
+                                                <v-icon>screen_rotation</v-icon>to see the light curve.
+                                            </span>
+                                        </v-alert>
+                                    </v-flex>
+                                </v-layout>
                             </v-flex>
                             <!-- ALADIN -->
                             <v-flex xs12 md3>
