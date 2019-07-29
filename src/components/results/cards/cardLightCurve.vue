@@ -10,7 +10,7 @@
         <v-layout wrap justify-space-around>
             <v-radio-group v-model="selected" row ma-0>
               <v-radio v-for='(option, index) in options' :key="index" :label="option" :value="index"></v-radio>
-              <v-btn small  @click="download"> Button</v-btn>        
+              <v-btn small outlined  color="green" @click="download"> <v-icon left small>cloud_download</v-icon> Download </v-btn>        
             </v-radio-group>
         </v-layout>
       
@@ -42,6 +42,7 @@ export default {
     },
     methods: {
       download () {
+        /* https://stackoverflow.com/questions/8847766/how-to-convert-json-to-csv-format-and-store-in-a-variable */
         let arrayOfJson = this.$store.state.results.objectDetails.detections
         const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
         const header = Object.keys(arrayOfJson[0])
