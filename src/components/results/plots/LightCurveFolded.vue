@@ -52,11 +52,13 @@ export default {
                         var calendarIcon = color =>
                             "<i class='material-icons' style='font-size:13px;color:" +
                             color +
-                            ";'>alarm</i>";
+                            ";'>graphic_eq</i>";
                         let serie = params[0].seriesName;
                         let table =
                             "<table> <tr> <th></th> <th></th> <th></th></tr>";
                         if (serie == "r" || serie == "g") {
+                            let mag = params[0].value[1].toFixed(3);
+                            let err = params[0].value[3].toFixed(3);
                             table += rowTable(
                                 "",
                                 "candid: ",
@@ -65,22 +67,12 @@ export default {
                             table += rowTable(
                                 colorSpan(params[0].color),
                                 params[0].seriesName + ": ",
-                                params[0].value[1]
-                            );
-                            table += rowTable(
-                                colorSpanError(params[0].color),
-                                "error: ±",
-                                params[1].value[2] - params[0].value[1]
+                                mag + "±" + err
                             );
                             table += rowTable(
                                 calendarIcon(params[0].color),
-                                "MJD: ",
+                                "Phase: ",
                                 params[0].value[0]
-                            );
-                            table += rowTable(
-                                calendarIcon(params[0].color),
-                                "Date: ",
-                                jdToDate(params[0].value[0]).toUTCString()
                             );
                             return table + "</table>";
                         }
@@ -190,7 +182,7 @@ export default {
                         x.magpsf_corr - x.sigmapsf,
                         x.magpsf_corr + x.sigmapsf
                     ]);
-                    return [phase, x.magpsf_corr, x.candid_str];
+                    return [phase, x.magpsf_corr, x.candid_str, x.sigmapsf];
                 });
             this.scatter.series[1].data = alerts.detections
                 .filter(function(x) {
@@ -203,7 +195,7 @@ export default {
                         x.magpsf_corr - x.sigmapsf,
                         x.magpsf_corr + x.sigmapsf
                     ]);
-                    return [phase, x.magpsf_corr, x.candid_str];
+                    return [phase, x.magpsf_corr, x.candid_str, x.sigmapsf];
                 });
             this.scatter.series[2].data = gbandError;
             this.scatter.series[3].data = rbandError;

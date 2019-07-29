@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {jdToDate} from "../../utils/AstroDates.js" 
+import { jdToDate } from "../../utils/AstroDates.js";
 export default {
     name: "lightcurvePlot",
     data() {
@@ -56,7 +56,6 @@ export default {
                         let serie = params[0].seriesName;
                         let table =
                             "<table> <tr> <th></th> <th></th> <th></th></tr>";
-
                         if (
                             serie == "r non-detections" ||
                             serie == "g non-detections"
@@ -78,6 +77,8 @@ export default {
                             );
                             return table + "</table>";
                         } else if (serie == "r" || serie == "g") {
+                            let mag = params[0].value[1].toFixed(3);
+                            let err = params[0].value[3].toFixed(3);
                             table += rowTable(
                                 "",
                                 "candid: ",
@@ -86,12 +87,7 @@ export default {
                             table += rowTable(
                                 colorSpan(params[0].color),
                                 params[0].seriesName + ": ",
-                                params[0].value[1]
-                            );
-                            table += rowTable(
-                                colorSpanError(params[0].color),
-                                "error: ±",
-                                params[1].value[2] - params[0].value[1]
+                                mag + "±" + err
                             );
                             table += rowTable(
                                 calendarIcon(params[0].color),
@@ -101,7 +97,7 @@ export default {
                             table += rowTable(
                                 calendarIcon(params[0].color),
                                 "Date: ",
-                                jdToDate(params[0].value[0]).toUTCString
+                                jdToDate(params[0].value[0]).toUTCString()
                             );
                             return table + "</table>";
                         }
@@ -222,14 +218,14 @@ export default {
                     return x.fid == 1;
                 })
                 .map(function(x) {
-                    return [x.mjd, x.magpsf, x.candid_str];
+                    return [x.mjd, x.magpsf, x.candid_str, x.sigmapsf];
                 });
             this.scatter.series[1].data = alerts.detections
                 .filter(function(x) {
                     return x.fid == 2;
                 })
                 .map(function(x) {
-                    return [x.mjd, x.magpsf, x.candid_str];
+                    return [x.mjd, x.magpsf, x.candid_str, x.sigmapsf];
                 });
             this.scatter.series[2].data = alerts.detections
                 .filter(function(x) {
@@ -312,7 +308,7 @@ export default {
                     }
                 ]
             };
-        },
+        }
     },
     computed: {
         alerts() {
