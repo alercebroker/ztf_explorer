@@ -45,9 +45,10 @@ export default {
               return table + "</table>";
             }
             else if(serie == "r" || serie == "g") {
+              let mag = params[0].value[1].toFixed(3)
+              let err = params[0].value[3].toFixed(3)
               table += rowTable("", "candid: ", params[0].value[2])              
-              table += rowTable(colorSpan(params[0].color), params[0].seriesName + ": ", params[0].value[1])
-              table += rowTable(colorSpanError(params[0].color), "error: ±", (params[1].value[2] - params[0].value[1]))
+              table += rowTable(colorSpan(params[0].color), params[0].seriesName + ": ", mag + "±" + err)
               table += rowTable(calendarIcon(params[0].color), "MJD: ", params[0].value[0])
               return table + "</table>";
             }
@@ -161,8 +162,8 @@ export default {
   },
   methods:{
     makegraph(alerts) {
-      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf, x.candid_str]})
-      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf, x.candid_str]})
+      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf, x.candid_str, x.sigmapsf]})
+      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf, x.candid_str, x.sigmapsf]})
       this.scatter.series[2].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf]})
       this.scatter.series[3].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf-x.sigmapsf, x.magpsf+x.sigmapsf]})
       this.scatter.series[4].data = alerts.non_detections.filter(function(x) {return x.fid == 1 && x.diffmaglim > 10 }).map(function (x) {return [x.mjd, x.diffmaglim]})

@@ -39,9 +39,10 @@ export default {
             let serie = params[0].seriesName
             let table = "<table> <tr> <th></th> <th></th> <th></th></tr>"
             if(serie == "r" || serie == "g") {
+              let mag = params[0].value[1].toFixed(3)
+              let err = params[0].value[3].toFixed(3)
               table += rowTable("", "candid: ", params[0].value[2])              
-              table += rowTable(colorSpan(params[0].color), params[0].seriesName + ": ", params[0].value[1])
-              table += rowTable(colorSpanError(params[0].color), "error: ±", (params[1].value[2] - params[0].value[1]))
+              table += rowTable(colorSpan(params[0].color), params[0].seriesName + ": ", mag + "±" + err)
               table += rowTable(calendarIcon(params[0].color), "MJD: ", params[0].value[0])
               return table + "</table>";
             }
@@ -137,8 +138,8 @@ export default {
   },
   methods:{
     makegraph(alerts) {
-      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.candid_str]})
-      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.candid_str]})
+      this.scatter.series[0].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.candid_str, x.sigmapsf_corr]})
+      this.scatter.series[1].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr, x.candid_str, x.sigmapsf_corr]})
       this.scatter.series[2].data = alerts.detections.filter(function(x) {return x.fid == 1} ).map(function(x) { return [x.mjd, x.magpsf_corr-x.sigmapsf_corr, x.magpsf_corr+x.sigmapsf_corr]})
       this.scatter.series[3].data = alerts.detections.filter(function(x) {return x.fid == 2} ).map(function(x) { return [x.mjd, x.magpsf_corr-x.sigmapsf_corr, x.magpsf_corr+x.sigmapsf_corr]})
     },
