@@ -1,19 +1,19 @@
 <template>
   <v-card >
-      <v-layout row wrap fill-height>
-        <v-flex xs12 d-flex>
+        <v-flex xs12>
           <div class="curve">
             <lightcurvePlot v-if="selected == 0"></lightcurvePlot>
             <lightcurveCorrPlot v-else-if="selected == 1"></lightcurveCorrPlot>
             <lightcurveFoldedPlot v-else-if="selected == 2"></lightcurveFoldedPlot>
           </div>
         </v-flex>
-        <v-flex xs8 offset-xs2 fluid>
-          <v-radio-group v-model="selected" row ma-0>
-            <v-radio v-for='(option, index) in options' :key="index" :label="option" :value="index"></v-radio>
-          </v-radio-group>
-        </v-flex>
-      </v-layout>
+        <v-layout wrap justify-space-around>
+            <v-radio-group v-model="selected" row ma-0>
+              <v-radio v-for='(option, index) in options' :key="index" :label="option" :value="index"></v-radio>
+              <v-btn small  @click="download"> Button</v-btn>        
+            </v-radio-group>
+        </v-layout>
+      
   </v-card>
 </template>
 
@@ -39,6 +39,28 @@ export default {
                 ? ["Difference Magnitude", "Apparent Magnitude", "Folded"]
                 : ["Difference Magnitude", "Apparent Magnitude"];
         }
+    },
+    methods: {
+      download () {
+        let arrayOfJson = this.$store.state.results.objectDetails.detections
+        const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+        const header = Object.keys(arrayOfJson[0])
+        let csv = arrayOfJson.map(row => header.map(fieldName => 
+        JSON.stringify(row[fieldName], replacer)).join(','))
+        csv.unshift(header.join(','))
+        csv = csv.join('\r\n')
+        // Create link and download
+        var link = document.createElement('a');
+        link.setAttribute('href', 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv));
+        let today = new Date().toISOString()
+        console.log(today)
+        let filename = this.$store.state.results.selectedObject.oid + "_" + today + ".csv"
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
     }
 };
 </script>
