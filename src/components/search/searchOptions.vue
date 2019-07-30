@@ -6,12 +6,12 @@
             <default-options></default-options>
         </v-flex>
         <!-- Date and coordinate options -->
-        <v-flex xs12 pl-10 pr-10>
+        <v-flex xs12 >
             <v-card flat>
                 <v-tabs>
                     <v-tab>Discovery Date</v-tab>
                     <v-tab-item>
-                        <date-options />
+                        <date-options/>
                     </v-tab-item>
                     <v-tab>Coordinates</v-tab>
                     <v-tab-item>
