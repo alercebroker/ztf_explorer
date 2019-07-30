@@ -24,6 +24,13 @@ export default {
                     data: ["g", "r"],
                     bottom: 0
                 },
+                toolbox: {
+                    showTitle: false,
+                    feature: {
+                        dataZoom: {},
+                        restore: {}
+                    },
+                },
                 tooltip: {
                     trigger: "axis",
                     axisPointer: {
@@ -109,14 +116,6 @@ export default {
                     }
                 },
                 dataZoom: [
-                    {
-                        show: false,
-                        realtime: true
-                    },
-                    {
-                        type: "inside",
-                        realtime: true
-                    }
                 ],
                 series: [
                     {

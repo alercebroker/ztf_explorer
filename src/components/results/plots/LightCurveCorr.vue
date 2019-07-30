@@ -20,6 +20,13 @@ export default {
                         fontWeight: "lighter"
                     }
                 },
+                toolbox: {
+                    showTitle: false,
+                    feature: {
+                        dataZoom: {},
+                        restore: {}
+                    },
+                },
                 legend: {
                     data: ["g", "r"],
                     bottom: 0
@@ -114,14 +121,6 @@ export default {
                     }
                 },
                 dataZoom: [
-                    {
-                        show: false,
-                        realtime: true
-                    },
-                    {
-                        type: "inside",
-                        realtime: true
-                    }
                 ],
                 series: [
                     {
