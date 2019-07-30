@@ -215,11 +215,11 @@ export default {
                 let discovery = this.generalInformation.find(function(element) {
                     return element.column === "Discovery Date";
                 });
-                discovery.value = this.mjdToDate(this.ztf_object.firstmjd);
+                discovery.value = this.mjdToDate(this.ztf_object.firstmjd).slice(0,-3) + "UT";
                 let last = this.generalInformation.find(function(element) {
                     return element.column === "Last Detection";
                 });
-                last.value = this.mjdToDate(this.ztf_object.lastmjd);
+                last.value = this.mjdToDate(this.ztf_object.lastmjd).slice(0,-3) + "UT";
             }
         }
     },
@@ -278,11 +278,11 @@ export default {
                     : null,
                 {
                     column: "Discovery Date",
-                    value: this.mjdToDate(this.ztf_object.firstmjd)
+                    value: this.mjdToDate(this.ztf_object.firstmjd).slice(0,-3) + "UT"
                 },
                 {
                     column: "Last Detection",
-                    value: this.mjdToDate(this.ztf_object.lastmjd)
+                    value: this.mjdToDate(this.ztf_object.lastmjd).slice(0,-3) + "UT"
                 }
             ];
             let filtered = info.filter(function(el) {

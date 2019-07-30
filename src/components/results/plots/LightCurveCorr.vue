@@ -77,7 +77,7 @@ export default {
                             table += rowTable(
                                 calendarIcon(params[0].color),
                                 "Date: ",
-                                jdToDate(params[0].value[0]).toUTCString()
+                                jdToDate(params[0].value[0]).toUTCString().slice(0,-3) + "UT"
                             );
                             return table + "</table>";
                         }
