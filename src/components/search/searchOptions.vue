@@ -6,7 +6,7 @@
             <default-options></default-options>
         </v-flex>
         <!-- Date and coordinate options -->
-        <v-flex xs12 >
+        <v-flex xs12 pl-7 pr-7>
             <v-card flat>
                 <v-tabs>
                     <v-tab>Discovery Date</v-tab>
@@ -102,10 +102,10 @@ export default {
         },
         refreshSQL() {
             let query_parameters = {
-                filters: this.$store.state.search.filters,
-                bands: this.$store.state.search.bands,
-                dates: this.$store.state.search.dates,
-                coordinates: this.$store.state.search.coordinates
+                filters: JSON.parse(JSON.stringify(this.$store.state.search.filters)),
+                bands: JSON.parse(JSON.stringify(this.$store.state.search.bands)),
+                dates: JSON.parse(JSON.stringify(this.$store.state.search.dates)),
+                coordinates: JSON.parse(JSON.stringify(this.$store.state.search.coordinates))
             };
             this.removeEmpty(query_parameters);
             this.$store.dispatch("getSQL", query_parameters);
@@ -130,10 +130,10 @@ export default {
          */
         onSubmitQuery() {
             let query_parameters = {
-                filters: this.$store.state.search.filters,
-                bands: this.$store.state.search.bands,
-                dates: this.$store.state.search.dates,
-                coordinates: this.$store.state.search.coordinates
+                filters: JSON.parse(JSON.stringify(this.$store.state.search.filters)),
+                bands: JSON.parse(JSON.stringify(this.$store.state.search.bands)),
+                dates: JSON.parse(JSON.stringify(this.$store.state.search.dates)),
+                coordinates: JSON.parse(JSON.stringify(this.$store.state.search.coordinates))
             };
             if (this.$store.state.search.filters.oid) {
                 if (
