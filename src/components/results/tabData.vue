@@ -26,20 +26,25 @@
         <v-flex xs12 v-else-if="$store.state.search.query_status === 200">
             <v-toolbar flat color="white">
                 <v-toolbar-title>
-                    <v-layout column wrap pt-3>
-                        <v-flex xs12 md6>Found {{ $store.state.results.total }} results</v-flex>
-                        <v-flex xs12 md6>
+                    <v-layout column pt-3>
+                        <v-flex
+                            xs6
+                            md6
+                        >Found {{ $store.state.results.total.toLocaleString() }} results</v-flex>
+                        <v-flex xs6 md6>
                             <column-options-modal />
                         </v-flex>
                     </v-layout>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-pagination
-                    v-model="currentPage"
-                    :length="$store.state.results.num_pages"
-                    :total-visible="5"
-                    v-show="$vuetify.breakpoint.mdAndUp"
-                ></v-pagination>
+                <v-toolbar-title>
+                    <v-pagination
+                        v-model="currentPage"
+                        :length="$store.state.results.num_pages"
+                        :total-visible="5"
+                        v-show="$vuetify.breakpoint.mdAndUp"
+                    ></v-pagination>
+                </v-toolbar-title>
             </v-toolbar>
             <v-data-table
                 :headers="headers"

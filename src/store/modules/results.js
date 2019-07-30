@@ -151,10 +151,10 @@ export const state = {
     ],
     
     objects: [],
-    total: 0,
-    num_pages: 0,
+    total: null,
+    num_pages: null,
     showObjectDetailsModal: false,
-    currentPage: 0,
+    currentPage: null,
     recentObjects: 'counting...',
     recentAlerts: 'counting...',
     xmatchedCount: 'counting...',

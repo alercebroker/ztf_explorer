@@ -1,5 +1,5 @@
 <template>
-    <v-layout row wrap >
+    <v-layout row wrap justify-center align-center>
         <!--Object ID-->
         <v-flex xs12 sm12 md12>
             <v-text-field label="Object ID" v-model="oid" />
