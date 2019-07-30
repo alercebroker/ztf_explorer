@@ -27,7 +27,7 @@ function gregorianToJd(dateObj) {
 }
 
 function jdToDate(mjd) {
-    if (mjd == undefined || mjd == null) return null
+    if (mjd == undefined || mjd == null || mjd==="") return null
     let jd = Number(mjd) + 2400000
     return julian.toDate(jd)
 }

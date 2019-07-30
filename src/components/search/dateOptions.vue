@@ -233,7 +233,6 @@ export default {
             this.maxGregDate = jdToDate(value);
         },
         minFirstMJD(value) {
-            console.log("WATCH MINMJD", value)
             this.minGregDate = jdToDate(value);
         },
         minFirstTime(value) {
