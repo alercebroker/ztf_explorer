@@ -1,6 +1,6 @@
 <template>
-    <v-form pa-0>
-        <v-layout row wrap>
+    <v-form >
+        <v-layout row wrap pl-3 pr-3>
             <v-flex xs12>
                 <v-text-field type="number" step="0.00001" v-model="ra" label="RA (deg)" />
             </v-flex>
