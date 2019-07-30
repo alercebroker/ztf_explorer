@@ -2,25 +2,27 @@
     <!--BODY-->
     <v-layout row wrap v-on:keyup.enter="onSubmitQuery">
         <!--Default options-->
-        <v-flex xs10 offset-xs1 pb-0 pt-0>
+        <v-flex xs12 pb-0 pt-0 pl-10 pr-10>
             <default-options></default-options>
         </v-flex>
         <!-- Date and coordinate options -->
+        <v-flex xs12 pl-10 pr-10>
+            <v-card flat>
+                <v-tabs>
+                    <v-tab>Discovery Date</v-tab>
+                    <v-tab-item>
+                        <date-options />
+                    </v-tab-item>
+                    <v-tab>Coordinates</v-tab>
+                    <v-tab-item>
+                        <coordinate-options />
+                    </v-tab-item>
+                </v-tabs>
+            </v-card>
+        </v-flex>
 
-          <v-card>
-            <v-tabs>
-              <v-tab>Discovery Date</v-tab>
-              <v-tab-item>
-                <date-options />
-              </v-tab-item>
-              <v-tab>Coordinates</v-tab>
-              <v-tab-item>
-                <coordinate-options />
-              </v-tab-item>
-            </v-tabs>
-          </v-card>
         <!--Show SQL-->
-        <v-flex xs10 pt-2 offset-xs1>
+        <v-flex xs12 pt-2 pl-7 pr-7>
             <v-btn
                 outlined
                 tile
@@ -30,7 +32,7 @@
                 @click="showSQLLabel = !showSQLLabel"
             >{{ showSQLLabel? 'Hide': 'Show SQL' }}</v-btn>
         </v-flex>
-        <v-flex xs10 offset-xs1 pb-0>
+        <v-flex xs12 pl-7 pr-7 pb-0>
             <div v-show="showSQLLabel">
                 <div style="background-color:#BDBDBD">
                     <div>
@@ -43,11 +45,11 @@
             </div>
         </v-flex>
         <!--Clear all options-->
-        <v-flex xs10 offset-xs1 pb-0 pt-2>
+        <v-flex xs12 pb-0 pt-2 pl-7 pr-7 >
             <v-btn block tile small dark @click="clearQuery">Clear all options</v-btn>
         </v-flex>
         <!--Search-->
-        <v-flex xs10 offset-xs1 pt-2>
+        <v-flex xs12 pt-2 pl-7 pr-7>
             <v-btn
                 block
                 normal
@@ -161,7 +163,7 @@ export default {
         },
         clearQuery() {
             this.$store.dispatch("clearQuery");
-        },
+        }
     },
     computed: {
         validSearch() {

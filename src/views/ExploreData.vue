@@ -1,5 +1,5 @@
 <template>
-    <v-container fluid>
+    <v-container fluid pt-0 pr-0>
         <div v-if="$vuetify.breakpoint.smAndDown" >
           <result-panel
               :loading.sync="$store.state.loading"
@@ -23,7 +23,6 @@
                 <v-navigation-drawer
                     clipped
                     app
-                    hide-overlay
                     permanent
                     :mini-variant="mini"
                     width="400"
