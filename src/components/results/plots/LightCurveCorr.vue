@@ -63,7 +63,7 @@ export default {
                         let serie = params[0].seriesName;
                         let table =
                             "<table> <tr> <th></th> <th></th> <th></th></tr>";
-                        if (serie == "r" || serie == "g") {
+                        if (serie == "r" || serie == "g" && (!params[0].value[1] && !params[0].value[3])) {
                             let mag = params[0].value[1].toFixed(3);
                             let err = params[0].value[3].toFixed(3);
                             table += rowTable(
@@ -198,7 +198,7 @@ export default {
                 });
             this.scatter.series[2].data = alerts.detections
                 .filter(function(x) {
-                    return x.fid == 1;
+                    return x.fid == 1 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
                     return [
@@ -209,7 +209,7 @@ export default {
                 });
             this.scatter.series[3].data = alerts.detections
                 .filter(function(x) {
-                    return x.fid == 2;
+                    return x.fid == 2 && x.magpsf_corr != null;;
                 })
                 .map(function(x) {
                     return [
