@@ -11,9 +11,9 @@ function jdToGregorian(mjd) {
     let date = julian.toDate(jd)
     let year = date.getUTCFullYear()
     let month = date.getUTCMonth() + 1
-    if (month < 10) month = "0"+month
+    if (month < 10) month = "0" + month
     let day = date.getUTCDate()
-    return year+"-"+month+"-"+day
+    return year + "-" + month + "-" + day
 }
 
 /**
@@ -22,14 +22,15 @@ function jdToGregorian(mjd) {
  * @returns {number} : date in jualian format
  */
 function gregorianToJd(dateObj) {
-    if(dateObj == null) return null
-    return julian(dateObj) - 2400000
+    if (dateObj == null) return null
+    var mjulianDate = dateObj / 86400000 + 40587;
+    return mjulianDate;
 }
 
 function jdToDate(mjd) {
-    if (mjd == undefined || mjd == null || mjd==="") return null
-    let jd = Number(mjd) + 2400000
-    return julian.toDate(jd)
+    if (mjd == undefined || mjd == null || mjd === "") return null
+    var date = (mjd - 40587) * 86400000;
+    return new Date(date)
 }
 
 export { gregorianToJd, jdToGregorian, jdToDate }
