@@ -20,6 +20,15 @@ export default {
                         fontWeight: "lighter"
                     }
                 },
+                toolbox: {
+                    showTitle: false,
+                    feature: {
+                        dataZoom: {},
+                        restore: {}
+                    },
+                },
+                dataZoom: [
+                ],
                 legend: {
                     data: ["g", "r", "g non-detections", "r non-detections"],
                     bottom: 0
@@ -103,22 +112,18 @@ export default {
                         }
                     }
                 },
-                axisPointer: {
-                    link: { xAxisIndex: "all" },
-                    label: {
-                        backgroundColor: "#777"
-                    }
-                },
+
                 xAxis: {
                     name: "Modified Julian Dates",
                     nameLocation: "center",
                     scale: true,
+                    type: "value",
                     splitLine: {
                         show: false
                     },
                     nameTextStyle: {
                         padding: 7
-                    }
+                    },
                 },
                 yAxis: {
                     name: "Magnitude",
@@ -131,18 +136,8 @@ export default {
                     inverse: true,
                     nameTextStyle: {
                         padding: 25
-                    }
-                },
-                dataZoom: [
-                    {
-                        show: false,
-                        realtime: true
                     },
-                    {
-                        type: "inside",
-                        realtime: true
-                    }
-                ],
+                },
                 series: [
                     {
                         name: "g",
