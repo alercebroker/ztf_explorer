@@ -13,9 +13,10 @@ import 'echarts/lib/chart/candlestick'
 import 'echarts/lib/chart/custom'
 import 'echarts/lib/chart/radar'
 import 'echarts/lib/component/title'
+import 'echarts/lib/component/toolbox'
 import 'echarts/lib/component/tooltip'
-import 'echarts/lib/component/dataZoom'
 import 'echarts/lib/component/legend'
+import 'echarts/lib/component/dataZoom'
 Vue.component('v-chart', ECharts)
 
 Vue.config.productionTip = false;
