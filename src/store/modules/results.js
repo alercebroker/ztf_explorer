@@ -6,7 +6,8 @@ export const state = {
         detections: null,
         non_detections: null,
         probabilities: null,
-        period: null
+        period: null,
+        xmatches: null,
     },
     selectedColumnOptions: [
         {
@@ -181,6 +182,9 @@ export const mutations = {
     SET_PERIODS(state, periods){
         state.objectDetails.periods = periods
     },
+    SET_XMATCHES(state, xmatches) {
+        state.objectDetails.xmatches = xmatches
+    },
     SET_OBJECTS(state, objects){
         state.objects = objects;
     },
@@ -275,6 +279,9 @@ export const actions = {
     },
     setEarlyCount({commit}, count){
         commit('SET_EARLY_COUNT', count)
+    },
+    setXMatches({commit}, xmatches){
+        commit('SET_XMATCHES', xmatches)
     }
     
 }
