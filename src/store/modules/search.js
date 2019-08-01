@@ -437,6 +437,7 @@ export const actions = {
         })
     },
     getXMatches({dispatch}, payload){
+        dispatch("nullXMatches", true);
         QueryXMatchService.xmatchall(payload)
         .then(response => {
             dispatch('setXMatches', response);

@@ -61,7 +61,7 @@ export default {
         this.$store.dispatch("getXMatches", {
             ra: this.$store.state.results.selectedObject.meanra,
             dec: this.$store.state.results.selectedObject.meandec,
-            radius: 10
+            radius: 50
         });
     }
 };
