@@ -1,5 +1,6 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
 import QueryStampsService from '@/services/QueryStampsService.js';
+import QueryXMatchService from '@/services/QueryXMatchService.js';
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
@@ -292,7 +293,7 @@ export const actions = {
             QueryPSQLService.queryNonDetections(object.oid),
             QueryPSQLService.queryProbabilities(object.oid),
             QueryPSQLService.queryFeatures(object.oid),
-            QueryPSQLService.queryStats(object.oid)
+            QueryPSQLService.queryStats(object.oid),
         ])
             .then(values => {
                 commit('SET_QUERY_STATUS', 200);
@@ -434,6 +435,17 @@ export const actions = {
             dispatch('setRfCount', response.data.result.rf);
             dispatch('setEarlyCount', response.data.result.early);
         })
+    },
+    getXMatches({dispatch}, payload){
+        dispatch("nullXMatches", true);
+        QueryXMatchService.xmatchall(payload)
+        .then(response => {
+            dispatch('setXMatches', response);
+        })
+        .catch(reason => {
+            console.log("Error with xmatches query", reason)
+        })
+       
     }
 }
 
