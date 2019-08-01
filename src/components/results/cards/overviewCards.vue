@@ -97,7 +97,8 @@ export default {
     },
     mounted() {
         let today = new Date();
-        let mjd = gregorianToJd(new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth()+1, today.getUTCDate())))
+        let todayUTC = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours()))
+        let mjd = gregorianToJd(todayUTC)
         this.$store.dispatch("getRecentObjects", {
             mjd: mjd,
             hours: 24
