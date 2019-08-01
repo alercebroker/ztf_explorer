@@ -24,6 +24,13 @@ export default {
                     data: ["g", "r"],
                     bottom: 0
                 },
+                toolbox: {
+                    showTitle: false,
+                    feature: {
+                        dataZoom: {},
+                        restore: {}
+                    },
+                },
                 tooltip: {
                     trigger: "axis",
                     axisPointer: {
@@ -109,14 +116,6 @@ export default {
                     }
                 },
                 dataZoom: [
-                    {
-                        show: false,
-                        realtime: true
-                    },
-                    {
-                        type: "inside",
-                        realtime: true
-                    }
                 ],
                 series: [
                     {
@@ -173,7 +172,7 @@ export default {
             let rbandError = [];
             this.scatter.series[0].data = alerts.detections
                 .filter(function(x) {
-                    return x.fid == 1;
+                    return x.fid == 1 && x.magpsf_corr != null;;
                 })
                 .map(function(x) {
                     let phase = (x.mjd % period.periodls_1) / period.periodls_1;
@@ -186,7 +185,7 @@ export default {
                 });
             this.scatter.series[1].data = alerts.detections
                 .filter(function(x) {
-                    return x.fid == 2;
+                    return x.fid == 2 && x.magpsf_corr != null;;
                 })
                 .map(function(x) {
                     let phase = (x.mjd % period.periodls_2) / period.periodls_2;
