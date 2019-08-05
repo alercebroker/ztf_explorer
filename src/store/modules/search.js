@@ -1,5 +1,4 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
-import QueryStampsService from '@/services/QueryStampsService.js';
 import QueryXMatchService from '@/services/QueryXMatchService.js';
 import Vue from 'vue';
 export const state = {

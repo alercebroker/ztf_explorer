@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: "http://catshtm.alerce.online:5000",
+    baseURL: process.env.VUE_APP_XMATCH_API,
     withCredentials: false,
     headers: {
         Accept: "application/json",

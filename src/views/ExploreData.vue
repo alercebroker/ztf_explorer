@@ -112,6 +112,7 @@ export default {
     },
     mounted: function() {
         this.getUrlObject();
+        console.log("This is", process.env.VUE_APP_TITLE)
     }
 };
 </script>
