@@ -53,8 +53,7 @@ export default {
         // Create link and download
         var link = document.createElement('a');
         link.setAttribute('href', 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv));
-        let today = new Date().toISOString()
-        console.log(today)
+        let today = new Date().toISOString().replace(":","").replace(":", "").split(".")[0]+"Z"
         let filename = this.$store.state.results.selectedObject.oid + "_" + today + ".csv"
         link.setAttribute('download', filename);
         link.style.visibility = 'hidden';
