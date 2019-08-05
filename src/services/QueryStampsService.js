@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: "http://avro.alerce.online",
+    baseURL: process.env.VUE_APP_STAMPS_API,
     withCredentials: false,
     headers: {
         Accept: "application/octet-stream",
@@ -18,5 +18,28 @@ export default {
                 type: payload.type
             }
         })
+    },
+    getScienceURL(object, candid) {
+        return "http://avro.alerce.online/get_stamp?oid=" +
+            object +
+            "&candid=" +
+            candid +
+            "&type=science&format=png"
+    },
+    getTemplateURL(object, candid) {
+        return "http://avro.alerce.online/get_stamp?oid=" +
+            object +
+            "&candid=" +
+            candid +
+            "&type=template&format=png"
+
+    },
+    getDifferenceURL(object, candid) {
+        return "http://avro.alerce.online/get_stamp?oid=" +
+            object +
+            "&candid=" +
+            candid +
+            "&type=difference&format=png"
     }
 }
+

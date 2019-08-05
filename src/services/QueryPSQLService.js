@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const apiClient = axios.create({
-    baseURL: "http://ztf.alerce.online",
+    baseURL: process.env.VUE_APP_PSQL_API,
     withCredentials: false,
     headers: {
         Accept: "application/json",

@@ -9,15 +9,15 @@
           <v-flex xs4 class="text-xs-center">
             <h5>Science</h5>
 
-            <v-img contain :src="science" class="stampImg"/></v-img>
+            <v-img contain :src="science" class="stampImg"/>
           </v-flex>
           <v-flex xs4 class="text-xs-center">
             <h5>Template</h5>
-            <v-img contain :src="template" class="stampImg" /></v-img>
+            <v-img contain :src="template" class="stampImg" />
           </v-flex>
           <v-flex xs4 class="text-xs-center">
             <h5>Difference</h5>
-            <v-img contain :src="difference" class="stampImg" /></v-img>
+            <v-img contain :src="difference" class="stampImg" />
           </v-flex>
         </v-layout>
       </v-card-text>
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import QueryStampsService from "@/services/QueryStampsService.js"
 export default {
     name: "card-stamps-png",
     computed: {
@@ -37,29 +38,17 @@ export default {
         },
         science() {
             return (
-                "http://avro.alerce.online/get_stamp?oid=" +
-                this.object +
-                "&candid=" +
-                this.candid +
-                "&type=science&format=png"
+                QueryStampsService.getScienceURL(this.object, this.candid)
             );
         },
         difference() {
             return (
-                "http://avro.alerce.online/get_stamp?oid=" +
-                this.object +
-                "&candid=" +
-                this.candid +
-                "&type=difference&format=png"
+                QueryStampsService.getDifferenceURL(this.object, this.candid)
             );
         },
         template() {
             return (
-                "http://avro.alerce.online/get_stamp?oid=" +
-                this.object +
-                "&candid=" +
-                this.candid +
-                "&type=template&format=png"
+                QueryStampsService.getTemplateURL(this.object, this.candid)
             );
         }
     }
