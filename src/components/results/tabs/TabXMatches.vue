@@ -8,8 +8,13 @@
                 >
                 <v-expansion-panel-header>
                     <v-layout align-center>
-                        <h6 class="title">{{item.catalog}} </h6>
-                        <h6 class="caption ml-1">({{ Object.keys(item.items).length }} fields)</h6>
+                        <v-flex xs6 row align-center>
+                            <h6 class="title">{{item.catalog}} </h6>
+                            <h6 class="caption ml-1">({{ Object.keys(item.items).length }} fields)</h6>
+                        </v-flex>
+                        <v-flex xs6 class="text--secondary">
+                            Distance: {{ item.distance.value + " " + item.distance.unit }}
+                        </v-flex>
                     </v-layout>                
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
@@ -66,7 +71,7 @@ export default {
                 let name = Object.keys(x)[0]
                 var res = []
                 for( var item in x[name]){
-                    if(x[name][item].value != null) { 
+                    if(x[name][item].value != null && item != "distance") { 
                         res.push(
                             {
                                 name: item,
@@ -78,6 +83,7 @@ export default {
                 }
                 return { 
                     catalog: name,
+                    distance: x[name].distance,
                     items: res,
                 }
             })
