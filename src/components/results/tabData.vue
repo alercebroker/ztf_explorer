@@ -96,7 +96,7 @@ export default {
             });
             return ret ? ret.text : "-";
         },
-        getEarlyClass(obj){
+        getEarlyClass(obj) {
             let ret = this.$store.state.search.earlyClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
@@ -135,7 +135,7 @@ export default {
                     if (key.startsWith("class") && key !== "classearly") {
                         obj[key] = this.getLateClass(obj[key]);
                     }
-                    if (key === "classearly"){
+                    if (key === "classearly") {
                         obj[key] = this.getEarlyClass(obj[key]);
                     }
                     if (
@@ -144,7 +144,10 @@ export default {
                     )
                         obj[key] = obj[key].toFixed(3);
                 });
-                obj["radec"] = obj.meanra && obj.meandec ? obj.meanra + ", " + obj.meandec : " ";
+                obj["radec"] =
+                    obj.meanra && obj.meandec
+                        ? obj.meanra + ", " + obj.meandec
+                        : " ";
             });
             return Object.values(objects);
         },
@@ -169,15 +172,18 @@ export default {
                 sortDesc: this.options.sortDesc[0]
             });
         },
-        options(value) {
-            this.$store.dispatch("queryObjects", {
-                query_parameters: this.$store.state.search.query_parameters,
-                page: this.currentPage,
-                perPage: this.$store.state.perPage,
-                total: this.$store.state.results.total,
-                sortBy: value.sortBy[0],
-                sortDesc: value.sortDesc[0]
-            });
+        options(value, old) {
+            if (this.$route.params.id) return;
+            if (value.sortBy !== old.sortBy || value.sortDesc != old.sortDesc) {
+                this.$store.dispatch("queryObjects", {
+                    query_parameters: this.$store.state.search.query_parameters,
+                    page: this.currentPage,
+                    perPage: this.$store.state.perPage,
+                    total: this.$store.state.results.total,
+                    sortBy: value.sortBy[0],
+                    sortDesc: value.sortDesc[0]
+                });
+            }
         }
     }
 };
