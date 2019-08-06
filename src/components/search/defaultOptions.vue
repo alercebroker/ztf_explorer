@@ -95,10 +95,6 @@ export default {
         },
         selectedClassifier: {
             get() {
-                console.log(
-                    "classifier",
-                    this.$store.state.search.selectedClassifier
-                );
                 return this.$store.state.search.selectedClassifier;
             },
             set(value) {
@@ -118,8 +114,8 @@ export default {
         },
         classes() {
             if (this.selectedClassifier === "classearly")
-                return this.$store.state.search.classes_stamps;
-            return this.$store.state.search.classes;
+                return this.$store.state.search.earlyClasses;
+            return this.$store.state.search.lateClasses;
         },
         probability: {
             get() {

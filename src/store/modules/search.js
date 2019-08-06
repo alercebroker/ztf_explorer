@@ -8,11 +8,11 @@ export const state = {
     dates: { firstmjd: {}},
     bands: {},
     coordinates: {},
-    sql: "SELECT * FROM OBJECTS",
+    sql: "SELECT * FROM objects",
     query_status: 0,
     error: null,
     file: null,
-    classes: [
+    lateClasses: [
         {
             text: "Not specified",
             value: null
@@ -27,34 +27,79 @@ export const state = {
         },
         {
             text: "Ceph",
-            value: 1
+            value: "Ceph"
         },
         {
             text: "DSCT",
-            value: 2
+            value: "DSCT"
         },
         {
             text: "EB",
-            value: 3
+            value: "EB"
         },
         {
             text: "LPV",
-            value: 4
+            value: "LPV"
         },
         {
             text: "RRL",
-            value: 5
+            value: "RRL"
         },
         {
             text: "SNe",
-            value: 6
+            value: "SNe"
         },
         {
             text: "Other",
-            value: 0
-        }
+            value: "Other"
+        },
+        {
+            text: "AGN I",
+            value: "AGN I"
+        },
+        {
+            text: "Blazar",
+            value: "Blazar"
+        },
+        {
+            text: "CV/Nova",
+            value: "CV/Nova"
+        },
+        {
+            text: "SN Ia",
+            value: "SN Ia"
+        },
+        {
+            text: "SN Ibc",
+            value: "SN Ibc"
+        },
+        {
+            text: "SN II",
+            value: "SN II"
+        },
+        {
+            text: "SN IIn",
+            value: "SN IIn"
+        },
+        {
+            text: "SLSN",
+            value: "SLSN"
+        },
+        {
+            text: "EB/SD/D",
+            value: "EB/SD/D"
+        },
+        {
+            text: "EB/C",
+            value: "EB/C"
+        },
+        {
+            text: "Periodic/Other",
+            value: "Periodic/Other"
+        },
+
     ],
-    classes_stamps: [
+    earlyClasses: [
         {
             text: "Not specified",
             value: null
@@ -69,23 +114,23 @@ export const state = {
         },
         {
             text: "AGN",
-            value: 1
+            value: "AGN"
         },
         {
-            text: "SNe",
-            value: 2
+            text: "SN",
+            value: "SN"
         },
         {
             text: "Variable Star",
-            value: 3
+            value: "Variable Star"
         },
         {
             text: "Asteroid",
-            value: 4
+            value: "Asteroid"
         },
         {
             text: "Bogus",
-            value: 5
+            value: "Bogus"
         }
     ],
     classifiers: [
@@ -98,11 +143,11 @@ export const state = {
             value: "classxmatch"
         },
         {
-            text: "ML_RF",
+            text: "Late Classifier",
             value: "classrf"
         },
         {
-            text: "STAMPS",
+            text: "Early Classifier",
             value: "classearly"
         }
     ],
