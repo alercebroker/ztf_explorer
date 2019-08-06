@@ -1,12 +1,12 @@
 <template>
     <v-card fluid tile class="ma-0" outlined :loading="loading">
         <v-container v-if="xmatches!=null">
-            {{ distance }}
             <v-flex xs3>
                 <v-text-field
                 type="number" 
                 label="Maximum distance" 
-                step="0.00001" 
+                step="0.001"
+                :min="0"
                 v-model="distance"
                 clearable
                 ></v-text-field>
@@ -41,6 +41,11 @@
                     </v-expansion-panel>
                 </v-expansion-panels>
             </v-flex>
+        </v-container>
+        <v-container v-else>
+            <v-alert type="warning">
+                {{ erroMessagge }}
+            </v-alert>
         </v-container>
     </v-card>
 </template>
@@ -112,12 +117,18 @@ export default {
         filtered() {
             if(this.distance == null){ return this.values}
             else { return this.values.filter(x => this.distance >= x.distance.value) }
+        },
+        erroMessagge() {
+            return this.$store.state.results.objectDetails.error_xmatches
         }
     },
     watch: {
         xmatches(newVal){
             if(newVal){this.loading = false}
             else{ this.loading = true}
+        },
+        loading(newVal){
+            this.loading = newVal
         }
     }
 }
