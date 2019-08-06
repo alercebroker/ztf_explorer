@@ -1,11 +1,11 @@
 <template>
-    <v-layout row wrap justify-center align-center>
+    <v-layout row wrap  align-center>
         <!--Object ID-->
         <v-flex xs12 sm12 md12>
             <v-text-field label="Object ID" v-model="oid" />
         </v-flex>
         <!--Classifier-->
-        <v-flex xs12 sm12 md6>
+        <v-flex xs12 sm12 md6 grow>
             <v-select
                 :items="classifiers"
                 v-model="selectedClassifier"
@@ -15,7 +15,7 @@
         </v-flex>
         <!--Class-->
         <v-flex xs12 sm12 md6>
-            <v-select :items="classes" v-model="selectedClass" label="Class"></v-select>
+            <v-select :items="classes" v-model="selectedClass" label="Class" :disabled="!selectedClassifier"></v-select>
         </v-flex>
         <!--Probabilities-->
         <v-flex xs12 sm12 md12 v-if="selectedClassifier && selectedClassifier!=='classxmatch'">
@@ -98,6 +98,7 @@ export default {
                 return this.$store.state.search.selectedClassifier;
             },
             set(value) {
+                if(!value) this.$store.dispatch("setClass", null);
                 this.$store.dispatch("setClassifier", value);
             }
         },

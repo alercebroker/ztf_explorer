@@ -50,8 +50,15 @@ export default {
         };
     },
     methods: {
-        getClass(obj, classifier) {
-            return this.$store.state.search.classes.find(function(x) {
+        getLateClass(obj, classifier) {
+            return this.$store.state.search.lateClasses.find(function(x) {
+                if (x.value == obj[classifier]) {
+                    return x;
+                }
+            }).text;
+        },
+        getEarlyClass(obj, classifier) {
+            return this.$store.state.search.earlyClasses.find(function(x) {
                 if (x.value == obj[classifier]) {
                     return x;
                 }

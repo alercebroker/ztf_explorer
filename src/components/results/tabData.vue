@@ -88,8 +88,16 @@ export default {
         };
     },
     methods: {
-        getClass(obj) {
-            let ret = this.$store.state.search.classes.find(function(x) {
+        getLateClass(obj) {
+            let ret = this.$store.state.search.lateClasses.find(function(x) {
+                if (x.value == obj) {
+                    return x;
+                }
+            });
+            return ret ? ret.text : "-";
+        },
+        getEarlyClass(obj){
+            let ret = this.$store.state.search.earlyClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
                 }
@@ -125,7 +133,10 @@ export default {
             Object.values(objects).forEach(obj => {
                 Object.keys(obj).forEach(key => {
                     if (key.startsWith("class") && key !== "classearly") {
-                        obj[key] = this.getClass(obj[key]);
+                        obj[key] = this.getLateClass(obj[key]);
+                    }
+                    if (key === "classearly"){
+                        obj[key] = this.getEarlyClass(obj[key]);
                     }
                     if (
                         typeof obj[key] === "number" &&
@@ -133,7 +144,7 @@ export default {
                     )
                         obj[key] = obj[key].toFixed(3);
                 });
-                obj["radec"] = obj.meanra + ", " + obj.meandec;
+                obj["radec"] = obj.meanra && obj.meandec ? obj.meanra + ", " + obj.meandec : " ";
             });
             return Object.values(objects);
         },

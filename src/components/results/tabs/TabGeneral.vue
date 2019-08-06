@@ -168,8 +168,16 @@ export default {
         cardStampsPng,
     },
     methods: {
-        getClass(obj) {
-            let ret = this.$store.state.search.classes.find(function(x) {
+        getLateClass(obj) {
+            let ret = this.$store.state.search.lateClasses.find(function(x) {
+                if (x.value == obj) {
+                    return x;
+                }
+            });
+            return ret ? ret.text : "-";
+        },
+        getEarlyClass(obj){
+            let ret = this.$store.state.search.earlyClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
                 }
@@ -213,19 +221,19 @@ export default {
                 this.ztf_object.classxmatch
                     ? {
                           column: "X-Match",
-                          value: this.getClass(this.ztf_object.classxmatch)
+                          value: this.getLateClass(this.ztf_object.classxmatch)
                       }
                     : null,
                 this.ztf_object.classrf
                     ? {
                           column: "RandomForest",
-                          value: this.getClass(this.ztf_object.classrf)
+                          value: this.getLateClass(this.ztf_object.classrf)
                       }
                     : null,
                 this.ztf_object.classearly
                     ? {
                           column: "EarlyClassifier",
-                          value: this.ztf_object.classearly
+                          value: this.getEarlyClass(this.ztf_object.classearly)
                       }
                     : null,
                 { column: "RA", value: this.ztf_object.meanra },

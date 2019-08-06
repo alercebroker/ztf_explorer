@@ -26,75 +26,75 @@ export const state = {
         },
         {
             text: "Ceph",
-            value: "Ceph"
+            value: 1
         },
         {
             text: "DSCT",
-            value: "DSCT"
+            value: 2
         },
         {
             text: "EB",
-            value: "EB"
+            value: 3
         },
         {
             text: "LPV",
-            value: "LPV"
+            value: 4
         },
         {
             text: "RRL",
-            value: "RRL"
+            value: 5
         },
         {
             text: "SNe",
-            value: "SNe"
+            value: 6
         },
         {
             text: "Other",
-            value: "Other"
+            value: 0
         },
         {
             text: "AGN I",
-            value: "AGN I"
+            value: 7
         },
         {
             text: "Blazar",
-            value: "Blazar"
+            value: 8
         },
         {
             text: "CV/Nova",
-            value: "CV/Nova"
+            value: 9
         },
         {
             text: "SN Ia",
-            value: "SN Ia"
+            value: 10
         },
         {
             text: "SN Ibc",
-            value: "SN Ibc"
+            value: 11
         },
         {
             text: "SN II",
-            value: "SN II"
+            value: 12
         },
         {
             text: "SN IIn",
-            value: "SN IIn"
+            value: 13
         },
         {
             text: "SLSN",
-            value: "SLSN"
+            value: 14
         },
         {
             text: "EB/SD/D",
-            value: "EB/SD/D"
+            value: 15
         },
         {
             text: "EB/C",
-            value: "EB/C"
+            value: 16
         },
         {
             text: "Periodic/Other",
-            value: "Periodic/Other"
+            value: 17
         },
 
     ],
@@ -113,29 +113,29 @@ export const state = {
         },
         {
             text: "AGN",
-            value: "AGN"
+            value: 18
         },
         {
             text: "SN",
-            value: "SN"
+            value: 19
         },
         {
             text: "Variable Star",
-            value: "Variable Star"
+            value: 20
         },
         {
             text: "Asteroid",
-            value: "Asteroid"
+            value: 21
         },
         {
             text: "Bogus",
-            value: "Bogus"
+            value: 22
         }
     ],
     classifiers: [
         {
-            text: "All",
-            value: null
+            text: "Select a classifier",
+            value: null,
         },
         {
             text: "X-MATCH",
