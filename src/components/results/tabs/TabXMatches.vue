@@ -1,48 +1,63 @@
 <template>
     <v-card fluid tile class="ma-0" outlined :loading="loading">
         <v-container v-if="xmatches!=null">
-            <v-flex xs3>
-                <v-text-field
-                type="number" 
-                label="Maximum distance" 
-                step="0.001"
-                :min="0"
-                v-model="distance"
-                clearable
-                persistent-hint
-                hint="Distance in arcsec"
-                ></v-text-field>
-            </v-flex>
-            <v-flex xs12 class="mt-2">
-                <v-expansion-panels>
-                    <v-expansion-panel
-                    v-for="(item,idx) in filtered"
-                    :key="idx"
+            <v-layout wrap>
+                <v-flex xs2>
+                    <p class="text-center ma-0">Choose a distance in <b>arcsec</b> for filter</p>
+                </v-flex>
+                <v-flex xs10>
+                    <v-slider
+                        v-model="distance"
+                        step="0.001"
+                        :min="0"
+                        :max="20"
                     >
-                    <v-expansion-panel-header>
-                        <v-layout align-center>
-                            <v-flex xs6 row align-center>
-                                <h6 class="title">{{item.catalog}} </h6>
-                                <h6 class="caption ml-1">({{ Object.keys(item.items).length }} fields)</h6>
-                            </v-flex>
-                            <v-flex xs6 class="text--secondary">
-                                Distance: {{ item.distance.value + " " + item.distance.unit }}
-                            </v-flex>
-                        </v-layout>                
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                        <v-data-table
-                            :headers="header"
-                            :items="item.items"
-                            hide-default-footer
-                            disable-filtering
-                            disable-pagination
-                            dense
-                        ></v-data-table>
-                    </v-expansion-panel-content>
-                    </v-expansion-panel>
-                </v-expansion-panels>
-            </v-flex>
+                        <template v-slot:append>
+                            <v-text-field
+                                v-model="distance"
+                                prepend-icon="mdi-ruler"
+                                class="mt-0 pt-0"
+                                type="number"
+                                :min="0"
+                                :max="20"
+                                step="0.001"
+                                style="width: 100px"
+                                hide-details
+                                ></v-text-field>
+                        </template>
+                    </v-slider>
+                </v-flex>
+                <v-flex xs12 class="mt-2">
+                    <v-expansion-panels>
+                        <v-expansion-panel
+                        v-for="(item,idx) in filtered"
+                        :key="idx"
+                        >
+                        <v-expansion-panel-header>
+                            <v-layout align-center>
+                                <v-flex xs6 row align-center>
+                                    <h6 class="title">{{item.catalog}} </h6>
+                                    <h6 class="caption ml-1">({{ Object.keys(item.items).length }} fields)</h6>
+                                </v-flex>
+                                <v-flex xs6 class="text--secondary">
+                                    <p class="text-sm-right">Distance: {{ item.distance.value.toFixed(3) + " " + item.distance.unit }}</p>
+                                </v-flex>
+                            </v-layout>                
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            <v-data-table
+                                :headers="header"
+                                :items="item.items"
+                                hide-default-footer
+                                disable-filtering
+                                disable-pagination
+                                dense
+                            ></v-data-table>
+                        </v-expansion-panel-content>
+                        </v-expansion-panel>
+                    </v-expansion-panels>
+                </v-flex>
+            </v-layout>
         </v-container>
         <v-container v-else>
             <v-alert type="warning">
@@ -73,7 +88,7 @@ export default {
                     sortable: false,
                 },
             ],
-            distance: null
+            distance: 10
         }
     },
     computed: {
