@@ -9,9 +9,11 @@
                 :min="0"
                 v-model="distance"
                 clearable
+                persistent-hint
+                hint="Distance in arcsec"
                 ></v-text-field>
             </v-flex>
-            <v-flex xs12>
+            <v-flex xs12 class="mt-2">
                 <v-expansion-panels>
                     <v-expansion-panel
                     v-for="(item,idx) in filtered"
