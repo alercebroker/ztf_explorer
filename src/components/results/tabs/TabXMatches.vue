@@ -1,11 +1,11 @@
 <template>
     <v-card fluid tile class="ma-0" outlined :loading="loading">
         <v-container v-if="xmatches!=null">
-            <v-layout wrap>
-                <v-flex xs2>
-                    <p class="text-center ma-0">Choose a distance in <b>arcsec</b> for filter</p>
+            <v-layout  wrap justify-space-around>
+                <v-flex xs1>
+                    <p>Min distance for filter</p>
                 </v-flex>
-                <v-flex xs10>
+                <v-flex xs9>
                     <v-slider
                         v-model="distance"
                         step="0.001"
@@ -21,7 +21,8 @@
                                 :min="0"
                                 :max="20"
                                 step="0.001"
-                                style="width: 100px"
+                                style="width: 175px"
+                                suffix="arcsec"
                                 hide-details
                                 ></v-text-field>
                         </template>
