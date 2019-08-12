@@ -48,6 +48,9 @@ export default {
     queryFeatures(oid) {
         return apiClient.post('/get_features', { oid: oid })
     },
+    queryPeriod(oid){
+        return apiClient.post('/get_period', {oid: oid})
+    },
     queryStats(oid) {
         return apiClient.post('/get_stats', { oid: oid })
     },

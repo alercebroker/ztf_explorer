@@ -8,7 +8,8 @@ export const state = {
         probabilities: null,
         period: null,
         xmatches: null,
-        load_xmatches: true
+        load_xmatches: true,
+        error_xmatches: ""
     },
     selectedColumnOptions: [
         {
@@ -169,6 +170,7 @@ export const mutations = {
         state.selectedObject = item;
     },
     SET_OBJECT_DETAILS(state, detail){
+        console.log(Object.keys(detail)[0], detail[Object.keys(detail)[0]])
         state.objectDetails[Object.keys(detail)[0]] = detail[Object.keys(detail)[0]]
     },
     SET_DETECTIONS(state, det){
@@ -223,6 +225,10 @@ export const mutations = {
     },
     SET_EARLY_COUNT(state, count){
         state.earlyCount = count;
+    },
+    SET_XMATCHES_MSG(state, msg){
+        state.objectDetails.error_xmatches = msg
+        state.objectDetails.load_xmatches = false
     }
 }
 
@@ -291,6 +297,9 @@ export const actions = {
     },
     nullXMatches({commit}, value) {
         commit('SET_NULL_XMATCHES', value)
+    },
+    setXMatchesMsg({commit}, value) {
+        commit('SET_XMATCHES_MSG', value)
     }
 }
 
