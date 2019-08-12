@@ -175,7 +175,7 @@ export default {
                     return x.fid == 1 && x.magpsf_corr != null;;
                 })
                 .map(function(x) {
-                    let phase = (x.mjd % period.periodls_1) / period.periodls_1;
+                    let phase = (x.mjd % period) / period;
                     gbandError.push([
                         phase,
                         x.magpsf_corr - x.sigmapsf,
@@ -188,7 +188,7 @@ export default {
                     return x.fid == 2 && x.magpsf_corr != null;;
                 })
                 .map(function(x) {
-                    let phase = (x.mjd % period.periodls_2) / period.periodls_2;
+                    let phase = (x.mjd % period) / period;
                     rbandError.push([
                         phase,
                         x.magpsf_corr - x.sigmapsf,
@@ -200,7 +200,7 @@ export default {
             this.scatter.series[3].data = rbandError;
             this.scatter.title.subtext =
                 "Period: " +
-                this.$store.state.results.objectDetails.period.periodls_1.toFixed(
+                this.$store.state.results.objectDetails.period.toFixed(
                     3
                 ) +
                 " days";
