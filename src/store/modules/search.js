@@ -265,7 +265,8 @@ export const actions = {
             QueryPSQLService.queryDetections(object.oid),
             QueryPSQLService.queryNonDetections(object.oid),
             QueryPSQLService.queryProbabilities(object.oid),
-            QueryPSQLService.queryFeatures(object.oid),
+            // QueryPSQLService.queryFeatures(object.oid),
+            QueryPSQLService.queryPeriod(object.oid),
         ])
             .then(values => {
                 commit('SET_QUERY_STATUS', 200);
@@ -295,58 +296,25 @@ export const actions = {
             dispatch('loading', false);
         })
     },
-    queryDetections({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryDetections(object.oid).then(det => {
-            dispatch('setDetections', det.data.result.detections)
-            dispatch('loading', false)
-        })
-    },
-    queryNonDetections({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryNonDetections(object.oid).then(nondet => {
-            dispatch('setNonDetections', nondet.data.result.non_detections)
-            dispatch('loading', false)
-        })
-    },
-    queryProbabilities({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryProbabilities(object.oid).then(prob => {
-            dispatch('setProbabilities', prob.data.result.probabilities)
-            dispatch('loading', false)
-        })
-    },
-    queryFeatures({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryFeatures(object.oid).then(feat => {
-            dispatch('setPeriods', feat.data.result.period)
-            dispatch('loading', false)
-        })
-    },
-    queryStats({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryStats(object.oid).then(stats => {
-            dispatch('setObjectDetails', stats)
-            dispatch('loading', false)
-        })
-    },
     queryAlertsFromURL({ commit, dispatch }, object) {
         dispatch('loading', true)
         Promise.all([
             QueryPSQLService.queryDetections(object.oid),
             QueryPSQLService.queryNonDetections(object.oid),
             QueryPSQLService.queryProbabilities(object.oid),
-            QueryPSQLService.queryFeatures(object.oid),
+            // QueryPSQLService.queryFeatures(object.oid),
             QueryPSQLService.queryStats(object.oid),
+            QueryPSQLService.queryPeriod(object.oid)
         ])
             .then(values => {
                 commit('SET_QUERY_STATUS', 200);
                 commit('SET_ERROR', null);
                 values.forEach((element, index) => {
-                    if (index == 4) {
+                    if (index == 3) {
                         dispatch('objectSelected', element.data.result.stats)
                     }
                     else {
+                        console.log(element.data.result, index)
                         dispatch('setObjectDetails', element.data.result)
                     }
                 })
