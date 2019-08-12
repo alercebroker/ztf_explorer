@@ -26,54 +26,51 @@
                                     >{{mjdButtonText}}</v-btn>
                                 </v-flex>
                                 <v-flex xs12 pt-10 width="100%">
-                                    <v-layout wrap>
-                                        <v-flex
-                                            xs12
-                                            sm4
-                                            pl-1
-                                            pr-1
-                                            class="text-md-center"
-                                        >
+                                    <v-layout wrap justify-center>
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
                                             <v-btn
                                                 block
                                                 small
                                                 :href="nedUrl"
                                                 target="_blank"
-                                                dark
-                                                color="green"
+                                                outlined
                                             >NED</v-btn>
                                         </v-flex>
-                                        <v-flex
-                                            xs12
-                                            sm4
-                                            pl-1
-                                            pr-1
-                                            class="text-md-center"
-                                        >
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
                                             <v-btn
                                                 block
                                                 small
                                                 :href="simbadUrl"
                                                 target="_blank"
-                                                dark
-                                                color="primary"
+                                                outlined
                                             >SIMBAD</v-btn>
                                         </v-flex>
-                                        <v-flex
-                                            xs12
-                                            sm4
-                                            pl-1
-                                            pr-1
-                                            class="text-md-center"
-                                        >
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
                                             <v-btn
                                                 small
                                                 block
                                                 :href="tnsUrl"
                                                 target="_blank"
-                                                dark
-                                                color="orange"
+                                                outlined
                                             >TNS</v-btn>
+                                        </v-flex>
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center" pt-2>
+                                            <v-btn
+                                                small
+                                                block
+                                                :href="panstarrsUrl"
+                                                target="_blank"
+                                                outlined
+                                            >PanSTARRS</v-btn>
+                                        </v-flex>
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center" pt-2>
+                                            <v-btn
+                                                small
+                                                block
+                                                :href="dssUrl"
+                                                target="_blank"
+                                                outlined
+                                            >DSS</v-btn>
                                         </v-flex>
                                     </v-layout>
                                 </v-flex>
@@ -88,7 +85,7 @@
                         <v-flex hidden-xs-only>
                             <card-light-curve v-if="$store.state.loading === false" />
                         </v-flex>
-                        
+
                         <!--If the screen is upper-->
                         <v-flex hidden-sm-and-up>
                             <v-alert :value="true" type="warning" fluid>
@@ -165,7 +162,7 @@ export default {
         cardLightCurve,
         aladin,
         cardProbabilities,
-        cardStampsPng,
+        cardStampsPng
     },
     methods: {
         getLateClass(obj) {
@@ -176,7 +173,7 @@ export default {
             });
             return ret ? ret.text : "-";
         },
-        getEarlyClass(obj){
+        getEarlyClass(obj) {
             let ret = this.$store.state.search.earlyClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
@@ -203,11 +200,14 @@ export default {
                 let discovery = this.generalInformation.find(function(element) {
                     return element.column === "Discovery Date";
                 });
-                discovery.value = this.mjdToDate(this.ztf_object.firstmjd).slice(0,-3) + "UT";
+                discovery.value =
+                    this.mjdToDate(this.ztf_object.firstmjd).slice(0, -3) +
+                    "UT";
                 let last = this.generalInformation.find(function(element) {
                     return element.column === "Last Detection";
                 });
-                last.value = this.mjdToDate(this.ztf_object.lastmjd).slice(0,-3) + "UT";
+                last.value =
+                    this.mjdToDate(this.ztf_object.lastmjd).slice(0, -3) + "UT";
             }
         }
     },
@@ -254,11 +254,15 @@ export default {
                     : null,
                 {
                     column: "Discovery Date",
-                    value: this.mjdToDate(this.ztf_object.firstmjd).slice(0,-3) + "UT"
+                    value:
+                        this.mjdToDate(this.ztf_object.firstmjd).slice(0, -3) +
+                        "UT"
                 },
                 {
                     column: "Last Detection",
-                    value: this.mjdToDate(this.ztf_object.lastmjd).slice(0,-3) + "UT"
+                    value:
+                        this.mjdToDate(this.ztf_object.lastmjd).slice(0, -3) +
+                        "UT"
                 }
             ];
             let filtered = info.filter(function(el) {
@@ -352,6 +356,33 @@ export default {
                       "&Radius.unit=arcsec&Radius=10"
                 : "#";
         },
+        panstarrsUrl() {
+            let ra = this.ztf_object.meanra;
+            let dec =
+                this.ztf_object.meandec > 0
+                    ? "+" + this.ztf_object.meandec
+                    : this.ztf_object.meandec;
+            return this.ztf_object
+                ? "http://ps1images.stsci.edu/cgi-bin/ps1cutouts?pos=" +
+                      ra +
+                      dec +
+                      "&filter=color"
+                : "#";
+        },
+        dssUrl() {
+            let ra = this.ztf_object.meanra;
+            let dec =
+                this.ztf_object.meandec > 0
+                    ? "+" + this.ztf_object.meandec
+                    : this.ztf_object.meandec;
+            return this.ztf_object
+                ? "http://archive.stsci.edu/cgi-bin/dss_search?h=5.0&w=5.0&f=fits&v=poss2ukstu_red&r=" +
+                      ra +
+                      "d&d=" +
+                      dec +
+                      "d&e=J2000&c=none"
+                : "#";
+        },
         fontStyle() {
             switch (this.$vuetify.breakpoint.name) {
                 case "xs":
@@ -361,10 +392,9 @@ export default {
                 default:
                     return "font-size:1.4em";
             }
-        },
+        }
     },
-    mounted: function() {
-    }
+    mounted: function() {}
 };
 </script>
 
