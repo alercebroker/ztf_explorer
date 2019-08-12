@@ -44,10 +44,6 @@ export default {
                             '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:' +
                             color +
                             '"></span>';
-                        var colorSpanError = color =>
-                            ' <span style="display:inline-block;margin-right:5px;;margin-left:2px;border-radius:10px;width:6px;height:6px;background-color:' +
-                            color +
-                            '"></span>';
                         var rowTable = (col1, col2, col3) =>
                             "<tr> <td>" +
                             col1 +
@@ -63,7 +59,7 @@ export default {
                         let serie = params[0].seriesName;
                         let table =
                             "<table> <tr> <th></th> <th></th> <th></th></tr>";
-                        if (serie == "r" || serie == "g" && (!params[0].value[1] && !params[0].value[3])) {
+                        if (serie == "r" || serie == "g") {
                             let mag = params[0].value[1].toFixed(3);
                             let err = params[0].value[3].toFixed(3);
                             table += rowTable(
@@ -174,7 +170,7 @@ export default {
         makegraph(alerts) {
             this.scatter.series[0].data = alerts.detections
                 .filter(function(x) {
-                    return x.fid == 1;
+                    return x.fid == 1 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
                     return [
@@ -186,7 +182,7 @@ export default {
                 });
             this.scatter.series[1].data = alerts.detections
                 .filter(function(x) {
-                    return x.fid == 2;
+                    return x.fid == 2 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
                     return [
@@ -209,7 +205,7 @@ export default {
                 });
             this.scatter.series[3].data = alerts.detections
                 .filter(function(x) {
-                    return x.fid == 2 && x.magpsf_corr != null;;
+                    return x.fid == 2 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
                     return [

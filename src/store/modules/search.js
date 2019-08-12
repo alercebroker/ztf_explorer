@@ -455,7 +455,7 @@ export const actions = {
             dispatch('setXMatches', response);
         })
         .catch(reason => {
-            console.log("Error with xmatches query", reason)
+            dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
         })
        
     }
