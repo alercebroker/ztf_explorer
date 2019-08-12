@@ -314,7 +314,6 @@ export const actions = {
                         dispatch('objectSelected', element.data.result.stats)
                     }
                     else {
-                        console.log(element.data.result, index)
                         dispatch('setObjectDetails', element.data.result)
                     }
                 })

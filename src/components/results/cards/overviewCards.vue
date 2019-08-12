@@ -1,7 +1,7 @@
 <template>
     <v-layout row wrap justify-center>
         <v-flex xs6 md2 pr-2 pt-2>
-            <v-card color="primary" class="white--text" height="100%">
+            <v-card  color="primary" class="white--text" height="100%">
                 <v-card-text class="text-center">
                     <v-icon x-large>add_circle</v-icon>
                 </v-card-text>

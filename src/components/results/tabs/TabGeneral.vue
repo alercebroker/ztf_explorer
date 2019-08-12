@@ -33,7 +33,7 @@
                                                 small
                                                 :href="nedUrl"
                                                 target="_blank"
-                                                outlined
+                                                color="primary"
                                             >NED</v-btn>
                                         </v-flex>
                                         <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
@@ -42,7 +42,7 @@
                                                 small
                                                 :href="simbadUrl"
                                                 target="_blank"
-                                                outlined
+                                                color="primary"
                                             >SIMBAD</v-btn>
                                         </v-flex>
                                         <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
@@ -51,7 +51,7 @@
                                                 block
                                                 :href="tnsUrl"
                                                 target="_blank"
-                                                outlined
+                                                color="primary"
                                             >TNS</v-btn>
                                         </v-flex>
                                         <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center" pt-2>
@@ -60,7 +60,7 @@
                                                 block
                                                 :href="panstarrsUrl"
                                                 target="_blank"
-                                                outlined
+                                                color="primary"
                                             >PanSTARRS</v-btn>
                                         </v-flex>
                                         <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center" pt-2>
@@ -69,7 +69,7 @@
                                                 block
                                                 :href="dssUrl"
                                                 target="_blank"
-                                                outlined
+                                                color="primary"
                                             >DSS</v-btn>
                                         </v-flex>
                                     </v-layout>
