@@ -61,7 +61,7 @@
             </v-layout>
             <v-footer color="transparent">
                 <v-spacer></v-spacer>
-                <div class="caption">Powered by catsHTM</div>
+                <div class="caption">Powered by <a href="https://github.com/maayane/catsHTM" target="blank">catsHTM</a></div>
             </v-footer>
         </v-container>
         <v-container v-else>
