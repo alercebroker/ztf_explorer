@@ -103,7 +103,7 @@
             </v-layout>
 
             <v-layout row wrap>
-                <v-flex xs12 md4 hidden-sm-and-up>
+                <v-flex xs12 md4 hidden-md-and-up>
                     <card-stamps-png />
                 </v-flex>
 
