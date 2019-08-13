@@ -59,6 +59,10 @@
                     </v-expansion-panels>
                 </v-flex>
             </v-layout>
+            <v-footer color="transparent">
+                <v-spacer></v-spacer>
+                <div class="caption">Powered by catsHTM</div>
+            </v-footer>
         </v-container>
         <v-container v-else>
             <v-alert type="warning">
