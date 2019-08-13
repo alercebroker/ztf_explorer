@@ -27,7 +27,7 @@
                                 </v-flex>
                                 <v-flex xs12 pt-10 width="100%">
                                     <v-layout wrap justify-center>
-                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center" pt-2 >
                                             <v-btn
                                                 block
                                                 small
@@ -36,7 +36,7 @@
                                                 color="primary"
                                             >NED</v-btn>
                                         </v-flex>
-                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center" pt-2>
                                             <v-btn
                                                 block
                                                 small
@@ -45,7 +45,7 @@
                                                 color="primary"
                                             >SIMBAD</v-btn>
                                         </v-flex>
-                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center" pt-2>
                                             <v-btn
                                                 small
                                                 block
