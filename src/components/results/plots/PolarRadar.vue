@@ -57,6 +57,7 @@ export default {
     },
     methods: {
         getValues() {
+            this.polar.series[0].data = []
             var data = []
             var names = []
             var probs = this.probabilities
@@ -108,6 +109,12 @@ export default {
         //         );
         //     }
         // }
+    },
+    watch: {
+        probabilities(newVal){
+            this.probabilities = newVal
+            this.getValues()
+        }
     }
 };
 </script>

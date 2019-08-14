@@ -38,6 +38,7 @@ export default {
     computed: {
         probabilities() {
             let probabilities = this.$store.state.results.objectDetails.probabilities;
+            console.log(probabilities)
             let ret = {};
             Object.keys(probabilities).forEach(key => {
                 if (Object.keys(probabilities[key]).length > 0) {
@@ -48,7 +49,10 @@ export default {
         },
         ztf_object() {
           return "The object <b>" + this.$store.state.results.selectedObject.oid + "</b> has not been classified yet."
-        }
+        },
+    },
+    watch: {
+
     }
 };
 </script>
