@@ -157,7 +157,7 @@ export const state = {
     total: null,
     num_pages: null,
     showObjectDetailsModal: false,
-    currentPage: null,
+    currentPage: 1,
     recentObjects: 'counting...',
     recentAlerts: 'counting...',
     xmatchedCount: 'counting...',
