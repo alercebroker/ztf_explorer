@@ -9,10 +9,10 @@
               </v-flex>
             </v-layout>
           </v-tab-item>
-            <v-tab>Overview</v-tab>
+            <!-- <v-tab>Overview</v-tab>
             <v-tab-item>
                 <overview-cards v-if="!$route.params.id || $store.state.search.searched"/>
-            </v-tab-item>
+            </v-tab-item> -->
             <v-tab>Query Table</v-tab>
             <v-tab-item>
                 <tab-data />

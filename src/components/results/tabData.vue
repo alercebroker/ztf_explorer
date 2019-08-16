@@ -159,14 +159,16 @@ export default {
             });
         },
         options(value) {
-            this.$store.dispatch("queryObjects", {
-                query_parameters: this.$store.state.search.query_parameters,
-                page: this.currentPage,
-                perPage: this.$store.state.perPage,
-                total: this.$store.state.results.total,
-                sortBy: value.sortBy[0],
-                sortDesc: value.sortDesc[0]
-            });
+            if (value.sortBy !== old.sortBy || value.sortDesc != old.sortDesc) {
+                this.$store.dispatch("queryObjects", {
+                    query_parameters: this.$store.state.search.query_parameters,
+                    page: this.currentPage,
+                    perPage: this.$store.state.perPage,
+                    total: this.$store.state.results.total,
+                    sortBy: value.sortBy[0],
+                    sortDesc: value.sortDesc[0]
+                });
+            }
         }
     }
 };
