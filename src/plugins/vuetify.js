@@ -22,6 +22,5 @@ export default new Vuetify({
                 success: colors.teal.base
             }
         }
-
     }
 })
