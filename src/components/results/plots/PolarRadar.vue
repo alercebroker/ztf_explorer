@@ -57,6 +57,7 @@ export default {
     },
     methods: {
         getValues() {
+            this.polar.series[0].data = []
             var data = []
             var names = []
             var probs = this.probabilities
@@ -67,6 +68,15 @@ export default {
                 names.push(x.split("_")[0])
                 return {name: x.split("_")[0], max: 1}
             })
+            // var min_val = Math.min.apply(Math,data)
+            var max_val = Math.max.apply(Math,data)
+            // var norm_data = data.map(function(x){
+            //   return (x - min_val)/max_val
+            // })
+            this.polar.radar.indicator = this.polar.radar.indicator.map(function(x){
+              return {name: x.name, max: max_val}
+            })
+
             this.polar.series[0].data.push({value: data, name: names});
         },
         // getXMATCH() {
@@ -99,6 +109,12 @@ export default {
         //         );
         //     }
         // }
+    },
+    watch: {
+        probabilities(newVal){
+            this.probabilities = newVal
+            this.getValues()
+        }
     }
 };
 </script>

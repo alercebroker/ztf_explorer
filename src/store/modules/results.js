@@ -1,4 +1,5 @@
 export const state = {
+    selectedIndex: null,
     selectedObject: {
         oid: null,
     },
@@ -156,8 +157,8 @@ export const state = {
     objects: [],
     total: null,
     num_pages: null,
-    showObjectDetailsModal: false,
     currentPage: null,
+    showObjectDetailsModal: false,
     recentObjects: 'counting...',
     recentAlerts: 'counting...',
     xmatchedCount: 'counting...',
@@ -304,5 +305,7 @@ export const actions = {
 }
 
 export const getters = {
-
+    getProbabilities: (state) => {
+        return state.objectDetails.probabilities
+    }
 }

@@ -1,5 +1,5 @@
 <template>
-    <v-card fluid tile class="ma-0" outlined :loading="loading">
+    <v-card fluid tile class="ma-0" outlined :loading="loading" min-height="500px">
         <v-container v-if="xmatches!=null">
             <v-layout  wrap justify-space-around>
                 <v-flex xs1>
@@ -38,7 +38,7 @@
                             <v-layout align-center>
                                 <v-flex xs6 row align-center>
                                     <h6 class="title">{{item.catalog}} </h6>
-                                    <h6 class="caption ml-1">({{ Object.keys(item.items).length }} fields)</h6>
+                                    <h6 class="caption ml-1">({{ Object.keys(item.items).length }} items)</h6>
                                 </v-flex>
                                 <v-flex xs6 class="text--secondary">
                                     <p class="text-sm-right">Distance: {{ item.distance.value.toFixed(3) + " " + item.distance.unit }}</p>
@@ -59,6 +59,10 @@
                     </v-expansion-panels>
                 </v-flex>
             </v-layout>
+            <v-footer color="transparent">
+                <v-spacer></v-spacer>
+                <div class="caption">Powered by <a href="https://github.com/maayane/catsHTM" target="blank">catsHTM</a></div>
+            </v-footer>
         </v-container>
         <v-container v-else>
             <v-alert type="warning">

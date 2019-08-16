@@ -80,7 +80,7 @@ export default {
                     : null;
             },
             set(value) {
-                this.$store.dispatch("setNobsRange", [value, 1000]);
+                this.$store.dispatch("setNobsRange", [value, this.nobsMax]);
             }
         },
         nobsMax: {
@@ -90,7 +90,7 @@ export default {
                     : null;
             },
             set(value) {
-                this.$store.dispatch("setNobsRange", [0, value]);
+                this.$store.dispatch("setNobsRange", [this.nobsMin, value]);
             }
         },
         selectedClassifier: {

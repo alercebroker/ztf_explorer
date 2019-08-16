@@ -1,8 +1,8 @@
 <template>
     <v-card height="100%">
-      <v-card-title>
-        <span class="title">Discovery Stamps</span>
-      </v-card-title>
+      <v-toolbar dense flat dark>
+        <v-toolbar-title> Discovery Stamps </v-toolbar-title>
+      </v-toolbar>
       <v-divider></v-divider>
       <v-card-text >
         <v-layout row wrap>
