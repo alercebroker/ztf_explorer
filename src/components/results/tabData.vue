@@ -158,7 +158,7 @@ export default {
                 sortDesc: this.options.sortDesc[0]
             });
         },
-        options(value) {
+        options(value, old) {
             if (value.sortBy !== old.sortBy || value.sortDesc != old.sortDesc) {
                 this.$store.dispatch("queryObjects", {
                     query_parameters: this.$store.state.search.query_parameters,
