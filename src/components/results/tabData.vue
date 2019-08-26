@@ -23,7 +23,7 @@
             </v-alert>
         </v-flex>
 
-        <v-flex xs12 v-else-if="$store.state.search.query_status === 200">
+        <v-flex xs12 v-else-if="$store.state.search.query_status === 200 && $store.state.results.total" >
             <v-toolbar flat color="white">
                 <v-toolbar-title>
                     <v-layout column pt-3>

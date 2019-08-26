@@ -242,18 +242,28 @@ export default {
                         this.mjdToDate(this.ztf_object.lastmjd).slice(0, -3) +
                         "UT"
                 },
-                {
-                    column: "PanSTARRS ID",
-                    value: this.$store.state.results.avroInfo.objectidps1
-                },
-                {
-                    column: "Distance (arcsec)",
-                    value: this.$store.state.results.avroInfo.distpsnr1.toFixed(4)
-                },
-                {
-                    column: "Star Galaxy Score",
-                    value: this.$store.state.results.avroInfo.sgscore1.toFixed(4)
-                }
+                this.$store.state.results.avroInfo.objectidps1
+                    ? {
+                          column: "PanSTARRS ID",
+                          value: this.$store.state.results.avroInfo.objectidps1
+                      }
+                    : null,
+                this.$store.state.results.avroInfo.distpsnr1
+                    ? {
+                          column: "Distance (arcsec)",
+                          value: this.$store.state.results.avroInfo.distpsnr1.toFixed(
+                              4
+                          )
+                      }
+                    : null,
+                this.$store.state.results.avroInfo.sgscore1
+                    ? {
+                          column: "Star Galaxy Score",
+                          value: this.$store.state.results.avroInfo.sgscore1.toFixed(
+                              4
+                          )
+                      }
+                    : null
             ];
             let filtered = info.filter(function(el) {
                 return el != null;
