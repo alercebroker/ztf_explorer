@@ -15,6 +15,7 @@
                                         hide-default-header
                                         dense
                                         :mobile-breakpoint="250"
+                                        :items-per-page="20"
                                     ></v-data-table>
                                 </v-flex>
                                 <v-flex xs12>
@@ -27,13 +28,7 @@
                                 </v-flex>
                                 <v-flex xs12 pt-10 width="100%">
                                     <v-layout wrap>
-                                        <v-flex
-                                            xs12
-                                            sm4
-                                            pl-1
-                                            pr-1
-                                            class="text-md-center"
-                                        >
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
                                             <v-btn
                                                 block
                                                 small
@@ -43,13 +38,7 @@
                                                 color="green"
                                             >NED</v-btn>
                                         </v-flex>
-                                        <v-flex
-                                            xs12
-                                            sm4
-                                            pl-1
-                                            pr-1
-                                            class="text-md-center"
-                                        >
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
                                             <v-btn
                                                 block
                                                 small
@@ -59,13 +48,7 @@
                                                 color="primary"
                                             >SIMBAD</v-btn>
                                         </v-flex>
-                                        <v-flex
-                                            xs12
-                                            sm4
-                                            pl-1
-                                            pr-1
-                                            class="text-md-center"
-                                        >
+                                        <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center">
                                             <v-btn
                                                 small
                                                 block
@@ -88,7 +71,7 @@
                         <v-flex hidden-xs-only>
                             <card-light-curve v-if="$store.state.loading === false" />
                         </v-flex>
-                        
+
                         <!--If the screen is upper-->
                         <v-flex hidden-sm-and-up>
                             <v-alert :value="true" type="warning" fluid>
@@ -165,7 +148,7 @@ export default {
         cardLightCurve,
         aladin,
         cardProbabilities,
-        cardStampsPng,
+        cardStampsPng
     },
     methods: {
         getClass(obj) {
@@ -195,11 +178,14 @@ export default {
                 let discovery = this.generalInformation.find(function(element) {
                     return element.column === "Discovery Date";
                 });
-                discovery.value = this.mjdToDate(this.ztf_object.firstmjd).slice(0,-3) + "UT";
+                discovery.value =
+                    this.mjdToDate(this.ztf_object.firstmjd).slice(0, -3) +
+                    "UT";
                 let last = this.generalInformation.find(function(element) {
                     return element.column === "Last Detection";
                 });
-                last.value = this.mjdToDate(this.ztf_object.lastmjd).slice(0,-3) + "UT";
+                last.value =
+                    this.mjdToDate(this.ztf_object.lastmjd).slice(0, -3) + "UT";
             }
         }
     },
@@ -246,11 +232,27 @@ export default {
                     : null,
                 {
                     column: "Discovery Date",
-                    value: this.mjdToDate(this.ztf_object.firstmjd).slice(0,-3) + "UT"
+                    value:
+                        this.mjdToDate(this.ztf_object.firstmjd).slice(0, -3) +
+                        "UT"
                 },
                 {
                     column: "Last Detection",
-                    value: this.mjdToDate(this.ztf_object.lastmjd).slice(0,-3) + "UT"
+                    value:
+                        this.mjdToDate(this.ztf_object.lastmjd).slice(0, -3) +
+                        "UT"
+                },
+                {
+                    column: "PanSTARRS ID",
+                    value: this.$store.state.results.avroInfo.objectidps1
+                },
+                {
+                    column: "Distance (arcsec)",
+                    value: this.$store.state.results.avroInfo.distpsnr1.toFixed(4)
+                },
+                {
+                    column: "Star Galaxy Score",
+                    value: this.$store.state.results.avroInfo.sgscore1.toFixed(4)
                 }
             ];
             let filtered = info.filter(function(el) {
@@ -353,10 +355,9 @@ export default {
                 default:
                     return "font-size:1.4em";
             }
-        },
+        }
     },
-    mounted: function() {
-    }
+    mounted: function() {}
 };
 </script>
 

@@ -1,26 +1,25 @@
 <template>
     <v-card height="100%">
-      <v-card-title>
-        <span class="title">Discovery Stamps</span>
-      </v-card-title>
-      <v-divider></v-divider>
-      <v-card-text >
-        <v-layout row wrap>
-          <v-flex xs4 class="text-xs-center">
-            <h5>Science</h5>
-
-            <v-img contain :src="science" class="stampImg"/></v-img>
-          </v-flex>
-          <v-flex xs4 class="text-xs-center">
-            <h5>Template</h5>
-            <v-img contain :src="template" class="stampImg" /></v-img>
-          </v-flex>
-          <v-flex xs4 class="text-xs-center">
-            <h5>Difference</h5>
-            <v-img contain :src="difference" class="stampImg" /></v-img>
-          </v-flex>
-        </v-layout>
-      </v-card-text>
+        <v-card-title>
+            <span class="title">Discovery Stamps</span>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+            <v-layout row wrap>
+                <v-flex xs4 class="text-xs-center">
+                    <h5>Science</h5>
+                    <v-img contain :src="science" class="stampImg" />
+                </v-flex>
+                <v-flex xs4 class="text-xs-center">
+                    <h5>Template</h5>
+                    <v-img contain :src="template" class="stampImg" />
+                </v-flex>
+                <v-flex xs4 class="text-xs-center">
+                    <h5>Difference</h5>
+                    <v-img contain :src="difference" class="stampImg" />
+                </v-flex>
+            </v-layout>
+        </v-card-text>
     </v-card>
 </template>
 

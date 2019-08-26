@@ -46,10 +46,6 @@ export default {
     computed: {
         showModal: {
             get() {
-                console.log(
-                    "show modal",
-                    this.$store.state.results.showObjectDetailsModal
-                );
                 return this.$store.state.results.showObjectDetailsModal;
             },
             set(value) {

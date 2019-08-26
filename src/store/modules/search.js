@@ -1,11 +1,12 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
 import QueryStampsService from '@/services/QueryStampsService.js';
 import QueryXMatchService from '@/services/QueryXMatchService.js';
+import QueryAvroService from '@/services/QueryAvroService.js'
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
     filters: { nobs: {} },
-    dates: { firstmjd: {}},
+    dates: { firstmjd: {} },
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM OBJECTS",
@@ -224,21 +225,24 @@ export const actions = {
             QueryPSQLService.queryFeatures(object.oid),
         ])
             .then(values => {
+                let candid = null;
                 commit('SET_QUERY_STATUS', 200);
                 commit('SET_ERROR', null);
                 values.forEach((element, index) => {
+                    if (index == 0) {
+                        candid = element.data.result.detections[0].candid_str
+                    }
                     dispatch('setObjectDetails', element.data.result)
                 })
-                dispatch('setShowObjectDetailsModal', true)
-                dispatch('loading', false)
+                dispatch('getAvroInfo', { oid: object.oid, candid: candid })
             })
             .catch(reason => {
-                console.log("Error with alert query", reason)
+                console.error("Error with alert query", reason)
                 commit('SET_ERROR', reason);
                 dispatch('loading', false);
             })
     },
-    queryObjects({ commit, dispatch, state}, payload) {
+    queryObjects({ commit, dispatch, state }, payload) {
         dispatch('loading', true)
         QueryPSQLService.queryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
@@ -288,6 +292,7 @@ export const actions = {
     },
     queryAlertsFromURL({ commit, dispatch }, object) {
         dispatch('loading', true)
+        let candid = null
         Promise.all([
             QueryPSQLService.queryDetections(object.oid),
             QueryPSQLService.queryNonDetections(object.oid),
@@ -302,15 +307,18 @@ export const actions = {
                     if (index == 4) {
                         dispatch('objectSelected', element.data.result.stats)
                     }
+                    else if (index == 0) {
+                        candid = element.data.result.detections[0].candid_str
+                        dispatch('setObjectDetails', element.data.result)
+                    }
                     else {
                         dispatch('setObjectDetails', element.data.result)
                     }
                 })
-                dispatch('setShowObjectDetailsModal', true)
-                dispatch('loading', false)
+                dispatch('getAvroInfo', { oid: object.oid, candid: candid })
             })
             .catch(reason => {
-                console.log("Error with alert query", reason)
+                console.error("Error with alert query", reason)
                 commit('SET_ERROR', reason);
                 dispatch('loading', false);
             })
@@ -419,33 +427,41 @@ export const actions = {
             value: range[1]
         });
     },
-    getRecentObjects({dispatch}, payload){
+    getRecentObjects({ dispatch }, payload) {
         QueryPSQLService.queryRecentObjects(payload.mjd, payload.hours).then(response => {
             dispatch('setRecentObjects', response.data.result.count);
         })
     },
-    getRecentAlerts({dispatch}, payload){
+    getRecentAlerts({ dispatch }, payload) {
         QueryPSQLService.queryRecentAlerts(payload.mjd, payload.hours).then(response => {
             dispatch('setRecentAlerts', response.data.result.count);
         })
     },
-    getClassifiedCounts({dispatch}){
-        QueryPSQLService.queryClassifiedObjects().then( response => {
+    getClassifiedCounts({ dispatch }) {
+        QueryPSQLService.queryClassifiedObjects().then(response => {
             dispatch('setXmatchedCount', response.data.result.xmatch);
             dispatch('setRfCount', response.data.result.rf);
             dispatch('setEarlyCount', response.data.result.early);
         })
     },
-    getXMatches({dispatch}, payload){
+    getXMatches({ dispatch }, payload) {
         dispatch("nullXMatches", true);
         QueryXMatchService.xmatchall(payload)
-        .then(response => {
-            dispatch('setXMatches', response);
+            .then(response => {
+                dispatch('setXMatches', response);
+            })
+            .catch(reason => {
+                dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
+            })
+
+    },
+    getAvroInfo({ dispatch }, payload) {
+        QueryAvroService.getAvroInfo(payload).then(response => {
+            dispatch('setAvroInfo', response.data.candidate)
+            dispatch('loading', false)
+            dispatch('setShowObjectDetailsModal', true)
         })
-        .catch(reason => {
-            dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
-        })
-       
+
     }
 }
 
