@@ -332,9 +332,9 @@ export default {
         nedUrl() {
             return this.ztf_object
                 ? "https://ned.ipac.caltech.edu/conesearch?search_type=Near+Position+Search&iau_style=liberal&objname=&coordinates=" +
-                      Math.round(this.ztf_object.meanra * 1000) / 1000 +
+                      this.ztf_object.meanra+
                       "d," +
-                      Math.round(this.ztf_object.meandec * 1000) / 1000 +
+                      this.ztf_object.meandec +
                       "d&iau_name=&radius=0.17&in_csys=Equatorial&in_equinox=J2000&in_csys_IAU=Equatorial&in_equinox_IAU=B1950&z_constraint=Unconstrained&z_value1=&z_value2=&z_unit=z&ot_include=ANY&nmp_op=ANY&hconst=67.8&omegam=0.308&omegav=0.692&wmap=4&corr_z=1&out_csys=Same+as+Input&out_equinox=Same+as+Input&obj_sort=Distance+to+search+center&op=Go&form_build_id=form-a28snc2SSIQl3faGUe4otq7_NcjnMwxxxPoVxw5LHzg&form_id=conesearch"
                 : "#";
         },
