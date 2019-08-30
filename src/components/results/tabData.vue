@@ -82,7 +82,7 @@ export default {
     data() {
         return {
             options: {
-                sortBy: ["lastmjd"],
+                sortBy: ["pclassrf"],
                 sortDesc: [true]
             }
         };
