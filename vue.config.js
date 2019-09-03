@@ -8,6 +8,4 @@ module.exports = {
           new CompressionWebpackPlugin()
         ],
       },
-    publicPath: process.env.NODE_ENV === 'production' ?
-        '/vue/' : '/'
 }
