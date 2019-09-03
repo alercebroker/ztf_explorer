@@ -24,45 +24,47 @@
         </v-flex>
 
         <v-flex xs12 v-else-if="$store.state.search.query_status === 200">
-            <v-toolbar flat color="white">
-                <v-toolbar-title>
-                    <v-layout column pt-3>
-                        <v-flex
-                            xs6
-                            md6
-                        >Found {{ $store.state.results.total.toLocaleString() }} results</v-flex>
-                        <v-flex xs6 md6>
+            <v-layout row pt-3>
+                <v-flex md8>
+                    <v-layout column>
+                        <v-flex xs6 md6 pl-5>
+                            <h4>Found {{ $store.state.results.total.toLocaleString() }} results</h4>
+                        </v-flex>
+                        <v-flex xs6 md6 pl-2>
                             <column-options-modal />
                         </v-flex>
                     </v-layout>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-toolbar-title>
+                </v-flex>
+                <v-flex md4>
+                    <v-pagination
+                        v-model="currentPage"
+                        :length="$store.state.results.num_pages"
+                        :total-visible="10"
+                        v-show="$vuetify.breakpoint.mdAndUp"
+                    ></v-pagination>
+                </v-flex>
+            </v-layout>
+            <v-layout row>
+                <v-flex xs12>
+                    <v-data-table
+                        :headers="headers"
+                        :items="objects"
+                        :options.sync="options"
+                        :server-items-length="$store.state.results.total"
+                        @click:row="onRowClicked"
+                        class="elevation-1"
+                        hide-default-footer
+                        dense
+                        :mobile-breakpoint="250"
+                    ></v-data-table>
                     <v-pagination
                         v-model="currentPage"
                         :length="$store.state.results.num_pages"
                         :total-visible="5"
-                        v-show="$vuetify.breakpoint.mdAndUp"
+                        v-show="$vuetify.breakpoint.xsOnly"
                     ></v-pagination>
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-data-table
-                :headers="headers"
-                :items="objects"
-                :options.sync="options"
-                :server-items-length="$store.state.results.total"
-                @click:row="onRowClicked"
-                class="elevation-1"
-                hide-default-footer
-                dense
-                :mobile-breakpoint="250"
-            ></v-data-table>
-            <v-pagination
-                v-model="currentPage"
-                :length="$store.state.results.num_pages"
-                :total-visible="5"
-                v-show="$vuetify.breakpoint.xsOnly"
-            ></v-pagination>
+                </v-flex>
+            </v-layout>
         </v-flex>
     </v-layout>
 </template>
