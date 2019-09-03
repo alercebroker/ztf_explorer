@@ -2,11 +2,11 @@
     <v-card height="100%">
         <v-toolbar dense flat dark>
             <v-row align="center">
-                <v-col cols="5">
-                    <v-toolbar-title>Discovery Stamps</v-toolbar-title>
+                <v-col cols="3">
+                    <v-toolbar-title>Stamps</v-toolbar-title>
                 </v-col>
-                <v-col cols="5" class="mt-4">
-                    <v-select label="Stamp from" :items="dates" v-model="selectedStamp"></v-select>
+                <v-col cols="7" class="mt-4">
+                    <v-select :items="dates" v-model="selectedStamp"></v-select>
                 </v-col>
                 <v-col cols="2">
                     <v-icon @click="prevStamp">mdi-arrow-left-drop-circle</v-icon>
