@@ -214,6 +214,15 @@ export default {
                                 (this.ztf_object.meandec > 0 ? "+" + this.ztf_object.meandec : this.ztf_object.meandec) +
                                 "d&e=J2000&c=none"
                             : "#"
+                },
+                {
+                    name: "SDSS DR15",
+                    link: this.ztf_object
+                            ? "http://skyserver.sdss.org/dr15/en/tools/chart/navi.aspx?ra=" + 
+                                this.ztf_object.meanra +
+                                "&dec=" + 
+                                this.ztf_object.meandec
+                            : "#"
                 }
             ]
         }
