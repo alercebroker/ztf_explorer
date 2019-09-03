@@ -165,7 +165,6 @@ export default {
     watch: {
         currentPage(value) {
             if (this.$route.params.id) return;
-            console.log("currentPage", value)
             this.$store.dispatch("queryObjects", {
                 query_parameters: this.$store.state.search.query_parameters,
                 page: value,
@@ -177,7 +176,6 @@ export default {
         },
         options(value, old) {
             if (this.$route.params.id) return;
-            console.log("options")
             if (value.sortBy !== old.sortBy || value.sortDesc != old.sortDesc) {
                 this.$store.dispatch("queryObjects", {
                     query_parameters: this.$store.state.search.query_parameters,
