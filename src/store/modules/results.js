@@ -157,7 +157,7 @@ export const state = {
     objects: [],
     total: null,
     num_pages: null,
-    currentPage: null,
+    currentPage: 1,
     showObjectDetailsModal: false,
     recentObjects: 'counting...',
     recentAlerts: 'counting...',
@@ -171,7 +171,6 @@ export const mutations = {
         state.selectedObject = item;
     },
     SET_OBJECT_DETAILS(state, detail){
-        console.log(Object.keys(detail)[0], detail[Object.keys(detail)[0]])
         state.objectDetails[Object.keys(detail)[0]] = detail[Object.keys(detail)[0]]
     },
     SET_DETECTIONS(state, det){
