@@ -33,20 +33,12 @@ export const state = {
             value: 2
         },
         {
-            text: "EB",
-            value: 3
-        },
-        {
             text: "LPV",
             value: 4
         },
         {
             text: "RRL",
             value: 5
-        },
-        {
-            text: "SNe",
-            value: 6
         },
         {
             text: "Other",
