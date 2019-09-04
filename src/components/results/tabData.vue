@@ -55,7 +55,7 @@
                         :options.sync="options"
                         :server-items-length="$store.state.results.total"
                         @click:row="onRowClicked"
-                        class="elevation-1"
+                        class="elevation-0"
                         hide-default-footer
                         dense
                         :mobile-breakpoint="250"
