@@ -22,18 +22,18 @@
                 </v-flex>
             </v-layout>
             <v-layout wrap justify-center>
-                <v-flex xs12 sm4 pl-1 pr-1 class="text-md-center" pt-2 v-for="item in links" :key="item.name">
-                    <v-btn
-                    color="primary"
-                    block
-                    small
-                    depressed
-                    :href="item.link"
-                    target="_blank"
-                    >
-                        <div class="text-capitalize">
-                            {{ item.name }}
-                        </div>
+                <v-flex
+                    xs12
+                    sm4
+                    pl-1
+                    pr-1
+                    class="text-md-center"
+                    pt-2
+                    v-for="item in links"
+                    :key="item.name"
+                >
+                    <v-btn color="primary" block small depressed :href="item.link" target="_blank">
+                        <div class="text-capitalize">{{ item.name }}</div>
                     </v-btn>
                 </v-flex>
             </v-layout>
@@ -164,69 +164,72 @@ export default {
             });
             return filtered;
         },
-        links(){
+        links() {
             return [
                 {
                     name: "NED",
                     link: this.ztf_object
                         ? "https://ned.ipac.caltech.edu/conesearch?search_type=Near+Position+Search&iau_style=liberal&objname=&coordinates=" +
-                            Math.round(this.ztf_object.meanra * 1000) / 1000 +
-                            "d," +
-                            Math.round(this.ztf_object.meandec * 1000) / 1000 +
-                            "d&iau_name=&radius=0.17&in_csys=Equatorial&in_equinox=J2000&in_csys_IAU=Equatorial&in_equinox_IAU=B1950&z_constraint=Unconstrained&z_value1=&z_value2=&z_unit=z&ot_include=ANY&nmp_op=ANY&hconst=67.8&omegam=0.308&omegav=0.692&wmap=4&corr_z=1&out_csys=Same+as+Input&out_equinox=Same+as+Input&obj_sort=Distance+to+search+center&op=Go&form_build_id=form-a28snc2SSIQl3faGUe4otq7_NcjnMwxxxPoVxw5LHzg&form_id=conesearch"
+                          Math.round(this.ztf_object.meanra * 1000) / 1000 +
+                          "d," +
+                          Math.round(this.ztf_object.meandec * 1000) / 1000 +
+                          "d&iau_name=&radius=0.17&in_csys=Equatorial&in_equinox=J2000&in_csys_IAU=Equatorial&in_equinox_IAU=B1950&z_constraint=Unconstrained&z_value1=&z_value2=&z_unit=z&ot_include=ANY&nmp_op=ANY&hconst=67.8&omegam=0.308&omegav=0.692&wmap=4&corr_z=1&out_csys=Same+as+Input&out_equinox=Same+as+Input&obj_sort=Distance+to+search+center&op=Go&form_build_id=form-a28snc2SSIQl3faGUe4otq7_NcjnMwxxxPoVxw5LHzg&form_id=conesearch"
                         : "#"
                 },
                 {
                     name: "SIMBAD",
                     link: this.ztf_object
                         ? "http://simbad.u-strasbg.fr/simbad/sim-coo?Coord=" +
-                            this.ztf_object.meanra +
-                            "%20" +
-                            this.ztf_object.meandec +
-                            "&Radius.unit=arcsec&Radius=10"
+                          this.ztf_object.meanra +
+                          "%20" +
+                          this.ztf_object.meandec +
+                          "&Radius.unit=arcsec&Radius=10"
                         : "#"
                 },
                 {
                     name: "TNS",
                     link: this.ztf_object
                         ? "https://wis-tns.weizmann.ac.il/search?ra=" +
-                            this.ztf_object.meanra +
-                            "&decl=" +
-                            this.ztf_object.meandec +
-                            "&radius=10&coords_unit=arcsec"
+                          this.ztf_object.meanra +
+                          "&decl=" +
+                          this.ztf_object.meandec +
+                          "&radius=10&coords_unit=arcsec"
                         : "#"
                 },
                 {
                     name: "PanSTARRS",
                     link: this.ztf_object
                         ? "http://ps1images.stsci.edu/cgi-bin/ps1cutouts?pos=" +
-                            this.ztf_object.meanra +
-                            (this.ztf_object.meandec > 0 ? "+" + this.ztf_object.meandec : this.ztf_object.meandec) +
-                            "&filter=color"
+                          this.ztf_object.meanra +
+                          (this.ztf_object.meandec > 0
+                              ? "+" + this.ztf_object.meandec
+                              : this.ztf_object.meandec) +
+                          "&filter=color"
                         : "#"
                 },
-                {
-                    name: "DSS",
-                    link: this.ztf_object
-                            ? "http://archive.stsci.edu/cgi-bin/dss_search?h=5.0&w=5.0&f=fits&v=poss2ukstu_red&r=" +
-                                this.ztf_object.meanra +
-                                "d&d=" +
-                                (this.ztf_object.meandec > 0 ? "+" + this.ztf_object.meandec : this.ztf_object.meandec) +
-                                "d&e=J2000&c=none"
-                            : "#"
-                },
+                // {
+                //     name: "DSS",
+                //     link: this.ztf_object
+                //         ? "http://archive.stsci.edu/cgi-bin/dss_search?h=5.0&w=5.0&f=fits&v=poss2ukstu_red&r=" +
+                //           this.ztf_object.meanra +
+                //           "d&d=" +
+                //           (this.ztf_object.meandec > 0
+                //               ? "+" + this.ztf_object.meandec
+                //               : this.ztf_object.meandec) +
+                //           "d&e=J2000&c=none"
+                //         : "#"
+                // },
                 {
                     name: "SDSS DR15",
                     link: this.ztf_object
-                            ? "http://skyserver.sdss.org/dr15/en/tools/chart/navi.aspx?ra=" + 
-                                this.ztf_object.meanra +
-                                "&dec=" + 
-                                this.ztf_object.meandec
-                            : "#"
+                        ? "http://skyserver.sdss.org/dr15/en/tools/chart/navi.aspx?ra=" +
+                          this.ztf_object.meanra +
+                          "&dec=" +
+                          this.ztf_object.meandec
+                        : "#"
                 }
-            ]
+            ];
         }
     }
-
-}
+};
 </script>
