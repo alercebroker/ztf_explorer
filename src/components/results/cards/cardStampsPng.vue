@@ -32,17 +32,17 @@
             </v-layout>
             <v-layout row justify-space-around align-end>
                 <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" @click="download('science', $event)">
+                    <v-btn x-small outlined color="primary" :href="download('science', $event)">
                         <v-icon left small>cloud_download</v-icon>Download
                     </v-btn>
                 </v-flex>
                 <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" @click="download('template', $event)">
+                    <v-btn x-small outlined color="primary" :href="download('template', $event)">
                         <v-icon left small>cloud_download</v-icon>Download
                     </v-btn>
                 </v-flex>
                 <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" @click="download('difference', $event)">
+                    <v-btn x-small outlined color="primary" :href="download('difference', $event)">
                         <v-icon left small>cloud_download</v-icon>Download
                     </v-btn>
                 </v-flex>
@@ -89,19 +89,7 @@ export default {
                 "&candid=" +
                 this.getCandid(this.currentStamp) +
                 "&type="+type+"&format=fits";
-            fetch(link)
-                .then(resp => resp.blob())
-                .then(blob => {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement("a");
-                    a.style.display = "none";
-                    a.href = url;
-                    a.download = "stamp.targz";
-                    document.body.appendChild(a);
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                })
-                .catch(() => alert("Ups, there was a problem with the download"));
+            return link
         }
     },
     mounted() {
