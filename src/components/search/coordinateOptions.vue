@@ -54,12 +54,12 @@ export default {
         },
         rs: {
             get() {
-                return this.$store.state.search.coordinates.rs;
+                return this.$store.state.search.coordinates.sr;
             },
             set(value) {
                 this.$store.dispatch("updateOptions", {
                     obj: "coordinates",
-                    keyPath: ["rs"],
+                    keyPath: ["sr"],
                     value: value
                 });
             }
