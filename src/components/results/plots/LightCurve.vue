@@ -118,6 +118,7 @@ export default {
                                     .toUTCString()
                                     .slice(0, -3) + "UT"
                             );
+                            table += rowTable("", "click to change stamp", "")
                             return table + "</table>";
                         }
                     }
