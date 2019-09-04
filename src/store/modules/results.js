@@ -163,7 +163,8 @@ export const state = {
     recentAlerts: 'counting...',
     xmatchedCount: 'counting...',
     rfCount: 'counting...',
-    earlyCount: 'counting...'
+    earlyCount: 'counting...',
+    selectedDetection: null,
 }
 
 export const mutations = {
@@ -229,6 +230,9 @@ export const mutations = {
     SET_XMATCHES_MSG(state, msg){
         state.objectDetails.error_xmatches = msg
         state.objectDetails.load_xmatches = false
+    },
+    SET_SELECTED_DETECTION(state, date){
+        state.selectedDetection = date;
     }
 }
 
@@ -300,6 +304,9 @@ export const actions = {
     },
     setXMatchesMsg({commit}, value) {
         commit('SET_XMATCHES_MSG', value)
+    },
+    setSelectedDetection({commit}, date){
+        commit('SET_SELECTED_DETECTION', date);
     }
 }
 

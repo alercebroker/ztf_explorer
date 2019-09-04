@@ -96,6 +96,9 @@ export default {
             set(value) {
                 this.currentStamp = this.dates.indexOf(value)
             }
+        },
+        selectedDetection(){
+            return this.$store.state.results.selectedDetection;
         }
     },
     watch: {
@@ -112,6 +115,9 @@ export default {
                 this.object,
                 this.getCandid(newVal)
             );
+        },
+        selectedDetection(newVal){
+            this.currentStamp = this.dates.indexOf(newVal)
         }
     }
 };

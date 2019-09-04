@@ -1,5 +1,5 @@
 <template>
-    <v-chart :options="scatter" autoresize />
+    <v-chart :options="scatter" autoresize @click="onClick"/>
 </template>
 
 <script>
@@ -259,6 +259,14 @@ export default {
                     }
                 ]
             };
+        },
+        onClick(detection) {
+            this.$store.dispatch(
+                "setSelectedDetection",
+                jdToDate(detection.value[0])
+                    .toUTCString()
+                    .slice(0, -3) + "UT"
+            );
         }
     },
     computed: {

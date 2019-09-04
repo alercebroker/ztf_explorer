@@ -249,7 +249,7 @@ export default {
                     }
                 ]
             };
-        }
+        },
     },
     computed: {
         alerts() {
