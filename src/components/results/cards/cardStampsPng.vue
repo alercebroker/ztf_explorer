@@ -148,6 +148,9 @@ export default {
         },
         selectedDetection(newVal) {
             this.currentStamp = this.dates.indexOf(newVal);
+        },
+        object(newVal){
+            this.currentStamp = 0;
         }
     }
 };
