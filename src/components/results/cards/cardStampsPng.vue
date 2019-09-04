@@ -30,6 +30,23 @@
                     <v-img contain :src="difference" class="stampImg" />
                 </v-flex>
             </v-layout>
+            <v-layout row justify-space-around align-end>
+                <v-flex xs3 mt-2>
+                    <v-btn x-small outlined color="primary" @click="download('science', $event)">
+                        <v-icon left small>cloud_download</v-icon>Download
+                    </v-btn>
+                </v-flex>
+                <v-flex xs3 mt-2>
+                    <v-btn x-small outlined color="primary" @click="download('template', $event)">
+                        <v-icon left small>cloud_download</v-icon>Download
+                    </v-btn>
+                </v-flex>
+                <v-flex xs3 mt-2>
+                    <v-btn x-small outlined color="primary" @click="download('difference', $event)">
+                        <v-icon left small>cloud_download</v-icon>Download
+                    </v-btn>
+                </v-flex>
+            </v-layout>
         </v-card-text>
     </v-card>
 </template>
@@ -64,6 +81,27 @@ export default {
         getCandid(index) {
             return this.$store.state.results.objectDetails.detections[index]
                 .candid_str;
+        },
+        download(type,event) {
+            let link =
+                "http://avro.alerce.online/get_stamp?oid=" +
+                this.object +
+                "&candid=" +
+                this.getCandid(this.currentStamp) +
+                "&type="+type+"&format=fits";
+            fetch(link)
+                .then(resp => resp.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.style.display = "none";
+                    a.href = url;
+                    a.download = "stamp.targz";
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(() => alert("Ups, there was a problem with the download"));
         }
     },
     mounted() {
@@ -86,18 +124,22 @@ export default {
         },
         dates() {
             return this.$store.state.results.objectDetails.detections.map(x => {
-                return jdToDate(x.mjd).toUTCString().slice(0, -3) + "UT"
+                return (
+                    jdToDate(x.mjd)
+                        .toUTCString()
+                        .slice(0, -3) + "UT"
+                );
             });
         },
         selectedStamp: {
             get() {
-                return this.dates[this.currentStamp]; 
+                return this.dates[this.currentStamp];
             },
             set(value) {
-                this.currentStamp = this.dates.indexOf(value)
+                this.currentStamp = this.dates.indexOf(value);
             }
         },
-        selectedDetection(){
+        selectedDetection() {
             return this.$store.state.results.selectedDetection;
         }
     },
@@ -116,8 +158,8 @@ export default {
                 this.getCandid(newVal)
             );
         },
-        selectedDetection(newVal){
-            this.currentStamp = this.dates.indexOf(newVal)
+        selectedDetection(newVal) {
+            this.currentStamp = this.dates.indexOf(newVal);
         }
     }
 };
