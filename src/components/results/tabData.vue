@@ -1,5 +1,5 @@
 <template>
-    <v-layout row wrap pl-4 pr-4 pt-2 pb-5>
+    <v-layout row wrap  style="margin:0 0 0 0; padding: 0 0 0 0;">
         <v-flex v-if="$store.state.search.error">
             <v-alert :value="true" type="error">Error connecting to our servers</v-alert>
         </v-flex>
@@ -15,7 +15,10 @@
         <v-flex
             v-else-if="!$store.state.search.searched && !$store.state.results.showObjectDetailsModal"
         >
-            <v-alert type="info" :value="true">Your search results will be displayed here</v-alert>
+            <v-alert  border="top"
+                      outlined
+                      type="info"
+                      :value="true">Your search results will be displayed here</v-alert>
         </v-flex>
         <v-flex v-else-if="$store.state.search.query_status === 504">
             <v-alert type="warning" :value="true">
