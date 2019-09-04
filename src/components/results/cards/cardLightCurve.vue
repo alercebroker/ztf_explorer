@@ -15,7 +15,7 @@
                     :label="option"
                     :value="index"
                 ></v-radio>
-                <v-btn small outlined color="green" @click="download">
+                <v-btn small outlined color="primary" @click="download">
                     <v-icon left small>cloud_download</v-icon>Download
                 </v-btn>
             </v-radio-group>
