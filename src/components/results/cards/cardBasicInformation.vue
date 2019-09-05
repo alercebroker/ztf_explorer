@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         getLateClass(obj) {
-            let ret = this.$store.state.search.lateClasses.find(function(x) {
+            let ret = this.$store.getters.lateClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
                 }
@@ -68,7 +68,15 @@ export default {
             return ret ? ret.text : "-";
         },
         getEarlyClass(obj) {
-            let ret = this.$store.state.search.earlyClasses.find(function(x) {
+            let ret = this.$store.getters.earlyClasses.find(function(x) {
+                if (x.value == obj) {
+                    return x;
+                }
+            });
+            return ret ? ret.text : "-";
+        },
+        getXmatchClass(obj, classifier){
+            let ret = this.$store.getters.xmatchClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
                 }
@@ -115,7 +123,7 @@ export default {
                 this.ztf_object.classxmatch
                     ? {
                           column: "X-Match",
-                          value: this.getLateClass(this.ztf_object.classxmatch)
+                          value: this.getXmatchClass(this.ztf_object.classxmatch)
                       }
                     : null,
                 this.ztf_object.classrf

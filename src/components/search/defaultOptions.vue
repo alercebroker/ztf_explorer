@@ -115,8 +115,11 @@ export default {
         },
         classes() {
             if (this.selectedClassifier === "classearly")
-                return this.$store.state.search.earlyClasses;
-            return this.$store.state.search.lateClasses;
+                return this.$store.getters.earlyClasses;
+            if (this.selectedClassifier === "classxmatch")
+                return this.$store.getters.xmatchClasses;
+            if (this.selectedClassifier === "classrf")
+                return this.$store.getters.lateClasses;
         },
         probability: {
             get() {

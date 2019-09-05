@@ -90,22 +90,6 @@ export default {
         cardBasicInformation
     },
     methods: {
-        getLateClass(obj) {
-            let ret = this.$store.state.search.lateClasses.find(function(x) {
-                if (x.value == obj) {
-                    return x;
-                }
-            });
-            return ret ? ret.text : "-";
-        },
-        getEarlyClass(obj) {
-            let ret = this.$store.state.search.earlyClasses.find(function(x) {
-                if (x.value == obj) {
-                    return x;
-                }
-            });
-            return ret ? ret.text : "-";
-        },
         mjdToDate(mjd) {
             return jdToDate(mjd).toUTCString();
         },

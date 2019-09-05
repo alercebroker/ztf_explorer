@@ -4,124 +4,143 @@ import Vue from 'vue';
 export const state = {
     query_parameters: null,
     filters: { nobs: {} },
-    dates: { firstmjd: {}},
+    dates: { firstmjd: {} },
     bands: {},
     coordinates: {},
     sql: "SELECT * FROM objects",
     query_status: 0,
     error: null,
     file: null,
-    lateClasses: [
+    classes: [
         {
             text: "Not specified",
-            value: null
+            value: null,
+            classifier: ["late", "early", "xmatch"]
         },
         {
             text: "Classified",
-            value: "classified"
+            value: "classified",
+            classifier: ["late", "early", "xmatch"]
         },
         {
             text: "Not classified",
-            value: "not classified"
+            value: "not classified",
+            classifier: ["late", "early", "xmatch"]
         },
         {
             text: "Ceph",
-            value: 1
+            value: 1,
+            classifier: ["late", "xmatch"]
         },
         {
             text: "DSCT",
-            value: 2
+            value: 2,
+            classifier: ["late", "xmatch"]
+        },
+        {
+            text: "EB",
+            value: 3,
+            classifier: ["xmatch"]
         },
         {
             text: "LPV",
-            value: 4
+            value: 4,
+            classifier: ["late", "xmatch"]
         },
         {
             text: "RRL",
-            value: 5
+            value: 5,
+            classifier: ["late", "xmatch"]
+        },
+        {
+            text: "SNe",
+            value: 6,
+            classifier: ["xmatch"]
         },
         {
             text: "Other",
-            value: 0
+            value: 0,
+            classifier: ["late", "xmatch"]
         },
         {
             text: "AGN I",
-            value: 7
+            value: 7,
+            classifier: ["late"]
         },
         {
             text: "Blazar",
-            value: 8
+            value: 8,
+            classifier: ["late"]
         },
         {
             text: "CV/Nova",
-            value: 9
+            value: 9,
+            classifier: ["late"]
         },
         {
             text: "SN Ia",
-            value: 10
+            value: 10,
+            classifier: ["late"]
         },
         {
             text: "SN Ibc",
-            value: 11
+            value: 11,
+            classifier: ["late"]
         },
         {
             text: "SN II",
-            value: 12
+            value: 12,
+            classifier: ["late"]
         },
         {
             text: "SN IIn",
-            value: 13
+            value: 13,
+            classifier: ["late"]
         },
         {
             text: "SLSN",
-            value: 14
+            value: 14,
+            classifier: ["late"]
         },
         {
             text: "EB/SD/D",
-            value: 15
+            value: 15,
+            classifier: ["late"]
         },
         {
             text: "EB/C",
-            value: 16
+            value: 16,
+            classifier: ["late"]
         },
         {
             text: "Periodic/Other",
-            value: 17
-        },
-
-    ],
-    earlyClasses: [
-        {
-            text: "Not specified",
-            value: null
-        },
-        {
-            text: "Classified",
-            value: "classified"
-        },
-        {
-            text: "Not classified",
-            value: "not classified"
+            value: 17,
+            classifier: ["late"]
         },
         {
             text: "AGN",
-            value: 18
+            value: 18,
+            classifier: ["early"]
         },
         {
             text: "SN",
-            value: 19
+            value: 19,
+            classifier: ["early"]
         },
         {
             text: "Variable Star",
-            value: 20
+            value: 20,
+            classifier: ["early"]
         },
         {
             text: "Asteroid",
-            value: 21
+            value: 21,
+            classifier: ["early"]
         },
         {
             text: "Bogus",
-            value: 22
+            value: 22,
+            classifier: ["early"]
         }
     ],
     classifiers: [
@@ -275,7 +294,7 @@ export const actions = {
                 dispatch('loading', false);
             })
     },
-    queryObjects({ commit, dispatch, state}, payload) {
+    queryObjects({ commit, dispatch, state }, payload) {
         dispatch('loading', true)
         QueryPSQLService.queryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
@@ -422,33 +441,50 @@ export const actions = {
             value: range[1]
         });
     },
-    getRecentObjects({dispatch}, payload){
+    getRecentObjects({ dispatch }, payload) {
         QueryPSQLService.queryRecentObjects(payload.mjd, payload.hours).then(response => {
             dispatch('setRecentObjects', response.data.result.count);
         })
     },
-    getRecentAlerts({dispatch}, payload){
+    getRecentAlerts({ dispatch }, payload) {
         QueryPSQLService.queryRecentAlerts(payload.mjd, payload.hours).then(response => {
             dispatch('setRecentAlerts', response.data.result.count);
         })
     },
-    getClassifiedCounts({dispatch}){
-        QueryPSQLService.queryClassifiedObjects().then( response => {
+    getClassifiedCounts({ dispatch }) {
+        QueryPSQLService.queryClassifiedObjects().then(response => {
             dispatch('setXmatchedCount', response.data.result.xmatch);
             dispatch('setRfCount', response.data.result.rf);
             dispatch('setEarlyCount', response.data.result.early);
         })
     },
-    getXMatches({dispatch}, payload){
+    getXMatches({ dispatch }, payload) {
         dispatch("nullXMatches", true);
         QueryXMatchService.xmatchall(payload)
-        .then(response => {
-            dispatch('setXMatches', response);
-        })
-        .catch(reason => {
-            dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
-        })
-       
+            .then(response => {
+                dispatch('setXMatches', response);
+            })
+            .catch(reason => {
+                dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
+            })
+
     }
+}
+export const getters = {
+    lateClasses(state) {
+        return state.classes.filter(c => {
+            return c.classifier.includes("late")
+        })
+    },
+    earlyClasses(state) {
+        return state.classes.filter(c => {
+            return c.classifier.includes("early")
+        })
+    },
+    xmatchClasses(state) {
+        return state.classes.filter(c => {
+            return c.classifier.includes("xmatch")
+        })
+    },
 }
 

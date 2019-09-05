@@ -50,21 +50,6 @@ export default {
         };
     },
     methods: {
-        getLateClass(obj, classifier) {
-            return this.$store.state.search.lateClasses.find(function(x) {
-                if (x.value == obj[classifier]) {
-                    return x;
-                }
-            }).text;
-        },
-        getEarlyClass(obj, classifier) {
-            return this.$store.state.search.earlyClasses.find(function(x) {
-                if (x.value == obj[classifier]) {
-                    return x;
-                }
-            }).text;
-        },
-
         setValues(probabilities) {
             let categories = [];
             let series = [];

@@ -1,5 +1,5 @@
 <template>
-    <v-layout row wrap  style="margin:0 0 0 0; padding: 0 0 0 0;">
+    <v-layout row wrap style="margin:0 0 0 0; padding: 0 0 0 0;">
         <v-flex v-if="$store.state.search.error">
             <v-alert :value="true" type="error">Error connecting to our servers</v-alert>
         </v-flex>
@@ -15,10 +15,12 @@
         <v-flex
             v-else-if="!$store.state.search.searched && !$store.state.results.showObjectDetailsModal"
         >
-            <v-alert  border="top"
-                      outlined
-                      type="info"
-                      :value="true">Your search results will be displayed here</v-alert>
+            <v-alert
+                border="top"
+                outlined
+                type="info"
+                :value="true"
+            >Your search results will be displayed here</v-alert>
         </v-flex>
         <v-flex v-else-if="$store.state.search.query_status === 504">
             <v-alert type="warning" :value="true">
@@ -94,7 +96,7 @@ export default {
     },
     methods: {
         getLateClass(obj) {
-            let ret = this.$store.state.search.lateClasses.find(function(x) {
+            let ret = this.$store.getters.lateClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
                 }
@@ -102,7 +104,15 @@ export default {
             return ret ? ret.text : "-";
         },
         getEarlyClass(obj) {
-            let ret = this.$store.state.search.earlyClasses.find(function(x) {
+            let ret = this.$store.getters.earlyClasses.find(function(x) {
+                if (x.value == obj) {
+                    return x;
+                }
+            });
+            return ret ? ret.text : "-";
+        },
+        getXmatchClass(obj, classifier) {
+            let ret = this.$store.getters.xmatchClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
                 }
@@ -137,8 +147,11 @@ export default {
             );
             Object.values(objects).forEach(obj => {
                 Object.keys(obj).forEach(key => {
-                    if (key.startsWith("class") && key !== "classearly") {
+                    if (key === "classrf") {
                         obj[key] = this.getLateClass(obj[key]);
+                    }
+                    if (key === "classxmatch") {
+                        obj[key] = this.getXmatchClass(obj[key]);
                     }
                     if (key === "classearly") {
                         obj[key] = this.getEarlyClass(obj[key]);
