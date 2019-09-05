@@ -32,17 +32,17 @@
             </v-layout>
             <v-layout row justify-space-around align-end>
                 <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" :href="download('science', $event)">
+                    <v-btn x-small outlined color="primary" :href="download('science')">
                         <v-icon left small>cloud_download</v-icon>Download
                     </v-btn>
                 </v-flex>
                 <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" :href="download('template', $event)">
+                    <v-btn x-small outlined color="primary" :href="download('template')">
                         <v-icon left small>cloud_download</v-icon>Download
                     </v-btn>
                 </v-flex>
                 <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" :href="download('difference', $event)">
+                    <v-btn x-small outlined color="primary" :href="download('difference')">
                         <v-icon left small>cloud_download</v-icon>Download
                     </v-btn>
                 </v-flex>
@@ -58,16 +58,12 @@ export default {
     name: "card-stamps-png",
     data() {
         return {
-            currentStamp: 0,
-            science: "",
-            difference: "",
-            template: ""
         };
     },
     methods: {
         prevStamp() {
             if (this.currentStamp > 0) {
-                this.currentStamp -= 1;
+                this.$store.dispatch('setCurrentStamp', this.currentStamp - 1)
             }
         },
         nextStamp() {
@@ -75,36 +71,24 @@ export default {
                 this.currentStamp + 1 <=
                 this.$store.state.results.objectDetails.detections.length
             ) {
-                this.currentStamp += 1;
+                this.$store.dispatch("setCurrentStamp", this.currentStamp + 1);
             }
         },
         getCandid(index) {
             return this.$store.state.results.objectDetails.detections[index]
                 .candid_str;
         },
-        download(type,event) {
+        download(type, event) {
             let link =
                 "http://avro.alerce.online/get_stamp?oid=" +
                 this.object +
                 "&candid=" +
                 this.getCandid(this.currentStamp) +
-                "&type="+type+"&format=fits";
-            return link
+                "&type=" +
+                type +
+                "&format=fits";
+            return link;
         }
-    },
-    mounted() {
-        this.science = QueryStampsService.getScienceURL(
-            this.object,
-            this.getCandid(this.currentStamp)
-        );
-        this.difference = QueryStampsService.getDifferenceURL(
-            this.object,
-            this.getCandid(this.currentStamp)
-        );
-        this.template = QueryStampsService.getTemplateURL(
-            this.object,
-            this.getCandid(this.currentStamp)
-        );
     },
     computed: {
         object() {
@@ -124,35 +108,35 @@ export default {
                 return this.dates[this.currentStamp];
             },
             set(value) {
-                this.currentStamp = this.dates.indexOf(value);
+                this.$store.dispatch('setCurrentStamp',this.dates.indexOf(value));
             }
         },
         selectedDetection() {
             return this.$store.state.results.selectedDetection;
+        },
+        science() {
+            return QueryStampsService.getScienceURL(
+                this.object,
+                this.getCandid(this.currentStamp)
+            );
+        },
+        difference(){
+            return QueryStampsService.getDifferenceURL(
+                this.object,
+                this.getCandid(this.currentStamp)
+            );
+        },
+        template(){
+            return QueryStampsService.getTemplateURL(
+                this.object,
+                this.getCandid(this.currentStamp)
+            );
+        },
+        currentStamp(){
+            return this.$store.state.results.currentStamp;
         }
     },
-    watch: {
-        currentStamp(newVal) {
-            this.science = QueryStampsService.getScienceURL(
-                this.object,
-                this.getCandid(newVal)
-            );
-            this.difference = QueryStampsService.getDifferenceURL(
-                this.object,
-                this.getCandid(newVal)
-            );
-            this.template = QueryStampsService.getTemplateURL(
-                this.object,
-                this.getCandid(newVal)
-            );
-        },
-        selectedDetection(newVal) {
-            this.currentStamp = this.dates.indexOf(newVal);
-        },
-        object(newVal){
-            this.currentStamp = 0;
-        }
-    }
+    
 };
 </script>
 

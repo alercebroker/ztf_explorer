@@ -165,6 +165,7 @@ export const state = {
     rfCount: 'counting...',
     earlyCount: 'counting...',
     selectedDetection: null,
+    currentStamp: 0
 }
 
 export const mutations = {
@@ -233,6 +234,9 @@ export const mutations = {
     },
     SET_SELECTED_DETECTION(state, date){
         state.selectedDetection = date;
+    },
+    SET_CURRENT_STAMP(state, num){
+        state.currentStamp = num;
     }
 }
 
@@ -307,6 +311,9 @@ export const actions = {
     },
     setSelectedDetection({commit}, date){
         commit('SET_SELECTED_DETECTION', date);
+    },
+    setCurrentStamp({commit}, num){
+        commit('SET_CURRENT_STAMP', num);
     }
 }
 
