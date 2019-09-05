@@ -1,52 +1,48 @@
 <template>
     <!--BODY-->
     <v-row>
-      <v-col cols="10" offset="1">
-        <default-options></default-options>
-      </v-col>
+        <v-col cols="10" offset="1">
+            <default-options></default-options>
+        </v-col>
 
-      <v-col cols="10" offset="1" style="padding-top:0;">
-        <span class="subtitle-1">More Filters</span>
-        <v-divider></v-divider>
-        <v-expansion-panels v-model="panels" accordion multiple>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
-              <span class="font-weight-bold">
-                  Discovery Date
-              </span>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <date-options/>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-          <v-expansion-panel>
-            <v-expansion-panel-header>
-              <span class="font-weight-bold">
-                  Coordinates
-              </span>
-            </v-expansion-panel-header>
-            <v-expansion-panel-content>
-              <coordinate-options />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-      </v-col>
-      <v-col cols="10" offset="1" style="padding-top:0;">
-        <v-btn block tile small dark @click="clearQuery">Clear all options</v-btn>
-      </v-col>
+        <v-col cols="10" offset="1" style="padding-top:0;">
+            <span class="subtitle-1">More Filters</span>
+            <v-divider></v-divider>
+            <v-expansion-panels v-model="panels" accordion multiple>
+                <v-expansion-panel>
+                    <v-expansion-panel-header>
+                        <span class="font-weight-bold">Discovery Date</span>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <date-options />
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+                <v-expansion-panel>
+                    <v-expansion-panel-header>
+                        <span class="font-weight-bold">Coordinates</span>
+                    </v-expansion-panel-header>
+                    <v-expansion-panel-content>
+                        <coordinate-options />
+                    </v-expansion-panel-content>
+                </v-expansion-panel>
+            </v-expansion-panels>
+        </v-col>
+        <v-col cols="10" offset="1" style="padding-top:0;">
+            <v-btn block tile small dark @click="clearQuery">Clear all options</v-btn>
+        </v-col>
 
-      <v-col cols="10" offset="1" style="padding-top:0;">
-        <v-btn
-        block
-        normal
-        tile
-        raised
-        color="primary"
-        @click="onSubmitQuery"
-        :disabled="!validSearch"
-        >Search</v-btn>
-      </v-col>
-  </v-row>
+        <v-col cols="10" offset="1" style="padding-top:0;">
+            <v-btn
+                block
+                normal
+                tile
+                raised
+                color="primary"
+                @click="onSubmitQuery"
+                :disabled="!validSearch"
+            >Search</v-btn>
+        </v-col>
+    </v-row>
 </template>
 
 
@@ -67,7 +63,7 @@ export default {
             showSQLLabel: false,
             block: true,
             activeTab: null,
-            panels:[0]
+            panels: [0]
         };
     },
     mounted() {},
@@ -89,10 +85,18 @@ export default {
         },
         refreshSQL() {
             let query_parameters = {
-                filters: JSON.parse(JSON.stringify(this.$store.state.search.filters)),
-                bands: JSON.parse(JSON.stringify(this.$store.state.search.bands)),
-                dates: JSON.parse(JSON.stringify(this.$store.state.search.dates)),
-                coordinates: JSON.parse(JSON.stringify(this.$store.state.search.coordinates))
+                filters: JSON.parse(
+                    JSON.stringify(this.$store.state.search.filters)
+                ),
+                bands: JSON.parse(
+                    JSON.stringify(this.$store.state.search.bands)
+                ),
+                dates: JSON.parse(
+                    JSON.stringify(this.$store.state.search.dates)
+                ),
+                coordinates: JSON.parse(
+                    JSON.stringify(this.$store.state.search.coordinates)
+                )
             };
             this.removeEmpty(query_parameters);
             this.$store.dispatch("getSQL", query_parameters);
@@ -117,10 +121,18 @@ export default {
          */
         onSubmitQuery() {
             let query_parameters = {
-                filters: JSON.parse(JSON.stringify(this.$store.state.search.filters)),
-                bands: JSON.parse(JSON.stringify(this.$store.state.search.bands)),
-                dates: JSON.parse(JSON.stringify(this.$store.state.search.dates)),
-                coordinates: JSON.parse(JSON.stringify(this.$store.state.search.coordinates))
+                filters: JSON.parse(
+                    JSON.stringify(this.$store.state.search.filters)
+                ),
+                bands: JSON.parse(
+                    JSON.stringify(this.$store.state.search.bands)
+                ),
+                dates: JSON.parse(
+                    JSON.stringify(this.$store.state.search.dates)
+                ),
+                coordinates: JSON.parse(
+                    JSON.stringify(this.$store.state.search.coordinates)
+                )
             };
             if (this.$store.state.search.filters.oid) {
                 if (
@@ -137,11 +149,20 @@ export default {
             this.removeEmpty(query_parameters);
             this.$store.dispatch("setQueryParameters", query_parameters);
             this.$store.dispatch("getSQL", query_parameters);
+            let sortBy =
+                this.$store.state.search.selectedClassifier !== "classxmatch" &&
+                this.$store.state.search.selectedClassifier
+                    ? "p" + this.$store.state.search.selectedClassifier
+                    : "lastmjd";
             this.$store.dispatch("queryObjects", {
                 query_parameters: query_parameters,
                 page: 1,
                 perPage: this.$store.state.perPage,
-                sortBy: "lastmjd"
+                sortBy: sortBy
+            });
+            this.$store.dispatch("setTableOptions", {
+                sortBy: [sortBy],
+                sortDesc: [true]
             });
             this.$store.dispatch("setCurrentPage", 1);
             this.$store.dispatch("setSelectedTab", 1);

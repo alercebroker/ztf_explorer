@@ -67,7 +67,7 @@ export const state = {
             text: "Random Forest Class",
             show: true
         },
-        {   
+        {
             value: "pclassrf",
             sortable: true,
             text: "Random Forest Probability",
@@ -153,7 +153,7 @@ export const state = {
             show: false
         }
     ],
-    
+
     objects: [],
     total: null,
     num_pages: null,
@@ -165,155 +165,165 @@ export const state = {
     rfCount: 'counting...',
     earlyCount: 'counting...',
     selectedDetection: null,
-    currentStamp: 0
+    currentStamp: 0,
+    tableOptions: {
+        sortBy: ["lastmjd"],
+        sortDesc: [true]
+    }
 }
 
 export const mutations = {
-    SET_SELECTED_OBJECT(state, item){
+    SET_SELECTED_OBJECT(state, item) {
         state.selectedObject = item;
     },
-    SET_OBJECT_DETAILS(state, detail){
+    SET_OBJECT_DETAILS(state, detail) {
         state.objectDetails[Object.keys(detail)[0]] = detail[Object.keys(detail)[0]]
     },
-    SET_DETECTIONS(state, det){
+    SET_DETECTIONS(state, det) {
         state.objectDetails.detections = det
     },
-    SET_NON_DETECTIONS(state,nondet){
+    SET_NON_DETECTIONS(state, nondet) {
         state.objectDetails.non_detections = nondet
     },
-    SET_PROBABILITIES(state, prob){
+    SET_PROBABILITIES(state, prob) {
         state.objectDetails.probabilities = prob
     },
-    SET_PERIODS(state, periods){
+    SET_PERIODS(state, periods) {
         state.objectDetails.periods = periods
     },
     SET_XMATCHES(state, xmatches) {
         state.objectDetails.xmatches = xmatches
         state.objectDetails.load_xmatches = false
     },
-    SET_NULL_XMATCHES(state, value){
+    SET_NULL_XMATCHES(state, value) {
         state.objectDetails.xmatches = null
         state.objectDetails.load_xmatches = value
     },
-    SET_OBJECTS(state, objects){
+    SET_OBJECTS(state, objects) {
         state.objects = objects;
     },
-    SET_NUM_PAGES(state,num_pages){
+    SET_NUM_PAGES(state, num_pages) {
         state.num_pages = num_pages;
     },
-    SET_TOTAL(state, total){
+    SET_TOTAL(state, total) {
         state.total = total;
     },
-    SET_SHOW_OBJECT_DETAILS_MODAL(state, value){
+    SET_SHOW_OBJECT_DETAILS_MODAL(state, value) {
         state.showObjectDetailsModal = value
     },
-    SET_CURRENT_PAGE(state, value){
+    SET_CURRENT_PAGE(state, value) {
         state.currentPage = value;
     },
-    SET_SELECTED_COLUMN_OPTIONS(state, selected){
+    SET_SELECTED_COLUMN_OPTIONS(state, selected) {
         state.selectedColumnOptions = selected
     },
-    SET_RECENT_OBJECTS(state, count){
+    SET_RECENT_OBJECTS(state, count) {
         state.recentObjects = count;
     },
-    SET_RECENT_ALERTS(state, count){
+    SET_RECENT_ALERTS(state, count) {
         state.recentAlerts = count;
     },
-    SET_XMATCHED_COUNT(state, count){
+    SET_XMATCHED_COUNT(state, count) {
         state.xmatchedCount = count;
     },
-    SET_RF_COUNT(state, count){
+    SET_RF_COUNT(state, count) {
         state.rfCount = count;
     },
-    SET_EARLY_COUNT(state, count){
+    SET_EARLY_COUNT(state, count) {
         state.earlyCount = count;
     },
-    SET_XMATCHES_MSG(state, msg){
+    SET_XMATCHES_MSG(state, msg) {
         state.objectDetails.error_xmatches = msg
         state.objectDetails.load_xmatches = false
     },
-    SET_SELECTED_DETECTION(state, date){
+    SET_SELECTED_DETECTION(state, date) {
         state.selectedDetection = date;
     },
-    SET_CURRENT_STAMP(state, num){
+    SET_CURRENT_STAMP(state, num) {
         state.currentStamp = num;
+    },
+    SET_TABLE_OPTIONS(state, options){
+        state.tableOptions = options;
     }
 }
 
 export const actions = {
-    objectSelected({commit, dispatch, state}, object){
-        if(state.selectedObject && state.selectedObject.oid !== object.oid){
+    objectSelected({ commit, dispatch, state }, object) {
+        if (state.selectedObject && state.selectedObject.oid !== object.oid) {
             dispatch('queryAlerts', object)
         }
-        else{
+        else {
             commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
         }
         commit('SET_SELECTED_OBJECT', object);
     },
-    objectSelectedFromURL({commit, dispatch, state}, object){
-        if(state.selectedObject.oid !== object.oid){
+    objectSelectedFromURL({ commit, dispatch, state }, object) {
+        if (state.selectedObject.oid !== object.oid) {
             commit('SET_SELECTED_OBJECT', object);
             dispatch('queryAlertsFromURL', object);
         }
     },
-    setObjectDetails({commit}, detail){
+    setObjectDetails({ commit }, detail) {
         commit("SET_OBJECT_DETAILS", detail)
     },
-    setDetections({commit}, detections){
+    setDetections({ commit }, detections) {
         commit('SET_DETECTIONS', detections)
     },
-    setNonDetections({commit}, nondetections){
+    setNonDetections({ commit }, nondetections) {
         commit('SET_NON_DETECTIONS', nondetections)
     },
-    setProbabilities({commit}, probabilities){
+    setProbabilities({ commit }, probabilities) {
         commit('SET_PROBABILITIES', probabilities)
     },
-    setPeriods({commit}, periods){
+    setPeriods({ commit }, periods) {
         commit('SET_PERIODS', periods)
     },
-    setObjects({commit}, objects){
+    setObjects({ commit }, objects) {
         commit('SET_OBJECTS', objects.result);
         commit('SET_TOTAL', objects.total);
         commit('SET_NUM_PAGES', objects.num_pages)
     },
-    setShowObjectDetailsModal({commit}, value){
+    setShowObjectDetailsModal({ commit }, value) {
         commit('SET_SHOW_OBJECT_DETAILS_MODAL', value)
     },
-    setCurrentPage({commit}, value){
+    setCurrentPage({ commit }, value) {
         commit('SET_CURRENT_PAGE', value);
     },
-    setSelectedColumnOptions({commit}, selected){
+    setSelectedColumnOptions({ commit }, selected) {
         commit('SET_SELECTED_COLUMN_OPTIONS', selected)
     },
-    setRecentObjects({commit}, count){
+    setRecentObjects({ commit }, count) {
         commit('SET_RECENT_OBJECTS', count)
     },
-    setRecentAlerts({commit}, count){
+    setRecentAlerts({ commit }, count) {
         commit('SET_RECENT_ALERTS', count)
     },
-    setXmatchedCount({commit}, count){
+    setXmatchedCount({ commit }, count) {
         commit('SET_XMATCHED_COUNT', count)
     },
-    setRfCount({commit}, count){
+    setRfCount({ commit }, count) {
         commit('SET_RF_COUNT', count)
     },
-    setEarlyCount({commit}, count){
+    setEarlyCount({ commit }, count) {
         commit('SET_EARLY_COUNT', count)
     },
-    setXMatches({commit}, xmatches){
+    setXMatches({ commit }, xmatches) {
         commit('SET_XMATCHES', xmatches)
     },
-    nullXMatches({commit}, value) {
+    nullXMatches({ commit }, value) {
         commit('SET_NULL_XMATCHES', value)
     },
-    setXMatchesMsg({commit}, value) {
+    setXMatchesMsg({ commit }, value) {
         commit('SET_XMATCHES_MSG', value)
     },
-    setSelectedDetection({commit}, date){
+    setSelectedDetection({ commit }, date) {
         commit('SET_SELECTED_DETECTION', date);
     },
-    setCurrentStamp({commit}, num){
+    setCurrentStamp({ commit }, num) {
         commit('SET_CURRENT_STAMP', num);
+    },
+    setTableOptions({commit}, options){
+        commit('SET_TABLE_OPTIONS', options);
     }
 }
 

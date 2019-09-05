@@ -86,14 +86,7 @@ export default {
         // downloadModal,
         columnOptionsModal
     },
-    data() {
-        return {
-            options: {
-                sortBy: ["lastmjd"],
-                sortDesc: [true]
-            }
-        };
-    },
+
     methods: {
         getLateClass(obj) {
             let ret = this.$store.getters.lateClasses.find(function(x) {
@@ -128,7 +121,6 @@ export default {
             });
         }
     },
-    mounted: function() {},
     computed: {
         showObjectDetailsModal() {
             return this.$store.state.results.showObjectDetailsModal;
@@ -139,6 +131,17 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setCurrentPage", value);
+                if (!this.$route.params.id) {
+                    this.$store.dispatch("queryObjects", {
+                        query_parameters: this.$store.state.search
+                            .query_parameters,
+                        page: value,
+                        perPage: this.$store.state.perPage,
+                        total: this.$store.state.results.total,
+                        sortBy: this.options.sortBy[0],
+                        sortDesc: this.options.sortDesc[0]
+                    });
+                }
             }
         },
         objects() {
@@ -176,30 +179,33 @@ export default {
                 if (col.show) selected.push(col);
             });
             return selected;
+        },
+        selectedClassifier() {
+            return this.$store.state.search.selectedClassifier;
+        },
+        options: {
+            get() {
+                return this.$store.state.results.tableOptions;
+            },
+            set(value) {
+                this.$store.dispatch('setTableOptions', value);
+            }
         }
     },
     watch: {
-        currentPage(value) {
+        options(newVal, oldVal) {
             if (this.$route.params.id) return;
-            this.$store.dispatch("queryObjects", {
-                query_parameters: this.$store.state.search.query_parameters,
-                page: value,
-                perPage: this.$store.state.perPage,
-                total: this.$store.state.results.total,
-                sortBy: this.options.sortBy[0],
-                sortDesc: this.options.sortDesc[0]
-            });
-        },
-        options(value, old) {
-            if (this.$route.params.id) return;
-            if (value.sortBy !== old.sortBy || value.sortDesc != old.sortDesc) {
+            if (
+                newVal.sortBy[0] !== oldVal.sortBy[0] ||
+                newVal.sortDesc[0] != oldVal.sortDesc[0]
+            ) {
                 this.$store.dispatch("queryObjects", {
                     query_parameters: this.$store.state.search.query_parameters,
                     page: this.currentPage,
                     perPage: this.$store.state.perPage,
                     total: this.$store.state.results.total,
-                    sortBy: value.sortBy[0],
-                    sortDesc: value.sortDesc[0]
+                    sortBy: newVal.sortBy[0],
+                    sortDesc: newVal.sortDesc[0]
                 });
             }
         }
