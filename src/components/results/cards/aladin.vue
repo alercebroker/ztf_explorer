@@ -24,18 +24,18 @@ export default {
         if (this.coordinates.ra && this.coordinates.dec) {
             this.aladin.gotoRaDec(this.coordinates.ra, this.coordinates.dec);
             this.aladin.addCatalog(
-                A.catalogFromSimbad(this.coordinates, 0.1, {
+                A.catalogFromSimbad(this.coordinates, 0.014, {
                     onClick: "showTable"
                 })
             );
             this.aladin.addCatalog(
-                A.catalogFromNED(this.coordinates, 0.1, {
+                A.catalogFromNED(this.coordinates, 0.014, {
                     onClick: "showTable",
                     shape: "plus"
                 })
             );
             this.aladin.addCatalog(
-                A.catalogFromVizieR("I/311/hip2", this.coordinates, 5, {
+                A.catalogFromVizieR("I/311/hip2", this.coordinates, 0.014, {
                     onClick: "showTable"
                 })
             );
@@ -49,18 +49,18 @@ export default {
                     this.coordinates.dec
                 );
                 this.aladin.addCatalog(
-                    A.catalogFromSimbad(this.coordinates, 0.1, {
+                    A.catalogFromSimbad(this.coordinates, 0.014, {
                         onClick: "showTable"
                     })
                 );
                 this.aladin.addCatalog(
-                    A.catalogFromNED(this.coordinates, 0.1, {
+                    A.catalogFromNED(this.coordinates, 0.014, {
                         onClick: "showTable",
                         shape: "plus"
                     })
                 );
                 this.aladin.addCatalog(
-                    A.catalogFromVizieR("I/311/hip2", this.coordinates, 0.1, {
+                    A.catalogFromVizieR("I/311/hip2", this.coordinates, 0.014, {
                         onClick: "showTable"
                     })
                 );
