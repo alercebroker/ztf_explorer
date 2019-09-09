@@ -297,7 +297,7 @@ export const actions = {
     },
     queryObjects({ commit, dispatch }, payload) {
         dispatch('setTableLoading', true);
-        debounceQueryObjects(payload).then(response => {
+        QueryPSQLService.queryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
             commit('SET_ERROR', null);
             commit('SET_SEARCHED', true);

@@ -34,6 +34,9 @@
                         dense
                         :mobile-breakpoint="250"
                         :loading="loading"
+                        v-intro="tutorialMessage"
+                        v-intro-step="3"
+                        v-intro-if="$store.state.results.total"
                     ></v-data-table>
                     <v-pagination
                         v-model="currentPage"
@@ -59,7 +62,11 @@ export default {
         // downloadModal,
         columnOptionsModal
     },
-
+    data(){
+        return {
+            tutorialMessage: "Wait until the query finishes"
+        }
+    },
     methods: {
         getLateClass(obj) {
             let ret = this.$store.getters.lateClasses.find(function(x) {
@@ -186,7 +193,7 @@ export default {
     },
     watch: {
         options(newVal, oldVal) {
-            console.log("OPTIONS")
+            console.log("OPTIONS");
             if (this.$route.params.id) return;
             if (
                 newVal.sortBy[0] !== oldVal.sortBy[0] ||
@@ -201,6 +208,9 @@ export default {
                     sortDesc: newVal.sortDesc[0]
                 });
             }
+        },
+        objects(){
+            this.tutorialMessage = "ASDAD"
         }
     }
 };

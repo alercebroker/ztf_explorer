@@ -1,48 +1,51 @@
 <template>
     <!--BODY-->
-    <v-row>
-        <v-col cols="10" offset="1">
-            <default-options></default-options>
-        </v-col>
+    <div>
+        <v-row>
+            <v-col cols="10" offset="1">
+                <default-options></default-options>
+            </v-col>
 
-        <v-col cols="10" offset="1" style="padding-top:0;">
-            <span class="subtitle-1">More Filters</span>
-            <v-divider></v-divider>
-            <v-expansion-panels v-model="panels" accordion multiple>
-                <v-expansion-panel>
-                    <v-expansion-panel-header>
-                        <span class="font-weight-bold">Discovery Date</span>
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                        <date-options />
-                    </v-expansion-panel-content>
-                </v-expansion-panel>
-                <v-expansion-panel>
-                    <v-expansion-panel-header>
-                        <span class="font-weight-bold">Coordinates</span>
-                    </v-expansion-panel-header>
-                    <v-expansion-panel-content>
-                        <coordinate-options />
-                    </v-expansion-panel-content>
-                </v-expansion-panel>
-            </v-expansion-panels>
-        </v-col>
-        <v-col cols="10" offset="1" style="padding-top:0;">
-            <v-btn block tile small dark @click="clearQuery">Clear all options</v-btn>
-        </v-col>
+            <v-col cols="10" offset="1" style="padding-top:0;">
+                <span class="subtitle-1">More Filters</span>
+                <v-divider></v-divider>
+                <v-expansion-panels v-model="panels" accordion multiple>
+                    <v-expansion-panel>
+                        <v-expansion-panel-header>
+                            <span class="font-weight-bold">Discovery Date</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            <date-options />
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                    <v-expansion-panel>
+                        <v-expansion-panel-header>
+                            <span class="font-weight-bold">Coordinates</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            <coordinate-options />
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+            </v-col>
+        </v-row>
+        <v-row justify="center">
+            <v-col cols="6">
+                <v-btn block tile  dark @click="clearQuery">Clear all options</v-btn>
+            </v-col>
 
-        <v-col cols="10" offset="1" style="padding-top:0;">
-            <v-btn
-                block
-                normal
-                tile
-                raised
-                color="primary"
-                @click="onSubmitQuery"
-                :disabled="!validSearch"
-            >Search</v-btn>
-        </v-col>
-    </v-row>
+            <v-col cols="3">
+                <v-btn
+                    block
+                    tile
+                    raised
+                    color="primary"
+                    @click="onSubmitQuery"
+                    :disabled="!validSearch"
+                >Search</v-btn>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 

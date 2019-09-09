@@ -1,7 +1,10 @@
 <template>
     <v-container pt-0 pr-0 fluid>
         <div v-if="!$vuetify.breakpoint.smAndDown">
-            <result-panel />
+            <result-panel
+                v-intro="'When you click search, the results of your query will be shown in a table here. Click next to do a sample query'"
+                v-intro-step="2"
+            />
             <v-navigation-drawer
                 permanent
                 clipped
@@ -12,6 +15,8 @@
                 min-width="400"
                 mini-variant-width="40"
                 stateless
+                v-intro="'Use this panel to filter and search for objects'"
+                v-intro-step="1"
             >
                 <div v-if="!mini">
                     <v-toolbar dark color="toolbar" dense>
@@ -67,7 +72,7 @@
 import searchOptions from "../components/search/searchOptions.vue";
 import resultPanel from "../components/results/resultPanel.vue";
 import objectDetailsModal from "@/components/results/modals/objectDetailsModal";
-
+import { gregorianToJd } from "@/components/utils/AstroDates.js";
 export default {
     name: "explore-data",
     props: {},
@@ -95,11 +100,40 @@ export default {
         },
         closeObjectDetailsModal() {
             this.$store.dispatch("setShowObjectDetailsModal", false);
+        },
+        executeSampleQuery() {
+            let queryParameters = {
+                dates: {
+                    min: gregorianToJd(new Date())
+                }
+            };
+            this.$store.dispatch("queryObjects", {
+                query_parameters: queryParameters,
+                page: 1,
+                perPage: 10,
+                sortBy: "lastmjd",
+            });
         }
     },
     mounted: function() {
         this.getUrlObject();
         console.log("This is", process.env.VUE_APP_TITLE);
+        let executeSampleQuery = this.executeSampleQuery;
+        this.$intro()
+            .onbeforechange(function(targetElement) {
+                let step = parseInt(
+                    targetElement.attributes["data-step"].value
+                );
+                if (step === 3) {
+                    executeSampleQuery();
+                }
+            })
+            .start();
+    },
+    computed: {
+        introMsg() {
+            return "Use this panel to search for objects";
+        }
     }
 };
 </script>
