@@ -1,10 +1,7 @@
 <template>
     <v-container pt-0 pr-0 fluid>
         <div v-if="!$vuetify.breakpoint.smAndDown">
-            <result-panel
-                :loading.sync="$store.state.loading"
-                :downloading.sync="$store.state.downloading"
-            />
+            <result-panel />
             <v-navigation-drawer
                 permanent
                 clipped
@@ -51,20 +48,13 @@
                     </v-tooltip>
                 </v-sheet>
             </v-navigation-drawer>
-            <loading :show="$store.state.downloading" label="Downloading..."></loading>
-            <loading :show="$store.state.loading" label="Searching..."></loading>
             <object-details-modal
                 @modalClosed="closeObjectDetailsModal"
                 v-if="$store.state.results.showObjectDetailsModal"
             />
         </div>
         <div v-else>
-            <result-panel
-                :loading.sync="$store.state.loading"
-                :downloading.sync="$store.state.downloading"
-            ></result-panel>
-            <loading :show="$store.state.downloading" label="Downloading..."></loading>
-            <loading :show="$store.state.loading" label="Searching..."></loading>
+            <result-panel></result-panel>
             <object-details-modal
                 @modalClosed="closeObjectDetailsModal"
                 v-if="$store.state.results.showObjectDetailsModal"
@@ -76,19 +66,14 @@
 <script>
 import searchOptions from "../components/search/searchOptions.vue";
 import resultPanel from "../components/results/resultPanel.vue";
-import loading from "vue-full-loading";
 import objectDetailsModal from "@/components/results/modals/objectDetailsModal";
 
-/**This component connect searchOption and tabResult
- * call component loading when variable loading or dowloading is true
- */
 export default {
     name: "explore-data",
     props: {},
     components: {
         searchOptions,
         resultPanel,
-        loading,
         objectDetailsModal
     },
     data() {
