@@ -75,7 +75,7 @@ export default {
             });
             return ret ? ret.text : "-";
         },
-        getXmatchClass(obj, classifier){
+        getXmatchClass(obj, classifier) {
             let ret = this.$store.getters.xmatchClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
@@ -123,7 +123,9 @@ export default {
                 this.ztf_object.classxmatch
                     ? {
                           column: "X-Match",
-                          value: this.getXmatchClass(this.ztf_object.classxmatch)
+                          value: this.getXmatchClass(
+                              this.ztf_object.classxmatch
+                          )
                       }
                     : null,
                 this.ztf_object.classrf
@@ -154,18 +156,26 @@ export default {
                               .non_detections.length
                       }
                     : null,
-                {
-                    column: "Discovery Date",
-                    value:
-                        this.mjdToDate(this.ztf_object.firstmjd).slice(0, -3) +
-                        "UT"
-                },
-                {
-                    column: "Last Detection",
-                    value:
-                        this.mjdToDate(this.ztf_object.lastmjd).slice(0, -3) +
-                        "UT"
-                }
+                this.ztf_object.firstmjd
+                    ? {
+                          column: "Discovery Date",
+                          value:
+                              this.mjdToDate(this.ztf_object.firstmjd).slice(
+                                  0,
+                                  -3
+                              ) + "UT"
+                      }
+                    : null,
+                this.ztf_object.lastmjd
+                    ? {
+                          column: "Last Detection",
+                          value:
+                              this.mjdToDate(this.ztf_object.lastmjd).slice(
+                                  0,
+                                  -3
+                              ) + "UT"
+                      }
+                    : null
             ];
             let filtered = info.filter(function(el) {
                 return el != null;
