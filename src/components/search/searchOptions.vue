@@ -148,24 +148,15 @@ export default {
             }
             this.removeEmpty(query_parameters);
             this.$store.dispatch("setQueryParameters", query_parameters);
-            this.$store.dispatch("getSQL", query_parameters);
             let sortBy =
                 this.$store.state.search.selectedClassifier !== "classxmatch" &&
                 this.$store.state.search.selectedClassifier
                     ? "p" + this.$store.state.search.selectedClassifier
                     : "lastmjd";
-            this.$store.dispatch("queryObjects", {
-                query_parameters: query_parameters,
-                page: 1,
-                perPage: this.$store.state.perPage,
-                sortBy: sortBy
-            });
             this.$store.dispatch("setTableOptions", {
                 sortBy: [sortBy],
                 sortDesc: [true]
             });
-            this.$store.dispatch("setCurrentPage", 1);
-            this.$store.dispatch("setSelectedTab", 1);
             window.scrollTo(0, 0);
             this.$emit("onSearch");
         },
