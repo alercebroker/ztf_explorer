@@ -190,6 +190,9 @@ export default {
             set(value) {
                 this.$store.dispatch('setTableOptions', value);
             }
+        },
+        selectedClassifier(){
+            return this.$store.state.search.selectedClassifier;
         }
     },
     watch: {

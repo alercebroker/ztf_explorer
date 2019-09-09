@@ -136,6 +136,11 @@ export default {
             return this.$store.state.results.currentStamp;
         }
     },
+    watch:{
+        selectedDetection(newVal){
+            this.$store.dispatch('setCurrentStamp', this.dates.indexOf(newVal))
+        }
+    }
     
 };
 </script>

@@ -1,6 +1,8 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
 import QueryXMatchService from '@/services/QueryXMatchService.js';
+import _ from 'lodash';
 import Vue from 'vue';
+import { throttled } from '../../services/QueryPSQLService';
 export const state = {
     query_parameters: null,
     filters: { nobs: {} },
@@ -53,7 +55,7 @@ export const state = {
             classifier: ["late", "xmatch"]
         },
         {
-            text: "SNe",
+            text: "SN",
             value: 6,
             classifier: ["xmatch"]
         },
@@ -192,7 +194,6 @@ export const mutations = {
         if (payload.value != null)
             Vue.set(obj, payload.keyPath[lastKeyIndex], payload.value);
         else Vue.delete(obj, payload.keyPath[lastKeyIndex]);
-
     },
     SET_QUERY_PARAMETERS(state, query_parameters) {
         state.query_parameters = query_parameters;
@@ -289,14 +290,14 @@ export const actions = {
                 dispatch('loading', false)
             })
             .catch(reason => {
-                console.log("Error with alert query", reason)
+                console.error("Error with alert query", reason)
                 commit('SET_ERROR', reason);
                 dispatch('loading', false);
             })
     },
-    queryObjects({ commit, dispatch, state }, payload) {
+    queryObjects({ commit, dispatch }, payload) {
         dispatch('loading', true)
-        QueryPSQLService.queryObjects(payload).then(response => {
+        _.throttle(QueryPSQLService.queryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
             commit('SET_SEARCHED', true);
             commit('SET_ERROR', null);
@@ -305,7 +306,7 @@ export const actions = {
         }).catch(error => {
             commit('SET_ERROR', error);
             dispatch('loading', false);
-        })
+        }),3000, {'trailing': false})()
     },
     queryAlertsFromURL({ commit, dispatch }, object) {
         dispatch('loading', true)

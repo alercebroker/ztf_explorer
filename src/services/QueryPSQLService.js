@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import _ from 'lodash';
 const apiClient = axios.create({
     baseURL: process.env.VUE_APP_PSQL_API,
     withCredentials: false,
