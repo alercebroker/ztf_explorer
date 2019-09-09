@@ -297,7 +297,7 @@ export const actions = {
     },
     queryObjects({ commit, dispatch }, payload) {
         dispatch('loading', true)
-        _.throttle(QueryPSQLService.queryObjects(payload).then(response => {
+        QueryPSQLService.queryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
             commit('SET_SEARCHED', true);
             commit('SET_ERROR', null);
@@ -306,7 +306,7 @@ export const actions = {
         }).catch(error => {
             commit('SET_ERROR', error);
             dispatch('loading', false);
-        }),3000, {'trailing': false})()
+        })
     },
     queryAlertsFromURL({ commit, dispatch }, object) {
         dispatch('loading', true)
@@ -488,4 +488,3 @@ export const getters = {
         })
     },
 }
-

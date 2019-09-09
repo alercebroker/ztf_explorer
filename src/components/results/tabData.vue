@@ -198,19 +198,17 @@ export default {
     watch: {
         options(newVal, oldVal) {
             if (this.$route.params.id) return;
-            if (
-                newVal.sortBy[0] !== oldVal.sortBy[0] ||
-                newVal.sortDesc[0] != oldVal.sortDesc[0]
-            ) {
-                this.$store.dispatch("queryObjects", {
-                    query_parameters: this.$store.state.search.query_parameters,
-                    page: this.currentPage,
-                    perPage: this.$store.state.perPage,
-                    total: this.$store.state.results.total,
-                    sortBy: newVal.sortBy[0],
-                    sortDesc: newVal.sortDesc[0]
-                });
+
+            let parameters = {
+                query_parameters: this.$store.state.search.query_parameters,
+                page: this.currentPage,
+                perPage: this.$store.state.perPage,
+                total: this.$store.state.results.total,
+                sortBy: newVal.sortBy[0],
+                sortDesc: newVal.sortDesc[0]
             }
+            this.$store.dispatch("queryObjects", parameters );
+
         }
     }
 };
