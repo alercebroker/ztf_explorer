@@ -12,7 +12,7 @@
                     <!--If the screen is mobile-->
                     <v-layout>
                         <v-flex hidden-xs-only>
-                            <card-light-curve v-if="$store.state.loading === false" />
+                            <card-light-curve />
                         </v-flex>
                         <!--If the screen is upper-->
                         <v-flex hidden-sm-and-up>
@@ -26,7 +26,7 @@
                 </v-flex>
                 <!-- ALADIN -->
                 <v-flex xs12 md3>
-                    <aladin v-if="$store.state.loading === false" />
+                    <aladin />
                 </v-flex>
             </v-layout>
 
