@@ -278,10 +278,11 @@ export const actions = {
     setPeriods({ commit }, periods) {
         commit('SET_PERIODS', periods)
     },
-    setObjects({ commit }, objects) {
+    setObjects({ commit, dispatch }, objects) {
         commit('SET_OBJECTS', objects.result);
         commit('SET_TOTAL', objects.total);
         commit('SET_NUM_PAGES', objects.num_pages)
+        dispatch('setTableLoading', false)
     },
     setShowObjectDetailsModal({ commit }, value) {
         commit('SET_SHOW_OBJECT_DETAILS_MODAL', value)
