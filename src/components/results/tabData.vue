@@ -1,39 +1,11 @@
 <template>
     <v-layout row wrap style="margin:0 0 0 0; padding: 0 0 0 0;">
-        <v-flex v-if="$store.state.search.error">
-            <v-alert :value="true" type="error">Error connecting to our servers</v-alert>
-        </v-flex>
-        <v-flex v-else-if="$store.state.search.query_status === 204">
-            <v-alert :value="true" type="warning">
-                <h3>Our position is correct but there is no Alderaan!</h3>Sorry but your search did not return any results :(
-                <br />Try refining your Query
-            </v-alert>
-        </v-flex>
-        <v-flex v-else-if="$store.state.search.query_status === 400">
-            <v-alert :value="true" type="warning">There is an error with your query</v-alert>
-        </v-flex>
-        <v-flex
-            v-else-if="!$store.state.search.searched && !$store.state.results.showObjectDetailsModal"
-        >
-            <v-alert
-                border="top"
-                outlined
-                type="info"
-                :value="true"
-            >Your search results will be displayed here</v-alert>
-        </v-flex>
-        <v-flex v-else-if="$store.state.search.query_status === 504">
-            <v-alert type="warning" :value="true">
-                <h3>Opps!</h3>It looks like the query is taking too long. Try refining your query :)
-            </v-alert>
-        </v-flex>
-
-        <v-flex xs12 v-else-if="$store.state.search.query_status === 200">
+        <v-flex xs12>
             <v-layout row pt-3>
                 <v-flex md8>
                     <v-layout column>
                         <v-flex xs6 md6 pl-5>
-                            <h4>Found {{ $store.state.results.total.toLocaleString() }} results</h4>
+                            <h4>{{message}}</h4>
                         </v-flex>
                         <v-flex xs6 md6 pl-2>
                             <column-options-modal />
@@ -61,6 +33,7 @@
                         hide-default-footer
                         dense
                         :mobile-breakpoint="250"
+                        :loading="loading"
                     ></v-data-table>
                     <v-pagination
                         v-model="currentPage"
@@ -188,15 +161,32 @@ export default {
                 return this.$store.state.results.tableOptions;
             },
             set(value) {
-                this.$store.dispatch('setTableOptions', value);
+                this.$store.dispatch("setTableOptions", value);
             }
         },
-        selectedClassifier(){
+        selectedClassifier() {
             return this.$store.state.search.selectedClassifier;
+        },
+        loading() {
+            return this.$store.state.tableLoading;
+        },
+        message() {
+            if (this.$store.state.search.searched) {
+                return this.$store.state.results.total
+                    ? "Found " +
+                          this.$store.state.results.total.toLocaleString() +
+                          " results"
+                    : "No results found";
+            } else if (!this.$store.state.search.error) {
+                return "Your results will appear here";
+            } else {
+                return "There was an error retrieving your query from our servers";
+            }
         }
     },
     watch: {
         options(newVal, oldVal) {
+            console.log("OPTIONS")
             if (this.$route.params.id) return;
             if (
                 newVal.sortBy[0] !== oldVal.sortBy[0] ||
