@@ -2,7 +2,6 @@ import QueryPSQLService from '@/services/QueryPSQLService.js';
 import QueryXMatchService from '@/services/QueryXMatchService.js';
 import _ from 'lodash';
 import Vue from 'vue';
-import { throttled } from '../../services/QueryPSQLService';
 export const state = {
     query_parameters: null,
     filters: { nobs: {} },
@@ -256,6 +255,8 @@ export const mutations = {
     }
 }
 
+var debounceQueryObjects = _.debounce(QueryPSQLService.queryObjects, 1000, { leading: true, trailing: false })
+
 export const actions = {
     updateOptions({ commit }, payload) {
         commit('UPDATE_OPTIONS', payload);
@@ -271,71 +272,72 @@ export const actions = {
     setQueryStatus({ commit }, status) {
         commit('SET_QUERY_STATUS', status);
     },
-    queryAlerts({ commit, dispatch }, object) {
-        dispatch('loading', true)
-        Promise.all([
-            QueryPSQLService.queryDetections(object.oid),
-            QueryPSQLService.queryNonDetections(object.oid),
-            QueryPSQLService.queryProbabilities(object.oid),
-            // QueryPSQLService.queryFeatures(object.oid),
-            QueryPSQLService.queryPeriod(object.oid),
-        ])
-            .then(values => {
-                commit('SET_QUERY_STATUS', 200);
-                commit('SET_ERROR', null);
-                values.forEach((element, index) => {
-                    dispatch('setObjectDetails', element.data.result)
-                })
-                dispatch('setShowObjectDetailsModal', true)
-                dispatch('loading', false)
-            })
-            .catch(reason => {
-                console.error("Error with alert query", reason)
-                commit('SET_ERROR', reason);
-                dispatch('loading', false);
-            })
+    queryAlerts({ dispatch }, object) {
+        dispatch('setShowObjectDetailsModal', true)
+        QueryPSQLService.queryDetections(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        }).catch(reason => {
+            console.error("Error with alert query", reason)
+        })
+        QueryPSQLService.queryNonDetections(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        }).catch(reason => {
+            console.error("Error with alert query", reason)
+        })
+        QueryPSQLService.queryProbabilities(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        }).catch(reason => {
+            console.error("Error with alert query", reason)
+        })
+        QueryPSQLService.queryPeriod(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        }).catch(reason => {
+            console.error("Error with alert query", reason)
+        })
     },
     queryObjects({ commit, dispatch }, payload) {
-        dispatch('loading', true)
-        _.throttle(QueryPSQLService.queryObjects(payload).then(response => {
+        dispatch('setTableLoading', true);
+        debounceQueryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
-            commit('SET_SEARCHED', true);
             commit('SET_ERROR', null);
+            commit('SET_SEARCHED', true);
             dispatch('setObjects', response.data)
-            dispatch('loading', false)
         }).catch(error => {
             commit('SET_ERROR', error);
-            dispatch('loading', false);
-        }),3000, {'trailing': false})()
+            dispatch('setTableLoading', false)
+        })
     },
     queryAlertsFromURL({ commit, dispatch }, object) {
-        dispatch('loading', true)
-        Promise.all([
-            QueryPSQLService.queryDetections(object.oid),
-            QueryPSQLService.queryNonDetections(object.oid),
-            QueryPSQLService.queryProbabilities(object.oid),
-            // QueryPSQLService.queryFeatures(object.oid),
-            QueryPSQLService.queryStats(object.oid),
-            QueryPSQLService.queryPeriod(object.oid)
-        ])
-            .then(values => {
-                commit('SET_QUERY_STATUS', 200);
-                commit('SET_ERROR', null);
-                values.forEach((element, index) => {
-                    if (index == 3) {
-                        dispatch('objectSelected', element.data.result.stats)
-                    }
-                    else {
-                        dispatch('setObjectDetails', element.data.result)
-                    }
-                })
-                dispatch('setShowObjectDetailsModal', true)
-                dispatch('loading', false)
-            })
+        dispatch('setShowObjectDetailsModal', true)
+        QueryPSQLService.queryDetections(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        })
             .catch(reason => {
                 console.log("Error with alert query", reason)
-                commit('SET_ERROR', reason);
-                dispatch('loading', false);
+            })
+        QueryPSQLService.queryNonDetections(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+            })
+        QueryPSQLService.queryProbabilities(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+            })
+        QueryPSQLService.queryStats(object.oid).then(response => {
+            dispatch('objectSelected', response.data.result.stats)
+        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+            })
+        QueryPSQLService.queryPeriod(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
             })
     },
     clearQuery({ commit }) {
