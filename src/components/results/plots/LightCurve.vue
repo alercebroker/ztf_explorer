@@ -118,7 +118,7 @@ export default {
                                     .toUTCString()
                                     .slice(0, -3) + "UT"
                             );
-                            table += rowTable("", "click to change stamp", "")
+                            table += rowTable("", "click to change stamp", "");
                             return table + "</table>";
                         }
                     }
@@ -215,25 +215,26 @@ export default {
         };
     },
     mounted() {
-        if (this.alerts) this.makegraph(this.alerts);
+        this.plotDetections(this.detections);
+        this.plotNonDetections(this.nonDetections);
     },
     methods: {
-        makegraph(alerts) {
-            this.scatter.series[0].data = alerts.detections
+        plotDetections(detections) {
+            this.scatter.series[0].data = detections
                 .filter(function(x) {
                     return x.fid == 1;
                 })
                 .map(function(x) {
                     return [x.mjd, x.magpsf, x.candid_str, x.sigmapsf];
                 });
-            this.scatter.series[1].data = alerts.detections
+            this.scatter.series[1].data = detections
                 .filter(function(x) {
                     return x.fid == 2;
                 })
                 .map(function(x) {
                     return [x.mjd, x.magpsf, x.candid_str, x.sigmapsf];
                 });
-            this.scatter.series[2].data = alerts.detections
+            this.scatter.series[2].data = detections
                 .filter(function(x) {
                     return x.fid == 1;
                 })
@@ -244,7 +245,7 @@ export default {
                         x.magpsf + x.sigmapsf
                     ];
                 });
-            this.scatter.series[3].data = alerts.detections
+            this.scatter.series[3].data = detections
                 .filter(function(x) {
                     return x.fid == 2;
                 })
@@ -255,14 +256,16 @@ export default {
                         x.magpsf + x.sigmapsf
                     ];
                 });
-            this.scatter.series[4].data = alerts.non_detections
+        },
+        plotNonDetections(non_detections) {
+            this.scatter.series[4].data = non_detections
                 .filter(function(x) {
                     return x.fid == 1 && x.diffmaglim > 10;
                 })
                 .map(function(x) {
                     return [x.mjd, x.diffmaglim];
                 });
-            this.scatter.series[5].data = alerts.non_detections
+            this.scatter.series[5].data = non_detections
                 .filter(function(x) {
                     return x.fid == 2 && x.diffmaglim > 10;
                 })
@@ -325,13 +328,23 @@ export default {
         }
     },
     computed: {
-        alerts() {
-            return this.$store.state.results.objectDetails;
+        detections() {
+            return this.$store.state.results.objectDetails.detections
+                ? this.$store.state.results.objectDetails.detections
+                : [];
+        },
+        nonDetections() {
+            return this.$store.state.results.objectDetails.non_detections
+                ? this.$store.state.results.objectDetails.non_detections
+                : [];
         }
     },
     watch: {
-        alerts(newval) {
-            this.makegraph();
+        detections(newVal) {
+            this.plotDetections(newVal);
+        },
+        non_detections(newVal) {
+            this.plotNonDetections(newVal);
         }
     }
 };

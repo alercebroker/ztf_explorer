@@ -57,13 +57,12 @@ import { jdToDate } from "@/components/utils/AstroDates.js";
 export default {
     name: "card-stamps-png",
     data() {
-        return {
-        };
+        return {};
     },
     methods: {
         prevStamp() {
             if (this.currentStamp > 0) {
-                this.$store.dispatch('setCurrentStamp', this.currentStamp - 1)
+                this.$store.dispatch("setCurrentStamp", this.currentStamp - 1);
             }
         },
         nextStamp() {
@@ -75,8 +74,12 @@ export default {
             }
         },
         getCandid(index) {
-            return this.$store.state.results.objectDetails.detections[index]
-                .candid_str;
+            if (this.$store.state.results.objectDetails.detections) {
+                return this.$store.state.results.objectDetails.detections[index]
+                    .candid_str;
+            } else {
+                return "";
+            }
         },
         download(type, event) {
             let link =
@@ -95,20 +98,28 @@ export default {
             return this.$store.state.results.selectedObject.oid;
         },
         dates() {
-            return this.$store.state.results.objectDetails.detections.map(x => {
-                return (
-                    jdToDate(x.mjd)
-                        .toUTCString()
-                        .slice(0, -3) + "UT"
+            if (this.$store.state.results.objectDetails.detections) {
+                return this.$store.state.results.objectDetails.detections.map(
+                    x => {
+                        return (
+                            jdToDate(x.mjd)
+                                .toUTCString()
+                                .slice(0, -3) + "UT"
+                        );
+                    }
                 );
-            });
+            }
+            return [];
         },
         selectedStamp: {
             get() {
                 return this.dates[this.currentStamp];
             },
             set(value) {
-                this.$store.dispatch('setCurrentStamp',this.dates.indexOf(value));
+                this.$store.dispatch(
+                    "setCurrentStamp",
+                    this.dates.indexOf(value)
+                );
             }
         },
         selectedDetection() {
@@ -120,28 +131,27 @@ export default {
                 this.getCandid(this.currentStamp)
             );
         },
-        difference(){
+        difference() {
             return QueryStampsService.getDifferenceURL(
                 this.object,
                 this.getCandid(this.currentStamp)
             );
         },
-        template(){
+        template() {
             return QueryStampsService.getTemplateURL(
                 this.object,
                 this.getCandid(this.currentStamp)
             );
         },
-        currentStamp(){
+        currentStamp() {
             return this.$store.state.results.currentStamp;
         }
     },
-    watch:{
-        selectedDetection(newVal){
-            this.$store.dispatch('setCurrentStamp', this.dates.indexOf(newVal))
+    watch: {
+        selectedDetection(newVal) {
+            this.$store.dispatch("setCurrentStamp", this.dates.indexOf(newVal));
         }
     }
-    
 };
 </script>
 
