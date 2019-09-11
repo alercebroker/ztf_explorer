@@ -335,7 +335,7 @@ export default {
                     .dispatch("tutorialObjectSelected", this.objects[0])
                     .then(response => {
                         if (response === "ok") {
-                            sleep(1000);
+                            sleep(2000);
                             tour.nextStep();
                         }
                     });
