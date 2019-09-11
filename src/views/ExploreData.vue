@@ -74,7 +74,7 @@
                         :is-first="tour.isFirst"
                         :is-last="tour.isLast"
                         :labels="tour.labels"
-                        style="z-index: 10000"
+                        style="z-index: 1000000"
                     >
                         <template v-if="tour.currentStep === 2">
                             <div slot="actions">
@@ -116,7 +116,6 @@
                                             tile
                                         >Close</v-btn>
                                     </v-col>
-                        
                                 </v-row>
                             </div>
                         </template>
@@ -323,21 +322,26 @@ export default {
                 sortBy: "lastmjd"
             });
         },
+        sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        },
         tutorialNextStep(tour) {
             if (tour.currentStep === 1) {
                 this.executeSampleQuery();
                 tour.nextStep();
             } else if (tour.currentStep === 3) {
+                let sleep = this.sleep;
                 this.$store
                     .dispatch("tutorialObjectSelected", this.objects[0])
                     .then(response => {
                         if (response === "ok") {
+                            sleep(1000);
                             tour.nextStep();
                         }
                     });
             } else tour.nextStep();
         },
-        tutorialClose(){
+        tutorialClose() {
             this.closeObjectDetailsModal();
             this.$store.dispatch("setObjects", {
                 total: null,
