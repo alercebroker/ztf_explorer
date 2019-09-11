@@ -333,9 +333,9 @@ export default {
                 let sleep = this.sleep;
                 this.$store
                     .dispatch("tutorialObjectSelected", this.objects[0])
-                    .then(response => {
+                    .then(async function(response){
                         if (response === "ok") {
-                            sleep(3000);
+                            await sleep(2000);
                             tour.nextStep();
                         }
                     });
