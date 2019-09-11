@@ -12,7 +12,7 @@
                         </v-flex>
                     </v-layout>
                 </v-flex>
-                <v-flex md4>
+                <v-flex md4 id="step4">
                     <v-pagination
                         v-model="currentPage"
                         :length="$store.state.results.num_pages"
@@ -26,7 +26,8 @@
                     <v-data-table
                         :headers="headers"
                         :items="objects"
-                        :options.sync="options"
+                        :sortBy.sync="options.sortBy"
+                        :sortDesc.sync="options.sortDesc"
                         :server-items-length="$store.state.results.total"
                         @click:row="onRowClicked"
                         class="elevation-0"
@@ -34,10 +35,11 @@
                         dense
                         :mobile-breakpoint="250"
                         :loading="loading"
-                        v-intro="tutorialMessage"
-                        v-intro-step="3"
-                        v-intro-if="$store.state.results.total"
-                    ></v-data-table>
+                    >
+                        <template v-slot:item.oid="{ item }">
+                            <div id="v-step-2">{{ item.oid }}</div>
+                        </template>
+                    </v-data-table>
                     <v-pagination
                         v-model="currentPage"
                         :length="$store.state.results.num_pages"
@@ -61,11 +63,6 @@ export default {
     components: {
         // downloadModal,
         columnOptionsModal
-    },
-    data(){
-        return {
-            tutorialMessage: "Wait until the query finishes"
-        }
     },
     methods: {
         getLateClass(obj) {
@@ -193,9 +190,7 @@ export default {
     },
     watch: {
         options(newVal, oldVal) {
-            console.log("OPTIONS");
             if (this.$route.params.id) return;
-
             let parameters = {
                 query_parameters: this.$store.state.search.query_parameters,
                 page: this.currentPage,
@@ -203,12 +198,10 @@ export default {
                 total: this.$store.state.results.total,
                 sortBy: newVal.sortBy[0],
                 sortDesc: newVal.sortDesc[0]
-            }
-            this.$store.dispatch("queryObjects", parameters );
+            };
+            this.$store.dispatch("queryObjects", parameters);
         },
-        objects(){
-            this.tutorialMessage = "ASDAD"
-        }
+        objects() {}
     }
 };
 </script>

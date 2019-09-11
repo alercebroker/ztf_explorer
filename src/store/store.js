@@ -14,28 +14,35 @@ export default new Vuex.Store({
     state: {
         selectedTab: 0,
         perPage: 20,
-        tableLoading: false
+        tableLoading: false,
+        tutorialOpen: false,
     },
     mutations: {
-        SET_SELECTED_TAB(state,value){
+        SET_SELECTED_TAB(state, value) {
             state.selectedTab = value;
         },
-        SET_TABLE_LOADING(state, val){
+        SET_TABLE_LOADING(state, val) {
             state.tableLoading = val;
+        },
+        SET_TUTORIAL_OPEN(state, value) {
+            state.tutorialOpen = value;
         }
 
     },
     actions: {
 
-        setSelectedTab({commit}, value){
+        setSelectedTab({ commit }, value) {
             commit('SET_SELECTED_TAB', value);
         },
-        setTableLoading({commit}, value){
+        setTableLoading({ commit }, value) {
             commit('SET_TABLE_LOADING', value)
+        },
+        setTutorialOpen({ commit }, value) {
+            commit('SET_TUTORIAL_OPEN', value);
         }
 
     },
     getters: {
-        
+
     }
 })

@@ -242,7 +242,7 @@ export const mutations = {
     SET_CURRENT_STAMP(state, num) {
         state.currentStamp = num;
     },
-    SET_TABLE_OPTIONS(state, options){
+    SET_TABLE_OPTIONS(state, options) {
         state.tableOptions = options;
     }
 }
@@ -256,6 +256,15 @@ export const actions = {
             commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
         }
         commit('SET_SELECTED_OBJECT', object);
+    },
+    tutorialObjectSelected({ commit, dispatch }, object) {
+        return new Promise((resolve) => {
+            dispatch('queryAlerts', object)
+            commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
+            commit('SET_SELECTED_OBJECT', object);
+            resolve("ok")
+        })
+
     },
     objectSelectedFromURL({ commit, dispatch, state }, object) {
         if (state.selectedObject.oid !== object.oid) {
@@ -323,7 +332,7 @@ export const actions = {
     setCurrentStamp({ commit }, num) {
         commit('SET_CURRENT_STAMP', num);
     },
-    setTableOptions({commit}, options){
+    setTableOptions({ commit }, options) {
         commit('SET_TABLE_OPTIONS', options);
     }
 }

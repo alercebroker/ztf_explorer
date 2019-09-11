@@ -7,7 +7,6 @@
             </v-col>
 
             <v-col cols="10" offset="1" style="padding-top:0;">
-                <span class="subtitle-1">More Filters</span>
                 <v-divider></v-divider>
                 <v-expansion-panels v-model="panels" accordion multiple>
                     <v-expansion-panel>
@@ -30,11 +29,11 @@
             </v-col>
         </v-row>
         <v-row justify="center">
-            <v-col cols="6">
-                <v-btn block tile  dark @click="clearQuery">Clear all options</v-btn>
+            <v-col cols="4">
+                <v-btn block tile  dark @click="clearQuery">Clear</v-btn>
             </v-col>
 
-            <v-col cols="3">
+            <v-col cols="6">
                 <v-btn
                     block
                     tile

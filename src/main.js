@@ -15,9 +15,9 @@ import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/dataZoom'
 Vue.component('v-chart', ECharts)
-import 'intro.js/introjs.css';
-import VueIntro from 'vue-introjs'
-Vue.use(VueIntro)
+import VueTour from 'vue-tour'
+require('vue-tour/dist/vue-tour.css')
+Vue.use(VueTour)
 
 Vue.config.productionTip = false;
 
@@ -27,7 +27,6 @@ new Vue({
     router,
     store,
     vuetify,
-    VueIntro,
     components: {
         app: App
     },

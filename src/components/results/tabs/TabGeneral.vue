@@ -1,14 +1,14 @@
 <template>
-    <v-card fluid tile class="ma-0" outlined>
+    <v-card fluid tile class="ma-0" outlined >
         <v-card-text id="objectModalInside" class="pt-1">
             <!-- start inside modal-->
             <v-layout row wrap>
                 <!--BASIC INFORMATION-->
-                <v-flex xs12 md3>
-                    <card-basic-information/>
+                <v-flex xs12 md3 id="v-step-3">
+                    <card-basic-information />
                 </v-flex>
                 <!--LIGHT CURVE-->
-                <v-flex xs12 md6>
+                <v-flex xs12 md6 id="v-step-6">
                     <!--If the screen is mobile-->
                     <v-layout>
                         <v-flex hidden-xs-only>
@@ -25,7 +25,7 @@
                     </v-layout>
                 </v-flex>
                 <!-- ALADIN -->
-                <v-flex xs12 md3>
+                <v-flex xs12 md3 id="v-step-7">
                     <aladin />
                 </v-flex>
             </v-layout>
@@ -36,9 +36,9 @@
                 </v-flex>
 
                 <v-flex xs12 md4>
-                    <v-card height="100%">
+                    <v-card height="100%" id="v-step-4">
                         <v-toolbar dense flat dark>
-                            <v-toolbar-title> Magnitude Statistics </v-toolbar-title>
+                            <v-toolbar-title>Magnitude Statistics</v-toolbar-title>
                         </v-toolbar>
                         <v-divider></v-divider>
                         <v-card-text style="padding: 0 0 0 0;">
@@ -53,11 +53,11 @@
                     </v-card>
                 </v-flex>
 
-                <v-flex xs12 md4>
+                <v-flex xs12 md4 id="v-step-8">
                     <!-- PROBABILITIES -->
                     <card-probabilities />
                 </v-flex>
-                <v-flex xs12 md4 hidden-sm-and-down>
+                <v-flex xs12 md4 hidden-sm-and-down id="v-step-5">
                     <card-stamps-png />
                 </v-flex>
             </v-layout>
@@ -66,7 +66,7 @@
 </template>
 <script>
 import aladin from "../cards/aladin.vue";
-import cardBasicInformation from "../cards/cardBasicInformation.vue"
+import cardBasicInformation from "../cards/cardBasicInformation.vue";
 import cardLightCurve from "../cards/cardLightCurve.vue";
 import cardProbabilities from "../cards/cardProbabilities.vue";
 import cardStampsPng from "../cards/cardStampsPng.vue";
@@ -79,7 +79,7 @@ export default {
                 { text: "Item", value: "Item" },
                 { text: "g", value: "g" },
                 { text: "r", value: "r" }
-            ],
+            ]
         };
     },
     components: {
