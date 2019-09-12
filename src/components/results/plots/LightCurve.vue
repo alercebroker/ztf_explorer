@@ -343,7 +343,7 @@ export default {
         detections(newVal) {
             this.plotDetections(newVal);
         },
-        non_detections(newVal) {
+        nonDetections(newVal) {
             this.plotNonDetections(newVal);
         }
     }
