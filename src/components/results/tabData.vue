@@ -206,23 +206,18 @@ export default {
     },
     watch: {
         sortBy(newVal, oldVal) {
-            console.log("sortBy");
             if (this.$route.params.id) return;
-            if (newVal[0] !== oldVal[0]) {
-                let parameters = {
-                    query_parameters: this.$store.state.search.query_parameters,
-                    page: this.currentPage,
-                    perPage: this.$store.state.perPage,
-                    total: this.$store.state.results.total,
-                    sortBy: newVal[0],
-                    sortDesc: this.$store.state.results.tableOptions.sortDesc[0]
-                };
-                this.$store.dispatch("queryObjects", parameters);
-            }
+            let parameters = {
+                query_parameters: this.$store.state.search.query_parameters,
+                page: this.currentPage,
+                perPage: this.$store.state.perPage,
+                total: this.$store.state.results.total,
+                sortBy: newVal[0],
+                sortDesc: this.$store.state.results.tableOptions.sortDesc[0]
+            };
+            this.$store.dispatch("queryObjects", parameters);
         },
         sortDesc(newVal, oldVal) {
-            console.log("sortDesc", newVal);
-            console.log("sortDesc", oldVal);
             if (this.$route.params.id) return;
             if (newVal[0] !== oldVal[0]) {
                 let parameters = {
