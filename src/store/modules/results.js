@@ -242,8 +242,11 @@ export const mutations = {
     SET_CURRENT_STAMP(state, num) {
         state.currentStamp = num;
     },
-    SET_TABLE_OPTIONS(state, options) {
-        state.tableOptions = options;
+    SET_TABLE_SORT_BY(state, value) {
+        state.tableOptions.sortBy = value;
+    },
+    SET_TABLE_SORT_DESC(state, value) {
+        state.tableOptions.sortDesc = value;
     }
 }
 
@@ -332,8 +335,11 @@ export const actions = {
     setCurrentStamp({ commit }, num) {
         commit('SET_CURRENT_STAMP', num);
     },
-    setTableOptions({ commit }, options) {
-        commit('SET_TABLE_OPTIONS', options);
+    setTableSortBy({ commit }, options) {
+        commit('SET_TABLE_SORT_BY', options);
+    },
+    setTableSortDesc({ commit }, options) {
+        commit('SET_TABLE_SORT_DESC', options);
     }
 }
 

@@ -168,6 +168,22 @@ export default {
                 this.$store.dispatch("setTableOptions", value);
             }
         },
+        sortBy: {
+            get() {
+                return this.$store.state.results.tableOptions.sortBy;
+            },
+            set(value) {
+                this.$store.dispatch("setTableSortBy", value);
+            }
+        },
+        sortDesc: {
+            get() {
+                return this.$store.state.results.tableOptions.sortDesc;
+            },
+            set(value) {
+                this.$store.dispatch("setTableSortDesc", value);
+            }
+        },
         selectedClassifier() {
             return this.$store.state.search.selectedClassifier;
         },
@@ -189,17 +205,36 @@ export default {
         }
     },
     watch: {
-        options(newVal, oldVal) {
+        sortBy(newVal, oldVal) {
+            console.log("sortBy");
             if (this.$route.params.id) return;
-            let parameters = {
-                query_parameters: this.$store.state.search.query_parameters,
-                page: this.currentPage,
-                perPage: this.$store.state.perPage,
-                total: this.$store.state.results.total,
-                sortBy: newVal.sortBy[0],
-                sortDesc: newVal.sortDesc[0]
-            };
-            this.$store.dispatch("queryObjects", parameters);
+            if (newVal[0] !== oldVal[0]) {
+                let parameters = {
+                    query_parameters: this.$store.state.search.query_parameters,
+                    page: this.currentPage,
+                    perPage: this.$store.state.perPage,
+                    total: this.$store.state.results.total,
+                    sortBy: newVal[0],
+                    sortDesc: this.$store.state.results.tableOptions.sortDesc[0]
+                };
+                this.$store.dispatch("queryObjects", parameters);
+            }
+        },
+        sortDesc(newVal, oldVal) {
+            console.log("sortDesc", newVal);
+            console.log("sortDesc", oldVal);
+            if (this.$route.params.id) return;
+            if (newVal[0] !== oldVal[0]) {
+                let parameters = {
+                    query_parameters: this.$store.state.search.query_parameters,
+                    page: this.currentPage,
+                    perPage: this.$store.state.perPage,
+                    total: this.$store.state.results.total,
+                    sortBy: this.$store.state.results.tableOptions.sortBy[0],
+                    sortDesc: newVal[0]
+                };
+                this.$store.dispatch("queryObjects", parameters);
+            }
         },
         objects() {}
     }

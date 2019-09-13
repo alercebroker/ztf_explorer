@@ -155,10 +155,8 @@ export default {
                 this.$store.state.search.selectedClassifier
                     ? "p" + this.$store.state.search.selectedClassifier
                     : "lastmjd";
-            this.$store.dispatch("setTableOptions", {
-                sortBy: [sortBy],
-                sortDesc: [true]
-            });
+            this.$store.dispatch("setTableSortBy",[sortBy]);
+            this.$store.dispatch("setTableSortDesc",[true]);
             window.scrollTo(0, 0);
             this.$emit("onSearch");
         },
