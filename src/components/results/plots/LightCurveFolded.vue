@@ -163,14 +163,14 @@ export default {
         };
     },
     mounted() {
-        if (this.alerts && this.period)
-            this.makegraph(this.alerts, this.period);
+        if (this.detections && this.period)
+            this.makegraph(this.detections, this.period);
     },
     methods: {
-        makegraph(alerts, period) {
+        makegraph(detections, period) {
             let gbandError = [];
             let rbandError = [];
-            this.scatter.series[0].data = alerts.detections
+            this.scatter.series[0].data = detections
                 .filter(function(x) {
                     return x.fid == 1 && x.magpsf_corr != null;;
                 })
@@ -183,7 +183,7 @@ export default {
                     ]);
                     return [phase, x.magpsf_corr, x.candid_str, x.sigmapsf];
                 });
-            this.scatter.series[1].data = alerts.detections
+            this.scatter.series[1].data = detections
                 .filter(function(x) {
                     return x.fid == 2 && x.magpsf_corr != null;;
                 })
@@ -252,17 +252,19 @@ export default {
         },
     },
     computed: {
-        alerts() {
-            return this.$store.state.results.objectDetails;
+        detections() {
+            return this.$store.state.results.objectDetails.detections
+                ? this.$store.state.results.objectDetails.detections
+                : [];
         },
         period() {
             return this.$store.state.results.objectDetails.period;
         }
     },
     watch: {
-        alerts(newval) {
-            this.makegraph();
-        }
+        detections(newval) {
+            this.makegraph(newval, this.period);
+        },
     }
 };
 </script>

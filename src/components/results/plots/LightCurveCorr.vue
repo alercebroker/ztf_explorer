@@ -164,11 +164,11 @@ export default {
         };
     },
     mounted() {
-        if (this.alerts) this.makegraph(this.alerts);
+        if (this.detections) this.makegraph(this.detections);
     },
     methods: {
-        makegraph(alerts) {
-            this.scatter.series[0].data = alerts.detections
+        makegraph(detections) {
+            this.scatter.series[0].data = detections
                 .filter(function(x) {
                     return x.fid == 1 && x.magpsf_corr != null;
                 })
@@ -180,7 +180,7 @@ export default {
                         x.sigmapsf_corr
                     ];
                 });
-            this.scatter.series[1].data = alerts.detections
+            this.scatter.series[1].data = detections
                 .filter(function(x) {
                     return x.fid == 2 && x.magpsf_corr != null;
                 })
@@ -192,7 +192,7 @@ export default {
                         x.sigmapsf_corr
                     ];
                 });
-            this.scatter.series[2].data = alerts.detections
+            this.scatter.series[2].data = detections
                 .filter(function(x) {
                     return x.fid == 1 && x.magpsf_corr != null;
                 })
@@ -203,7 +203,7 @@ export default {
                         x.magpsf_corr + x.sigmapsf_corr
                     ];
                 });
-            this.scatter.series[3].data = alerts.detections
+            this.scatter.series[3].data = detections
                 .filter(function(x) {
                     return x.fid == 2 && x.magpsf_corr != null;
                 })
@@ -270,13 +270,15 @@ export default {
         }
     },
     computed: {
-        alerts() {
-            return this.$store.state.results.objectDetails;
-        }
+        detections() {
+            return this.$store.state.results.objectDetails.detections
+                ? this.$store.state.results.objectDetails.detections
+                : [];
+        },
     },
     watch: {
-        alerts(newval) {
-            this.makegraph();
+        detections(newval) {
+            this.makegraph(newval);
         }
     }
 };
