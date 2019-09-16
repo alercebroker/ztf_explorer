@@ -6,7 +6,8 @@
         :fullscreen="$vuetify.breakpoint.xsOnly"
         @keydown.right="nextObject"
         @keydown.left="prevObject"
-        persistent
+        :persistent="tutorialOpen"
+        @keyup.esc="closeModal"
     >
         <v-card fluid tile class="ma-0">
             <v-system-bar window dark color="toolbar">
@@ -100,6 +101,9 @@ export default {
         },
         showButtons: function() {
             return this.$store.state.results.objects.length == 0 ? false : true;
+        },
+        tutorialOpen(){
+            return this.$store.state.tutorialOpen
         }
     },
     mounted: function() {
