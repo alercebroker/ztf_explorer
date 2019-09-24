@@ -12,48 +12,37 @@ export default new Vuex.Store({
         plots
     },
     state: {
-        loading: false,
-        downloading: false,
         selectedTab: 0,
         perPage: 20,
-        loadingPlot: false,
-        loadingScatterPlot: false,
+        tableLoading: false,
+        tutorialOpen: false,
     },
     mutations: {
-        SET_LOADING(state, value) {
-            state.loading = value;
-        },
-        SET_DOWNLOADING(state, value){
-            state.downloading = value;
-        },
-        SET_SELECTED_TAB(state,value){
+        SET_SELECTED_TAB(state, value) {
             state.selectedTab = value;
         },
-        SET_LOADING_PLOT(state,value){
-            state.loadingPlot = value;
+        SET_TABLE_LOADING(state, val) {
+            state.tableLoading = val;
         },
-        SET_LOADING_SCATTERPLOT(state,value){
-            state.loadingScatterPlot = value;
+        SET_TUTORIAL_OPEN(state, value) {
+            state.tutorialOpen = value;
         }
+
     },
     actions: {
-        loading({ commit }, value) {
-            commit('SET_LOADING', value);
-        },
-        downloading({commit}, value){
-            commit('SET_DOWNLOADING', value);
-        },
-        setSelectedTab({commit}, value){
+
+        setSelectedTab({ commit }, value) {
             commit('SET_SELECTED_TAB', value);
         },
-        loadingPlot({commit}, value){
-            commit('SET_LOADING_PLOT', value);
+        setTableLoading({ commit }, value) {
+            commit('SET_TABLE_LOADING', value)
         },
-        loadingScatterPlot({commit}, value){
-            commit('SET_LOADING_SCATTERPLOT', value);
+        setTutorialOpen({ commit }, value) {
+            commit('SET_TUTORIAL_OPEN', value);
         }
+
     },
     getters: {
-        
+
     }
 })

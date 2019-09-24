@@ -1,66 +1,50 @@
 <template>
     <!--BODY-->
-    <v-layout row wrap v-on:keyup.enter="onSubmitQuery">
-        <!--Default options-->
-        <v-flex xs12 pb-0 pt-0 pl-10 pr-10>
-            <default-options></default-options>
-        </v-flex>
-        <!-- Date and coordinate options -->
-        <v-flex xs12 pl-7 pr-7>
-            <v-card flat>
-                <v-tabs>
-                    <v-tab>Discovery Date</v-tab>
-                    <v-tab-item>
-                        <date-options/>
-                    </v-tab-item>
-                    <v-tab>Coordinates</v-tab>
-                    <v-tab-item>
-                        <coordinate-options />
-                    </v-tab-item>
-                </v-tabs>
-            </v-card>
-        </v-flex>
+    <div>
+        <v-row>
+            <v-col cols="10" offset="1">
+                <default-options></default-options>
+            </v-col>
 
-        <!--Show SQL-->
-        <v-flex xs12 pt-2 pl-7 pr-7>
-            <v-btn
-                outlined
-                tile
-                block
-                small
-                color="primary"
-                @click="showSQLLabel = !showSQLLabel"
-            >{{ showSQLLabel? 'Hide': 'Show SQL' }}</v-btn>
-        </v-flex>
-        <v-flex xs12 pl-7 pr-7 pb-0>
-            <div v-show="showSQLLabel">
-                <div style="background-color:#BDBDBD">
-                    <div>
-                        <v-btn icon @click="refreshSQL">
-                            <v-icon>refresh</v-icon>
-                        </v-btn>
-                    </div>
-                    <div>{{this.$store.state.search.sql}}</div>
-                </div>
-            </div>
-        </v-flex>
-        <!--Clear all options-->
-        <v-flex xs12 pb-0 pt-2 pl-7 pr-7 >
-            <v-btn block tile small dark @click="clearQuery">Clear all options</v-btn>
-        </v-flex>
-        <!--Search-->
-        <v-flex xs12 pt-2 pl-7 pr-7>
-            <v-btn
-                block
-                normal
-                tile
-                raised
-                color="primary"
-                @click="onSubmitQuery"
-                :disabled="!validSearch"
-            >Search</v-btn>
-        </v-flex>
-    </v-layout>
+            <v-col cols="10" offset="1" style="padding-top:0;">
+                <v-divider></v-divider>
+                <v-expansion-panels v-model="panels" accordion multiple>
+                    <v-expansion-panel>
+                        <v-expansion-panel-header>
+                            <span class="font-weight-bold">Discovery Date</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            <date-options />
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                    <v-expansion-panel>
+                        <v-expansion-panel-header>
+                            <span class="font-weight-bold">Coordinates</span>
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            <coordinate-options />
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+            </v-col>
+        </v-row>
+        <v-row justify="center">
+            <v-col cols="4">
+                <v-btn block tile  dark @click="clearQuery">Clear</v-btn>
+            </v-col>
+
+            <v-col cols="6">
+                <v-btn
+                    block
+                    tile
+                    raised
+                    color="primary"
+                    @click="onSubmitQuery"
+                    :disabled="!validSearch"
+                >Search</v-btn>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 
@@ -80,7 +64,8 @@ export default {
             moreOptsLabel: "More Options",
             showSQLLabel: false,
             block: true,
-            activeTab: null
+            activeTab: null,
+            panels: [0]
         };
     },
     mounted() {},
@@ -102,10 +87,18 @@ export default {
         },
         refreshSQL() {
             let query_parameters = {
-                filters: JSON.parse(JSON.stringify(this.$store.state.search.filters)),
-                bands: JSON.parse(JSON.stringify(this.$store.state.search.bands)),
-                dates: JSON.parse(JSON.stringify(this.$store.state.search.dates)),
-                coordinates: JSON.parse(JSON.stringify(this.$store.state.search.coordinates))
+                filters: JSON.parse(
+                    JSON.stringify(this.$store.state.search.filters)
+                ),
+                bands: JSON.parse(
+                    JSON.stringify(this.$store.state.search.bands)
+                ),
+                dates: JSON.parse(
+                    JSON.stringify(this.$store.state.search.dates)
+                ),
+                coordinates: JSON.parse(
+                    JSON.stringify(this.$store.state.search.coordinates)
+                )
             };
             this.removeEmpty(query_parameters);
             this.$store.dispatch("getSQL", query_parameters);
@@ -130,10 +123,18 @@ export default {
          */
         onSubmitQuery() {
             let query_parameters = {
-                filters: JSON.parse(JSON.stringify(this.$store.state.search.filters)),
-                bands: JSON.parse(JSON.stringify(this.$store.state.search.bands)),
-                dates: JSON.parse(JSON.stringify(this.$store.state.search.dates)),
-                coordinates: JSON.parse(JSON.stringify(this.$store.state.search.coordinates))
+                filters: JSON.parse(
+                    JSON.stringify(this.$store.state.search.filters)
+                ),
+                bands: JSON.parse(
+                    JSON.stringify(this.$store.state.search.bands)
+                ),
+                dates: JSON.parse(
+                    JSON.stringify(this.$store.state.search.dates)
+                ),
+                coordinates: JSON.parse(
+                    JSON.stringify(this.$store.state.search.coordinates)
+                )
             };
             if (this.$store.state.search.filters.oid) {
                 if (
@@ -149,15 +150,13 @@ export default {
             }
             this.removeEmpty(query_parameters);
             this.$store.dispatch("setQueryParameters", query_parameters);
-            this.$store.dispatch("getSQL", query_parameters);
-            this.$store.dispatch("queryObjects", {
-                query_parameters: query_parameters,
-                page: 1,
-                perPage: this.$store.state.perPage,
-                sortBy: "pclassrf"
-            });
-            this.$store.dispatch("setCurrentPage", 1);
-            this.$store.dispatch("setSelectedTab", 1);
+            let sortBy =
+                this.$store.state.search.selectedClassifier !== "classxmatch" &&
+                this.$store.state.search.selectedClassifier
+                    ? "p" + this.$store.state.search.selectedClassifier
+                    : "lastmjd";
+            this.$store.dispatch("setTableSortBy",[sortBy]);
+            this.$store.dispatch("setTableSortDesc",[true]);
             window.scrollTo(0, 0);
             this.$emit("onSearch");
         },

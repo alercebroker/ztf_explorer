@@ -1,4 +1,5 @@
 export const state = {
+    selectedIndex: null,
     selectedObject: {
         oid: null,
     },
@@ -156,17 +157,18 @@ export const state = {
     objects: [],
     total: null,
     num_pages: null,
-    showObjectDetailsModal: false,
     currentPage: 1,
+    showObjectDetailsModal: false,
     recentObjects: 'counting...',
     recentAlerts: 'counting...',
     xmatchedCount: 'counting...',
     rfCount: 'counting...',
     earlyCount: 'counting...',
-    avroInfo: { 
-        objectidps1: null,
-        sgscore1: null,
-        distpsnr1: null
+    selectedDetection: null,
+    currentStamp: 0,
+    tableOptions: {
+        sortBy: ["lastmjd"],
+        sortDesc: [true]
     }
 }
 
@@ -234,10 +236,17 @@ export const mutations = {
         state.objectDetails.error_xmatches = msg
         state.objectDetails.load_xmatches = false
     },
-    SET_AVRO_INFO(state, info) {
-        state.avroInfo.objectidps1 = info.objectidps1
-        state.avroInfo.sgscore1 = info.sgscore1
-        state.avroInfo.distpsnr1 = info.distpsnr1
+    SET_SELECTED_DETECTION(state, date) {
+        state.selectedDetection = date;
+    },
+    SET_CURRENT_STAMP(state, num) {
+        state.currentStamp = num;
+    },
+    SET_TABLE_SORT_BY(state, value) {
+        state.tableOptions.sortBy = value;
+    },
+    SET_TABLE_SORT_DESC(state, value) {
+        state.tableOptions.sortDesc = value;
     }
 }
 
@@ -246,10 +255,19 @@ export const actions = {
         if (state.selectedObject && state.selectedObject.oid !== object.oid) {
             dispatch('queryAlerts', object)
         }
-        else if (!state.loading) {
+        else {
             commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
         }
         commit('SET_SELECTED_OBJECT', object);
+    },
+    tutorialObjectSelected({ commit, dispatch }, object) {
+        return new Promise((resolve) => {
+            dispatch('queryAlerts', object)
+            commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
+            commit('SET_SELECTED_OBJECT', object);
+            resolve("ok")
+        })
+
     },
     objectSelectedFromURL({ commit, dispatch, state }, object) {
         if (state.selectedObject.oid !== object.oid) {
@@ -272,10 +290,11 @@ export const actions = {
     setPeriods({ commit }, periods) {
         commit('SET_PERIODS', periods)
     },
-    setObjects({ commit }, objects) {
+    setObjects({ commit, dispatch }, objects) {
         commit('SET_OBJECTS', objects.result);
         commit('SET_TOTAL', objects.total);
         commit('SET_NUM_PAGES', objects.num_pages)
+        dispatch('setTableLoading', false)
     },
     setShowObjectDetailsModal({ commit }, value) {
         commit('SET_SHOW_OBJECT_DETAILS_MODAL', value)
@@ -310,11 +329,22 @@ export const actions = {
     setXMatchesMsg({ commit }, value) {
         commit('SET_XMATCHES_MSG', value)
     },
-    setAvroInfo({commit}, info){
-        commit('SET_AVRO_INFO', info);
+    setSelectedDetection({ commit }, date) {
+        commit('SET_SELECTED_DETECTION', date);
+    },
+    setCurrentStamp({ commit }, num) {
+        commit('SET_CURRENT_STAMP', num);
+    },
+    setTableSortBy({ commit }, options) {
+        commit('SET_TABLE_SORT_BY', options);
+    },
+    setTableSortDesc({ commit }, options) {
+        commit('SET_TABLE_SORT_DESC', options);
     }
 }
 
 export const getters = {
-
+    getProbabilities: (state) => {
+        return state.objectDetails.probabilities
+    }
 }

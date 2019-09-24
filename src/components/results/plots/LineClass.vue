@@ -50,14 +50,6 @@ export default {
         };
     },
     methods: {
-        getClass(obj, classifier) {
-            return this.$store.state.search.classes.find(function(x) {
-                if (x.value == obj[classifier]) {
-                    return x;
-                }
-            }).text;
-        },
-
         setValues(probabilities) {
             let categories = [];
             let series = [];

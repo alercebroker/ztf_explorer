@@ -3,11 +3,8 @@ import App from './App.vue'
 import Router from 'vue-router'
 import router from './router'
 import store from './store/store'
-
 import vuetify from '@/plugins/vuetify'
-
 import ECharts from 'vue-echarts'
-// import ECharts modules manually to reduce bundle size
 import 'echarts/lib/chart/scatter'
 import 'echarts/lib/chart/candlestick'
 import 'echarts/lib/chart/custom'
@@ -18,6 +15,9 @@ import 'echarts/lib/component/tooltip'
 import 'echarts/lib/component/legend'
 import 'echarts/lib/component/dataZoom'
 Vue.component('v-chart', ECharts)
+import VueTour from 'vue-tour'
+require('vue-tour/dist/vue-tour.css')
+Vue.use(VueTour)
 
 Vue.config.productionTip = false;
 

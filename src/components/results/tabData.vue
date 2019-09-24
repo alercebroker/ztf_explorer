@@ -1,68 +1,53 @@
 <template>
-    <v-layout row wrap pl-4 pr-4 pt-2 pb-5>
-        <v-flex v-if="$store.state.search.error">
-            <v-alert :value="true" type="error">Error connecting to our servers</v-alert>
-        </v-flex>
-        <v-flex v-else-if="$store.state.search.query_status === 204">
-            <v-alert :value="true" type="warning">
-                <h3>Our position is correct but there is no Alderaan!</h3>Sorry but your search did not return any results :(
-                <br />Try refining your Query
-            </v-alert>
-        </v-flex>
-        <v-flex v-else-if="$store.state.search.query_status === 400">
-            <v-alert :value="true" type="warning">There is an error with your query</v-alert>
-        </v-flex>
-        <v-flex
-            v-else-if="!$store.state.search.searched && !$store.state.results.showObjectDetailsModal"
-        >
-            <v-alert type="info" :value="true">Your search results will be displayed here</v-alert>
-        </v-flex>
-        <v-flex v-else-if="$store.state.search.query_status === 504">
-            <v-alert type="warning" :value="true">
-                <h3>Opps!</h3>It looks like the query is taking too long. Try refining your query :)
-            </v-alert>
-        </v-flex>
-
-        <v-flex xs12 v-else-if="$store.state.search.query_status === 200 && $store.state.results.total" >
-            <v-toolbar flat color="white">
-                <v-toolbar-title>
-                    <v-layout column pt-3>
-                        <v-flex
-                            xs6
-                            md6
-                        >Found {{ $store.state.results.total.toLocaleString() }} results</v-flex>
-                        <v-flex xs6 md6>
+    <v-layout row wrap style="margin:0 0 0 0; padding: 0 0 0 0;">
+        <v-flex xs12>
+            <v-layout row pt-3>
+                <v-flex md8>
+                    <v-layout column>
+                        <v-flex xs6 md6 pl-5>
+                            <h4>{{message}}</h4>
+                        </v-flex>
+                        <v-flex xs6 md6 pl-2>
                             <column-options-modal />
                         </v-flex>
                     </v-layout>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-toolbar-title>
+                </v-flex>
+                <v-flex md4 id="step4">
+                    <v-pagination
+                        v-model="currentPage"
+                        :length="$store.state.results.num_pages"
+                        :total-visible="10"
+                        v-show="$vuetify.breakpoint.mdAndUp"
+                    ></v-pagination>
+                </v-flex>
+            </v-layout>
+            <v-layout row>
+                <v-flex xs12>
+                    <v-data-table
+                        :headers="headers"
+                        :items="objects"
+                        :sortBy.sync="options.sortBy"
+                        :sortDesc.sync="options.sortDesc"
+                        :server-items-length="$store.state.results.total"
+                        @click:row="onRowClicked"
+                        class="elevation-0"
+                        hide-default-footer
+                        dense
+                        :mobile-breakpoint="250"
+                        :loading="loading"
+                    >
+                        <template v-slot:item.oid="{ item }">
+                            <div id="v-step-2">{{ item.oid }}</div>
+                        </template>
+                    </v-data-table>
                     <v-pagination
                         v-model="currentPage"
                         :length="$store.state.results.num_pages"
                         :total-visible="5"
-                        v-show="$vuetify.breakpoint.mdAndUp"
+                        v-show="$vuetify.breakpoint.xsOnly"
                     ></v-pagination>
-                </v-toolbar-title>
-            </v-toolbar>
-            <v-data-table
-                :headers="headers"
-                :items="objects"
-                :options.sync="options"
-                :server-items-length="$store.state.results.total"
-                @click:row="onRowClicked"
-                class="elevation-1"
-                hide-default-footer
-                dense
-                :mobile-breakpoint="250"
-            ></v-data-table>
-            <v-pagination
-                v-model="currentPage"
-                :length="$store.state.results.num_pages"
-                :total-visible="5"
-                v-show="$vuetify.breakpoint.xsOnly"
-            ></v-pagination>
+                </v-flex>
+            </v-layout>
         </v-flex>
     </v-layout>
 </template>
@@ -79,17 +64,25 @@ export default {
         // downloadModal,
         columnOptionsModal
     },
-    data() {
-        return {
-            options: {
-                sortBy: ["pclassrf"],
-                sortDesc: [true]
-            }
-        };
-    },
     methods: {
-        getClass(obj) {
-            let ret = this.$store.state.search.classes.find(function(x) {
+        getLateClass(obj) {
+            let ret = this.$store.getters.lateClasses.find(function(x) {
+                if (x.value == obj) {
+                    return x;
+                }
+            });
+            return ret ? ret.text : "-";
+        },
+        getEarlyClass(obj) {
+            let ret = this.$store.getters.earlyClasses.find(function(x) {
+                if (x.value == obj) {
+                    return x;
+                }
+            });
+            return ret ? ret.text : "-";
+        },
+        getXmatchClass(obj, classifier) {
+            let ret = this.$store.getters.xmatchClasses.find(function(x) {
                 if (x.value == obj) {
                     return x;
                 }
@@ -105,7 +98,6 @@ export default {
             });
         }
     },
-    mounted: function() {},
     computed: {
         showObjectDetailsModal() {
             return this.$store.state.results.showObjectDetailsModal;
@@ -116,6 +108,17 @@ export default {
             },
             set(value) {
                 this.$store.dispatch("setCurrentPage", value);
+                if (!this.$route.params.id) {
+                    this.$store.dispatch("queryObjects", {
+                        query_parameters: this.$store.state.search
+                            .query_parameters,
+                        page: value,
+                        perPage: this.$store.state.perPage,
+                        total: this.$store.state.results.total,
+                        sortBy: this.options.sortBy[0],
+                        sortDesc: this.options.sortDesc[0]
+                    });
+                }
             }
         },
         objects() {
@@ -124,8 +127,14 @@ export default {
             );
             Object.values(objects).forEach(obj => {
                 Object.keys(obj).forEach(key => {
-                    if (key.startsWith("class") && key !== "classearly") {
-                        obj[key] = this.getClass(obj[key]);
+                    if (key === "classrf") {
+                        obj[key] = this.getLateClass(obj[key]);
+                    }
+                    if (key === "classxmatch") {
+                        obj[key] = this.getXmatchClass(obj[key]);
+                    }
+                    if (key === "classearly") {
+                        obj[key] = this.getEarlyClass(obj[key]);
                     }
                     if (
                         typeof obj[key] === "number" &&
@@ -133,7 +142,10 @@ export default {
                     )
                         obj[key] = obj[key].toFixed(3);
                 });
-                obj["radec"] = obj.meanra + ", " + obj.meandec;
+                obj["radec"] =
+                    obj.meanra && obj.meandec
+                        ? obj.meanra + ", " + obj.meandec
+                        : " ";
             });
             return Object.values(objects);
         },
@@ -144,32 +156,83 @@ export default {
                 if (col.show) selected.push(col);
             });
             return selected;
+        },
+        selectedClassifier() {
+            return this.$store.state.search.selectedClassifier;
+        },
+        options: {
+            get() {
+                return this.$store.state.results.tableOptions;
+            },
+            set(value) {
+                this.$store.dispatch("setTableOptions", value);
+            }
+        },
+        sortBy: {
+            get() {
+                return this.$store.state.results.tableOptions.sortBy;
+            },
+            set(value) {
+                this.$store.dispatch("setTableSortBy", value);
+            }
+        },
+        sortDesc: {
+            get() {
+                return this.$store.state.results.tableOptions.sortDesc;
+            },
+            set(value) {
+                this.$store.dispatch("setTableSortDesc", value);
+            }
+        },
+        selectedClassifier() {
+            return this.$store.state.search.selectedClassifier;
+        },
+        loading() {
+            return this.$store.state.tableLoading;
+        },
+        message() {
+            if (this.$store.state.search.searched) {
+                return this.$store.state.results.total
+                    ? "Found " +
+                          this.$store.state.results.total.toLocaleString() +
+                          " results"
+                    : "No results found";
+            } else if (!this.$store.state.search.error) {
+                return "Your results will appear here";
+            } else {
+                return "There was an error retrieving your query from our servers";
+            }
         }
     },
     watch: {
-        currentPage(value) {
+        sortBy(newVal, oldVal) {
             if (this.$route.params.id) return;
-            this.$store.dispatch("queryObjects", {
+            let parameters = {
                 query_parameters: this.$store.state.search.query_parameters,
-                page: value,
+                page: this.currentPage,
                 perPage: this.$store.state.perPage,
                 total: this.$store.state.results.total,
-                sortBy: this.options.sortBy[0],
-                sortDesc: this.options.sortDesc[0]
-            });
+                sortBy: newVal[0],
+                sortDesc: this.$store.state.results.tableOptions.sortDesc[0]
+            };
+            this.$store.dispatch("queryObjects", parameters);
         },
-        options(value, old) {
-            if (value.sortBy !== old.sortBy || value.sortDesc != old.sortDesc) {
-                this.$store.dispatch("queryObjects", {
+        sortDesc(newVal, oldVal) {
+            if (this.$route.params.id) return;
+            if (newVal[0] !== oldVal[0]) {
+                let parameters = {
                     query_parameters: this.$store.state.search.query_parameters,
                     page: this.currentPage,
                     perPage: this.$store.state.perPage,
                     total: this.$store.state.results.total,
-                    sortBy: value.sortBy[0],
-                    sortDesc: value.sortDesc[0]
-                });
+                    sortBy: this.$store.state.results.tableOptions.sortBy[0],
+                    sortDesc: newVal[0]
+                };
+                this.$store.dispatch("queryObjects", parameters);
             }
-        }
+        },
+        objects() {}
+
     }
 };
 </script>

@@ -1,7 +1,7 @@
 import axios from 'axios'
-
+import _ from 'lodash';
 const apiClient = axios.create({
-    baseURL: "http://ztf.alerce.online",
+    baseURL: process.env.VUE_APP_PSQL_API,
     withCredentials: false,
     headers: {
         Accept: "application/json",
@@ -47,6 +47,9 @@ export default {
     },
     queryFeatures(oid) {
         return apiClient.post('/get_features', { oid: oid })
+    },
+    queryPeriod(oid){
+        return apiClient.post('/get_period', {oid: oid})
     },
     queryStats(oid) {
         return apiClient.post('/get_stats', { oid: oid })

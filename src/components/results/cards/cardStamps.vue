@@ -101,7 +101,6 @@ export default {
         console.log("IMAGE", JS9.LookupImage("get_stamp"))
     },
     beforeDestroy() {
-        console.log("asdasd");
         JS9.CloseImage({ display: "JS9Sci" });
         JS9.CloseImage({ display: "JS9Tem" });
         JS9.CloseImage({ display: "JS9Dif" });

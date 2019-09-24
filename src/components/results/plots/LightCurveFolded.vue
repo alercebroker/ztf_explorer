@@ -29,7 +29,7 @@ export default {
                     feature: {
                         dataZoom: {},
                         restore: {}
-                    },
+                    }
                 },
                 tooltip: {
                     trigger: "axis",
@@ -115,8 +115,7 @@ export default {
                         padding: 30
                     }
                 },
-                dataZoom: [
-                ],
+                dataZoom: [],
                 series: [
                     {
                         name: "g",
@@ -163,19 +162,23 @@ export default {
         };
     },
     mounted() {
-        if (this.alerts && this.period)
-            this.makegraph(this.alerts, this.period);
+        if (this.detections && this.period)
+            this.makegraph(this.detections, this.period);
     },
     methods: {
-        makegraph(alerts, period) {
+        makegraph(detections, period) {
             let gbandError = [];
             let rbandError = [];
-            this.scatter.series[0].data = alerts.detections
+            let max = 0;
+            this.scatter.series[0].data = detections
                 .filter(function(x) {
-                    return x.fid == 1 && x.magpsf_corr != null;;
+                    return x.fid == 1 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
-                    let phase = (x.mjd % period.periodls_1) / period.periodls_1;
+                    let phase = (x.mjd % period) / period;
+                    if (phase > max) {
+                        max = phase;
+                    }
                     gbandError.push([
                         phase,
                         x.magpsf_corr - x.sigmapsf,
@@ -183,12 +186,32 @@ export default {
                     ]);
                     return [phase, x.magpsf_corr, x.candid_str, x.sigmapsf];
                 });
-            this.scatter.series[1].data = alerts.detections
+            this.scatter.series[0].data = this.scatter.series[0].data.concat(
+                detections
+                    .filter(function(x) {
+                        return x.fid == 1 && x.magpsf_corr != null;
+                    })
+                    .map(function(x) {
+                        let phase = (x.mjd % period) / period;
+                        phase += max;
+                        gbandError.push([
+                            phase,
+                            x.magpsf_corr - x.sigmapsf,
+                            x.magpsf_corr + x.sigmapsf
+                        ]);
+                        return [phase, x.magpsf_corr, x.candid_str, x.sigmapsf];
+                    })
+            );
+            max = 0;
+            this.scatter.series[1].data = detections
                 .filter(function(x) {
-                    return x.fid == 2 && x.magpsf_corr != null;;
+                    return x.fid == 2 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
-                    let phase = (x.mjd % period.periodls_2) / period.periodls_2;
+                    let phase = (x.mjd % period) / period;
+                    if (phase > max) {
+                        max = phase;
+                    }
                     rbandError.push([
                         phase,
                         x.magpsf_corr - x.sigmapsf,
@@ -196,14 +219,26 @@ export default {
                     ]);
                     return [phase, x.magpsf_corr, x.candid_str, x.sigmapsf];
                 });
+            this.scatter.series[1].data = this.scatter.series[1].data.concat(
+                detections
+                    .filter(function(x) {
+                        return x.fid == 2 && x.magpsf_corr != null;
+                    })
+                    .map(function(x) {
+                        let phase = (x.mjd % period) / period;
+                        phase += max;
+                        rbandError.push([
+                            phase,
+                            x.magpsf_corr - x.sigmapsf,
+                            x.magpsf_corr + x.sigmapsf
+                        ]);
+                        return [phase, x.magpsf_corr, x.candid_str, x.sigmapsf];
+                    })
+            );
             this.scatter.series[2].data = gbandError;
             this.scatter.series[3].data = rbandError;
             this.scatter.title.subtext =
-                "Period: " +
-                this.$store.state.results.objectDetails.period.periodls_1.toFixed(
-                    3
-                ) +
-                " days";
+                "Period: " + period.toFixed(3) + " days";
         },
         renderError(params, api) {
             var xValue = api.value(0);
@@ -252,16 +287,18 @@ export default {
         }
     },
     computed: {
-        alerts() {
-            return this.$store.state.results.objectDetails;
+        detections() {
+            return this.$store.state.results.objectDetails.detections
+                ? this.$store.state.results.objectDetails.detections
+                : [];
         },
         period() {
             return this.$store.state.results.objectDetails.period;
         }
     },
     watch: {
-        alerts(newval) {
-            this.makegraph();
+        detections(newval) {
+            this.makegraph(newval, this.period);
         }
     }
 };

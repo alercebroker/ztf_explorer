@@ -1,10 +1,11 @@
 <template>
     <v-form >
         <v-layout row wrap pl-3 pr-3>
-            <v-flex xs12>
+            <v-flex xs5>
                 <v-text-field type="number" step="0.00001" v-model="ra" label="RA (deg)" />
             </v-flex>
-            <v-flex xs12>
+            <v-spacer></v-spacer>
+            <v-flex xs5>
                 <v-text-field label="DEC (deg)" type="number" step="0.00001" v-model="dec" />
             </v-flex>
             <v-flex xs12>
@@ -53,12 +54,12 @@ export default {
         },
         rs: {
             get() {
-                return this.$store.state.search.coordinates.rs;
+                return this.$store.state.search.coordinates.sr;
             },
             set(value) {
                 this.$store.dispatch("updateOptions", {
                     obj: "coordinates",
-                    keyPath: ["rs"],
+                    keyPath: ["sr"],
                     value: value
                 });
             }

@@ -1,7 +1,6 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
-import QueryStampsService from '@/services/QueryStampsService.js';
 import QueryXMatchService from '@/services/QueryXMatchService.js';
-import QueryAvroService from '@/services/QueryAvroService.js'
+import _ from 'lodash';
 import Vue from 'vue';
 export const state = {
     query_parameters: null,
@@ -9,101 +8,157 @@ export const state = {
     dates: { firstmjd: {} },
     bands: {},
     coordinates: {},
-    sql: "SELECT * FROM OBJECTS",
+    sql: "SELECT * FROM objects",
     query_status: 0,
     error: null,
     file: null,
     classes: [
         {
             text: "Not specified",
-            value: null
+            value: null,
+            classifier: ["late", "early", "xmatch"]
         },
         {
             text: "Classified",
-            value: "classified"
+            value: "classified",
+            classifier: ["late", "early", "xmatch"]
         },
         {
             text: "Not classified",
-            value: "not classified"
+            value: "not classified",
+            classifier: ["late", "early", "xmatch"]
         },
         {
             text: "Ceph",
-            value: 1
+            value: 1,
+            classifier: ["late", "xmatch"]
         },
         {
             text: "DSCT",
-            value: 2
+            value: 2,
+            classifier: ["late", "xmatch"]
         },
         {
             text: "EB",
-            value: 3
+            value: 3,
+            classifier: ["xmatch"]
         },
         {
             text: "LPV",
-            value: 4
+            value: 4,
+            classifier: ["late", "xmatch"]
         },
         {
             text: "RRL",
-            value: 5
+            value: 5,
+            classifier: ["late", "xmatch"]
         },
         {
-            text: "SNe",
-            value: 6
+            text: "SN",
+            value: 6,
+            classifier: ["xmatch"]
         },
         {
             text: "Other",
-            value: 0
-        }
-    ],
-    classes_stamps: [
-        {
-            text: "Not specified",
-            value: null
+            value: 0,
+            classifier: ["late", "xmatch"]
         },
         {
-            text: "Classified",
-            value: "classified"
+            text: "AGN I",
+            value: 7,
+            classifier: ["late"]
         },
         {
-            text: "Not classified",
-            value: "not classified"
+            text: "Blazar",
+            value: 8,
+            classifier: ["late"]
+        },
+        {
+            text: "CV/Nova",
+            value: 9,
+            classifier: ["late"]
+        },
+        {
+            text: "SN Ia",
+            value: 10,
+            classifier: ["late"]
+        },
+        {
+            text: "SN Ibc",
+            value: 11,
+            classifier: ["late"]
+        },
+        {
+            text: "SN II",
+            value: 12,
+            classifier: ["late"]
+        },
+        {
+            text: "SN IIn",
+            value: 13,
+            classifier: ["late"]
+        },
+        {
+            text: "SLSN",
+            value: 14,
+            classifier: ["late"]
+        },
+        {
+            text: "EB/SD/D",
+            value: 15,
+            classifier: ["late"]
+        },
+        {
+            text: "EB/C",
+            value: 16,
+            classifier: ["late"]
+        },
+        {
+            text: "Periodic/Other",
+            value: 17,
+            classifier: ["late"]
         },
         {
             text: "AGN",
-            value: 1
+            value: 18,
+            classifier: ["early"]
         },
         {
-            text: "SNe",
-            value: 2
+            text: "SN",
+            value: 19,
+            classifier: ["early"]
         },
         {
             text: "Variable Star",
-            value: 3
+            value: 20,
+            classifier: ["early"]
         },
         {
             text: "Asteroid",
-            value: 4
+            value: 21,
+            classifier: ["early"]
         },
         {
             text: "Bogus",
-            value: 5
+            value: 22,
+            classifier: ["early"]
         }
     ],
     classifiers: [
         {
-            text: "All",
-            value: null
+            text: "Select a classifier",
+            value: null,
         },
         {
             text: "X-MATCH",
             value: "classxmatch"
         },
         {
-            text: "ML_RF",
+            text: "Late Classifier",
             value: "classrf"
         },
         {
-            text: "STAMPS",
+            text: "Early Classifier",
             value: "classearly"
         }
     ],
@@ -138,7 +193,6 @@ export const mutations = {
         if (payload.value != null)
             Vue.set(obj, payload.keyPath[lastKeyIndex], payload.value);
         else Vue.delete(obj, payload.keyPath[lastKeyIndex]);
-
     },
     SET_QUERY_PARAMETERS(state, query_parameters) {
         state.query_parameters = query_parameters;
@@ -201,6 +255,8 @@ export const mutations = {
     }
 }
 
+var debounceQueryObjects = _.debounce(QueryPSQLService.queryObjects, 1000, { leading: true, trailing: false })
+
 export const actions = {
     updateOptions({ commit }, payload) {
         commit('UPDATE_OPTIONS', payload);
@@ -216,111 +272,72 @@ export const actions = {
     setQueryStatus({ commit }, status) {
         commit('SET_QUERY_STATUS', status);
     },
-    queryAlerts({ commit, dispatch }, object) {
-        dispatch('loading', true)
-        Promise.all([
-            QueryPSQLService.queryDetections(object.oid),
-            QueryPSQLService.queryNonDetections(object.oid),
-            QueryPSQLService.queryProbabilities(object.oid),
-            QueryPSQLService.queryFeatures(object.oid),
-        ])
-            .then(values => {
-                let candid = null;
-                commit('SET_QUERY_STATUS', 200);
-                commit('SET_ERROR', null);
-                values.forEach((element, index) => {
-                    if (index == 0) {
-                        candid = element.data.result.detections[0].candid_str
-                    }
-                    dispatch('setObjectDetails', element.data.result)
-                })
-                dispatch('getAvroInfo', { oid: object.oid, candid: candid })
-            })
-            .catch(reason => {
-                console.error("Error with alert query", reason)
-                commit('SET_ERROR', reason);
-                dispatch('loading', false);
-            })
+    queryAlerts({ dispatch }, object) {
+        dispatch('setShowObjectDetailsModal', true)
+        QueryPSQLService.queryDetections(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        }).catch(reason => {
+            console.error("Error with alert query", reason)
+        })
+        QueryPSQLService.queryNonDetections(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        }).catch(reason => {
+            console.error("Error with alert query", reason)
+        })
+        QueryPSQLService.queryProbabilities(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        }).catch(reason => {
+            console.error("Error with alert query", reason)
+        })
+        QueryPSQLService.queryPeriod(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        }).catch(reason => {
+            console.error("Error with alert query", reason)
+        })
     },
-    queryObjects({ commit, dispatch, state }, payload) {
-        dispatch('loading', true)
-        QueryPSQLService.queryObjects(payload).then(response => {
+    queryObjects({ commit, dispatch }, payload) {
+        dispatch('setTableLoading', true);
+        debounceQueryObjects(payload).then(response => {
             commit('SET_QUERY_STATUS', response.status)
-            commit('SET_SEARCHED', true);
             commit('SET_ERROR', null);
+            commit('SET_SEARCHED', true);
             dispatch('setObjects', response.data)
-            dispatch('loading', false)
         }).catch(error => {
             commit('SET_ERROR', error);
-            dispatch('loading', false);
-        })
-    },
-    queryDetections({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryDetections(object.oid).then(det => {
-            dispatch('setDetections', det.data.result.detections)
-            dispatch('loading', false)
-        })
-    },
-    queryNonDetections({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryNonDetections(object.oid).then(nondet => {
-            dispatch('setNonDetections', nondet.data.result.non_detections)
-            dispatch('loading', false)
-        })
-    },
-    queryProbabilities({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryProbabilities(object.oid).then(prob => {
-            dispatch('setProbabilities', prob.data.result.probabilities)
-            dispatch('loading', false)
-        })
-    },
-    queryFeatures({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryFeatures(object.oid).then(feat => {
-            dispatch('setPeriods', feat.data.result.period)
-            dispatch('loading', false)
-        })
-    },
-    queryStats({ dispatch }, object) {
-        dispatch('loading', true);
-        QueryPSQLService.queryStats(object.oid).then(stats => {
-            dispatch('setObjectDetails', stats)
-            dispatch('loading', false)
+            dispatch('setTableLoading', false)
         })
     },
     queryAlertsFromURL({ commit, dispatch }, object) {
-        dispatch('loading', true)
-        let candid = null
-        Promise.all([
-            QueryPSQLService.queryDetections(object.oid),
-            QueryPSQLService.queryNonDetections(object.oid),
-            QueryPSQLService.queryProbabilities(object.oid),
-            QueryPSQLService.queryFeatures(object.oid),
-            QueryPSQLService.queryStats(object.oid),
-        ])
-            .then(values => {
-                commit('SET_QUERY_STATUS', 200);
-                commit('SET_ERROR', null);
-                values.forEach((element, index) => {
-                    if (index == 4) {
-                        dispatch('objectSelected', element.data.result.stats)
-                    }
-                    else if (index == 0) {
-                        candid = element.data.result.detections[0].candid_str
-                        dispatch('setObjectDetails', element.data.result)
-                    }
-                    else {
-                        dispatch('setObjectDetails', element.data.result)
-                    }
-                })
-                dispatch('getAvroInfo', { oid: object.oid, candid: candid })
-            })
+        dispatch('setShowObjectDetailsModal', true)
+        QueryPSQLService.queryDetections(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        })
             .catch(reason => {
-                console.error("Error with alert query", reason)
-                commit('SET_ERROR', reason);
-                dispatch('loading', false);
+                console.log("Error with alert query", reason)
+            })
+        QueryPSQLService.queryNonDetections(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+            })
+        QueryPSQLService.queryProbabilities(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+            })
+        QueryPSQLService.queryStats(object.oid).then(response => {
+            dispatch('objectSelected', response.data.result.stats)
+        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
+            })
+        QueryPSQLService.queryPeriod(object.oid).then(response => {
+            dispatch('setObjectDetails', response.data.result)
+        })
+            .catch(reason => {
+                console.log("Error with alert query", reason)
             })
     },
     clearQuery({ commit }) {
@@ -453,15 +470,22 @@ export const actions = {
             .catch(reason => {
                 dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
             })
-
-    },
-    getAvroInfo({ dispatch }, payload) {
-        QueryAvroService.getAvroInfo(payload).then(response => {
-            dispatch('setAvroInfo', response.data.candidate)
-            dispatch('loading', false)
-            dispatch('setShowObjectDetailsModal', true)
-        })
-
     }
 }
-
+export const getters = {
+    lateClasses(state) {
+        return state.classes.filter(c => {
+            return c.classifier.includes("late")
+        })
+    },
+    earlyClasses(state) {
+        return state.classes.filter(c => {
+            return c.classifier.includes("early")
+        })
+    },
+    xmatchClasses(state) {
+        return state.classes.filter(c => {
+            return c.classifier.includes("xmatch")
+        })
+    },
+}

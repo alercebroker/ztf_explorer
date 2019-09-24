@@ -1,11 +1,11 @@
 <template>
-    <v-layout row wrap justify-center align-center>
+    <v-layout row wrap align-center>
         <!--Object ID-->
         <v-flex xs12 sm12 md12>
             <v-text-field label="Object ID" v-model="oid" />
         </v-flex>
         <!--Classifier-->
-        <v-flex xs12 sm12 md6>
+        <v-flex xs12 sm12 md6 grow>
             <v-select
                 :items="classifiers"
                 v-model="selectedClassifier"
@@ -15,23 +15,28 @@
         </v-flex>
         <!--Class-->
         <v-flex xs12 sm12 md6>
-            <v-select :items="classes" v-model="selectedClass" label="Class"></v-select>
+            <v-select
+                :items="classes"
+                v-model="selectedClass"
+                label="Class"
+                :disabled="!selectedClassifier"
+            ></v-select>
         </v-flex>
         <!--Probabilities-->
         <v-flex xs12 sm12 md12 v-if="selectedClassifier && selectedClassifier!=='classxmatch'">
             <v-slider v-model="probability" :max="1" :step="0.01" :label="probLabel"></v-slider>
         </v-flex>
         <!--Detections-->
-        <v-flex xs12 >Number of detections range</v-flex>
+        <v-flex xs12>Number of detections range</v-flex>
         <v-flex xs3 sm3 md3>
-            <v-text-field   type="number" v-model="nobsMin" label="min"></v-text-field>
+            <v-text-field type="number" v-model="nobsMin" label="min"></v-text-field>
         </v-flex>
         <v-flex xs6 sm6 md6 pl-3 pr-3>
             <v-range-slider v-model="nobs" :max="1000" :min="0" :step="1"></v-range-slider>
         </v-flex>
 
         <v-flex xs3 sm3 md3>
-            <v-text-field  type="number" label="max" v-model="nobsMax"></v-text-field>
+            <v-text-field type="number" label="max" v-model="nobsMax"></v-text-field>
         </v-flex>
     </v-layout>
 </template>
@@ -80,7 +85,7 @@ export default {
                     : null;
             },
             set(value) {
-                this.$store.dispatch("setNobsRange", [value, 1000]);
+                this.$store.dispatch("setNobsRange", [value, this.nobs[1]]);
             }
         },
         nobsMax: {
@@ -90,19 +95,17 @@ export default {
                     : null;
             },
             set(value) {
-                this.$store.dispatch("setNobsRange", [0, value]);
+                this.$store.dispatch("setNobsRange", [this.nobs[0], value]);
             }
         },
         selectedClassifier: {
             get() {
-                console.log(
-                    "classifier",
-                    this.$store.state.search.selectedClassifier
-                );
                 return this.$store.state.search.selectedClassifier;
             },
             set(value) {
+                this.$store.dispatch("setClass", null);
                 this.$store.dispatch("setClassifier", value);
+
             }
         },
         selectedClass: {
@@ -118,8 +121,11 @@ export default {
         },
         classes() {
             if (this.selectedClassifier === "classearly")
-                return this.$store.state.search.classes_stamps;
-            return this.$store.state.search.classes;
+                return this.$store.getters.earlyClasses;
+            if (this.selectedClassifier === "classxmatch")
+                return this.$store.getters.xmatchClasses;
+            if (this.selectedClassifier === "classrf")
+                return this.$store.getters.lateClasses;
         },
         probability: {
             get() {
@@ -135,8 +141,6 @@ export default {
                 : "Probability >= 0.00";
         }
     },
-    methods: {
-        
-    }
+    methods: {}
 };
 </script>

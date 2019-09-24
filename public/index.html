@@ -1,55 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="<%= BASE_URL %>icon.png">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>ALeRCE - Automatic Learning for the Rapid Classification of Events </title>
-    <!-- include Aladin Lite CSS file in the head section of your page -->
-    <link rel="stylesheet" href="//aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css" />
-    <!-- include BokehJS css  -->
-    <!-- <link rel="stylesheet" href="//cdn.pydata.org/bokeh/release/bokeh-1.1.0.min.css" />
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="icon" href="<%= BASE_URL %>icon.png">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description" content="Automatic Learning for the Rapid Classification of Events">
+  <meta name="keywords" content="ZTF, LSST, broker, astronomy, telescope, CMM, MAS, ALeRCE, alerts, machine learning">
+  <title><%= process.env.VUE_APP_TITLE %></title>
+  <!-- include Aladin Lite CSS file in the head section of your page -->
+  <link rel="stylesheet" href="//aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css" />
+  <!-- include BokehJS css  -->
+  <!-- <link rel="stylesheet" href="//cdn.pydata.org/bokeh/release/bokeh-1.1.0.min.css" />
     <link rel="stylesheet" href="//cdn.pydata.org/bokeh/release/bokeh-widgets-1.1.0.min.css" />
     <link rel="stylesheet" href="//cdn.pydata.org/bokeh/release/bokeh-tables-1.1.0.min.css" /> -->
-    
-    <!-- Material Icons -->
-    <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+  <!-- Material Icons -->
+  <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css"
+    integrity="sha256-OYXGS5m4oWZAAqoAKpf7Y3bIdzdd9jBfly/xCavEpGw=" crossorigin="anonymous" />
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142202256-1"></script>
-    <script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142202256-1"></script>
+  <script>
+    var environment = '<%=NODE_ENV%>'
+    if(environment == 'production'){
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag() { dataLayer.push(arguments); }
       gtag('js', new Date());
       gtag('config', 'UA-142202256-1');
-    </script>
-  </head>
+    }else{
+        console.log(environment+ " environment (Not sending metrics)")
+    }
+  </script>
+</head>
 
-  <body>
-    <noscript>
-      <strong>We're sorry but vue-proj doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.12.1.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="//aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js" charset="utf-8"></script>
-    <!-- <script type="text/javascript" src="//cdn.pydata.org/bokeh/release/bokeh-1.1.0.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="//cdn.pydata.org/bokeh/release/bokeh-widgets-1.1.0.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="//cdn.pydata.org/bokeh/release/bokeh-tables-1.1.0.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="//cdn.pydata.org/bokeh/release/bokeh-api-1.1.0.min.js" charset="utf-8"></script> -->
-    
-    <!-- js9 imports -->  
-    <link type="text/css" rel="stylesheet" href="https://cdn.lco.global/js9/js9support.css">
-    <link type="text/css" rel="stylesheet" href="https://cdn.lco.global/js9/js9.css">
-    <script type="text/javascript" src="https://cdn.lco.global/js9/js9prefs.js"></script>
-    <script type="text/javascript" src="https://cdn.lco.global/js9/js9support.min.js"></script>
-    <script type="text/javascript" src="https://cdn.lco.global/js9/js9.min.js"></script>
-    <script type="text/javascript" src="https://cdn.lco.global/js9/js9plugins.js"></script>
-    <div>
-      <div id="app"></div>
-    </div>
-  </body>
+<body>
+  <noscript>
+    <strong>We're sorry but vue-proj doesn't work properly without JavaScript enabled. Please enable it to
+      continue.</strong>
+  </noscript>
+  <script type="text/javascript" src="//code.jquery.com/jquery-1.12.1.min.js" charset="utf-8"></script>
+  <script type="text/javascript" src="//aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js"
+    charset="utf-8"></script>
+  <!-- js9 imports -->
+  <link type="text/css" rel="stylesheet" href="https://cdn.lco.global/js9/js9support.css">
+  <link type="text/css" rel="stylesheet" href="https://cdn.lco.global/js9/js9.css">
+  <script type="text/javascript" src="https://cdn.lco.global/js9/js9prefs.js"></script>
+  <script type="text/javascript" src="https://cdn.lco.global/js9/js9support.min.js"></script>
+  <script type="text/javascript" src="https://cdn.lco.global/js9/js9.min.js"></script>
+  <script type="text/javascript" src="https://cdn.lco.global/js9/js9plugins.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/intro.js"
+    integrity="sha256-SPZP/x8QDPEhRlpJjet4AD5X4ergPWcxjhMn73SwyOE=" crossorigin="anonymous"></script>
+  <div>
+    <div id="app"></div>
+  </div>
+</body>
 
 </html>
