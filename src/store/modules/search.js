@@ -470,7 +470,6 @@ export const actions = {
             .catch(reason => {
                 dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
             })
-
     }
 }
 export const getters = {

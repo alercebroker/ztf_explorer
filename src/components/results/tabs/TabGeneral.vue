@@ -182,6 +182,7 @@ export default {
                 }
             ];
         },
+
         fontStyle() {
             switch (this.$vuetify.breakpoint.name) {
                 case "xs":
