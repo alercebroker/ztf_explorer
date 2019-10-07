@@ -340,6 +340,9 @@ export const actions = {
     },
     setTableSortDesc({ commit }, options) {
         commit('SET_TABLE_SORT_DESC', options);
+    },
+    setTotal({commit}, total){
+        commit('SET_TOTAL', total);
     }
 }
 
