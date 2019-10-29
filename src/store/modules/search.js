@@ -1,5 +1,6 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
 import QueryXMatchService from '@/services/QueryXMatchService.js';
+import TNSService from '@/services/TNSService.js';
 import _ from 'lodash';
 import Vue from 'vue';
 export const state = {
@@ -252,7 +253,7 @@ export const mutations = {
     },
     SET_NOBS_RANGE(state, value) {
         state.nobsRange = value
-    }
+    },
 }
 
 var debounceQueryObjects = _.debounce(QueryPSQLService.queryObjects, 1000, { leading: true, trailing: false })
@@ -470,6 +471,15 @@ export const actions = {
             .catch(reason => {
                 dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
             })
+    },
+    getTNS({ commit }, payload) {
+        TNSService.searchTNS(payload)
+        .then(response => {
+            commit("SET_TNS_DATA", response);
+        })
+        .catch(error => {
+            //TODO
+        });
     }
 }
 export const getters = {
@@ -487,5 +497,5 @@ export const getters = {
         return state.classes.filter(c => {
             return c.classifier.includes("xmatch")
         })
-    },
+    }
 }

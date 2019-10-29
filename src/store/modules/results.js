@@ -9,6 +9,7 @@ export const state = {
         probabilities: null,
         period: null,
         xmatches: null,
+        tns_data: null,
         load_xmatches: true,
         error_xmatches: ""
     },
@@ -247,6 +248,9 @@ export const mutations = {
     },
     SET_TABLE_SORT_DESC(state, value) {
         state.tableOptions.sortDesc = value;
+    },
+    SET_TNS_DATA(state, value){
+        state.objectDetails.tns_data = value.data
     }
 }
 
@@ -349,5 +353,8 @@ export const actions = {
 export const getters = {
     getProbabilities: (state) => {
         return state.objectDetails.probabilities
+    },
+    getTNS: (state) => {
+        return state.objectDetails.tns_data;
     }
 }
