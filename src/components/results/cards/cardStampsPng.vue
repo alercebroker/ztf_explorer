@@ -18,23 +18,35 @@
         <v-card-text>
             <v-layout row wrap>
                 <v-flex xs4 class="text-xs-center">
-                    <h5>Science</h5>
+                    <h5>Science 
+                        <v-btn x-small outlined color="primary" :href="download('science')">
+                            <v-icon left small>cloud_download</v-icon>Download
+                        </v-btn>
+                    </h5>
                     <v-img contain :src="science" class="stampImg" />
                 </v-flex>
                 <v-flex xs4 class="text-xs-center">
-                    <h5>Template</h5>
+                    <h5>Template
+                        <v-btn x-small outlined color="primary" :href="download('template')">
+                            <v-icon left small>cloud_download</v-icon>Download
+                        </v-btn>
+
+
+                    </h5>
                     <v-img contain :src="template" class="stampImg" />
                 </v-flex>
                 <v-flex xs4 class="text-xs-center">
-                    <h5>Difference</h5>
+                    <h5>Difference
+                        <v-btn x-small outlined color="primary" :href="download('difference')">
+                            <v-icon left small>cloud_download</v-icon>Download
+                        </v-btn>
+                    </h5>
                     <v-img contain :src="difference" class="stampImg" />
                 </v-flex>
             </v-layout>
-            <v-layout row justify-space-around align-end>
+            <!--v-layout row justify-space-around align-end>
                 <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" :href="download('science')">
-                        <v-icon left small>cloud_download</v-icon>Download
-                    </v-btn>
+                    
                 </v-flex>
                 <v-flex xs3 mt-2>
                     <v-btn x-small outlined color="primary" :href="download('template')">
@@ -46,7 +58,7 @@
                         <v-icon left small>cloud_download</v-icon>Download
                     </v-btn>
                 </v-flex>
-            </v-layout>
+            </v-layout-->
         </v-card-text>
     </v-card>
 </template>

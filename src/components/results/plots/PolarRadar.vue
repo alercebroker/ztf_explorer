@@ -1,7 +1,7 @@
 <template>
-    <div>
+    
         <v-chart :options="polar" autoresize></v-chart>
-    </div>
+    
 </template>
 
 <script>

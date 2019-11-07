@@ -7,8 +7,8 @@
           {{name}}
         </v-tab>
         <v-tab-item  v-for="(value, name, index) in probabilities" v-bind:key="index">
-          <v-layout row wrap>
-            <v-flex md6 offset-md-3 >
+          <v-layout>
+            <v-flex class="align-self-center">
               <polarradar :classifier="name" :probabilities="value" />
             </v-flex>
           </v-layout>
