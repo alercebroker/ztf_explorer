@@ -107,11 +107,11 @@ export default {
         }
     },
     mounted: function() {
-        this.$store.dispatch("getXMatches", {
+        /*this.$store.dispatch("getXMatches", {
             ra: this.$store.state.results.selectedObject.meanra,
             dec: this.$store.state.results.selectedObject.meandec,
             radius: 50
-        });
+        });*/
     }
 };
 </script>

@@ -49,7 +49,7 @@
                 ></v-data-table>
                 <v-footer class="caption transparent">
                     <v-spacer></v-spacer>
-                    <p> Provided by <a href="https://wis-tns.weizmann.ac.il/" target="_blank">TNS <img src="https://wis-tns.weizmann.ac.il/sites/default/files/favicon.png" alt="TNS icon"></a></p>
+                    <p class="mb-0"> Provided by <a href="https://wis-tns.weizmann.ac.il/" target="_blank">TNS <img src="https://wis-tns.weizmann.ac.il/sites/default/files/favicon.png" alt="TNS icon"></a></p>
                 </v-footer>
             </v-flex>
         </v-card-text>
@@ -57,6 +57,7 @@
 </template>
 <script>
 import { jdToDate } from "../../utils/AstroDates.js";
+import { watch } from 'fs';
 export default {
     name: "cardBasicInformation",
     data() {
@@ -206,16 +207,21 @@ export default {
             return filtered;
         },
         tnsInformation(){
-            let info = [
-                { 
-                    type: this.tns.object_type ? this.tns.object_type : "-", 
-                    name: this.tns.object_name ? this.tns.object_name : "-" , 
-                    redshift: this.tns.object_data.redshift? this.tns.object_data.redshift : "-"}
-            ];
-            let filtered = info.filter(function(el) {
-                return el != null;
-            });
-            return filtered;
+            if(this.tns) {
+                let info = [
+                    { 
+                        type: this.tns.object_type ? this.tns.object_type : "-", 
+                        name: this.tns.object_name ? this.tns.object_name : "-" , 
+                        redshift: this.tns.object_data.redshift? this.tns.object_data.redshift : "-"
+                    }
+                ];
+                let filtered = info.filter(function(el) {
+                    return el != null;
+                });
+                return filtered;
+            }
+            return null;
+            
         },
         links() {
             return [
@@ -283,6 +289,6 @@ export default {
                 }
             ];
         }
-    }
+    },
 };
 </script>

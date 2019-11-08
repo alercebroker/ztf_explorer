@@ -330,6 +330,17 @@ export const actions = {
             })
         QueryPSQLService.queryStats(object.oid).then(response => {
             dispatch('objectSelected', response.data.result.stats)
+            let meanra = response.data.result.stats.meanra;
+            let meandec = response.data.result.stats.meandec;
+            dispatch("getTNS", {
+                ra: meanra,
+                dec: meandec
+            });
+            dispatch("getXMatches", {
+                ra: meanra,
+                dec: meandec,
+                radius: 50
+            });
         })
             .catch(reason => {
                 console.log("Error with alert query", reason)
