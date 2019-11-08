@@ -194,12 +194,12 @@ export default {
             }
         }
     },
-    updated: function() {
-        this.$store.dispatch("getTNS", {
+    mounted: function() {
+        /*this.$store.dispatch("getTNS", {
             ra: this.ztf_object.meanra,
             dec: this.ztf_object.meandec
-        });
-    }
+        });*/
+    },
 };
 </script>
 

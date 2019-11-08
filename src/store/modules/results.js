@@ -258,6 +258,17 @@ export const actions = {
     objectSelected({ commit, dispatch, state }, object) {
         if (state.selectedObject && state.selectedObject.oid !== object.oid) {
             dispatch('queryAlerts', object)
+            let meanra = object.meanra;
+            let meandec = object.meandec;
+            dispatch("getTNS", {
+                ra: meanra,
+                dec: meandec
+            });
+            dispatch("getXMatches", {
+                ra: meanra,
+                dec: meandec,
+                radius: 50
+            });
         }
         else {
             commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
