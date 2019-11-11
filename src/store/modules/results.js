@@ -256,6 +256,7 @@ export const mutations = {
 
 export const actions = {
     objectSelected({ commit, dispatch, state }, object) {
+        state.objectDetails.tns_data = null;
         if (state.selectedObject && state.selectedObject.oid !== object.oid) {
             dispatch('queryAlerts', object)
             let meanra = object.meanra;
