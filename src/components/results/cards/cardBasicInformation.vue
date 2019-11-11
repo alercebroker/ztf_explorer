@@ -39,7 +39,7 @@
                     </v-btn>
                 </v-flex>
             </v-layout>
-            <v-flex v-if="tnsInformation != null" class="mt-2">
+            <v-flex v-if="tns != null" class="mt-2">
                 <v-data-table
                     :headers="tnsHeaders"
                     :items="tnsInformation"
@@ -49,7 +49,7 @@
                 ></v-data-table>
                 <v-footer class="caption transparent">
                     <v-spacer></v-spacer>
-                    <p class="mb-0"> Provided by <a :href="tns.permalink" target="_blank">TNS <img src="https://wis-tns.weizmann.ac.il/sites/default/files/favicon.png" alt="TNS icon"></a></p>
+                    <p class="mb-0"> Provided by <a href="https://wis-tns.weizmann.ac.il/" target="_blank">TNS <img src="https://wis-tns.weizmann.ac.il/sites/default/files/favicon.png" alt="TNS icon"></a></p>
                 </v-footer>
             </v-flex>
         </v-card-text>
@@ -212,15 +212,12 @@ export default {
                     { 
                         type: this.tns.object_type ? this.tns.object_type : "-", 
                         name: this.tns.object_name ? this.tns.object_name : "-" , 
-                        redshift: this.tns.object_data? this.tns.object_data.redshift : "-"
+                        redshift: this.tns.object_data.redshift? this.tns.object_data.redshift : "-"
                     }
                 ];
-                if(info[0].type == "-" && info[0].name == "-" && info[0].redshift == "-")
-                    return null;
                 let filtered = info.filter(function(el) {
                     return el != null;
                 });
-                this.tns.permalink = "https://wis-tns.weizmann.ac.il/object/"+this.tns.object_name;
                 return filtered;
             }
             return null;
