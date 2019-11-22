@@ -72,7 +72,7 @@ export default {
         console.log("mounted card stamps");
         JS9.init();
         JS9.Load(
-            "http://stamps.alerce.online:8087/get_stamp?oid=" +
+            "https://avro.alerce.online/get_stamp?oid=" +
                 this.object +
                 "&candid=" +
                 this.candid +
@@ -81,7 +81,7 @@ export default {
             { display: "JS9Sci" }
         );
         JS9.Load(
-            "http://stamps.alerce.online:8087/get_stamp?oid=" +
+            "https://avro.alerce.online/get_stamp?oid=" +
                 this.object +
                 "&candid=" +
                 this.candid +
@@ -90,7 +90,7 @@ export default {
             { display: "JS9Tem" }
         );
         JS9.Load(
-            "http://stamps.alerce.online:8087/get_stamp?oid=" +
+            "https://avro.alerce.online/get_stamp?oid=" +
                 this.object +
                 "&candid=" +
                 this.candid +

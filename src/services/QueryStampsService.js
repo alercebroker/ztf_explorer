@@ -20,14 +20,14 @@ export default {
         })
     },
     getScienceURL(object, candid) {
-        return "http://avro.alerce.online/get_stamp?oid=" +
+        return "https://avro.alerce.online/get_stamp?oid=" +
             object +
             "&candid=" +
             candid +
             "&type=science&format=png"
     },
     getTemplateURL(object, candid) {
-        return "http://avro.alerce.online/get_stamp?oid=" +
+        return "https://avro.alerce.online/get_stamp?oid=" +
             object +
             "&candid=" +
             candid +
@@ -35,7 +35,7 @@ export default {
 
     },
     getDifferenceURL(object, candid) {
-        return "http://avro.alerce.online/get_stamp?oid=" +
+        return "https://avro.alerce.online/get_stamp?oid=" +
             object +
             "&candid=" +
             candid +

@@ -49,7 +49,7 @@ export default {
     data: () => ({
         priority: 10,
         items: [
-            { title: "SN Hunter", link: "http://snhunter.alerce.online" },
+            { title: "SN Hunter", link: "https://snhunter.alerce.online" },
             { title: "About", link: "http://alerce.science" }
             // { title: 'AGN Ranger' , link:"http://alerce.online"},
             // { title: 'VS Scout' , link:"http://alerce.online"},

@@ -29,10 +29,6 @@
             </v-col>
         </v-row>
         <v-row justify="center">
-            <v-col cols="4">
-                <v-btn block tile  dark @click="clearQuery">Clear</v-btn>
-            </v-col>
-
             <v-col cols="6">
                 <v-btn
                     block
@@ -43,6 +39,11 @@
                     :disabled="!validSearch"
                 >Search</v-btn>
             </v-col>
+            <v-col cols="4">
+                <v-btn block tile  dark @click="clearQuery">Clear</v-btn>
+            </v-col>
+
+
         </v-row>
     </div>
 </template>
