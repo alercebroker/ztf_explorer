@@ -9,6 +9,7 @@ export const state = {
         probabilities: null,
         period: null,
         xmatches: null,
+        tns_data: null,
         load_xmatches: true,
         error_xmatches: ""
     },
@@ -247,6 +248,9 @@ export const mutations = {
     },
     SET_TABLE_SORT_DESC(state, value) {
         state.tableOptions.sortDesc = value;
+    },
+    SET_TNS_DATA(state, value){
+        state.objectDetails.tns_data = value.data
     }
 }
 
@@ -254,6 +258,17 @@ export const actions = {
     objectSelected({ commit, dispatch, state }, object) {
         if (state.selectedObject && state.selectedObject.oid !== object.oid) {
             dispatch('queryAlerts', object)
+            let meanra = object.meanra;
+            let meandec = object.meandec;
+            dispatch("getTNS", {
+                ra: meanra,
+                dec: meandec
+            });
+            dispatch("getXMatches", {
+                ra: meanra,
+                dec: meandec,
+                radius: 50
+            });
         }
         else {
             commit('SET_SHOW_OBJECT_DETAILS_MODAL', true)
@@ -340,11 +355,17 @@ export const actions = {
     },
     setTableSortDesc({ commit }, options) {
         commit('SET_TABLE_SORT_DESC', options);
+    },
+    setTotal({commit}, total){
+        commit('SET_TOTAL', total);
     }
 }
 
 export const getters = {
     getProbabilities: (state) => {
         return state.objectDetails.probabilities
+    },
+    getTNS: (state) => {
+        return state.objectDetails.tns_data;
     }
 }

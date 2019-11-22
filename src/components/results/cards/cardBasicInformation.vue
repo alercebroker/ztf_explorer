@@ -12,8 +12,10 @@
                         :mobile-breakpoint="250"
                     ></v-data-table>
                 </v-flex>
+                <v-divider></v-divider>
                 <v-flex xs12>
                     <v-btn
+                        small
                         text
                         block
                         color="primary"
@@ -37,11 +39,25 @@
                     </v-btn>
                 </v-flex>
             </v-layout>
+            <v-flex v-if="tns != null" class="mt-2">
+                <v-data-table
+                    :headers="tnsHeaders"
+                    :items="tnsInformation"
+                    hide-default-footer
+                    dense
+                    :mobile-breakpoint="250"
+                ></v-data-table>
+                <v-footer class="caption transparent">
+                    <v-spacer></v-spacer>
+                    <p class="mb-0"> Provided by <a href="https://wis-tns.weizmann.ac.il/" target="_blank">TNS <img src="https://wis-tns.weizmann.ac.il/sites/default/files/favicon.png" alt="TNS icon"></a></p>
+                </v-footer>
+            </v-flex>
         </v-card-text>
     </v-card>
 </template>
 <script>
 import { jdToDate } from "../../utils/AstroDates.js";
+import { watch } from 'fs';
 export default {
     name: "cardBasicInformation",
     data() {
@@ -52,8 +68,13 @@ export default {
                 { text: "r", value: "r" }
             ],
             infoHeaders: [
-                { text: "Column", value: "column" },
-                { text: "Value", value: "value" }
+                { text: "Column", value: "column"},
+                { text: "Value", value: "value"}
+            ],
+            tnsHeaders: [
+                { text: "Type", value: "type", sortable: false },
+                { text: "Name", value: "name", sortable: false },
+                { text: "Redshift", value: "redshift", sortable: false }
             ],
             mjdButtonText: "View MJD"
         };
@@ -117,6 +138,9 @@ export default {
         ztf_object() {
             return this.$store.state.results.selectedObject;
         },
+        tns(){
+            return this.$store.getters.getTNS;
+        },
         generalInformation() {
             let info = [
                 { column: "Object", value: this.ztf_object.oid },
@@ -175,12 +199,29 @@ export default {
                                   -3
                               ) + "UT"
                       }
-                    : null
+                    : null,
             ];
             let filtered = info.filter(function(el) {
                 return el != null;
             });
             return filtered;
+        },
+        tnsInformation(){
+            if(this.tns) {
+                let info = [
+                    { 
+                        type: this.tns.object_type ? this.tns.object_type : "-", 
+                        name: this.tns.object_name ? this.tns.object_name : "-" , 
+                        redshift: this.tns.object_data.redshift? this.tns.object_data.redshift : "-"
+                    }
+                ];
+                let filtered = info.filter(function(el) {
+                    return el != null;
+                });
+                return filtered;
+            }
+            return null;
+            
         },
         links() {
             return [
@@ -248,6 +289,6 @@ export default {
                 }
             ];
         }
-    }
+    },
 };
 </script>

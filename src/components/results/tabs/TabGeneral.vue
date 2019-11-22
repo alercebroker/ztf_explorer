@@ -53,11 +53,11 @@
                     </v-card>
                 </v-flex>
 
-                <v-flex xs12 md4 id="v-step-8">
+                <v-flex xs12 md3 id="v-step-8">
                     <!-- PROBABILITIES -->
                     <card-probabilities />
                 </v-flex>
-                <v-flex xs12 md4 hidden-sm-and-down id="v-step-5">
+                <v-flex xs12 md5 hidden-sm-and-down id="v-step-5">
                     <card-stamps-png />
                 </v-flex>
             </v-layout>
@@ -194,7 +194,12 @@ export default {
             }
         }
     },
-    mounted: function() {}
+    mounted: function() {
+        /*this.$store.dispatch("getTNS", {
+            ra: this.ztf_object.meanra,
+            dec: this.ztf_object.meandec
+        });*/
+    },
 };
 </script>
 

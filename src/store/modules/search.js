@@ -1,5 +1,6 @@
 import QueryPSQLService from '@/services/QueryPSQLService.js';
 import QueryXMatchService from '@/services/QueryXMatchService.js';
+import TNSService from '@/services/TNSService.js';
 import _ from 'lodash';
 import Vue from 'vue';
 export const state = {
@@ -94,11 +95,6 @@ export const state = {
             classifier: ["late"]
         },
         {
-            text: "SN IIn",
-            value: 13,
-            classifier: ["late"]
-        },
-        {
             text: "SLSN",
             value: 14,
             classifier: ["late"]
@@ -142,7 +138,17 @@ export const state = {
             text: "Bogus",
             value: 22,
             classifier: ["early"]
-        }
+        },
+        {
+            text: "RS-CVn",
+            value: 23,
+            classifier: ["late"]
+        },
+        {
+            text: "QSO-I",
+            value: 24,
+            classifier: ["late"]
+        },
     ],
     classifiers: [
         {
@@ -252,7 +258,7 @@ export const mutations = {
     },
     SET_NOBS_RANGE(state, value) {
         state.nobsRange = value
-    }
+    },
 }
 
 var debounceQueryObjects = _.debounce(QueryPSQLService.queryObjects, 1000, { leading: true, trailing: false })
@@ -329,6 +335,17 @@ export const actions = {
             })
         QueryPSQLService.queryStats(object.oid).then(response => {
             dispatch('objectSelected', response.data.result.stats)
+            let meanra = response.data.result.stats.meanra;
+            let meandec = response.data.result.stats.meandec;
+            dispatch("getTNS", {
+                ra: meanra,
+                dec: meandec
+            });
+            dispatch("getXMatches", {
+                ra: meanra,
+                dec: meandec,
+                radius: 50
+            });
         })
             .catch(reason => {
                 console.log("Error with alert query", reason)
@@ -470,6 +487,15 @@ export const actions = {
             .catch(reason => {
                 dispatch("setXMatchesMsg", "Error with xmatches query: " + reason)
             })
+    },
+    getTNS({ commit }, payload) {
+        TNSService.searchTNS(payload)
+        .then(response => {
+            commit("SET_TNS_DATA", response);
+        })
+        .catch(error => {
+            //TODO
+        });
     }
 }
 export const getters = {
@@ -487,5 +513,5 @@ export const getters = {
         return state.classes.filter(c => {
             return c.classifier.includes("xmatch")
         })
-    },
+    }
 }

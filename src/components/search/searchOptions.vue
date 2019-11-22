@@ -156,6 +156,7 @@ export default {
                 this.$store.state.search.selectedClassifier
                     ? "p" + this.$store.state.search.selectedClassifier
                     : "lastmjd";
+            this.$store.dispatch("setTotal", null)
             this.$store.dispatch("setTableSortBy",[sortBy]);
             this.$store.dispatch("setTableSortDesc",[true]);
             window.scrollTo(0, 0);
