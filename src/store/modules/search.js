@@ -95,11 +95,6 @@ export const state = {
             classifier: ["late"]
         },
         {
-            text: "SN IIn",
-            value: 13,
-            classifier: ["late"]
-        },
-        {
             text: "SLSN",
             value: 14,
             classifier: ["late"]
@@ -143,7 +138,17 @@ export const state = {
             text: "Bogus",
             value: 22,
             classifier: ["early"]
-        }
+        },
+        {
+            text: "RS-CVn",
+            value: 23,
+            classifier: ["late"]
+        },
+        {
+            text: "QSO-I",
+            value: 24,
+            classifier: ["late"]
+        },
     ],
     classifiers: [
         {
