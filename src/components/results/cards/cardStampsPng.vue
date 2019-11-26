@@ -2,30 +2,34 @@
     <v-card height="100%">
         <v-toolbar dense flat dark>
             <v-row align="center">
-                <v-col cols="3">
+                <v-col cols="2">
                     <v-toolbar-title>Stamps</v-toolbar-title>
                 </v-col>
-                <v-col cols="7" class="mt-4">
+                <v-col cols="6" class="mt-4">
                     <v-select :items="dates" v-model="selectedStamp"></v-select>
                 </v-col>
                 <v-col cols="2">
                     <v-icon @click="prevStamp">mdi-arrow-left-drop-circle</v-icon>
                     <v-icon @click="nextStamp">mdi-arrow-right-drop-circle</v-icon>
                 </v-col>
+                <v-spacer></v-spacer>
+                <v-col cols="1">
+                    <v-icon @click="fullscreen">mdi-fullscreen</v-icon>
+                </v-col>
             </v-row>
         </v-toolbar>
         <v-divider></v-divider>
         <v-card-text>
-            <v-layout row wrap>
-                <v-flex xs4 class="text-xs-center">
+            <v-row row wrap>
+                <v-col cols="4" class="text-xs-center">
                     <h5>Science 
                         <v-btn x-small outlined color="primary" :href="download('science')">
                             <v-icon left small>cloud_download</v-icon>Download
                         </v-btn>
                     </h5>
                     <v-img contain :src="science" class="stampImg" />
-                </v-flex>
-                <v-flex xs4 class="text-xs-center">
+                </v-col>
+                <v-col cols="4" class="text-xs-center">
                     <h5>Template
                         <v-btn x-small outlined color="primary" :href="download('template')">
                             <v-icon left small>cloud_download</v-icon>Download
@@ -34,31 +38,16 @@
 
                     </h5>
                     <v-img contain :src="template" class="stampImg" />
-                </v-flex>
-                <v-flex xs4 class="text-xs-center">
+                </v-col>
+                <v-col cols="4" class="text-xs-center">
                     <h5>Difference
                         <v-btn x-small outlined color="primary" :href="download('difference')">
                             <v-icon left small>cloud_download</v-icon>Download
                         </v-btn>
                     </h5>
                     <v-img contain :src="difference" class="stampImg" />
-                </v-flex>
-            </v-layout>
-            <!--v-layout row justify-space-around align-end>
-                <v-flex xs3 mt-2>
-                    
-                </v-flex>
-                <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" :href="download('template')">
-                        <v-icon left small>cloud_download</v-icon>Download
-                    </v-btn>
-                </v-flex>
-                <v-flex xs3 mt-2>
-                    <v-btn x-small outlined color="primary" :href="download('difference')">
-                        <v-icon left small>cloud_download</v-icon>Download
-                    </v-btn>
-                </v-flex>
-            </v-layout-->
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
@@ -69,7 +58,9 @@ import { jdToDate } from "@/components/utils/AstroDates.js";
 export default {
     name: "card-stamps-png",
     data() {
-        return {};
+        return {
+            isFullscreen: false
+        };
     },
     methods: {
         prevStamp() {
@@ -103,6 +94,11 @@ export default {
                 type +
                 "&format=fits";
             return link;
+        },
+        fullscreen(){
+            console.log("Component fullscreen")
+            this.isFullscreen = !this.isFullscreen
+            this.$emit('fullscreen', {id: 7, value: this.isFullscreen})
         }
     },
     computed: {
