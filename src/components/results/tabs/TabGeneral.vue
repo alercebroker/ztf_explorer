@@ -1,13 +1,10 @@
 <template>
     <v-card fluid tile class="ma-0" outlined>
         <v-card-text id="objectModalInside" class="pt-1">
-            <!-- start inside modal-->
             <v-row row wrap>
-                <transition v-for="comp in comps" :key="comp.id" :name="comp.transition">
-                    <v-col :cols="comp.cols" :md="comp.md" :class="comp.class" v-show="comp.show">
-                        <component :is="comp.name" @fullscreen="onFullscreen" />
-                    </v-col>
-                </transition>
+                <v-col v-for="comp in comps" :key="comp.id" :cols="comp.cols" :md="comp.md" :class="comp.class" v-show="comp.show">
+                    <component :is="comp.name" @fullscreen="onFullscreen" />
+                </v-col>
             </v-row>
         </v-card-text>
     </v-card>
@@ -30,40 +27,35 @@ export default {
                     id: 5,
                     cols: 12,
                     md: 3,
-                    show: true,
-                    // transition: "fade"
+                    show: true
                 },
                 {
                     name: "card-light-curve-wrapper",
                     id: 1,
                     cols: 12,
                     md: 6,
-                    show: true,
-                    // transition: "fade"
+                    show: true
                 },
                 {
                     name: "aladin",
                     id: 2,
                     cols: 12,
                     md: 3,
-                    show: true,
-                    // transition: "fade"
+                    show: true
                 },
                 {
                     name: "card-magnitude-statistics",
                     id: 6,
                     cols: 12,
                     md: 3,
-                    show: true,
-                    // transition: "fade"
+                    show: true
                 },
                 {
                     name: "card-probabilities",
                     id: 3,
                     cols: 12,
                     md: 4,
-                    show: true,
-                    // transition: "fade"
+                    show: true
                 },
                 {
                     name: "card-stamps-png",
@@ -71,8 +63,7 @@ export default {
                     cols: 12,
                     md: 4,
                     class: "hidden-md-and-up",
-                    show: true,
-                    // transition: "fade"
+                    show: true
                 },
                 {
                     name: "card-stamps-png",
@@ -80,10 +71,8 @@ export default {
                     cols: 12,
                     md: 5,
                     class: "hidden-sm-and-down",
-                    show: true,
-                    // transition: "fade"
-                },
-                
+                    show: true
+                }
             ]
         };
     },
@@ -99,9 +88,9 @@ export default {
         onFullscreen(fsComp) {
             this.comps.forEach(ele => {
                 if (ele.id === fsComp.id) {
-                    ele.show = false
+                    ele.show = false;
                     fsComp.value ? (ele.md = 12) : (ele.md = 5);
-                    ele.show = true
+                    ele.show = true;
                 } else {
                     fsComp.value ? (ele.show = false) : (ele.show = true);
                 }

@@ -22,32 +22,31 @@
         <v-card-text>
             <v-row row wrap>
                 <v-col cols="4" class="text-xs-center">
-                    <h5>Science 
+                    <h5>
+                        Science
                         <v-btn x-small outlined color="primary" :href="download('science')">
                             <v-icon left small>cloud_download</v-icon>Download
                         </v-btn>
                     </h5>
-                    <v-img contain :src="science" class="stampImg" />
                 </v-col>
                 <v-col cols="4" class="text-xs-center">
-                    <h5>Template
+                    <h5>
+                        Template
                         <v-btn x-small outlined color="primary" :href="download('template')">
                             <v-icon left small>cloud_download</v-icon>Download
                         </v-btn>
-
-
                     </h5>
-                    <v-img contain :src="template" class="stampImg" />
                 </v-col>
                 <v-col cols="4" class="text-xs-center">
-                    <h5>Difference
+                    <h5>
+                        Difference
                         <v-btn x-small outlined color="primary" :href="download('difference')">
                             <v-icon left small>cloud_download</v-icon>Download
                         </v-btn>
                     </h5>
-                    <v-img contain :src="difference" class="stampImg" />
                 </v-col>
             </v-row>
+            <zoom-on-hover :images=[science,template,difference] :disabled="isFullscreen" ></zoom-on-hover>
         </v-card-text>
     </v-card>
 </template>
@@ -55,8 +54,12 @@
 <script>
 import QueryStampsService from "@/services/QueryStampsService.js";
 import { jdToDate } from "@/components/utils/AstroDates.js";
+import ZoomOnHover from "@/components/utils/ZoomOnHover.vue";
 export default {
     name: "card-stamps-png",
+    components: {
+        ZoomOnHover
+    },
     data() {
         return {
             isFullscreen: false
@@ -95,10 +98,9 @@ export default {
                 "&format=fits";
             return link;
         },
-        fullscreen(){
-            console.log("Component fullscreen")
-            this.isFullscreen = !this.isFullscreen
-            this.$emit('fullscreen', {id: 7, value: this.isFullscreen})
+        fullscreen() {
+            this.isFullscreen = !this.isFullscreen;
+            this.$emit("fullscreen", { id: 7, value: this.isFullscreen });
         }
     },
     computed: {
