@@ -154,7 +154,7 @@ export default {
                     : null,
                 this.ztf_object.classrf
                     ? {
-                          column: "RandomForest",
+                          column: "LateClassifier",
                           value: this.getLateClass(this.ztf_object.classrf)
                       }
                     : null,

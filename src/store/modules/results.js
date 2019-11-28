@@ -65,13 +65,13 @@ export const state = {
         {
             value: "classrf",
             sortable: false,
-            text: "Random Forest Class",
+            text: "Late Classifier Class",
             show: true
         },
         {
             value: "pclassrf",
             sortable: true,
-            text: "Random Forest Probability",
+            text: "Late Classifier Probability",
             show: true
         },
         {
