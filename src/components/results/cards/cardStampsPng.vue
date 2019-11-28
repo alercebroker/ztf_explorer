@@ -16,6 +16,14 @@
                 <v-col cols="1">
                     <v-icon @click="fullscreen">mdi-fullscreen</v-icon>
                 </v-col>
+                <v-col cols="1">
+                    <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                            <v-icon v-on="on">mdi-information</v-icon>
+                        </template>
+                        <span>Move your mouse over the images to zoom</span>
+                    </v-tooltip>
+                </v-col>
             </v-row>
         </v-toolbar>
         <v-divider></v-divider>
@@ -46,7 +54,7 @@
                     </h5>
                 </v-col>
             </v-row>
-            <zoom-on-hover :images=[science,template,difference] :disabled="isFullscreen" ></zoom-on-hover>
+            <zoom-on-hover :images="[science,template,difference]" :disabled="isFullscreen"></zoom-on-hover>
         </v-card-text>
     </v-card>
 </template>
