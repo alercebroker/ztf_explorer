@@ -2,10 +2,10 @@
     <v-card height="100%">
         <v-toolbar dense flat dark>
             <v-row align="center">
-                <v-col cols="2">
+                <v-col cols="3">
                     <v-toolbar-title>Stamps</v-toolbar-title>
                 </v-col>
-                <v-col cols="6" class="mt-4">
+                <v-col cols="5" class="mt-4">
                     <v-select :items="dates" v-model="selectedStamp"></v-select>
                 </v-col>
                 <v-col cols="2">
@@ -14,7 +14,7 @@
                 </v-col>
                 <v-spacer></v-spacer>
                 <v-col cols="1">
-                    <v-icon @click="fullscreen">mdi-fullscreen</v-icon>
+                    <v-icon @click="fullscreen">{{fullscreenIcon}}</v-icon>
                 </v-col>
                 <v-col cols="1">
                     <v-tooltip bottom>
@@ -163,6 +163,9 @@ export default {
         },
         currentStamp() {
             return this.$store.state.results.currentStamp;
+        },
+        fullscreenIcon(){
+            return this.isFullscreen ? "mdi-fullscreen-exit" : "mdi-fullscreen"
         }
     },
     watch: {

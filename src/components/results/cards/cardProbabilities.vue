@@ -7,11 +7,11 @@
           {{name}}
         </v-tab>
         <v-tab-item  v-for="(value, name, index) in probabilities" v-bind:key="index">
-          <v-layout>
-            <v-flex class="align-self-center">
+          <v-row align="center" justify="center">
+            <v-col class="pa-5">
               <polarradar :classifier="name" :probabilities="value" />
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
         </v-tab-item>
       </v-tabs>
     </v-card-text>
