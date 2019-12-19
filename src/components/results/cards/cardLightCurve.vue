@@ -1,13 +1,15 @@
 <template>
     <v-card>
-        <v-flex xs12>
-            <div class="curve">
-                <lightcurvePlot v-if="selected == 0"></lightcurvePlot>
-                <lightcurveCorrPlot v-else-if="selected == 1"></lightcurveCorrPlot>
-                <lightcurveFoldedPlot v-else-if="selected == 2"></lightcurveFoldedPlot>
-            </div>
-        </v-flex>
-        <v-layout wrap justify-space-around>
+        <v-row>
+            <v-col cols="12">
+                <div class="curve">
+                    <lightcurvePlot v-if="selected == 0"></lightcurvePlot>
+                    <lightcurveCorrPlot v-else-if="selected == 1"></lightcurveCorrPlot>
+                    <lightcurveFoldedPlot v-else-if="selected == 2"></lightcurveFoldedPlot>
+                </div>
+            </v-col>
+        </v-row>
+        <v-row justify="space-around">
             <v-radio-group v-model="selected" row ma-0>
                 <v-radio
                     v-for="(option, index) in options"
@@ -19,7 +21,13 @@
                     <v-icon left small>cloud_download</v-icon>Download
                 </v-btn>
             </v-radio-group>
-        </v-layout>
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                    <v-icon v-on="on">mdi-information</v-icon>
+                </template>
+                <span>Click on a detection point to change stamps</span>
+            </v-tooltip>
+        </v-row>
     </v-card>
 </template>
 
