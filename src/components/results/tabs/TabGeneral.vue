@@ -1,205 +1,109 @@
 <template>
-    <v-card fluid tile class="ma-0" outlined >
+    <v-card fluid tile class="ma-0" outlined>
         <v-card-text id="objectModalInside" class="pt-1">
-            <!-- start inside modal-->
-            <v-layout row wrap>
-                <!--BASIC INFORMATION-->
-                <v-flex xs12 md3 id="v-step-3">
-                    <card-basic-information />
-                </v-flex>
-                <!--LIGHT CURVE-->
-                <v-flex xs12 md6 id="v-step-6">
-                    <!--If the screen is mobile-->
-                    <v-layout>
-                        <v-flex hidden-xs-only>
-                            <card-light-curve />
-                        </v-flex>
-                        <!--If the screen is upper-->
-                        <v-flex hidden-sm-and-up>
-                            <v-alert :value="true" type="warning" fluid>
-                                <span class="title">
-                                    <v-icon>screen_rotation</v-icon>to see the light curve.
-                                </span>
-                            </v-alert>
-                        </v-flex>
-                    </v-layout>
-                </v-flex>
-                <!-- ALADIN -->
-                <v-flex xs12 md3 id="v-step-7">
-                    <aladin />
-                </v-flex>
-            </v-layout>
-
-            <v-layout row wrap>
-                <v-flex xs12 md4 hidden-md-and-up>
-                    <card-stamps-png />
-                </v-flex>
-
-                <v-flex xs12 md4>
-                    <v-card height="100%" id="v-step-4">
-                        <v-toolbar dense flat dark>
-                            <v-toolbar-title>Magnitude Statistics</v-toolbar-title>
-                        </v-toolbar>
-                        <v-divider></v-divider>
-                        <v-card-text style="padding: 0 0 0 0;">
-                            <v-data-table
-                                :mobile-breakpoint="250"
-                                :headers="headers"
-                                :items="magnitudeItems"
-                                hide-default-footer
-                                dense
-                            ></v-data-table>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-
-                <v-flex xs12 md3 id="v-step-8">
-                    <!-- PROBABILITIES -->
-                    <card-probabilities />
-                </v-flex>
-                <v-flex xs12 md5 hidden-sm-and-down id="v-step-5">
-                    <card-stamps-png />
-                </v-flex>
-            </v-layout>
+            <v-row row wrap>
+                <v-col v-for="comp in comps" :key="comp.id" :cols="comp.cols" :md="comp.md" :class="comp.class" v-show="comp.show">
+                    <component :is="comp.name" @fullscreen="onFullscreen" />
+                </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
 <script>
 import aladin from "../cards/aladin.vue";
 import cardBasicInformation from "../cards/cardBasicInformation.vue";
-import cardLightCurve from "../cards/cardLightCurve.vue";
+import cardLightCurveWrapper from "../cards/cardLightCurveWrapper.vue";
 import cardProbabilities from "../cards/cardProbabilities.vue";
 import cardStampsPng from "../cards/cardStampsPng.vue";
+import cardMagnitudeStatistics from "../cards/cardMagnitudeStatistics.vue";
 import { jdToDate } from "../../utils/AstroDates.js";
 export default {
     name: "tabGeneralInformation",
     data() {
         return {
-            headers: [
-                { text: "Item", value: "Item" },
-                { text: "g", value: "g" },
-                { text: "r", value: "r" }
+            comps: [
+                {
+                    name: "card-basic-information",
+                    id: 5,
+                    cols: 12,
+                    md: 3,
+                    show: true
+                },
+                {
+                    name: "card-light-curve-wrapper",
+                    id: 1,
+                    cols: 12,
+                    md: 6,
+                    show: true
+                },
+                {
+                    name: "aladin",
+                    id: 2,
+                    cols: 12,
+                    md: 3,
+                    show: true
+                },
+                {
+                    name: "card-magnitude-statistics",
+                    id: 6,
+                    cols: 12,
+                    md: 3,
+                    show: true
+                },
+                {
+                    name: "card-probabilities",
+                    id: 3,
+                    cols: 12,
+                    md: 4,
+                    show: true
+                },
+                {
+                    name: "card-stamps-png",
+                    id: 4,
+                    cols: 12,
+                    md: 4,
+                    class: "hidden-md-and-up",
+                    show: true
+                },
+                {
+                    name: "card-stamps-png",
+                    id: 7,
+                    cols: 12,
+                    md: 5,
+                    class: "hidden-sm-and-down",
+                    show: true
+                }
             ]
         };
     },
     components: {
-        cardLightCurve,
+        cardLightCurveWrapper,
         aladin,
         cardProbabilities,
         cardStampsPng,
-        cardBasicInformation
+        cardBasicInformation,
+        cardMagnitudeStatistics
     },
     methods: {
-        mjdToDate(mjd) {
-            return jdToDate(mjd).toUTCString();
-        },
-        changeMjdButtonText() {
-            if (this.mjdButtonText === "View MJD") {
-                this.mjdButtonText = "View Date";
-                let discovery = this.generalInformation.find(function(element) {
-                    return element.column === "Discovery Date";
-                });
-                discovery.value = this.ztf_object.firstmjd;
-                let last = this.generalInformation.find(function(element) {
-                    return element.column === "Last Detection";
-                });
-                last.value = this.ztf_object.lastmjd;
-            } else {
-                this.mjdButtonText = "View MJD";
-                let discovery = this.generalInformation.find(function(element) {
-                    return element.column === "Discovery Date";
-                });
-                discovery.value =
-                    this.mjdToDate(this.ztf_object.firstmjd).slice(0, -3) +
-                    "UT";
-                let last = this.generalInformation.find(function(element) {
-                    return element.column === "Last Detection";
-                });
-                last.value =
-                    this.mjdToDate(this.ztf_object.lastmjd).slice(0, -3) + "UT";
-            }
-        }
-    },
-    computed: {
-        ztf_object() {
-            return this.$store.state.results.selectedObject;
-        },
-        magnitudeItems() {
-            return [
-                {
-                    Item: "Mean",
-                    g: this.ztf_object.mean_magpsf_g
-                        ? this.ztf_object.mean_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.mean_magpsf_r
-                        ? this.ztf_object.mean_magpsf_r.toFixed(3)
-                        : "-"
-                },
-                {
-                    Item: "Median",
-                    g: this.ztf_object.median_magpsf_g
-                        ? this.ztf_object.median_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.median_magpsf_r
-                        ? this.ztf_object.median_magpsf_r.toFixed(3)
-                        : "-"
-                },
-                {
-                    Item: "First",
-                    g: this.ztf_object.first_magpsf_g
-                        ? this.ztf_object.first_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.first_magpsf_r
-                        ? this.ztf_object.first_magpsf_r.toFixed(3)
-                        : "-"
-                },
-                {
-                    Item: "Last",
-                    g: this.ztf_object.last_magpsf_g
-                        ? this.ztf_object.last_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.last_magpsf_r
-                        ? this.ztf_object.last_magpsf_r.toFixed(3)
-                        : "-"
-                },
-                {
-                    Item: "Min",
-                    g: this.ztf_object.min_magpsf_g
-                        ? this.ztf_object.min_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.min_magpsf_r
-                        ? this.ztf_object.min_magpsf_r.toFixed(3)
-                        : "-"
-                },
-                {
-                    Item: "Max",
-                    g: this.ztf_object.max_magpsf_g
-                        ? this.ztf_object.max_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.max_magpsf_r
-                        ? this.ztf_object.max_magpsf_r.toFixed(3)
-                        : "-"
+        onFullscreen(fsComp) {
+            this.comps.forEach(ele => {
+                if (ele.id === fsComp.id) {
+                    ele.show = false;
+                    fsComp.value ? (ele.md = 12) : (ele.md = 5);
+                    ele.show = true;
+                } else {
+                    fsComp.value ? (ele.show = false) : (ele.show = true);
                 }
-            ];
-        },
-
-        fontStyle() {
-            switch (this.$vuetify.breakpoint.name) {
-                case "xs":
-                    return "font-size:1em";
-                case "md":
-                    return "font-size:1em";
-                default:
-                    return "font-size:1.4em";
-            }
+            });
         }
     },
+    computed: {},
     mounted: function() {
         /*this.$store.dispatch("getTNS", {
             ra: this.ztf_object.meanra,
             dec: this.ztf_object.meandec
         });*/
-    },
+    }
 };
 </script>
 
@@ -217,5 +121,12 @@ ul {
 }
 #objectModalInside {
     background-color: #e0e0e0;
+}
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 1s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
 }
 </style>

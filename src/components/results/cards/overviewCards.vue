@@ -51,7 +51,7 @@
                 </div>
                 <v-card-text class="text-center">
                     <v-chip disabled color="header" text-color="white">{{rfCount}}</v-chip>
-                    <p>(Random Forest)</p>
+                    <p>(Late Classifier)</p>
                 </v-card-text>
             </v-card>
         </v-flex>
