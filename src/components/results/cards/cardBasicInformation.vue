@@ -22,6 +22,16 @@
                         @click="changeMjdButtonText"
                     >{{ mjdButtonText }}</v-btn>
                 </v-flex>
+                <v-divider></v-divider>
+                <v-flex xs12 v-if="findingchart_link">
+                    <v-btn
+                        small
+                        tile
+                        block
+                        color="success"
+                        :href="findingchart_link" download
+                    ><v-icon left>mdi-file-document-outline</v-icon>Finding Chart</v-btn>
+                </v-flex>
             </v-layout>
             <v-layout wrap justify-center>
                 <v-flex
@@ -49,7 +59,7 @@
                 ></v-data-table>
                 <v-footer class="caption transparent">
                     <v-spacer></v-spacer>
-                    <p class="mb-0"> Provided by <a href="https://wis-tns.weizmann.ac.il/" target="_blank">TNS <img src="https://wis-tns.weizmann.ac.il/sites/default/files/favicon.png" alt="TNS icon"></a></p>
+                    <p class="mb-0"> Provided by <a :href="tnsInformation[0].url" target="_blank">TNS <img src="https://wis-tns.weizmann.ac.il/sites/default/files/favicon.png" alt="TNS icon"></a></p>
                 </v-footer>
             </v-flex>
         </v-card-text>
@@ -135,6 +145,17 @@ export default {
         }
     },
     computed: {
+        findingchart_link() {
+            if(this.$store.state.results.objectDetails.detections)
+            {
+                let index = this.$store.state.results.currentStamp;
+                let candid = this.$store.state.results.objectDetails.detections[index].candid_str;
+                let oid = this.$store.state.results.selectedObject.oid;
+                return `https://www.findingchart.alerce.online/get_chart?oid=${oid}&candid=${candid}`;
+                
+            }
+            return null;
+        },
         ztf_object() {
             return this.$store.state.results.selectedObject;
         },
@@ -212,7 +233,8 @@ export default {
                     { 
                         type: this.tns.object_type ? this.tns.object_type : "-", 
                         name: this.tns.object_name ? this.tns.object_name : "-" , 
-                        redshift: this.tns.object_data.redshift? this.tns.object_data.redshift : "-"
+                        redshift: this.tns.object_data? this.tns.object_data.redshift : "-",
+                        url: this.tns.object_name ? `https://wis-tns.weizmann.ac.il/object/${this.tns.object_name}` : "https://wis-tns.weizmann.ac.il"
                     }
                 ];
                 let filtered = info.filter(function(el) {

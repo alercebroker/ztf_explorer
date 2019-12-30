@@ -81,7 +81,7 @@ export default {
         },
         nextStamp() {
             if (
-                this.currentStamp + 1 <=
+                this.currentStamp + 1 <
                 this.$store.state.results.objectDetails.detections.length
             ) {
                 this.$store.dispatch("setCurrentStamp", this.currentStamp + 1);
