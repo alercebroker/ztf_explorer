@@ -1,6 +1,6 @@
 <template>
     <!--BODY-->
-    <div>
+    <div v-on:keyup.enter="onSubmitQuery">
         <v-row>
             <v-col cols="10" offset="1">
                 <default-options></default-options>
