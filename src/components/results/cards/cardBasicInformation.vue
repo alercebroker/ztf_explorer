@@ -1,6 +1,22 @@
 <template>
     <v-card height="98%">
-        <v-card-text>
+        <v-toolbar dense flat>
+            <v-spacer></v-spacer>
+
+            <template v-if="$vuetify.breakpoint.smAndUp">
+                <v-btn icon :href="findingchart_link" download>
+                    <v-icon>mdi-file-document-outline</v-icon>
+                </v-btn>
+                <v-btn icon @click="changeMjdButtonText">
+                    <v-icon>mdi-delete-circle</v-icon>
+                </v-btn>
+                <v-btn icon @click="changeRaDec">
+                    <v-icon>mdi-plus-circle</v-icon>
+                </v-btn>
+            </template>
+        </v-toolbar>
+
+        <v-card-text class="bt-0">
             <v-layout row wrap>
                 <v-flex xs12>
                     <v-data-table
@@ -9,8 +25,8 @@
                         hide-default-footer
                         hide-default-header
                         dense
-                        :mobile-breakpoint="250"
-                    ></v-data-table>
+                        :mobile-breakpoint="250">
+                    </v-data-table>
                 </v-flex>
                 <v-divider></v-divider>
                 <v-flex xs12>
@@ -66,7 +82,7 @@
     </v-card>
 </template>
 <script>
-import { jdToDate } from "../../utils/AstroDates.js";
+import { jdToDate, HMStoRaDec, raDectoHMS } from "../../utils/AstroDates.js";
 import { watch } from 'fs';
 export default {
     name: "cardBasicInformation",
@@ -142,6 +158,17 @@ export default {
                 last.value =
                     this.mjdToDate(this.ztf_object.lastmjd).slice(0, -3) + "UT";
             }
+        },
+        changeRaDec() {
+            let RA = this.generalInformation.find(function(element) {
+                return element.column === "RA";
+            });
+            let DEC = this.generalInformation.find(function(element) {
+                return element.column === "DEC";
+            });
+            let hhmmss = raDectoHMS(RA.value, DEC.value);
+            RA.value = hhmmss;
+            DEC.value = hhmmss;
         }
     },
     computed: {

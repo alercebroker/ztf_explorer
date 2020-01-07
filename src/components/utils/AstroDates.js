@@ -38,21 +38,20 @@ function raDectoHMS(ra, dec) {
     if(dec) {
         var sign = dec < 0 ? '-' : '+';
         dec = Math.abs(dec);
-        deg = Math.floor(dec);
-        decM = Math.abs(Math.floor((dec-deg)*60));
-        decS = Math.floor((Math.abs((dec-deg)*60)-decM)*60);
+        var deg = Math.floor(dec);
+        var decM = Math.abs(Math.floor((dec-deg)*60));
+        var decS = Math.floor((Math.abs((dec-deg)*60)-decM)*60);
         dec = `${sign}${deg}d${decM}m${decS}s`;
-        console.log(dec);
     }
     if(ra) {
-        var sign = ra < 0 ? '-' : '+';
+        var sign = ra < 0 ? '-' : '';
         ra = Math.abs(ra);
-        raH = Math.floor(ra/15);
-        raM = Math.floor(((ra/15) - raH)*60);
-        raS = Math.floor(((((ra/15)-raH)*60)-raM)*60);
+        var raH = Math.floor(ra/15);
+        var raM = Math.floor(((ra/15) - raH)*60);
+        var raS = Math.floor(((((ra/15)-raH)*60)-raM)*60);
         ra = `${sign}${raH}h${raM}m${raS}s`;
-        console.log(ra);
     }
+    return `${ra} ${dec}`;
 }
 
 function HMStoRaDec(hms) {
@@ -80,7 +79,4 @@ function HMStoRaDec(hms) {
     
 }
 
-console.log(HMStoRaDec('00h42m44.3s +41d16m9s'));
-raDectoHMS(10.68458333, 41.26916667);
-
-//export { gregorianToJd, jdToGregorian, jdToDate }
+export { gregorianToJd, jdToGregorian, jdToDate, raDectoHMS, HMStoRaDec }
