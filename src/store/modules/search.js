@@ -155,10 +155,10 @@ export const state = {
             text: "Select a classifier",
             value: null,
         },
-        {
+/*        {
             text: "X-MATCH",
             value: "classxmatch"
-        },
+        }, */
         {
             text: "Late Classifier",
             value: "classrf"
