@@ -336,6 +336,9 @@ export default {
     watch: {
         detections(newval) {
             this.makegraph(newval, this.period);
+        },
+        period(newval){
+          this.makegraph(this.detections, newval);
         }
     }
 };
