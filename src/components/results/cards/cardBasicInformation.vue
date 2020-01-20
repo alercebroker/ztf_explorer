@@ -152,15 +152,20 @@ export default {
                 let candid = this.$store.state.results.objectDetails.detections[index].candid_str;
                 let oid = this.$store.state.results.selectedObject.oid;
                 return `https://www.findingchart.alerce.online/get_chart?oid=${oid}&candid=${candid}`;
-                
+
             }
             return null;
         },
         ztf_object() {
             return this.$store.state.results.selectedObject;
         },
-        tns(){
+        tns:{
+          get: function(){
             return this.$store.getters.getTNS;
+          },
+          set: function(){
+            this.$store.dispatch("clearTNS");
+          }
         },
         generalInformation() {
             let info = [
@@ -230,9 +235,9 @@ export default {
         tnsInformation(){
             if(this.tns) {
                 let info = [
-                    { 
-                        type: this.tns.object_type ? this.tns.object_type : "-", 
-                        name: this.tns.object_name ? this.tns.object_name : "-" , 
+                    {
+                        type: this.tns.object_type ? this.tns.object_type : "-",
+                        name: this.tns.object_name ? this.tns.object_name : "-" ,
                         redshift: this.tns.object_data? this.tns.object_data.redshift : "-",
                         url: this.tns.object_name ? `https://wis-tns.weizmann.ac.il/object/${this.tns.object_name}` : "https://wis-tns.weizmann.ac.il"
                     }
@@ -243,7 +248,7 @@ export default {
                 return filtered;
             }
             return null;
-            
+
         },
         links() {
             return [
@@ -312,5 +317,12 @@ export default {
             ];
         }
     },
+    watch:{
+      ztf_object(new_val,old_val){
+        if(new_val.oid != old_val.oid){
+          this.tns = null;
+        }
+      }
+    }
 };
 </script>

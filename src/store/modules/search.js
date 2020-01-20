@@ -496,6 +496,9 @@ export const actions = {
         .catch(error => {
             //TODO
         });
+    },
+    clearTNS({commit}){
+      commit("CLEAR_TNS_DATA");
     }
 }
 export const getters = {

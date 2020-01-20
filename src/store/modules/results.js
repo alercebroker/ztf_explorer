@@ -251,6 +251,9 @@ export const mutations = {
     },
     SET_TNS_DATA(state, value){
         state.objectDetails.tns_data = value.data
+    },
+    CLEAR_TNS_DATA(state){
+      state.objectDetails.tns_data = null
     }
 }
 
