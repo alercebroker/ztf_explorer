@@ -97,8 +97,8 @@ export default {
                         let table =
                             "<table> <tr> <th></th> <th></th> <th></th></tr>";
                         if (serie == "r" || serie == "g") {
-                            let mag = params[0].value[1].toFixed(3);
-                            let err = params[0].value[3].toFixed(3);
+                            let mag = params[0].value[1].toFixed(3)?params[0].value[1]:null;
+                            let err = params[0].value[3].toFixed(3)?params[0].value[3]:null;
                             table += rowTable(
                                 "",
                                 "candid: ",
@@ -234,6 +234,11 @@ export default {
                     return x.fid == 1 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
+                      if(x.sigmapsf_corr > 1){
+                        return [null,null,null]
+                      }
+
+
                     return [
                         x.mjd,
                         x.magpsf_corr - x.sigmapsf_corr,
@@ -245,6 +250,10 @@ export default {
                     return x.fid == 2 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
+                  if(x.sigmapsf_corr > 1){
+                    return [null,null,null]
+                  }
+
                     return [
                         x.mjd,
                         x.magpsf_corr - x.sigmapsf_corr,

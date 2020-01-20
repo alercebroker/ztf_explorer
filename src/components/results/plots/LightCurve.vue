@@ -271,6 +271,10 @@ export default {
                     return x.fid == 1;
                 })
                 .map(function(x) {
+                    if(x.sigmapsf_corr > 1){
+                      return [null,null,null]
+                    }
+
                     return [
                         x.mjd,
                         x.magpsf - x.sigmapsf,
@@ -282,6 +286,10 @@ export default {
                     return x.fid == 2;
                 })
                 .map(function(x) {
+                    if(x.sigmapsf_corr > 1){
+                      return [null,null,null]
+                    }
+
                     return [
                         x.mjd,
                         x.magpsf - x.sigmapsf,
