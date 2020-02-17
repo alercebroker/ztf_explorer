@@ -33,7 +33,6 @@
                         class="elevation-0"
                         hide-default-footer
                         dense
-                        :mobile-breakpoint="250"
                         :loading="loading"
                     >
                         <template v-slot:item.oid="{ item }">

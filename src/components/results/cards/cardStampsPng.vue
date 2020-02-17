@@ -55,6 +55,43 @@
                 </v-col>
             </v-row>
             <zoom-on-hover :images="[science,template,difference]" :disabled="isFullscreen"></zoom-on-hover>
+            <v-row align="center">
+              <v-col cols="12">
+
+                <v-dialog v-model="dialog" max-width="700px" >
+                  <template v-slot:activator="{ on }">
+                    <v-btn color="primary" flat block dark v-on="on" :disabled="!avro_info">Full Alert Information</v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">Alert Information</span>
+                    </v-card-title>
+                    <v-card-text >
+                      <p>For more information read <a target="_blank" href="https://zwickytransientfacility.github.io/ztf-avro-alert/schema.html">the ZTF Schema.</a></p>
+                      <table v-if="avro_info" class="table table-striped" id="alertTable">
+                        <thead class="thead-dark">
+                          <tr>
+                            <th>Key</th>
+                            <th>Value</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(row, index) in table_avro_info" v-bind:key="index">
+                            <td>{{row[0]}}</td>
+                            <td>{{row[1]}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </v-card-text>
+                    <v-card-actions>
+                      <div class="flex-grow-1"></div>
+                      <v-btn color="primary darken-1" text @click="dialog = false">Close</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+
+              </v-col>
+            </v-row>
         </v-card-text>
     </v-card>
 </template>
@@ -70,10 +107,14 @@ export default {
     },
     data() {
         return {
-            isFullscreen: false
+            isFullscreen: false,
+            dialog: false
         };
     },
     methods: {
+        avro_info(){
+          return true
+        },
         prevStamp() {
             if (this.currentStamp > 0) {
                 this.$store.dispatch("setCurrentStamp", this.currentStamp - 1);
