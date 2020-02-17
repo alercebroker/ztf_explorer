@@ -7,8 +7,8 @@
                 @mouseenter="zoom"
                 @mouseleave="unzoom"
             >
-                <img class="normal" :class="customClasses" :ref="'normal_'+index" :src="image" />
-                <img class="zoom" :ref="'zoom_'+index" :src="image" />
+                <img class="normal" :onerror="set_placeholder"  :class="customClasses" :ref="'normal_'+index" :src="image" />
+                <img class="zoom"  :onerror="set_placeholder" :ref="'zoom_'+index" :src="image" />
             </div>
         </v-col>
     </v-row>
@@ -37,8 +37,14 @@ export default {
     data() {
         return {
             scaleFactor: 1,
-            resizeCheckIntervals: []
+            resizeCheckIntervals: [],
+            placeholder_url: 'https://via.placeholder.com/300'
         };
+    },
+    computed:{
+      set_placeholder(){
+        return "this.src='"+this.placeholder_url+"';"
+      }
     },
     methods: {
         zoom() {
@@ -114,5 +120,10 @@ export default {
     position: absolute;
     opacity: 0;
     transform-origin: top left;
+}
+.base-img {
+  background-image:url('https://via.placeholder.com/300');
+  width:150px;
+  height:200px;
 }
 </style>
