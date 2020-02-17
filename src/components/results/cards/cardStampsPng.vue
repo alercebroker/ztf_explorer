@@ -29,7 +29,7 @@
         <v-divider></v-divider>
         <v-card-text>
             <v-row row wrap>
-                <v-col cols="4" class="text-xs-center">
+                <v-col cols="4" class="pt-0 pb-0 text-xs-center">
                     <h5>
                         Science
                         <v-btn x-small outlined color="primary" :href="download('science')">
@@ -37,7 +37,7 @@
                         </v-btn>
                     </h5>
                 </v-col>
-                <v-col cols="4" class="text-xs-center">
+                <v-col cols="4" class="pt-0 pb-0 text-xs-center">
                     <h5>
                         Template
                         <v-btn x-small outlined color="primary" :href="download('template')">
@@ -45,7 +45,7 @@
                         </v-btn>
                     </h5>
                 </v-col>
-                <v-col cols="4" class="text-xs-center">
+                <v-col cols="4" class="pt-0 pb-0 text-xs-center">
                     <h5>
                         Difference
                         <v-btn x-small outlined color="primary" :href="download('difference')">
@@ -54,13 +54,12 @@
                     </h5>
                 </v-col>
             </v-row>
-            <zoom-on-hover :images="[science,template,difference]" :disabled="isFullscreen"></zoom-on-hover>
+            <zoom-on-hover class="pt-0 pb-0" :images="[science,template,difference]" :disabled="isFullscreen"></zoom-on-hover>
             <v-row align="center">
-              <v-col cols="12">
-
+              <v-col cols="12" class="pt-0 pb-0" >
                 <v-dialog v-model="dialog" max-width="700px" >
                   <template v-slot:activator="{ on }">
-                    <v-btn color="primary" flat block dark v-on="on" :disabled="!avro_info">Full Alert Information</v-btn>
+                    <v-btn color="primary" text block dark v-on="on" :disabled="!avro_info">Full Alert Information</v-btn>
                   </template>
                   <v-card>
                     <v-card-title>
@@ -68,20 +67,24 @@
                     </v-card-title>
                     <v-card-text >
                       <p>For more information read <a target="_blank" href="https://zwickytransientfacility.github.io/ztf-avro-alert/schema.html">the ZTF Schema.</a></p>
-                      <table v-if="avro_info" class="table table-striped" id="alertTable">
-                        <thead class="thead-dark">
+                      <v-simple-table
+                      dense
+                      >
+                      <template v-slot:default>
+                        <thead>
                           <tr>
-                            <th>Key</th>
-                            <th>Value</th>
+                            <th class="text-left">Key</th>
+                            <th class="text-left">Value</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="(row, index) in table_avro_info" v-bind:key="index">
-                            <td>{{row[0]}}</td>
-                            <td>{{row[1]}}</td>
+                          <tr v-for="item in avro_info" :key="item.key">
+                            <td>{{ item.key }}</td>
+                            <td>{{ item.value }}</td>
                           </tr>
                         </tbody>
-                      </table>
+                      </template>
+                    </v-simple-table>
                     </v-card-text>
                     <v-card-actions>
                       <div class="flex-grow-1"></div>
@@ -98,6 +101,7 @@
 
 <script>
 import QueryStampsService from "@/services/QueryStampsService.js";
+import QueryAvroService from "@/services/QueryAvroService.js";
 import { jdToDate } from "@/components/utils/AstroDates.js";
 import ZoomOnHover from "@/components/utils/ZoomOnHover.vue";
 export default {
@@ -108,12 +112,29 @@ export default {
     data() {
         return {
             isFullscreen: false,
-            dialog: false
+            dialog: false,
+            avro_info: false,
+            headers:[
+              { text: 'Key', value: 'key' },
+              { text: 'Value', value: 'value' },
+            ]
         };
     },
+    mounted(){
+      QueryAvroService.getAvroInfo({
+        oid: this.object,
+        candid: this.getCandid(this.currentStamp)
+      }).then(response => {
+        this.avro_info = this.formatTable(response.data.candidate);
+      });
+    },
     methods: {
-        avro_info(){
-          return true
+        formatTable(payload){
+          var formatted = [];
+          for (var k in payload){
+            formatted.push({key:k, value: payload[k]});
+          }
+          return formatted
         },
         prevStamp() {
             if (this.currentStamp > 0) {
@@ -210,8 +231,16 @@ export default {
         }
     },
     watch: {
-        selectedDetection(newVal) {
+        selectedDetection(newVal,oldVal) {
             this.$store.dispatch("setCurrentStamp", this.dates.indexOf(newVal));
+            if (newVal != oldVal){
+              QueryAvroService.getAvroInfo({
+                oid: this.object,
+                candid: this.getCandid(this.currentStamp)
+              }).then(response => {
+                this.avro_info = this.formatTable(response.data.candidate);
+              });
+            }
         }
     }
 };

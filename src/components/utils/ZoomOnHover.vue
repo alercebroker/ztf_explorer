@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col v-for="(image, index) in images" :key="image">
+        <v-col class="pt-0 pb-0" v-for="(image, index) in images" :key="image">
             <div
                 class="zoom-on-hover"
                 @mousemove="move($event, index)"
