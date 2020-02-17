@@ -291,7 +291,9 @@ export default {
     },
     methods: {
         onSearch() {
-            this.mini = true;
+          if (!this.$vuetify.breakpoint.smAndDown) {
+              this.mini = true;
+          }
         },
         getUrlObject() {
             if (this.$route.params.id) {
@@ -352,7 +354,6 @@ export default {
     },
     mounted: function() {
         this.getUrlObject();
-        console.log("This is", process.env.VUE_APP_TITLE);
     },
     computed: {
         nextDisabled() {
@@ -366,7 +367,7 @@ export default {
         }
     },
     watch: {
-        objects(newVal) {
+        objects() {
             this.steps[2].content = "Objects ready, click Next to continue";
         }
     }

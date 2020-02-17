@@ -123,6 +123,7 @@ export default {
          * Executes a search given selected parameters
          */
         onSubmitQuery() {
+            this.$emit("onSearch");
             let query_parameters = {
                 filters: JSON.parse(
                     JSON.stringify(this.$store.state.search.filters)
@@ -160,7 +161,6 @@ export default {
             this.$store.dispatch("setTableSortBy",[sortBy]);
             this.$store.dispatch("setTableSortDesc",[true]);
             window.scrollTo(0, 0);
-            this.$emit("onSearch");
         },
         clearQuery() {
             this.$store.dispatch("clearQuery");

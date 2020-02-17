@@ -1,28 +1,36 @@
 <template>
     <div>
-        <v-tabs
+        <div
             v-if="$vuetify.breakpoint.smAndDown"
             dark
             background-color="toolbar"
-            :value="selectedTab"
         >
-            <v-tab>Search</v-tab>
-            <v-tab-item v-if="$vuetify.breakpoint.smAndDown">
-                <v-layout row wrap>
-                    <v-flex xs10 offset-xs1>
-                        <search-options @onSearch="onSearch"></search-options>
-                    </v-flex>
-                </v-layout>
-            </v-tab-item>
-            <v-tab>Results</v-tab>
-            <v-tab-item>
-                <tab-data />
-            </v-tab-item>
-        </v-tabs>
-        <div v-else>
-            <v-card width="100%" class="ma-2">
+        <v-bottom-sheet scrollable v-model="search">
+          <v-card  width="100%">
+            <v-card-title primary-title>Search</v-card-title>
+            <v-card-text>
+              <search-options @onSearch="onSearch"></search-options>
+            </v-card-text>
+          </v-card>
+        </v-bottom-sheet>
+        </div>
+        <div>
+            <v-card width="100%" class="mt-2 mb-2">
                 <v-card-title primary-title>Results</v-card-title>
                 <v-divider></v-divider>
+                <v-card-text style="position: relative">
+                  <v-btn v-if="$vuetify.breakpoint.smAndDown"
+                  absolute
+                  dark
+                  fab
+                  top
+                  right
+                  color="primary"
+                  @click="openSearch()"
+                  >
+                  <v-icon>mdi-magnify</v-icon>
+                </v-btn>
+                </v-card-text>
                 <v-card-text>
                     <tab-data />
                 </v-card-text>
@@ -43,10 +51,18 @@ export default {
         searchOptions,
         overviewCards
     },
+    data(){
+      return {
+        search: true
+      }
+    },
     methods: {
+        openSearch(){
+          this.search = true;
+        },
         onSearch() {
             if (this.$vuetify.breakpoint.smAndDown) {
-                this.selectedTab = 1;
+                this.search = false;
             }
         }
     },
