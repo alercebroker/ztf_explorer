@@ -1,6 +1,6 @@
 <template>
     <v-card height="98%">
-        <v-toolbar dense flat>
+        <!-- <v-toolbar dense flat>
             <v-spacer></v-spacer>
 
             <template v-if="$vuetify.breakpoint.smAndUp">
@@ -14,7 +14,7 @@
                     <v-icon>mdi-plus-circle</v-icon>
                 </v-btn>
             </template>
-        </v-toolbar>
+        </v-toolbar> -->
 
         <v-card-text class="bt-0">
             <v-layout row wrap>
