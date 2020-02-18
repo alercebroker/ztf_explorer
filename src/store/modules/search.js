@@ -281,7 +281,7 @@ export const actions = {
     queryAlerts({ dispatch }, object) {
         dispatch('setShowObjectDetailsModal', true)
         QueryPSQLService.queryDetections(object.oid).then(response => {
-            dispatch('setObjectDetails', response.data.result)
+          dispatch('setObjectDetails', response.data.result)
         }).catch(reason => {
             console.error("Error with alert query", reason)
         })
@@ -314,25 +314,7 @@ export const actions = {
         })
     },
     queryAlertsFromURL({ commit, dispatch }, object) {
-        dispatch('setShowObjectDetailsModal', true)
-        QueryPSQLService.queryDetections(object.oid).then(response => {
-            dispatch('setObjectDetails', response.data.result)
-        })
-            .catch(reason => {
-                console.log("Error with alert query", reason)
-            })
-        QueryPSQLService.queryNonDetections(object.oid).then(response => {
-            dispatch('setObjectDetails', response.data.result)
-        })
-            .catch(reason => {
-                console.log("Error with alert query", reason)
-            })
-        QueryPSQLService.queryProbabilities(object.oid).then(response => {
-            dispatch('setObjectDetails', response.data.result)
-        })
-            .catch(reason => {
-                console.log("Error with alert query", reason)
-            })
+        dispatch('queryAlerts',object)
         QueryPSQLService.queryStats(object.oid).then(response => {
             dispatch('objectSelected', response.data.result.stats)
             let meanra = response.data.result.stats.meanra;
