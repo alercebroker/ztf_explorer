@@ -83,15 +83,10 @@ export default {
     ZoomOnHover,
     Crosshair
   },
-  props:{
-    stampComponent: {
-      type: String,
-      default: "crosshair"
-    }
-  },
   data() {
     return {
-      isFullscreen: false
+      isFullscreen: false,
+      stampComponent: "crosshair"
     };
   },
   methods: {
@@ -132,10 +127,10 @@ export default {
       this.$emit("fullscreen", { id: 7, value: this.isFullscreen });
     },
     selectZoom() {
-      this.$emit("zoomSelected");
+      this.stampComponent = "zoom"
     },
     selectCrosshair() {
-      this.$emit("crosshairSelected");
+      this.stampComponent = "crosshair"
     }
   },
   computed: {
@@ -188,7 +183,7 @@ export default {
     },
     fullscreenIcon() {
       return this.isFullscreen ? "mdi-fullscreen-exit" : "mdi-fullscreen";
-    }
+    },
   },
   watch: {
     selectedDetection(newVal) {

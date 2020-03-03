@@ -13,9 +13,6 @@
           <component
             :is="comp.name"
             @fullscreen="onFullscreen"
-            @zoomSelected="onZoomSelected"
-            @crosshairSelected="onCrosshairSelected"
-            :stampComponent="comp.stampComponent"
           />
         </v-col>
       </v-row>
