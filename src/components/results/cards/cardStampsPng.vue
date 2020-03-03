@@ -1,6 +1,6 @@
 <template>
   <v-card height="100%">
-    <v-toolbar dense flat dark>
+    <v-toolbar dense flat :dark="dark">
       <v-row align="center">
         <v-col cols="3">
           <v-toolbar-title>Stamps</v-toolbar-title>
@@ -13,7 +13,7 @@
           <v-icon @click="nextStamp">mdi-arrow-right-drop-circle</v-icon>
         </v-col>
         <v-spacer></v-spacer>
-        <v-col cols="1">
+        <v-col cols="1" v-if="hasFullscreenListener">
           <v-icon @click="fullscreen">{{fullscreenIcon}}</v-icon>
         </v-col>
         <v-col cols="1">
@@ -83,6 +83,7 @@ export default {
     ZoomOnHover,
     Crosshair
   },
+  props:["dark"],
   data() {
     return {
       isFullscreen: false,
@@ -131,7 +132,7 @@ export default {
     },
     selectCrosshair() {
       this.stampComponent = "crosshair"
-    }
+    },
   },
   computed: {
     object() {
@@ -184,6 +185,9 @@ export default {
     fullscreenIcon() {
       return this.isFullscreen ? "mdi-fullscreen-exit" : "mdi-fullscreen";
     },
+    hasFullscreenListener(){
+      return this.$listeners && this.$listeners.fullscreen;
+    }
   },
   watch: {
     selectedDetection(newVal) {

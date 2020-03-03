@@ -10,10 +10,7 @@
           :class="comp.class"
           v-show="comp.show"
         >
-          <component
-            :is="comp.name"
-            @fullscreen="onFullscreen"
-          />
+          <component :is="comp.name" @fullscreen="onFullscreen" dark/>
         </v-col>
       </v-row>
     </v-card-text>
@@ -101,18 +98,18 @@ export default {
         }
       });
     },
-    onZoomSelected(){
+    onZoomSelected() {
       let comp = this.comps.find(ele => {
         return ele.id === 7;
       });
-      console.log("zoom", comp)
-      comp.stampComponent = "zoom"
+      console.log("zoom", comp);
+      comp.stampComponent = "zoom";
     },
-    onCrosshairSelected(){
+    onCrosshairSelected() {
       let comp = this.comps.find(ele => {
         return ele.id === 7;
       });
-      comp.stampComponent = "crosshair"
+      comp.stampComponent = "crosshair";
     }
   },
   computed: {
