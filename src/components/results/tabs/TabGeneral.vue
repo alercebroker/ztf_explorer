@@ -1,7 +1,7 @@
 <template>
-  <v-card  tile class="ma-0" outlined :min-height="minHeight">
+  <v-card tile class="ma-0" outlined :min-height="minHeight">
     <v-card-text id="objectModalInside" class="pt-1">
-      <v-row >
+      <v-row>
         <v-col
           v-for="comp in visibleComps"
           :key="comp.id"
@@ -10,7 +10,13 @@
           :class="comp.class"
           v-show="comp.show"
         >
-          <component :is="comp.name" @fullscreen="onFullscreen" />
+          <component
+            :is="comp.name"
+            @fullscreen="onFullscreen"
+            @zoomSelected="onZoomSelected"
+            @crosshairSelected="onCrosshairSelected"
+            :stampComponent="comp.stampComponent"
+          />
         </v-col>
       </v-row>
     </v-card-text>
@@ -64,21 +70,14 @@ export default {
           md: 4,
           show: true
         },
-        // {
-        //   name: "card-stamps-png",
-        //   id: 4,
-        //   cols: 12,
-        //   md: 4,
-        //   class: "hidden-md-and-up",
-        //   show: false
-        // },
         {
           name: "card-stamps-png",
           id: 7,
           cols: 12,
           md: 5,
           class: "hidden-sm-and-down",
-          show: true
+          show: true,
+          stampComponent: "crosshair"
         }
       ],
       isFullscreen: false
@@ -94,7 +93,7 @@ export default {
   },
   methods: {
     onFullscreen(fsComp) {
-      this.isFullscreen = fsComp.value
+      this.isFullscreen = fsComp.value;
       this.comps.forEach(ele => {
         if (ele.id === fsComp.id) {
           ele.show = false;
@@ -104,6 +103,19 @@ export default {
           fsComp.value ? (ele.show = false) : (ele.show = true);
         }
       });
+    },
+    onZoomSelected(){
+      let comp = this.comps.find(ele => {
+        return ele.id === 7;
+      });
+      console.log("zoom", comp)
+      comp.stampComponent = "zoom"
+    },
+    onCrosshairSelected(){
+      let comp = this.comps.find(ele => {
+        return ele.id === 7;
+      });
+      comp.stampComponent = "crosshair"
     }
   },
   computed: {
@@ -112,8 +124,8 @@ export default {
         return x.show == true;
       });
     },
-    minHeight(){
-      return this.isFullscreen ? 600 : null
+    minHeight() {
+      return this.isFullscreen ? 600 : null;
     }
   },
   mounted: function() {

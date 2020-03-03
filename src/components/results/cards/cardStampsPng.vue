@@ -55,11 +55,17 @@
         </v-col>
       </v-row>
       <v-row class="pa-0">
-        <!-- <v-col> -->
-        <!-- <zoom-on-hover :images="[science,template,difference]" :disabled="isFullscreen"></zoom-on-hover> -->
-        <!-- </v-col> -->
-        <v-col cols="12" >
+        <v-col cols="12" v-if="stampComponent === 'zoom'">
+          <zoom-on-hover :images="[science,template,difference]" :disabled="isFullscreen"></zoom-on-hover>
+        </v-col>
+        <v-col cols="12" v-if="stampComponent === 'crosshair'">
           <crosshair :images="[science, template, difference]" :fullscreen="isFullscreen"></crosshair>
+        </v-col>
+      </v-row>
+      <v-row align="start" style="max-height:20px;" class="pa-0" justify="center">
+        <v-col style="max-height:20px;" cols="1" class="pa-0">
+          <v-icon @click="selectZoom">mdi-magnify-plus</v-icon>
+          <v-icon @click="selectCrosshair">mdi-crosshairs</v-icon>
         </v-col>
       </v-row>
     </v-card-text>
@@ -76,6 +82,12 @@ export default {
   components: {
     ZoomOnHover,
     Crosshair
+  },
+  props:{
+    stampComponent: {
+      type: String,
+      default: "crosshair"
+    }
   },
   data() {
     return {
@@ -118,6 +130,12 @@ export default {
     fullscreen() {
       this.isFullscreen = !this.isFullscreen;
       this.$emit("fullscreen", { id: 7, value: this.isFullscreen });
+    },
+    selectZoom() {
+      this.$emit("zoomSelected");
+    },
+    selectCrosshair() {
+      this.$emit("crosshairSelected");
     }
   },
   computed: {
