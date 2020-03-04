@@ -143,7 +143,8 @@ export default {
       headers: [
         { text: "Key", value: "key" },
         { text: "Value", value: "value" }
-      ]
+      ],
+      stampComponent: "crosshair"
     };
   },
   mounted() {

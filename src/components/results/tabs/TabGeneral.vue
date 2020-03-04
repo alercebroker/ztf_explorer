@@ -98,19 +98,6 @@ export default {
         }
       });
     },
-    onZoomSelected() {
-      let comp = this.comps.find(ele => {
-        return ele.id === 7;
-      });
-      console.log("zoom", comp);
-      comp.stampComponent = "zoom";
-    },
-    onCrosshairSelected() {
-      let comp = this.comps.find(ele => {
-        return ele.id === 7;
-      });
-      comp.stampComponent = "crosshair";
-    }
   },
   computed: {
     visibleComps() {
