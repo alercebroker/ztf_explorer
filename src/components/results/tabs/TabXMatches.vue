@@ -20,7 +20,7 @@
                                 type="number"
                                 :min="0"
                                 :max="20"
-                                step="0.001"
+                                step="0.1"
                                 style="width: 175px"
                                 suffix="arcsec"
                                 hide-details
