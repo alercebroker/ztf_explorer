@@ -3,7 +3,7 @@
         <v-container v-if="xmatches!=null">
             <v-layout  wrap justify-space-around>
                 <v-flex xs1>
-                    <p>Min distance for filter</p>
+                    <p>Max. distance</p>
                 </v-flex>
                 <v-flex xs9>
                     <v-slider
