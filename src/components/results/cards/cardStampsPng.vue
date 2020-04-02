@@ -148,12 +148,6 @@ export default {
     };
   },
   mounted() {
-    QueryAvroService.getAvroInfo({
-      oid: this.object,
-      candid: this.getCandid(this.currentStamp)
-    }).then(response => {
-      this.avro_info = this.formatTable(response.data.candidate);
-    });
   },
   methods: {
     formatTable(payload) {
@@ -204,11 +198,22 @@ export default {
     },
     selectCrosshair() {
       this.stampComponent = "crosshair";
+    },
+    getAlertAvro() {
+      QueryAvroService.getAvroInfo({
+        oid: this.object,
+        candid: this.getCandid(this.currentStamp)
+      }).then(response => {
+        this.avro_info = this.formatTable(response.data.candidate);
+      });
     }
   },
   computed: {
     object() {
       return this.$store.state.results.selectedObject.oid;
+    },
+    detections() {
+      return this.$store.state.results.objectDetails.detections;
     },
     dates() {
       if (this.$store.state.results.objectDetails.detections) {
@@ -265,13 +270,14 @@ export default {
     selectedDetection(newVal, oldVal) {
       this.$store.dispatch("setCurrentStamp", this.dates.indexOf(newVal));
       if (newVal != oldVal) {
-        QueryAvroService.getAvroInfo({
-          oid: this.object,
-          candid: this.getCandid(this.currentStamp)
-        }).then(response => {
-          this.avro_info = this.formatTable(response.data.candidate);
-        });
+        this.getAlertAvro()
       }
+    },
+    detections(){
+      this.getAlertAvro()
+    },
+    currentStamp(){
+      this.getAlertAvro()
     }
   }
 };

@@ -40,15 +40,15 @@ function raDectoHMS(ra, dec) {
         dec = Math.abs(dec);
         var deg = Math.floor(dec);
         var decM = Math.abs(Math.floor((dec-deg)*60));
-        var decS = Math.floor((Math.abs((dec-deg)*60)-decM)*60);
+        var decS = ((Math.abs((dec-deg)*60)-decM)*60).toFixed(5);
         dec = `${sign}${deg}d${decM}m${decS}s`;
     }
     if(ra) {
-        var sign = ra < 0 ? '-' : '';
+        var sign = ra < 0 ? '-' : '\xa0';
         ra = Math.abs(ra);
         var raH = Math.floor(ra/15);
         var raM = Math.floor(((ra/15) - raH)*60);
-        var raS = Math.floor(((((ra/15)-raH)*60)-raM)*60);
+        var raS = (((((ra/15)-raH)*60)-raM)*60).toFixed(6);
         ra = `${sign}${raH}h${raM}m${raS}s`;
     }
     return [ra, dec];
