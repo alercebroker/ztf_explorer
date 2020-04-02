@@ -1,18 +1,51 @@
 <template>
     <v-card height="100%" id="v-step-4">
         <v-toolbar dense flat dark>
-            <v-toolbar-title>Magnitude Statistics</v-toolbar-title>
+            <v-toolbar-title></v-toolbar-title>
         </v-toolbar>
         <v-divider></v-divider>
-        <v-card-text style="padding: 0 0 0 0;">
-            <v-data-table
-                :mobile-breakpoint="250"
-                :headers="headers"
-                :items="magnitudeItems"
-                hide-default-footer
-                dense
-            ></v-data-table>
-        </v-card-text>
+        <v-layout>
+            <v-flex xs12 v-if="findingchart_link">
+                <v-btn
+                    small
+                    tile
+                    block
+                    color="success"
+                    :href="findingchart_link" download
+                ><v-icon left>mdi-file-document-outline</v-icon>Finding Chart</v-btn>
+            </v-flex>
+        </v-layout>
+         <v-layout wrap justify-center>
+            <v-flex
+                xs12
+                sm4
+                pl-1
+                pr-1
+                class="text-md-center"
+                pt-2
+                v-for="item in links"
+                :key="item.name"
+            >
+                <v-btn color="primary" block small depressed :href="item.link" target="_blank">
+                    <div class="text-capitalize">{{ item.name }}</div>
+                </v-btn>
+            </v-flex>
+        </v-layout>
+        <v-layout>
+            <v-flex v-if="tns != null" class="mt-2">
+                <v-data-table
+                    :headers="tnsHeaders"
+                    :items="tnsInformation"
+                    hide-default-footer
+                    dense
+                    :mobile-breakpoint="250"
+                ></v-data-table>
+                <v-footer class="caption transparent">
+                    <v-spacer></v-spacer>
+                    <p class="mb-0"> Provided by <a :href="tnsInformation[0].url" target="_blank">TNS <img src="https://wis-tns.weizmann.ac.il/sites/default/files/favicon.png" alt="TNS icon"></a></p>
+                </v-footer>
+            </v-flex>
+        </v-layout>
     </v-card>
 </template>
 
@@ -21,11 +54,11 @@ export default {
     // name: "card-magnitude-statistics",
     data() {
         return {
-            headers: [
-                { text: "Item", value: "Item" },
-                { text: "g", value: "g" },
-                { text: "r", value: "r" }
-            ]
+            tnsHeaders: [
+                { text: "Type", value: "type", sortable: false },
+                { text: "Name", value: "name", sortable: false },
+                { text: "Redshift", value: "redshift", sortable: false }
+            ],
         };
     },
 
@@ -33,63 +66,108 @@ export default {
         ztf_object() {
             return this.$store.state.results.selectedObject;
         },
-        magnitudeItems() {
+        tns:{
+          get: function(){
+            return this.$store.getters.getTNS;
+          },
+          set: function(){
+            this.$store.dispatch("clearTNS");
+          }
+        },
+                tnsInformation(){
+            if(this.tns) {
+                let info = [
+                    {
+                        type: this.tns.object_type ? this.tns.object_type : "-",
+                        name: this.tns.object_name ? this.tns.object_name : "-" ,
+                        redshift: this.tns.object_data? this.tns.object_data.redshift : "-",
+                        url: this.tns.object_name ? `https://wis-tns.weizmann.ac.il/object/${this.tns.object_name}` : "https://wis-tns.weizmann.ac.il"
+                    }
+                ];
+                let filtered = info.filter(function(el) {
+                    return el != null;
+                });
+                return filtered;
+            }
+            return null;
+
+        },
+        links() {
             return [
                 {
-                    Item: "Mean",
-                    g: this.ztf_object.mean_magpsf_g
-                        ? this.ztf_object.mean_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.mean_magpsf_r
-                        ? this.ztf_object.mean_magpsf_r.toFixed(3)
-                        : "-"
+                    name: "NED",
+                    link: this.ztf_object
+                        ? "https://ned.ipac.caltech.edu/conesearch?search_type=Near+Position+Search&iau_style=liberal&objname=&coordinates=" +
+                          Math.round(this.ztf_object.meanra * 1000) / 1000 +
+                          "d," +
+                          Math.round(this.ztf_object.meandec * 1000) / 1000 +
+                          "d&iau_name=&radius=0.17&in_csys=Equatorial&in_equinox=J2000&in_csys_IAU=Equatorial&in_equinox_IAU=B1950&z_constraint=Unconstrained&z_value1=&z_value2=&z_unit=z&ot_include=ANY&nmp_op=ANY&hconst=67.8&omegam=0.308&omegav=0.692&wmap=4&corr_z=1&out_csys=Same+as+Input&out_equinox=Same+as+Input&obj_sort=Distance+to+search+center&op=Go&form_build_id=form-a28snc2SSIQl3faGUe4otq7_NcjnMwxxxPoVxw5LHzg&form_id=conesearch"
+                        : "#"
                 },
                 {
-                    Item: "Median",
-                    g: this.ztf_object.median_magpsf_g
-                        ? this.ztf_object.median_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.median_magpsf_r
-                        ? this.ztf_object.median_magpsf_r.toFixed(3)
-                        : "-"
+                    name: "SIMBAD",
+                    link: this.ztf_object
+                        ? "http://simbad.u-strasbg.fr/simbad/sim-coo?Coord=" +
+                          this.ztf_object.meanra +
+                          "%20" +
+                          this.ztf_object.meandec +
+                          "&Radius.unit=arcsec&Radius=10"
+                        : "#"
                 },
                 {
-                    Item: "First",
-                    g: this.ztf_object.first_magpsf_g
-                        ? this.ztf_object.first_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.first_magpsf_r
-                        ? this.ztf_object.first_magpsf_r.toFixed(3)
-                        : "-"
+                    name: "TNS",
+                    link: this.ztf_object
+                        ? "https://wis-tns.weizmann.ac.il/search?ra=" +
+                          this.ztf_object.meanra +
+                          "&decl=" +
+                          this.ztf_object.meandec +
+                          "&radius=10&coords_unit=arcsec"
+                        : "#"
                 },
                 {
-                    Item: "Last",
-                    g: this.ztf_object.last_magpsf_g
-                        ? this.ztf_object.last_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.last_magpsf_r
-                        ? this.ztf_object.last_magpsf_r.toFixed(3)
-                        : "-"
+                    name: "PanSTARRS",
+                    link: this.ztf_object
+                        ? "http://ps1images.stsci.edu/cgi-bin/ps1cutouts?pos=" +
+                          this.ztf_object.meanra +
+                          (this.ztf_object.meandec > 0
+                              ? "+" + this.ztf_object.meandec
+                              : this.ztf_object.meandec) +
+                          "&filter=color"
+                        : "#"
                 },
+                // {
+                //     name: "DSS",
+                //     link: this.ztf_object
+                //         ? "http://archive.stsci.edu/cgi-bin/dss_search?h=5.0&w=5.0&f=fits&v=poss2ukstu_red&r=" +
+                //           this.ztf_object.meanra +
+                //           "d&d=" +
+                //           (this.ztf_object.meandec > 0
+                //               ? "+" + this.ztf_object.meandec
+                //               : this.ztf_object.meandec) +
+                //           "d&e=J2000&c=none"
+                //         : "#"
+                // },
                 {
-                    Item: "Min",
-                    g: this.ztf_object.min_magpsf_g
-                        ? this.ztf_object.min_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.min_magpsf_r
-                        ? this.ztf_object.min_magpsf_r.toFixed(3)
-                        : "-"
-                },
-                {
-                    Item: "Max",
-                    g: this.ztf_object.max_magpsf_g
-                        ? this.ztf_object.max_magpsf_g.toFixed(3)
-                        : "-",
-                    r: this.ztf_object.max_magpsf_r
-                        ? this.ztf_object.max_magpsf_r.toFixed(3)
-                        : "-"
+                    name: "SDSS DR15",
+                    link: this.ztf_object
+                        ? "http://skyserver.sdss.org/dr15/en/tools/chart/navi.aspx?ra=" +
+                          this.ztf_object.meanra +
+                          "&dec=" +
+                          this.ztf_object.meandec
+                        : "#"
                 }
             ];
+        },
+        findingchart_link() {
+            if(this.$store.state.results.objectDetails.detections)
+            {
+                let index = this.$store.state.results.currentStamp;
+                let candid = this.$store.state.results.objectDetails.detections[index].candid_str;
+                let oid = this.$store.state.results.selectedObject.oid;
+                return `https://www.findingchart.alerce.online/get_chart?oid=${oid}&candid=${candid}`;
+
+            }
+            return null;
         }
     }
 };

@@ -51,7 +51,7 @@ function raDectoHMS(ra, dec) {
         var raS = Math.floor(((((ra/15)-raH)*60)-raM)*60);
         ra = `${sign}${raH}h${raM}m${raS}s`;
     }
-    return `${ra} ${dec}`;
+    return [ra, dec];
 }
 
 function HMStoRaDec(hms) {
