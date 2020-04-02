@@ -164,7 +164,7 @@ export default {
 
             if (this.hmsButtonText === "View H:M:S") {
                 this.hmsButtonText = "View RA/DEC";
-                let hhmmss = raDectoHMS(RA.value, DEC.value);
+                let hhmmss = raDectoHMS(RA.real_value, DEC.real_value);
                 this.ra = RA.value;
                 this.dec = DEC.value;
                 RA.value = hhmmss[0];
@@ -223,8 +223,22 @@ export default {
                           value: this.getEarlyClass(this.ztf_object.classearly)
                       }
                     : null,
-                { column: "RA", value: this.ztf_object.meanra },
-                { column: "DEC", value: this.ztf_object.meandec },
+                this.ztf_object.meanra
+                    ?
+                    { 
+                        column: "RA", 
+                        value: this.ztf_object.meanra.toFixed(6),
+                        real_value: this.ztf_object.meanra,
+                    } 
+                    : null,
+                this.ztf_object.meandec
+                    ?
+                    { 
+                        column: "DEC", 
+                        real_value: this.ztf_object.meandec,
+                        value: this.ztf_object.meandec.toFixed(6)
+                    }
+                    : null,
                 this.$store.state.results.objectDetails.detections
                     ? {
                           column: "Detections",
@@ -347,14 +361,14 @@ export default {
                         : "#"
                 }
             ];
-        }
+        }, 
     },
     watch:{
       ztf_object(new_val,old_val){
         if(new_val.oid != old_val.oid){
           this.tns = null;
         }
-      }
+      },
     }
 };
 </script>
