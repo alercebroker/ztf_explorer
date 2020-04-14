@@ -53,25 +53,25 @@ export const state = {
         {
             value: "classearly",
             sortable: false,
-            text: "Early Classifier Class",
+            text: "Stamp Classifier Class",
             show: true
         },
         {
             value: "pclassearly",
             sortable: true,
-            text: "Early Classifier Probability",
+            text: "Stamp Classifier Probability",
             show: true
         },
         {
             value: "classrf",
             sortable: false,
-            text: "Late Classifier Class",
+            text: "Light Curve Classifier Class",
             show: true
         },
         {
             value: "pclassrf",
             sortable: true,
-            text: "Late Classifier Probability",
+            text: "Light Curve Classifier Probability",
             show: true
         },
         {

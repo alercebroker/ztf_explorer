@@ -51,7 +51,7 @@
                 </div>
                 <v-card-text class="text-center">
                     <v-chip disabled color="header" text-color="white">{{rfCount}}</v-chip>
-                    <p>(Late Classifier)</p>
+                    <p>(Light Curve Classifier)</p>
                 </v-card-text>
             </v-card>
         </v-flex>
@@ -65,7 +65,7 @@
                 </div>
                 <v-card-text class="text-center">
                     <v-chip disabled color="header" text-color="white">{{earlyCount}}</v-chip>
-                    <p>(Early Classifier)</p>
+                    <p>(Stamp Classifier)</p>
                 </v-card-text>
             </v-card>
         </v-flex>

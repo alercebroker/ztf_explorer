@@ -213,13 +213,13 @@ export default {
                     : null,
                 this.ztf_object.classrf
                     ? {
-                          column: "LateClassifier",
+                          column: "Light Curve Classifier",
                           value: this.getLateClass(this.ztf_object.classrf)
                       }
                     : null,
                 this.ztf_object.classearly
                     ? {
-                          column: "EarlyClassifier",
+                          column: "Stamp Classifier",
                           value: this.getEarlyClass(this.ztf_object.classearly)
                       }
                     : null,

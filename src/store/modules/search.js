@@ -160,11 +160,11 @@ export const state = {
             value: "classxmatch"
         }, */
         {
-            text: "Late Classifier",
+            text: "Light Curve Classifier",
             value: "classrf"
         },
         {
-            text: "Early Classifier",
+            text: "Stamp Classifier",
             value: "classearly"
         }
     ],

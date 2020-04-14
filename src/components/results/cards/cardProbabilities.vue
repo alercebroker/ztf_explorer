@@ -40,7 +40,9 @@ export default {
             let probabilities = this.$store.state.results.objectDetails.probabilities;
             let ret = {};
             probabilities ? Object.keys(probabilities).forEach(key => {
-                let cleaned_key = key.replace("_", " ")
+                let cleaned_key = key.replace("early", "stamp")
+                cleaned_key = cleaned_key.replace("late", "light curve")
+                cleaned_key = cleaned_key.replace("_", " ")
                 if (Object.keys(probabilities[key]).length > 0) {
                     ret[cleaned_key] = probabilities[key];
                 }
