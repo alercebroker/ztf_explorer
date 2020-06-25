@@ -206,16 +206,12 @@ export default {
         makegraph(detections, period) {
             let gbandError = [];
             let rbandError = [];
-            let max = 0;
             this.scatter.series[0].data = detections
                 .filter(function(x) {
                     return x.fid == 1 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
                     let phase = (x.mjd % period) / period;
-                    if (phase > max) {
-                        max = phase;
-                    }
                     gbandError.push([
                         phase,
                         x.magpsf_corr - x.sigmapsf,
@@ -230,7 +226,7 @@ export default {
                     })
                     .map(function(x) {
                         let phase = (x.mjd % period) / period;
-                        phase += max;
+                        phase += 1;
                         gbandError.push([
                             phase,
                             x.magpsf_corr - x.sigmapsf,
@@ -239,16 +235,12 @@ export default {
                         return [phase, x.magpsf_corr, x.candid_str, x.sigmapsf];
                     })
             );
-            max = 0;
             this.scatter.series[1].data = detections
                 .filter(function(x) {
                     return x.fid == 2 && x.magpsf_corr != null;
                 })
                 .map(function(x) {
                     let phase = (x.mjd % period) / period;
-                    if (phase > max) {
-                        max = phase;
-                    }
                     rbandError.push([
                         phase,
                         x.magpsf_corr - x.sigmapsf,
@@ -263,7 +255,7 @@ export default {
                     })
                     .map(function(x) {
                         let phase = (x.mjd % period) / period;
-                        phase += max;
+                        phase += 1;
                         rbandError.push([
                             phase,
                             x.magpsf_corr - x.sigmapsf,
