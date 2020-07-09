@@ -52,7 +52,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    'component-library/nuxt'
+    'component-library/nuxt',
   ],
   /*
    ** Nuxt.js modules
@@ -94,12 +94,8 @@ export default {
   build: {
     babel: {
       presets({ isServer }) {
-        return [
-          [
-            "@nuxt/babel-preset-app", { loose: true }
-          ]
-        ]
-      }
-    }
+        return [['@nuxt/babel-preset-app', { loose: true }]]
+      },
+    },
   },
 }

@@ -1,34 +1,11 @@
 <template>
   <v-app dark>
-    <alerce-header></alerce-header>
-    <alerce-footer></alerce-footer>
+    <alerce-a-header title="ALeRCE ZTF Explorer"></alerce-a-header>
+    <nuxt />
+    <!-- <alerce-a-footer social></alerce-a-footer> -->
   </v-app>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
-        },
-      ],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js',
-    }
-  },
-}
+export default {}
 </script>
