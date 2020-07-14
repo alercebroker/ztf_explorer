@@ -1,5 +1,5 @@
+import path from 'path'
 import colors from 'vuetify/es5/util/colors'
-
 export default {
   /*
    ** Nuxt rendering mode
@@ -52,7 +52,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    'component-library/nuxt',
+    'alerce-vue/nuxt',
   ],
   /*
    ** Nuxt.js modules
@@ -97,5 +97,13 @@ export default {
         return [['@nuxt/babel-preset-app', { loose: true }]]
       },
     },
+    extend(config) {
+      if (process.env.NODE_ENV !== 'production') {
+        config.resolve.modules.unshift(
+          path.resolve(__dirname, './node_modules')
+        )
+      }
+    },
+    transpile: ['alerce-vue'],
   },
 }
