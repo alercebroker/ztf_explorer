@@ -1,8 +1,10 @@
 <template>
   <v-app dark>
     <alerce-a-header title="ALeRCE ZTF Explorer" :items="items" />
-    <nuxt />
-    <alerce-a-footer social></alerce-a-footer>
+    <v-main>
+      <nuxt />
+    </v-main>
+    <!-- <alerce-a-footer social></alerce-a-footer> -->
   </v-app>
 </template>
 

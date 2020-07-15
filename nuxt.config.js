@@ -52,7 +52,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    'alerce-vue/nuxt',
+    'component-library/nuxt',
   ],
   /*
    ** Nuxt.js modules
@@ -104,6 +104,6 @@ export default {
         )
       }
     },
-    transpile: ['alerce-vue'],
+    transpile: ['vuex-module-decorators'],
   },
 }

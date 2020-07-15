@@ -1,9 +1,14 @@
-import { Module, VuexModule, Mutation, Action } from 'vuex-module-decorators'
-import axios from '@nuxtjs/axios'
-import { objectsStore } from '~/store'
+import {
+  Module,
+  VuexModule,
+  VuexMutation,
+  VuexAction,
+} from 'nuxt-property-decorator'
+import { objectsStore, paginationStore } from '~/store'
+
 @Module({
-  namespaced: true,
   name: 'filters',
+  namespaced: true,
   stateFactory: true,
 })
 export default class Filters extends VuexModule {
@@ -30,7 +35,7 @@ export default class Filters extends VuexModule {
     }
   }
 
-  @Mutation
+  @VuexMutation
   setGeneralFilters(filters) {
     this.oid = filters.oid
     this.selectedClass = filters.selectedClass
@@ -46,7 +51,7 @@ export default class Filters extends VuexModule {
     }
   }
 
-  @Mutation
+  @VuexMutation
   setDateFilters(filters) {
     this.minMjd = filters.minMjd
     this.maxMjd = filters.maxMjd
@@ -60,16 +65,29 @@ export default class Filters extends VuexModule {
     }
   }
 
-  @Mutation
+  @VuexMutation
   setConesearchFilters(filters) {
     this.ra = filters.ra
     this.dec = filters.dec
     this.radius = filters.radius
   }
 
-  @Action()
+  @VuexAction()
   async search() {
-    const x = await axios.$get('http://3.212.59.238:8082/objects')
-    console.log(x, objectsStore.list)
+    const result = await this.store.$axios.$get(
+      'http://3.212.59.238:8082/objects/',
+      {
+        params: {
+          ...this.generalFilters,
+        },
+      }
+    )
+    objectsStore.set(result.items)
+    paginationStore.setTotal(result.total)
+    paginationStore.setPage(result.page)
+    paginationStore.setNext(result.next)
+    paginationStore.setPrev(result.prev)
+    paginationStore.setHasNext(result.has_next)
+    paginationStore.setHasPrev(result.has_prev)
   }
 }

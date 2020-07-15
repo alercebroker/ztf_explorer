@@ -1,6 +1,6 @@
 <template>
-  <v-main>
-    <v-navigation-drawer permanent width="400px">
+  <v-row>
+    <v-col cols="3">
       <v-expansion-panels v-model="panels" dense>
         <v-expansion-panel value="true">
           <v-expansion-panel-header
@@ -55,51 +55,59 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
-    </v-navigation-drawer>
-  </v-main>
+    </v-col>
+    <v-col cols="9">
+      <alerce-result-table
+        :page="1"
+        :items="items"
+        :per-page="10"
+        :total="total"
+      />
+    </v-col>
+  </v-row>
 </template>
 
 <script>
-import { Vue, Component, Watch } from 'nuxt-property-decorator'
-// import { getModule } from 'vuex-module-decorators'
-import { filtersStore } from '~/store'
+import { Vue, Component } from 'nuxt-property-decorator'
+import { filtersStore, objectsStore, paginationStore } from '~/store'
 @Component
 export default class Index extends Vue {
   panels = 0
-  // filterModule = getModule(Filters, this.$store)
-  f = filtersStore
+
+  get items() {
+    return objectsStore.list
+  }
+
+  get total() {
+    return paginationStore.total
+  }
 
   get generalFilters() {
-    return this.f.generalFilters
+    return filtersStore.generalFilters
   }
 
   set generalFilters(val) {
-    this.f.setGeneralFilters(val)
+    filtersStore.setGeneralFilters(val)
   }
 
   get dateFilters() {
-    return this.f.dateFilters
+    return filtersStore.dateFilters
   }
 
   set dateFilters(val) {
-    this.f.setDateFilters(val)
+    filtersStore.setDateFilters(val)
   }
 
   get conesearchFilters() {
-    return this.f.conesearchFilters
+    return filtersStore.conesearchFilters
   }
 
   set conesearchFilters(val) {
-    this.f.setConesearchFilters(val)
+    filtersStore.setConesearchFilters(val)
   }
 
   onSearchClicked() {
-    this.f.search()
-  }
-
-  @Watch('generalFilters', { deep: true })
-  changeFilters(data) {
-    console.log('JAVIER CAMBIO FILTERS', data)
+    filtersStore.search()
   }
 }
 </script>

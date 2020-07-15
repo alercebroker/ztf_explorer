@@ -1,12 +1,17 @@
-import { Module, VuexModule, Mutation } from 'vuex-module-decorators'
+import { Module, VuexModule, VuexMutation } from 'nuxt-property-decorator'
 
-@Module({ namespaced: true, name: 'objects', stateFactory: true })
+@Module({ name: 'objects', namespaced: true, stateFactory: true })
 export default class Objects extends VuexModule {
   list = []
   selected = null
 
-  @Mutation
+  @VuexMutation
   set(val) {
+    this.list = val
+  }
+
+  @VuexMutation
+  select(val) {
     this.list = val
   }
 }
