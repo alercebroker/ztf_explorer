@@ -48,7 +48,7 @@
               </v-list-group>
               <v-list-item class="pl-4">
                 <v-list-item-content>
-                  <v-btn @click="onSearchClicked">search</v-btn>
+                  <v-btn color="primary" @click="onSearchClicked">search</v-btn>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -58,21 +58,40 @@
     </v-col>
     <v-col cols="9">
       <alerce-result-table
-        :page="1"
+        :page.sync="page"
         :items="items"
-        :per-page="10"
+        :per-page="perPage"
         :total="total"
+        :loading="searching"
+        @rowClicked="onRowClicked"
       />
     </v-col>
   </v-row>
 </template>
 
 <script>
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
+import debounce from 'lodash.debounce'
 import { filtersStore, objectsStore, paginationStore } from '~/store'
 @Component
 export default class Index extends Vue {
   panels = 0
+
+  get searching() {
+    return filtersStore.searching
+  }
+
+  get page() {
+    return paginationStore.page
+  }
+
+  set page(val) {
+    return paginationStore.setPage(val)
+  }
+
+  get perPage() {
+    return paginationStore.perPage
+  }
 
   get items() {
     return objectsStore.list
@@ -91,7 +110,10 @@ export default class Index extends Vue {
   }
 
   get dateFilters() {
-    return filtersStore.dateFilters
+    return {
+      minMjd: filtersStore.dateFilters.firstmjd[0],
+      maxMjd: filtersStore.dateFilters.firstmjd[1],
+    }
   }
 
   set dateFilters(val) {
@@ -107,7 +129,23 @@ export default class Index extends Vue {
   }
 
   onSearchClicked() {
-    filtersStore.search()
+    paginationStore.setPage(1)
+    this.debouncedSearch()
+  }
+
+  debouncedSearch = debounce(filtersStore.search, 400, {
+    leading: false,
+    trailing: true,
+  })
+
+  @Watch('page')
+  onPageChange(val) {
+    paginationStore.setCount('false')
+    this.debouncedSearch()
+  }
+
+  onRowClicked(item) {
+    this.$router.push({ path: `/object/${item.oid}` })
   }
 }
 </script>

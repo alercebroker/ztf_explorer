@@ -1,5 +1,5 @@
 <template>
-  <v-content>
+  <v-content fluid>
     {{ $route.params.oid }}
   </v-content>
 </template>

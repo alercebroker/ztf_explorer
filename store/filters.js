@@ -4,6 +4,7 @@ import {
   VuexMutation,
   VuexAction,
 } from 'nuxt-property-decorator'
+import { search } from '../api/ztf_api'
 import { objectsStore, paginationStore } from '~/store'
 
 @Module({
@@ -19,11 +20,16 @@ export default class Filters extends VuexModule {
   classes = null
   probability = 0
   ndet = [0, 1000]
-  minMjd = null
-  maxMjd = null
+  firstmjd = [null, null]
   ra = null
   dec = null
   radius = null
+  searching = false
+
+  @VuexMutation
+  setSearching(val) {
+    this.searching = val
+  }
 
   get generalFilters() {
     return {
@@ -46,15 +52,14 @@ export default class Filters extends VuexModule {
 
   get dateFilters() {
     return {
-      minMjd: this.minMjd,
-      maxMjd: this.maxMjd,
+      firstmjd: this.firstmjd,
     }
   }
 
   @VuexMutation
   setDateFilters(filters) {
-    this.minMjd = filters.minMjd
-    this.maxMjd = filters.maxMjd
+    this.firstmjd[0] = filters.minMjd
+    this.firstmjd[1] = filters.maxMjd
   }
 
   get conesearchFilters() {
@@ -73,21 +78,29 @@ export default class Filters extends VuexModule {
   }
 
   @VuexAction()
-  async search() {
-    const result = await this.store.$axios.$get(
-      'http://3.212.59.238:8082/objects/',
-      {
-        params: {
-          ...this.generalFilters,
-        },
-      }
-    )
-    objectsStore.set(result.items)
-    paginationStore.setTotal(result.total)
+  setPaginationState(result) {
+    if (result.total) {
+      paginationStore.setTotal(result.total)
+    }
     paginationStore.setPage(result.page)
     paginationStore.setNext(result.next)
     paginationStore.setPrev(result.prev)
     paginationStore.setHasNext(result.has_next)
     paginationStore.setHasPrev(result.has_prev)
+    paginationStore.setCount('true')
+  }
+
+  @VuexAction({ rawError: true })
+  async search() {
+    this.setSearching(true)
+    const result = await search({
+      ...this.generalFilters,
+      ...this.dateFilters,
+      ...this.conesearchFilters,
+      ...paginationStore.pageFilters,
+    })
+    objectsStore.set(result.data.items)
+    this.setPaginationState(result.data)
+    this.setSearching(false)
   }
 }

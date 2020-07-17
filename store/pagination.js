@@ -3,11 +3,13 @@ import { Module, VuexModule, VuexMutation } from 'nuxt-property-decorator'
 @Module({ name: 'pagination', namespaced: true, stateFactory: true })
 export default class Pagination extends VuexModule {
   total = null
-  page = null
+  page = 1
   next = null
   prev = null
   hasNext = null
   hasPrev = null
+  perPage = 20
+  count = 'true'
 
   @VuexMutation
   setTotal(val) {
@@ -37,5 +39,23 @@ export default class Pagination extends VuexModule {
   @VuexMutation
   setHasPrev(val) {
     this.hasPrev = val
+  }
+
+  @VuexMutation
+  setPerPage(val) {
+    this.perPage = val
+  }
+
+  @VuexMutation
+  setCount(val) {
+    this.count = val
+  }
+
+  get pageFilters() {
+    return {
+      count: this.count,
+      page: this.page,
+      page_size: this.perPage,
+    }
   }
 }
