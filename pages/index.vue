@@ -20,7 +20,11 @@
                 </template>
                 <v-list-item class="pl-4">
                   <v-list-item-content>
-                    <alerce-default-search v-model="generalFilters" />
+                    <alerce-default-search
+                      v-model="generalFilters"
+                      :classifiers="classifiers"
+                      :classes="classes"
+                    />
                   </v-list-item-content>
                 </v-list-item>
               </v-list-group>
@@ -76,6 +80,27 @@ import { filtersStore, objectsStore, paginationStore } from '~/store'
 @Component
 export default class Index extends Vue {
   panels = 0
+
+  mounted() {
+    filtersStore.getClassifiers()
+  }
+
+  get classifiers() {
+    return filtersStore.classifiers
+  }
+
+  get classes() {
+    return filtersStore.classes
+  }
+
+  get selectedClassifier() {
+    return filtersStore.selectedClassifier
+  }
+
+  @Watch('selectedClassifier')
+  onClassifierChange(val) {
+    filtersStore.getClasses(val)
+  }
 
   get searching() {
     return filtersStore.searching

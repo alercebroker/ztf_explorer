@@ -4,7 +4,7 @@ import {
   VuexMutation,
   VuexAction,
 } from 'nuxt-property-decorator'
-import { search } from '../api/ztf_api'
+import { search, getClassifiers, getClasses } from '../api/ztf_api'
 import { objectsStore, paginationStore } from '~/store'
 
 @Module({
@@ -16,8 +16,8 @@ export default class Filters extends VuexModule {
   oid = null
   selectedClassifier = null
   selectedClass = null
-  classifiers = null
-  classes = null
+  classifiers = []
+  classes = []
   probability = 0
   ndet = [0, 1000]
   firstmjd = [null, null]
@@ -77,6 +77,20 @@ export default class Filters extends VuexModule {
     this.radius = filters.radius
   }
 
+  @VuexMutation
+  setClassifiers(classifiers) {
+    this.classifiers = classifiers.map((x) => {
+      x.name = x.classifier_name
+      delete x.classifier_name
+      return x
+    })
+  }
+
+  @VuexMutation
+  setClasses(classes) {
+    this.classes = classes
+  }
+
   @VuexAction()
   setPaginationState(result) {
     if (result.total) {
@@ -93,14 +107,36 @@ export default class Filters extends VuexModule {
   @VuexAction({ rawError: true })
   async search() {
     this.setSearching(true)
-    const result = await search({
-      ...this.generalFilters,
-      ...this.dateFilters,
-      ...this.conesearchFilters,
-      ...paginationStore.pageFilters,
-    })
-    objectsStore.set(result.data.items)
-    this.setPaginationState(result.data)
+    try {
+      const result = await search({
+        ...this.generalFilters,
+        ...this.dateFilters,
+        ...this.conesearchFilters,
+        ...paginationStore.pageFilters,
+      })
+      objectsStore.set(result.data.items)
+      this.setPaginationState(result.data)
+    } catch (e) {
+      // TODO Handle error here
+      // Maybe error can be handled outside this module in API module
+      // and then trigger a specific mutation on this state given the error
+      // this.handleSearchError(e)
+      console.log(e)
+    }
     this.setSearching(false)
+  }
+
+  handleSearchError() {}
+
+  @VuexAction({ rawError: true })
+  async getClassifiers() {
+    const result = await getClassifiers()
+    this.setClassifiers(result.data)
+  }
+
+  @VuexAction({ rawError: true })
+  async getClasses(selectedClassifier) {
+    const result = await getClasses(selectedClassifier)
+    this.setClasses(result.data)
   }
 }
