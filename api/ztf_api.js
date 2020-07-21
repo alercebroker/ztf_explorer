@@ -14,4 +14,12 @@ function search(searchParameters) {
   })
 }
 
-export { search }
+function getObject(objectId) {
+  return api.get(`objects/${objectId}`)
+}
+
+function getLightCurve(objectId) {
+  return api.get(`objects/${objectId}/lightcurve`)
+}
+
+export { search, getObject, getLightCurve }
