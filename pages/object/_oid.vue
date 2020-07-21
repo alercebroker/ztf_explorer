@@ -1,40 +1,25 @@
 <template>
   <v-container>
     <v-row>
-      <v-col v-if="objectInformation" cols="12" lg="3" md="4" sm="12">
-        <v-card>
-          <alerce-basic-information :information="objectInformation" />
-          <alerce-catalogs-buttons
-            :ra="objectInformation.meanra"
-            :dec="objectInformation.meandec"
-          />
-          <alerce-tns-information type="aaa" name="dasdas" :redshift="0" />
-        </v-card>
-      </v-col>
+      <card-basic-information
+        :information="objectInformation"
+        :tns="tns"
+        :show="objectInformation != null"
+        cols="12"
+        lg="3"
+        md="8"
+        sm="12"
+      />
 
-      <v-col v-if="objectLightcurve" cols="12" lg="6" md="8" sm="12">
-        <v-card>
-          <alerce-select-display :options="options">
-            <alerce-light-curve-plot
-              slot="difference"
-              :detections="objectLightcurve.detections"
-              :nonDetections="objectLightcurve.nonDetections"
-              type="difference"
-            />
-            <alerce-light-curve-plot
-              slot="apparent"
-              :detections="objectLightcurve.detections"
-              type="apparent"
-            />
-            <alerce-light-curve-plot
-              slot="folded"
-              :detections="objectLightcurve.detections"
-              :period="period"
-              type="folded"
-            />
-          </alerce-select-display>
-        </v-card>
-      </v-col>
+      <card-light-curve
+        :lightcurve="objectLightcurve"
+        :period="0.5"
+        :show="objectLightcurve.loaded"
+        cols="12"
+        lg="6"
+        md="8"
+        sm="12"
+      />
     </v-row>
   </v-container>
 </template>
@@ -45,12 +30,6 @@ import { objectStore } from '~/store'
 
 @Component
 export default class ObjectView extends Vue {
-  options = [
-    { text: 'Difference Magnitude', value: 'difference' },
-    { text: 'Apparent Magnitude', value: 'apparent' },
-    { text: 'Folded', value: 'folded' },
-  ]
-
   get objectId() {
     return objectStore.objectId
   }
@@ -65,6 +44,10 @@ export default class ObjectView extends Vue {
 
   get period() {
     return 1
+  }
+
+  get tns() {
+    return objectStore.objectTNS
   }
 
   mounted() {
