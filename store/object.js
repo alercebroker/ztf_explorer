@@ -5,7 +5,13 @@ import {
   VuexAction,
 } from 'nuxt-property-decorator'
 
-import { getObject, getLightCurve } from '../api/ztf_api'
+import {
+  getObject,
+  getLightCurve,
+  getClassifications,
+  getMagStats,
+} from '../api/ztf_api'
+
 import { isInTNS } from '../api/tns_api'
 
 @Module({ name: 'object', namespaced: true, stateFactory: true })
@@ -17,6 +23,16 @@ export default class Object_ extends VuexModule {
     loaded: false,
     detections: [],
     non_detections: [],
+  }
+
+  classifications = {
+    loaded: false,
+    classifiers: [],
+  }
+
+  magstats = {
+    loaded: false,
+    data: [],
   }
 
   objectTNS = {
@@ -53,13 +69,29 @@ export default class Object_ extends VuexModule {
     this.status = val.status
   }
 
+  @VuexMutation
+  setClassifications(val) {
+    this.classifications.classifiers = val.data
+    this.classifications.loaded = val.status === 200
+  }
+
+  @VuexMutation
+  setMagstats(val) {
+    this.magstats.data = val.data
+    this.magstats.loaded = val.status === 200
+  }
+
   @VuexAction({ rawError: true })
   async getObject(val) {
     this.setObjectId(val)
     const information = await getObject(val)
-    const lightcurve = await getLightCurve(val)
     this.setObjectInformation(information)
+    const lightcurve = await getLightCurve(val)
     this.setObjectLightcurve(lightcurve)
+    const classifications = await getClassifications(val)
+    this.setClassifications(classifications)
+    const magstats = await getMagStats(val)
+    this.setMagstats(magstats)
     const tns = await isInTNS(information.data.meanra, information.data.meandec)
     this.setTNSInformation(tns)
   }

@@ -22,4 +22,12 @@ function getLightCurve(objectId) {
   return api.get(`objects/${objectId}/lightcurve`)
 }
 
-export { search, getObject, getLightCurve }
+function getClassifications(objectId) {
+  return api.get(`objects/${objectId}/probabilities`)
+}
+
+function getMagStats(objectId) {
+  return api.get(`objects/${objectId}/magstats`)
+}
+
+export { search, getObject, getLightCurve, getClassifications, getMagStats }

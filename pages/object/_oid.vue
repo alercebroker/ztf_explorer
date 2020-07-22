@@ -17,7 +17,7 @@
         :show="objectLightcurve.loaded"
         cols="12"
         lg="6"
-        md="8"
+        md="12"
         sm="12"
       />
 
@@ -40,7 +40,8 @@
       />
 
       <card-classifiers
-        :show="objectInformation != null"
+        :classifiers="objectClassification.classifiers"
+        :show="objectClassification.loaded"
         cols="12"
         lg="3"
         md="8"
@@ -74,6 +75,10 @@ export default class ObjectView extends Vue {
 
   get objectLightcurve() {
     return objectStore.objectLightcurve
+  }
+
+  get objectClassification() {
+    return objectStore.classifications
   }
 
   get period() {
