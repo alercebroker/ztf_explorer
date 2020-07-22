@@ -5,19 +5,22 @@
         <alerce-light-curve-plot
           slot="difference"
           :detections="lightcurve.detections"
-          :nonDetections="lightcurve.nonDetections"
+          :nonDetections="lightcurve['non_detections']"
           type="difference"
+          :dark="isDark"
         />
         <alerce-light-curve-plot
           slot="apparent"
           :detections="lightcurve.detections"
           type="apparent"
+          :dark="isDark"
         />
         <alerce-light-curve-plot
           slot="folded"
           :detections="lightcurve.detections"
           :period="period"
           type="folded"
+          :dark="isDark"
         />
       </alerce-select-display>
     </v-card>
@@ -49,6 +52,10 @@ export default class CardLightCurve extends Vue {
 
   @Prop({ type: Boolean, default: true })
   show
+
+  get isDark() {
+    return this.$vuetify.theme.isDark
+  }
 
   options = [
     { text: 'Difference Magnitude', value: 'difference' },

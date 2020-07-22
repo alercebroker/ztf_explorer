@@ -20,6 +20,40 @@
         md="8"
         sm="12"
       />
+
+      <card-aladin
+        :ra="3"
+        :dec="4"
+        :show="objectInformation != null"
+        cols="12"
+        lg="3"
+        md="8"
+        sm="12"
+      />
+
+      <card-mag-stats
+        :show="objectInformation != null"
+        cols="12"
+        lg="3"
+        md="8"
+        sm="12"
+      />
+
+      <card-classifiers
+        :show="objectInformation != null"
+        cols="12"
+        lg="3"
+        md="8"
+        sm="12"
+      />
+
+      <card-stamps
+        :show="objectInformation != null"
+        cols="12"
+        lg="6"
+        md="8"
+        sm="12"
+      />
     </v-row>
   </v-container>
 </template>
