@@ -27,7 +27,17 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons'},
+      { 
+        rel: 'stylesheet',
+        href: 'https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css',
+        integrity: 'sha256-OYXGS5m4oWZAAqoAKpf7Y3bIdzdd9jBfly/xCavEpGw=',
+        crossorigin: 'anonymous'
+      },
+    ],
   },
   /*
    ** Global CSS
