@@ -43,8 +43,6 @@ export default class CardCrossMatches extends Vue {
         distance: x[catalogName].distance,
       }
     })
-    console.log(this.data)
-    console.log(catalogs_)
     return catalogs_
   }
 }

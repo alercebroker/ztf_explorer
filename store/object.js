@@ -63,7 +63,6 @@ export default class Object_ extends VuexModule {
 
   @VuexMutation
   setObjectLightcurve(val) {
-    console.log(val)
     this.objectLightcurve = val.data
     this.objectLightcurve.loaded = val.status === 200
   }
