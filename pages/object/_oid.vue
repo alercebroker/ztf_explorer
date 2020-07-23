@@ -1,10 +1,11 @@
 <template>
   <v-container fluid>
-    <v-row>
+    <v-row align="stretch">
       <card-basic-information
         :information="objectInformation"
         :tns="tns"
         :show="objectInformation != null"
+        card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
@@ -14,6 +15,7 @@
         :lightcurve="objectLightcurve"
         :period="0.5"
         :show="objectLightcurve.loaded"
+        card-class="grid-card"
         lg="6"
         md="6"
         sm="12"
@@ -24,6 +26,7 @@
         :objects="objects"
         :object-data="objectInformation"
         :show="objectInformation != null"
+        card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
@@ -32,6 +35,7 @@
       <card-mag-stats
         :stats="stats"
         :show="objectInformation != null"
+        card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
@@ -40,6 +44,7 @@
       <card-classifiers
         :classifiers="objectClassification.classifiers"
         :show="objectClassification.loaded"
+        card-class="grid-card"
         cols="12"
         lg="3"
         md="6"
@@ -52,6 +57,7 @@
         :detections="objectLightcurve.detections"
         :oid="selectedObject"
         :cross-hair-space="25"
+        card-class="grid-card"
         lg="6"
         md="6"
       />
@@ -110,14 +116,7 @@ export default class ObjectView extends Vue {
   }
 
   get stats() {
-    let stats = []
-    if (objectStore.stats.length) {
-      stats = JSON.parse(JSON.stringify(objectStore.stats))
-      const cpy = JSON.parse(JSON.stringify(stats[0]))
-      cpy.fid = 2
-      stats.push(cpy)
-    }
-    return stats
+    return objectStore.stats
   }
 
   mounted() {
@@ -125,3 +124,8 @@ export default class ObjectView extends Vue {
   }
 }
 </script>
+<style>
+.grid-card {
+  height: 100%;
+}
+</style>

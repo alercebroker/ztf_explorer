@@ -1,28 +1,30 @@
 <template>
   <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card>
-      <alerce-select-display :options="options">
-        <alerce-light-curve-plot
-          slot="difference"
-          :detections="lightcurve.detections"
-          :nonDetections="lightcurve['non_detections']"
-          type="difference"
-          :dark="isDark"
-        />
-        <alerce-light-curve-plot
-          slot="apparent"
-          :detections="lightcurve.detections"
-          type="apparent"
-          :dark="isDark"
-        />
-        <alerce-light-curve-plot
-          slot="folded"
-          :detections="lightcurve.detections"
-          :period="period"
-          type="folded"
-          :dark="isDark"
-        />
-      </alerce-select-display>
+    <v-card :class="cardClass">
+      <v-card-text>
+        <alerce-select-display :options="options">
+          <alerce-light-curve-plot
+            slot="difference"
+            :detections="lightcurve.detections"
+            :non-detections="lightcurve['non_detections']"
+            type="difference"
+            :dark="isDark"
+          />
+          <alerce-light-curve-plot
+            slot="apparent"
+            :detections="lightcurve.detections"
+            type="apparent"
+            :dark="isDark"
+          />
+          <alerce-light-curve-plot
+            slot="folded"
+            :detections="lightcurve.detections"
+            :period="period"
+            type="folded"
+            :dark="isDark"
+          />
+        </alerce-select-display>
+      </v-card-text>
     </v-card>
   </v-col>
 </template>
@@ -32,33 +34,28 @@ import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class CardLightCurve extends Vue {
-  @Prop({ type: Number | String, default: 12 })
-  cols
+  @Prop({ type: Number | String, default: 12 }) cols
 
-  @Prop({ type: Number | String, default: 12 })
-  lg
+  @Prop({ type: Number | String, default: 12 }) lg
 
-  @Prop({ type: Number | String, default: 12 })
-  md
+  @Prop({ type: Number | String, default: 12 }) md
 
-  @Prop({ type: Number | String, default: 12 })
-  sm
+  @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Object, default: () => {} })
-  lightcurve
+  @Prop({ type: Object, default: () => {} }) lightcurve
 
-  @Prop({ type: Number, default: 1 })
-  period
+  @Prop({ type: Number, default: 1 }) period
 
-  @Prop({ type: Boolean, default: true })
-  show
+  @Prop({ type: Boolean, default: true }) show
+
+  @Prop({ type: String }) cardClass
 
   get isDark() {
     return this.$vuetify.theme.isDark
   }
 
   options = [
-    { text: 'Difference Magnitude', value: 'difference' },
+    { text: 'Difference Magnitude', value: 'difference', default: true },
     { text: 'Apparent Magnitude', value: 'apparent' },
     { text: 'Folded', value: 'folded' },
   ]

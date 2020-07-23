@@ -1,14 +1,14 @@
 <template>
-  <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card>
+  <v-col v-show="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
+    <v-card :class="cardClass">
       <v-tabs>
-        <v-tab v-for="(value, index) in classifiers_" v-bind:key="index">
+        <v-tab v-for="(value, index) in classifiers_" :key="index">
           {{ value.name }}
         </v-tab>
-        <v-tab-item v-for="(value, index) in classifiers_" v-bind:key="index">
-          <v-container>
+        <v-tab-item v-for="(value, index) in classifiers_" :key="index">
+          <v-card-text>
             <alerce-radar-plot :data="value.probs" />
-          </v-container>
+          </v-card-text>
         </v-tab-item>
       </v-tabs>
     </v-card>
@@ -20,23 +20,19 @@ import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class CardClassifiers extends Vue {
-  @Prop({ type: Number | String, default: 12 })
-  cols
+  @Prop({ type: Number | String, default: 12 }) cols
 
-  @Prop({ type: Number | String, default: 12 })
-  lg
+  @Prop({ type: Number | String, default: 12 }) lg
 
-  @Prop({ type: Number | String, default: 12 })
-  md
+  @Prop({ type: Number | String, default: 12 }) md
 
-  @Prop({ type: Number | String, default: 12 })
-  sm
+  @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Array, required: true, default: () => [] })
-  classifiers
+  @Prop({ type: Array, required: true, default: () => [] }) classifiers
 
-  @Prop({ type: Boolean, default: true })
-  show
+  @Prop({ type: Boolean, default: true }) show
+
+  @Prop({ type: String }) cardClass
 
   /*
   Format probabilities of API to array of objects: { name: class_name, value: prob_of_class}
