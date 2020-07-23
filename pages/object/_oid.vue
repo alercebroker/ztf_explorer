@@ -46,7 +46,15 @@
         sm="12"
       />
 
-      <card-stamps :show="objectInformation != null" lg="6" md="6" sm="12" />
+      <card-stamps
+        v-model="selectedDetection"
+        :show="objectInformation != null"
+        :detections="objectLightcurve.detections"
+        :oid="selectedObject"
+        :cross-hair-space="25"
+        lg="6"
+        md="6"
+      />
 
       <card-cross-matches
         :data="crossmatches.data"
@@ -67,6 +75,7 @@ import { objectStore, objectsStore } from '~/store'
 @Component
 export default class ObjectView extends Vue {
   selectedObject = null
+  selectedDetection = 0
 
   beforeMount() {
     this.selectedObject = this.$route.params.oid
