@@ -170,7 +170,8 @@ export default class Index extends Vue {
   }
 
   onRowClicked(item) {
-    this.$router.push({ path: `/object/${item.oid}` })
+    objectsStore.setSelected(item)
+    // this.$router.push({ path: `/object/${item.oid}` })
   }
 }
 </script>

@@ -81,6 +81,28 @@ export default class ObjectView extends Vue {
     this.selectedObject = this.$route.params.oid
   }
 
+  created() {
+    const view = this
+    document.addEventListener('keyup', function (evt) {
+      switch (evt.keyCode) {
+        case 39:
+          view.nextObject()
+          break
+        case 37:
+          view.prevObject()
+          break
+      }
+    })
+  }
+
+  nextObject() {
+    console.log(this.objects)
+  }
+
+  prevObject() {
+    console.log('izquierda')
+  }
+
   get objects() {
     return objectsStore.list
   }

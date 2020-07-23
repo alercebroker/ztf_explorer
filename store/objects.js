@@ -1,4 +1,9 @@
-import { Module, VuexModule, VuexMutation } from 'nuxt-property-decorator'
+import {
+  Module,
+  VuexModule,
+  VuexMutation,
+  VuexAction,
+} from 'nuxt-property-decorator'
 
 @Module({ name: 'objects', namespaced: true, stateFactory: true })
 export default class Objects extends VuexModule {
@@ -13,5 +18,12 @@ export default class Objects extends VuexModule {
   @VuexMutation
   select(val) {
     this.list = val
+  }
+
+  @VuexAction
+  setSelected(item) {
+    console.log(item)
+    const indexItem = this.list.findIndex((element) => element.oid === item.oid)
+    console.log(indexItem)
   }
 }
