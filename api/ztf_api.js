@@ -31,4 +31,23 @@ function getClasses(classifier) {
   return api.get(`classifiers/${classifier}/classes`)
 }
 
-export { search, getClassifiers, getClasses }
+function getObject(objectId) {
+  return api.get(`objects/${objectId}`)
+}
+
+function getLightCurve(objectId) {
+  return api.get(`objects/${objectId}/lightcurve`)
+}
+
+function getStats(oid) {
+  return api.get(`objects/${oid}/magstats`)
+}
+
+export {
+  search,
+  getObject,
+  getLightCurve,
+  getClassifiers,
+  getClasses,
+  getStats,
+}
