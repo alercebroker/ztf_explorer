@@ -1,6 +1,6 @@
 <template>
   <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card>
+    <v-card :class="cardClass">
       <alerce-stamps-card
         v-model="localSelectedDetection"
         :detections="detections"
@@ -31,6 +31,8 @@ export default class CardStamps extends Vue {
   @Prop({ type: String }) oid
 
   @Prop({ type: Number }) crossHairSpace
+
+  @Prop({ type: String }) cardClass
 
   @Model('selectDetection', { type: Number, default: 0 }) selectedDetection
 
