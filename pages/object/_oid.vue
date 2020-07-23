@@ -54,6 +54,14 @@
         :cross-hair-space="25"
         lg="6"
         md="6"
+      />
+
+      <card-cross-matches
+        :data="crossmatches.data"
+        :show="crossmatches.loaded"
+        cols="12"
+        lg="12"
+        md="12"
         sm="12"
       />
     </v-row>
@@ -95,6 +103,10 @@ export default class ObjectView extends Vue {
 
   get tns() {
     return objectStore.objectTNS
+  }
+
+  get crossmatches() {
+    return objectStore.crossmatches
   }
 
   get stats() {
