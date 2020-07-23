@@ -42,11 +42,15 @@ function getLightCurve(objectId) {
 function getStats(oid) {
   return api.get(`objects/${oid}/magstats`)
 }
+function getClassifications(objectId) {
+  return api.get(`objects/${objectId}/probabilities`)
+}
 
 export {
   search,
   getObject,
   getLightCurve,
+  getClassifications,
   getClassifiers,
   getClasses,
   getStats,

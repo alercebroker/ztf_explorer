@@ -5,7 +5,13 @@ import {
   VuexAction,
 } from 'nuxt-property-decorator'
 
-import { getObject, getLightCurve, getStats } from '../api/ztf_api'
+import {
+  getObject,
+  getLightCurve,
+  getClassifications,
+  getStats,
+} from '../api/ztf_api'
+
 import { isInTNS } from '../api/tns_api'
 
 @Module({ name: 'object', namespaced: true, stateFactory: true })
@@ -19,12 +25,17 @@ export default class Object_ extends VuexModule {
     non_detections: [],
   }
 
+  stats = []
+
   bandMap = {
     '1': 'g',
     '2': 'r',
   }
 
-  stats = []
+  classifications = {
+    loaded: false,
+    classifiers: [],
+  }
 
   objectTNS = {
     type: '-',
@@ -65,6 +76,12 @@ export default class Object_ extends VuexModule {
     this.stats = val
   }
 
+  @VuexMutation
+  setClassifications(val) {
+    this.classifications.classifiers = val.data
+    this.classifications.loaded = val.status === 200
+  }
+
   @VuexAction({ rawError: true })
   async getObject(val) {
     this.setObjectId(val)
@@ -72,9 +89,11 @@ export default class Object_ extends VuexModule {
     this.setObjectInformation(information)
     const lightcurve = await getLightCurve(val)
     this.setObjectLightcurve(lightcurve)
-    const tns = await isInTNS(information.data.meanra, information.data.meandec)
-    this.setTNSInformation(tns)
+    const classifications = await getClassifications(val)
+    this.setClassifications(classifications)
     const stats = await getStats(val)
     this.setStats(stats.data)
+    const tns = await isInTNS(information.data.meanra, information.data.meandec)
+    this.setTNSInformation(tns)
   }
 }
