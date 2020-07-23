@@ -14,6 +14,8 @@ import {
 
 import { isInTNS } from '../api/tns_api'
 
+import { xmatchall } from '../api/catshtm_api'
+
 @Module({ name: 'object', namespaced: true, stateFactory: true })
 export default class Object_ extends VuexModule {
   status = null
@@ -41,6 +43,11 @@ export default class Object_ extends VuexModule {
     type: '-',
     name: '-',
     redshift: '-',
+  }
+
+  crossmatches = {
+    loaded: false,
+    data: [],
   }
 
   @VuexMutation
@@ -82,6 +89,12 @@ export default class Object_ extends VuexModule {
     this.classifications.loaded = val.status === 200
   }
 
+  @VuexMutation
+  setCrossMatches(val) {
+    this.crossmatches.data = val.data
+    this.crossmatches.loaded = val.status === 200
+  }
+
   @VuexAction({ rawError: true })
   async getObject(val) {
     this.setObjectId(val)
@@ -93,6 +106,12 @@ export default class Object_ extends VuexModule {
     this.setClassifications(classifications)
     const stats = await getStats(val)
     this.setStats(stats.data)
+    const xmatch = await xmatchall(
+      information.data.meanra,
+      information.data.meandec,
+      50
+    )
+    this.setCrossMatches(xmatch)
     const tns = await isInTNS(information.data.meanra, information.data.meandec)
     this.setTNSInformation(tns)
   }
