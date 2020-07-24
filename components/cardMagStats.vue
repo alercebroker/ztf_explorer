@@ -43,14 +43,6 @@ export default class CardMagStats extends Vue {
     return objectStore.bandMap
   }
 
-  /**
-  * form this object
-    {
-     stat: mean,
-     g: 1,
-     r: 1
-     }
-  */
   formatStats(stats) {
     this.localStats = []
     const bands = this.stats.map((x) => {
@@ -62,11 +54,19 @@ export default class CardMagStats extends Vue {
           stat,
         }
         bands.forEach((band, i) => {
-          obj[band] = this.stats[i][stat]
+          const val = this.formatStatValue(stat, this.stats[i][stat])
+          obj[band] = val
         })
         this.localStats.push(obj)
       }
     })
+  }
+
+  formatStatValue(stat, val) {
+    if (!stat.includes('mjd') && Number(val) === val && val % 1 !== 0) {
+      return val.toFixed(3)
+    }
+    return val
   }
 
   @Watch('stats')
