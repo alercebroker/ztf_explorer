@@ -9,6 +9,7 @@ import {
 export default class Objects extends VuexModule {
   list = []
   selected = null
+  indexSelected = null
 
   @VuexMutation
   set(val) {
@@ -20,10 +21,23 @@ export default class Objects extends VuexModule {
     this.list = val
   }
 
+  @VuexMutation
+  setSelected(val) {
+    this.selected = val.oid
+    this.indexSelected = this.list.findIndex(
+      (element) => element.oid === val.oid
+    )
+  }
+
   @VuexAction
-  setSelected(item) {
-    console.log(item)
-    const indexItem = this.list.findIndex((element) => element.oid === item.oid)
-    console.log(indexItem)
+  setItem(item) {
+    this.setSelected(item)
+  }
+
+  @VuexAction
+  changeItem(n) {
+    const newIndex = this.indexSelected + n
+    const newItem = this.list[newIndex]
+    this.setItem(newItem)
   }
 }

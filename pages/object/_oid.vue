@@ -1,5 +1,8 @@
 <template>
   <v-container fluid>
+    {{ selectedObject }}
+    {{ objectInformation }}
+    <h1>AAAA</h1>
     <v-row>
       <card-basic-information
         :information="objectInformation"
@@ -74,11 +77,15 @@ import { objectStore, objectsStore } from '~/store'
 
 @Component
 export default class ObjectView extends Vue {
-  selectedObject = null
   selectedDetection = 0
 
   beforeMount() {
-    this.selectedObject = this.$route.params.oid
+    // this.selectedObject = this.$route.params.oid
+    if (objectsStore.selected === null) {
+      this.selectedObject = this.$route.params.oid
+    } else {
+      this.selectedObject = objectsStore.selected
+    }
   }
 
   created() {
@@ -96,15 +103,28 @@ export default class ObjectView extends Vue {
   }
 
   nextObject() {
-    console.log(this.objects)
+    if (this.objects !== null || this.objects.length !== 0) {
+      console.log('a', this.objects)
+      objectsStore.changeItem(1)
+      this.selectedObject = objectsStore.selected
+      console.log('b', this.selectedObject)
+    }
   }
 
   prevObject() {
-    console.log('izquierda')
+    objectsStore.changeItem(-1)
   }
 
   get objects() {
     return objectsStore.list
+  }
+
+  get selectedObject() {
+    return objectsStore.selected
+  }
+
+  set selectedObject(val) {
+    objectStore.getObject(val)
   }
 
   get objectInformation() {
@@ -140,10 +160,6 @@ export default class ObjectView extends Vue {
       stats.push(cpy)
     }
     return stats
-  }
-
-  mounted() {
-    objectStore.getObject(this.$route.params.oid)
   }
 }
 </script>
