@@ -61,13 +61,17 @@
       </v-expansion-panels>
     </v-col>
     <v-col cols="9">
-      <alerce-result-table
-        :page.sync="page"
+      <results-table
         :items="items"
+        :page.sync="page"
         :per-page="perPage"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
         :total="total"
         :loading="searching"
         @rowClicked="onRowClicked"
+        @update:page="onPaginationOptionsChange"
+        @update:sortBy="onPaginationOptionsChange"
       />
     </v-col>
   </v-row>
@@ -111,11 +115,27 @@ export default class Index extends Vue {
   }
 
   set page(val) {
-    return paginationStore.setPage(val)
+    paginationStore.setPage(val)
   }
 
   get perPage() {
     return paginationStore.perPage
+  }
+
+  get sortBy() {
+    return paginationStore.sortBy
+  }
+
+  set sortBy(val) {
+    paginationStore.setSortBy(val)
+  }
+
+  get sortDesc() {
+    return paginationStore.sortDesc
+  }
+
+  set sortDesc(val) {
+    paginationStore.setSortDesc(val)
   }
 
   get items() {
@@ -163,9 +183,8 @@ export default class Index extends Vue {
     trailing: true,
   })
 
-  @Watch('page')
-  onPageChange(val) {
-    paginationStore.setCount('false')
+  onPaginationOptionsChange() {
+    paginationStore.setCount(false)
     this.debouncedSearch()
   }
 

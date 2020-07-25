@@ -9,6 +9,8 @@ export default class Pagination extends VuexModule {
   hasNext = null
   hasPrev = null
   perPage = 20
+  sortBy = null
+  sortDesc = null
   count = 'true'
 
   @VuexMutation
@@ -51,11 +53,23 @@ export default class Pagination extends VuexModule {
     this.count = val
   }
 
+  @VuexMutation
+  setSortBy(val) {
+    this.sortBy = val
+  }
+
+  @VuexMutation
+  setSortDesc(val) {
+    this.sortDesc = val
+  }
+
   get pageFilters() {
     return {
       count: this.count,
       page: this.page,
-      page_size: this.perPage,
+      perPage: this.perPage,
+      sortBy: this.sortBy,
+      sortDesc: this.sortDesc,
     }
   }
 }
