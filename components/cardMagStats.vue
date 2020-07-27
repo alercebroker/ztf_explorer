@@ -1,13 +1,15 @@
 <template>
-  <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card>
+  <v-col v-show="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
+    <v-card :class="cardClass">
       <v-card-title>Magnitude Statistics</v-card-title>
-      <alerce-mag-stats
-        :stats="localStats"
-        dense
-        :hide-default-footer="false"
-        :items-per-page="7"
-      />
+      <v-card-text>
+        <alerce-mag-stats
+          :stats="localStats"
+          :hide-default-footer="false"
+          :items-per-page="7"
+          dense
+        />
+      </v-card-text>
     </v-card>
   </v-col>
 </template>
@@ -17,22 +19,19 @@ import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 import { objectStore } from '~/store'
 @Component
 export default class CardMagStats extends Vue {
-  @Prop({ type: Number | String, default: 12 })
-  cols
+  @Prop({ type: Number | String, default: 12 }) cols
 
-  @Prop({ type: Number | String, default: 12 })
-  lg
+  @Prop({ type: Number | String, default: 12 }) lg
 
-  @Prop({ type: Number | String, default: 12 })
-  md
+  @Prop({ type: Number | String, default: 12 }) md
 
-  @Prop({ type: Number | String, default: 12 })
-  sm
+  @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Boolean, default: true })
-  show
+  @Prop({ type: Boolean, default: true }) show
 
   @Prop({ type: Array, required: true }) stats
+
+  @Prop({ type: String }) cardClass
 
   localStats = []
 
@@ -44,14 +43,6 @@ export default class CardMagStats extends Vue {
     return objectStore.bandMap
   }
 
-  /**
-  * form this object
-    {
-     stat: mean,
-     g: 1,
-     r: 1
-     }
-  */
   formatStats(stats) {
     this.localStats = []
     const bands = this.stats.map((x) => {
@@ -63,11 +54,19 @@ export default class CardMagStats extends Vue {
           stat,
         }
         bands.forEach((band, i) => {
-          obj[band] = this.stats[i][stat]
+          const val = this.formatStatValue(stat, this.stats[i][stat])
+          obj[band] = val
         })
         this.localStats.push(obj)
       }
     })
+  }
+
+  formatStatValue(stat, val) {
+    if (!stat.includes('mjd') && Number(val) === val && val % 1 !== 0) {
+      return val.toFixed(3)
+    }
+    return val
   }
 
   @Watch('stats')

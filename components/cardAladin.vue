@@ -1,6 +1,6 @@
 <template>
-  <v-col v-if="true" :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <alerce-aladin v-model="object" :objects="objects" />
+  <v-col v-show="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
+    <alerce-aladin v-model="object" :objects="objects" :class="cardClass" />
   </v-col>
 </template>
 
@@ -35,6 +35,8 @@ export default class CardAladin extends Vue {
   @Model('objectSelected', { type: String }) selectedObject
 
   @Prop({ type: Object }) objectData
+
+  @Prop({ type: String }) cardClass
 
   object = {}
 

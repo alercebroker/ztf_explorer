@@ -36,8 +36,12 @@ export default class Objects extends VuexModule {
 
   @VuexAction
   changeItem(n) {
-    const newIndex = this.indexSelected + n
-    const newItem = this.list[newIndex]
-    this.setItem(newItem)
+    const nextObject = this.indexSelected + n
+    if (this.indexSelected + n >= 0 && nextObject < this.list.length) {
+      const newItem = this.list[nextObject]
+      this.setItem(newItem)
+    } else {
+      console.log('change page')
+    }
   }
 }
