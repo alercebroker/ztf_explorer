@@ -1,73 +1,29 @@
 <template>
   <v-row>
     <v-col cols="3">
-      <v-expansion-panels v-model="panels" dense>
-        <v-expansion-panel value="true">
-          <v-expansion-panel-header
-            ><v-list-item>
-              <v-list-item-content>
-                <v-list-item-title class="title">
-                  Search Filters
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item></v-expansion-panel-header
-          >
-          <v-expansion-panel-content>
-            <v-list dense expand>
-              <v-list-group value="true" no-action>
-                <template v-slot:activator>
-                  <v-list-item-title>General Filters</v-list-item-title>
-                </template>
-                <v-list-item class="pl-4">
-                  <v-list-item-content>
-                    <alerce-default-search
-                      v-model="generalFilters"
-                      :classifiers="classifiers"
-                      :classes="classes"
-                    />
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-group>
-              <v-divider></v-divider>
-              <v-list-group value="true" no-action>
-                <template v-slot:activator>
-                  <v-list-item-title>Date Filters</v-list-item-title>
-                </template>
-                <v-list-item class="pl-4">
-                  <v-list-item-content>
-                    <alerce-date-search v-model="dateFilters" />
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-group>
-              <v-divider></v-divider>
-              <v-list-group value="true" no-action>
-                <template v-slot:activator>
-                  <v-list-item-title>Conesearch</v-list-item-title>
-                </template>
-                <v-list-item class="pl-4">
-                  <v-list-item-content>
-                    <alerce-coordinates-search v-model="conesearchFilters" />
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-group>
-              <v-list-item class="pl-4">
-                <v-list-item-content>
-                  <v-btn color="primary" @click="onSearchClicked">search</v-btn>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <search-bar
+        :panels.sync="panels"
+        :general-filters.sync="generalFilters"
+        :date-filters.sync="dateFilters"
+        :conesearch-filters.sync="conesearchFilters"
+        :classes="classes"
+        :classifiers="classifiers"
+        @search="onSearchClicked"
+        @clear="onClearClicked"
+      />
     </v-col>
     <v-col cols="9">
-      <alerce-result-table
-        :page.sync="page"
+      <results-table
         :items="items"
+        :page.sync="page"
         :per-page="perPage"
+        :sort-by.sync="sortBy"
+        :sort-desc.sync="sortDesc"
         :total="total"
         :loading="searching"
         @rowClicked="onRowClicked"
+        @update:page="onPaginationOptionsChange"
+        @update:sortBy="onPaginationOptionsChange"
       />
     </v-col>
   </v-row>
@@ -99,6 +55,7 @@ export default class Index extends Vue {
 
   @Watch('selectedClassifier')
   onClassifierChange(val) {
+    if (!val) return
     filtersStore.getClasses(val)
   }
 
@@ -111,11 +68,27 @@ export default class Index extends Vue {
   }
 
   set page(val) {
-    return paginationStore.setPage(val)
+    paginationStore.setPage(val)
   }
 
   get perPage() {
     return paginationStore.perPage
+  }
+
+  get sortBy() {
+    return paginationStore.sortBy
+  }
+
+  set sortBy(val) {
+    paginationStore.setSortBy(val)
+  }
+
+  get sortDesc() {
+    return paginationStore.sortDesc
+  }
+
+  set sortDesc(val) {
+    paginationStore.setSortDesc(val)
   }
 
   get items() {
@@ -158,14 +131,17 @@ export default class Index extends Vue {
     this.debouncedSearch()
   }
 
+  onClearClicked() {
+    filtersStore.clearFilters()
+  }
+
   debouncedSearch = debounce(filtersStore.search, 400, {
     leading: false,
     trailing: true,
   })
 
-  @Watch('page')
-  onPageChange(val) {
-    paginationStore.setCount('false')
+  onPaginationOptionsChange() {
+    paginationStore.setCount(false)
     this.debouncedSearch()
   }
 
