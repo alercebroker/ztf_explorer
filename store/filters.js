@@ -7,24 +7,39 @@ import {
 import { search, getClassifiers, getClasses } from '../api/ztf_api'
 import { objectsStore, paginationStore } from '~/store'
 
+const defaultState = {
+  oid: null,
+  selectedClassifier: null,
+  selectedClass: null,
+  classifiers: [],
+  classes: [],
+  probability: 0,
+  ndet: [0, 1000],
+  firstmjd: [null, null],
+  ra: null,
+  dec: null,
+  radius: null,
+  searching: false,
+}
+
 @Module({
   name: 'filters',
   namespaced: true,
   stateFactory: true,
 })
 export default class Filters extends VuexModule {
-  oid = null
-  selectedClassifier = null
-  selectedClass = null
-  classifiers = []
-  classes = []
-  probability = 0
-  ndet = [0, 1000]
-  firstmjd = [null, null]
-  ra = null
-  dec = null
-  radius = null
-  searching = false
+  oid = defaultState.oid
+  selectedClassifier = defaultState.selectedClassifier
+  selectedClass = defaultState.selectedClass
+  classifiers = defaultState.classifiers
+  classes = defaultState.classes
+  probability = defaultState.probability
+  ndet = defaultState.ndet
+  firstmjd = defaultState.firstmjd
+  ra = defaultState.ra
+  dec = defaultState.dec
+  radius = defaultState.radius
+  searching = defaultState.searching
 
   @VuexMutation
   setSearching(val) {
@@ -138,5 +153,27 @@ export default class Filters extends VuexModule {
   async getClasses(selectedClassifier) {
     const result = await getClasses(selectedClassifier)
     this.setClasses(result.data)
+  }
+
+  @VuexMutation
+  setDefaultState() {
+    this.oid = defaultState.oid
+    this.selectedClassifier = defaultState.selectedClassifier
+    this.selectedClass = defaultState.selectedClass
+    this.classifiers = defaultState.classifiers
+    this.classes = defaultState.classes
+    this.probability = defaultState.probability
+    this.ndet = defaultState.ndet
+    this.firstmjd = defaultState.firstmjd
+    this.ra = defaultState.ra
+    this.dec = defaultState.dec
+    this.radius = defaultState.radius
+    this.searching = defaultState.searching
+  }
+
+  @VuexAction()
+  clearFilters() {
+    this.setDefaultState()
+    this.getClassifiers()
   }
 }
