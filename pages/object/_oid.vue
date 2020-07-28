@@ -1,10 +1,11 @@
 <template>
-  <div
+  <!--div
     tabindex="0"
     @keydown.right="changeObject(1)"
     @keydown.left="changeObject(-1)"
-  >
-    <v-btn @click="search()"> {{ page }}</v-btn>
+    id="#details"
+  -->
+  <div>
     <v-container fluid>
       <v-row align="stretch">
         <card-basic-information
@@ -83,12 +84,7 @@
 
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
-import {
-  objectStore,
-  objectsStore,
-  paginationStore,
-  filtersStore,
-} from '~/store'
+import { objectStore, objectsStore, filtersStore } from '~/store'
 
 @Component
 export default class ObjectView extends Vue {
@@ -102,16 +98,31 @@ export default class ObjectView extends Vue {
     }
   }
 
+  created() {
+    document.addEventListener('keyup', this.keyboardEvents)
+  }
+
+  destroyed() {
+    document.removeEventListener('keyup', this.keyboardEvents)
+  }
+
+  keyboardEvents(evt) {
+    switch (evt.keyCode) {
+      case 39:
+        this.changeObject(1)
+        break
+      case 37:
+        this.changeObject(-1)
+        break
+    }
+  }
+
   changeObject(n) {
     if (this.objects !== null || this.objects.length !== 0) {
       filtersStore.changeItem(n).then(() => {
         this.$router.push(this.selectedObject)
       })
     }
-  }
-
-  get page() {
-    return paginationStore.page
   }
 
   get objects() {
