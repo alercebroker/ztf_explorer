@@ -5,7 +5,7 @@ import {
   VuexAction,
 } from 'nuxt-property-decorator'
 import { search, getClassifiers, getClasses } from '../api/ztf_api'
-import { objectsStore, paginationStore } from '~/store'
+import { objectStore, objectsStore, paginationStore } from '~/store'
 
 const defaultState = {
   oid: null,
@@ -175,5 +175,16 @@ export default class Filters extends VuexModule {
   clearFilters() {
     this.setDefaultState()
     this.getClassifiers()
+  }
+
+  @VuexAction()
+  nextPageSearch() {
+    if (paginationStore.hasNext) {
+      paginationStore.goToNext()
+      this.search().then(() => {
+        objectsStore.setIndexSelected(0)
+        objectStore.getObject(objectsStore.selected)
+      })
+    }
   }
 }

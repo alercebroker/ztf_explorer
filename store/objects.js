@@ -4,7 +4,7 @@ import {
   VuexMutation,
   VuexAction,
 } from 'nuxt-property-decorator'
-
+import { paginationStore } from '~/store'
 @Module({ name: 'objects', namespaced: true, stateFactory: true })
 export default class Objects extends VuexModule {
   list = []
@@ -29,6 +29,12 @@ export default class Objects extends VuexModule {
     )
   }
 
+  @VuexMutation
+  setIndexSelected(val) {
+    this.indexSelected = val
+    this.selected = this.list[val].oid
+  }
+
   @VuexAction
   setItem(item) {
     this.setSelected(item)
@@ -40,8 +46,11 @@ export default class Objects extends VuexModule {
     if (this.indexSelected + n >= 0 && nextObject < this.list.length) {
       const newItem = this.list[nextObject]
       this.setItem(newItem)
-    } else {
-      console.log('change page')
+    } else if (nextObject > 0 && paginationStore.hasNext) {
+      console.log('change page to next')
+      paginationStore.setPage(paginationStore.next)
+    } else if (nextObject < 0 && paginationStore.hasPrev) {
+      console.log('change page to prev')
     }
   }
 }

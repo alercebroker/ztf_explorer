@@ -4,6 +4,7 @@
     @keydown.right="changeObject(1)"
     @keydown.left="changeObject(-1)"
   >
+    <v-btn @click="search()"> {{ page }}</v-btn>
     <v-container fluid>
       <v-row align="stretch">
         <card-basic-information
@@ -26,7 +27,7 @@
           sm="12"
         />
 
-        <card-aladin
+        <!--card-aladin
           v-model="selectedObject"
           :objects="objects"
           :object-data="objectInformation"
@@ -35,7 +36,7 @@
           lg="3"
           md="6"
           sm="12"
-        />
+        /-->
 
         <card-mag-stats
           :stats="stats"
@@ -82,7 +83,12 @@
 
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
-import { objectStore, objectsStore } from '~/store'
+import {
+  objectStore,
+  objectsStore,
+  paginationStore,
+  filtersStore,
+} from '~/store'
 
 @Component
 export default class ObjectView extends Vue {
@@ -101,6 +107,14 @@ export default class ObjectView extends Vue {
       objectsStore.changeItem(n)
       this.$router.push(this.selectedObject)
     }
+  }
+
+  search() {
+    filtersStore.nextPageSearch()
+  }
+
+  get page() {
+    return paginationStore.page
   }
 
   get objects() {
