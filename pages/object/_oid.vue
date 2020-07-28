@@ -104,13 +104,10 @@ export default class ObjectView extends Vue {
 
   changeObject(n) {
     if (this.objects !== null || this.objects.length !== 0) {
-      objectsStore.changeItem(n)
-      this.$router.push(this.selectedObject)
+      filtersStore.changeItem(n).then(() => {
+        this.$router.push(this.selectedObject)
+      })
     }
-  }
-
-  search() {
-    filtersStore.nextPageSearch()
   }
 
   get page() {
