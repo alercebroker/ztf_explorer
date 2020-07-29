@@ -28,7 +28,7 @@
           sm="12"
         />
 
-        <!--card-aladin
+        <card-aladin
           v-model="selectedObject"
           :objects="objects"
           :object-data="objectInformation"
@@ -37,7 +37,7 @@
           lg="3"
           md="6"
           sm="12"
-        /-->
+        />
 
         <card-mag-stats
           :stats="stats"

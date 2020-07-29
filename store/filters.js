@@ -184,13 +184,11 @@ export default class Filters extends VuexModule {
       const newItem = objectsStore.list[nextObject]
       objectsStore.setItem(newItem)
     } else if (nextObject > 0 && paginationStore.hasNext) {
-      paginationStore.setPage(paginationStore.next)
       paginationStore.goToNext()
       await this.search()
       objectsStore.setIndexSelected(0)
       objectStore.getObject(objectsStore.selected)
     } else if (nextObject < 0 && paginationStore.hasPrev) {
-      paginationStore.setPage(paginationStore.prev)
       paginationStore.goToPrev()
       await this.search()
       objectsStore.setIndexSelected(paginationStore.perPage - 1)
