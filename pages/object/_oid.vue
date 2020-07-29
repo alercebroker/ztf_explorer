@@ -26,7 +26,7 @@
         :objects="objects"
         :object-data="objectInformation"
         :show="objectInformation != null"
-        card-class="grid-card"
+        :card-class="grid - card"
         lg="3"
         md="6"
         sm="12"
@@ -76,19 +76,59 @@
 
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
-import { objectStore, objectsStore } from '~/store'
+import { objectStore, objectsStore, filtersStore } from '~/store'
 
 @Component
 export default class ObjectView extends Vue {
-  selectedObject = null
   selectedDetection = 0
 
   beforeMount() {
-    this.selectedObject = this.$route.params.oid
+    if (objectsStore.selected === null) {
+      this.selectedObject = this.$route.params.oid
+    } else {
+      this.selectedObject = objectsStore.selected
+    }
+  }
+
+  created() {
+    document.addEventListener('keyup', this.keyboardEvents)
+  }
+
+  destroyed() {
+    document.removeEventListener('keyup', this.keyboardEvents)
+  }
+
+  keyboardEvents(evt) {
+    switch (evt.keyCode) {
+      case 39:
+        this.changeObject(1)
+        break
+      case 37:
+        this.changeObject(-1)
+        break
+    }
+  }
+
+  changeObject(n) {
+    if (this.objects !== null || this.objects.length !== 0) {
+      filtersStore.changeItem(n).then(() => {
+        this.$router.push(this.selectedObject)
+      })
+    }
   }
 
   get objects() {
     return objectsStore.list
+  }
+
+  get selectedObject() {
+    return objectsStore.selected
+  }
+
+  set selectedObject(val) {
+    objectStore.getObject(val).catch(() => {
+      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
+    })
   }
 
   get objectInformation() {
@@ -117,12 +157,6 @@ export default class ObjectView extends Vue {
 
   get stats() {
     return objectStore.stats
-  }
-
-  mounted() {
-    objectStore.getObject(this.$route.params.oid).catch(() => {
-      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
-    })
   }
 }
 </script>

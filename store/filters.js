@@ -5,7 +5,7 @@ import {
   VuexAction,
 } from 'nuxt-property-decorator'
 import { search, getClassifiers, getClasses } from '../api/ztf_api'
-import { objectsStore, paginationStore } from '~/store'
+import { objectStore, objectsStore, paginationStore } from '~/store'
 
 const defaultState = {
   oid: null,
@@ -175,5 +175,26 @@ export default class Filters extends VuexModule {
   clearFilters() {
     this.setDefaultState()
     this.getClassifiers()
+  }
+
+  @VuexAction
+  async changeItem(n) {
+    const nextObject = objectsStore.indexSelected + n
+    if (nextObject >= 0 && nextObject < objectsStore.list.length) {
+      const newItem = objectsStore.list[nextObject]
+      objectsStore.setItem(newItem)
+    } else if (nextObject > 0 && paginationStore.hasNext) {
+      paginationStore.setPage(paginationStore.next)
+      paginationStore.goToNext()
+      await this.search()
+      objectsStore.setIndexSelected(0)
+      objectStore.getObject(objectsStore.selected)
+    } else if (nextObject < 0 && paginationStore.hasPrev) {
+      paginationStore.setPage(paginationStore.prev)
+      paginationStore.goToPrev()
+      await this.search()
+      objectsStore.setIndexSelected(paginationStore.perPage - 1)
+      objectStore.getObject(objectsStore.selected)
+    }
   }
 }

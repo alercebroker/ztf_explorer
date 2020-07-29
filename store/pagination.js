@@ -1,4 +1,9 @@
-import { Module, VuexModule, VuexMutation } from 'nuxt-property-decorator'
+import {
+  Module,
+  VuexModule,
+  VuexMutation,
+  VuexAction,
+} from 'nuxt-property-decorator'
 
 @Module({ name: 'pagination', namespaced: true, stateFactory: true })
 export default class Pagination extends VuexModule {
@@ -70,6 +75,20 @@ export default class Pagination extends VuexModule {
       perPage: this.perPage,
       sortBy: this.sortBy,
       sortDesc: this.sortDesc,
+    }
+  }
+
+  @VuexAction
+  goToNext() {
+    if (this.hasNext) {
+      this.setPage(this.next)
+    }
+  }
+
+  @VuexAction
+  goToPrev() {
+    if (this.hasPrev) {
+      this.setPage(this.prev)
     }
   }
 }
