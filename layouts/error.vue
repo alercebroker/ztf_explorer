@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
     <h1 v-if="error.statusCode === 404">
-      <Error404 />
+      <error-404 />
     </h1>
     <h1 v-else>
       {{ otherError }}
@@ -10,29 +10,11 @@
 </template>
 
 <script>
-import Error404 from './errors/404.vue'
-export default {
-  layout: 'empty',
-  components: {
-    Error404,
-  },
-  props: {
-    error: {
-      type: Object,
-      default: null,
-    },
-  },
-  data() {
-    return {
-      otherError: 'An error occurred',
-    }
-  },
-  head() {
-    const title =
-      this.error.statusCode === 404 ? this.pageNotFound : this.otherError
-    return {
-      title,
-    }
-  },
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
+
+@Component
+export default class Error extends Vue {
+  @Prop({ type: Object, default: null })
+  error
 }
 </script>
