@@ -126,7 +126,9 @@ export default class ObjectView extends Vue {
   }
 
   set selectedObject(val) {
-    objectStore.getObject(val)
+    objectStore.getObject(val).catch(() => {
+      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
+    })
   }
 
   get objectInformation() {

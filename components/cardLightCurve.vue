@@ -55,9 +55,25 @@ export default class CardLightCurve extends Vue {
   }
 
   options = [
-    { text: 'Difference Magnitude', value: 'difference', default: true },
-    { text: 'Apparent Magnitude', value: 'apparent' },
-    { text: 'Folded', value: 'folded' },
+    {
+      text: 'Difference Magnitude',
+      value: 'difference',
+      default: true,
+      tooltip:
+        'The difference Magnitude light curve, is the absolute difference between a science and reference magnitudes.',
+    },
+    {
+      text: 'Apparent Magnitude',
+      value: 'apparent',
+      tooltip:
+        'Apparent magnitude light curve results from adding/subtracting the fluxes from the reference and difference in the same unit system and then converting to magnitudes.',
+    },
+    {
+      text: 'Folded',
+      value: 'folded',
+      tooltip:
+        'The Period folded light curve, where time is transformed to time modulo the period (Phase).',
+    },
   ]
 }
 </script>
