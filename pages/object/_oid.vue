@@ -82,6 +82,12 @@ import { objectStore, objectsStore, filtersStore } from '~/store'
 export default class ObjectView extends Vue {
   selectedDetection = 0
 
+  head() {
+    return {
+      title: this.selectedObject,
+    }
+  }
+
   beforeMount() {
     if (objectsStore.selected === null) {
       this.selectedObject = this.$route.params.oid
