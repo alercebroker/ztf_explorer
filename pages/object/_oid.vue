@@ -120,7 +120,9 @@ export default class ObjectView extends Vue {
   }
 
   mounted() {
-    objectStore.getObject(this.$route.params.oid)
+    objectStore.getObject(this.$route.params.oid).catch(() => {
+      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
+    })
   }
 }
 </script>
