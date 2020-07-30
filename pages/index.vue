@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="3">
+    <v-col xl="3" lg="3" md="12" sm="12" xs="12">
       <search-bar
         :panels.sync="panels"
         :general-filters.sync="generalFilters"
@@ -12,7 +12,7 @@
         @clear="onClearClicked"
       />
     </v-col>
-    <v-col cols="9">
+    <v-col md="12" lg="9" xl="9">
       <results-table
         :items="items"
         :page.sync="page"
