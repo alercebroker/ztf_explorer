@@ -1,5 +1,6 @@
 import path from 'path'
 import colors from 'vuetify/es5/util/colors'
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 export default {
   /*
    ** Nuxt rendering mode
@@ -16,8 +17,8 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: '%s - ' + process.env.VUE_APP_TITLE,
+    title: process.env.VUE_APP_TITLE || '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -88,6 +89,7 @@ export default {
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
     'component-library/nuxt',
+    ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}` }]
   ],
   /*
    ** Nuxt.js modules

@@ -37,6 +37,12 @@ import { filtersStore, objectsStore, paginationStore } from '~/store'
 export default class Index extends Vue {
   panels = 0
 
+  head() {
+    return {
+      title: 'Home',
+    }
+  }
+
   mounted() {
     filtersStore.getClassifiers()
   }
