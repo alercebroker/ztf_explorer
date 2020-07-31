@@ -26,7 +26,7 @@
         :objects="objects"
         :object-data="objectInformation"
         :show="objectInformation != null"
-        :card-class="grid - card"
+        card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
