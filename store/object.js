@@ -10,6 +10,7 @@ import {
   getLightCurve,
   getClassifications,
   getStats,
+  getFeatures,
 } from '../api/ztf_api'
 
 import { isInTNS } from '../api/tns_api'
@@ -46,6 +47,11 @@ export default class Object_ extends VuexModule {
   }
 
   crossmatches = {
+    loaded: false,
+    data: [],
+  }
+
+  features = {
     loaded: false,
     data: [],
   }
@@ -94,6 +100,12 @@ export default class Object_ extends VuexModule {
     this.crossmatches.loaded = val.status === 200
   }
 
+  @VuexMutation
+  setFeatures(val) {
+    this.features.data = val.data
+    this.features.loaded = val.status === 200
+  }
+
   @VuexAction({ rawError: true })
   async getObject(val) {
     this.setObjectId(val)
@@ -105,6 +117,8 @@ export default class Object_ extends VuexModule {
     this.setClassifications(classifications)
     const stats = await getStats(val)
     this.setStats(stats.data)
+    const features = await getFeatures(val)
+    this.setFeatures(features)
     const xmatch = await xmatchall(
       information.data.meanra,
       information.data.meandec,
