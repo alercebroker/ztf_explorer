@@ -59,6 +59,10 @@ function getClassifications(objectId) {
   return api.get(`objects/${objectId}/probabilities`)
 }
 
+function getFeatures(objectId) {
+  return api.get(`objects/${objectId}/features`)
+}
+
 export {
   search,
   getObject,
@@ -67,4 +71,5 @@ export {
   getClassifiers,
   getClasses,
   getStats,
+  getFeatures,
 }

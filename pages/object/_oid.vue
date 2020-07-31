@@ -13,7 +13,7 @@
 
       <card-light-curve
         :lightcurve="objectLightcurve"
-        :period="0.5"
+        :period="period"
         :show="objectLightcurve.loaded"
         card-class="grid-card"
         lg="6"
@@ -84,7 +84,7 @@ export default class ObjectView extends Vue {
 
   head() {
     return {
-      title: this.selectedObject,
+      title: this.selectedObject ? this.selectedObject : this.$route.params.oid,
     }
   }
 
@@ -150,7 +150,20 @@ export default class ObjectView extends Vue {
   }
 
   get period() {
-    return 1
+    const periods = objectStore.features.data.filter(
+      (x) => x.name === 'Period_fit_v2'
+    )
+    if (periods.length === 0) {
+      return 1
+    } else if (periods.length === 1) {
+      return periods[0].value
+    } else {
+      const nDet = objectStore.features.data.filter((x) => x.name === 'n_det')
+      const max = nDet.reduce((prev, current) =>
+        prev.value > current.value ? prev : current
+      )
+      return periods.find((x) => x.fid === max.fid).value
+    }
   }
 
   get tns() {
