@@ -2,7 +2,11 @@
   <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card :class="cardClass">
       <v-card-text>
-        <alerce-select-display :options="options">
+        <alerce-select-display
+          :options="options"
+          :lightcurve="lightcurve"
+          :oid="oid"
+        >
           <alerce-light-curve-plot
             slot="difference"
             :detections="lightcurve.detections"
@@ -49,6 +53,8 @@ export default class CardLightCurve extends Vue {
   @Prop({ type: Boolean, default: true }) show
 
   @Prop({ type: String }) cardClass
+
+  @Prop({ type: String }) oid
 
   get isDark() {
     return this.$vuetify.theme.isDark

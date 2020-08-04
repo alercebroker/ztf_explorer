@@ -15,6 +15,7 @@
         :lightcurve="objectLightcurve"
         :period="period"
         :show="objectLightcurve.loaded"
+        :oid="selectedObject"
         card-class="grid-card"
         lg="6"
         md="6"
@@ -129,6 +130,8 @@ export default class ObjectView extends Vue {
 
   get selectedObject() {
     return objectsStore.selected
+      ? objectsStore.selected
+      : this.$route.params.oid
   }
 
   set selectedObject(val) {
