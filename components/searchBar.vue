@@ -29,7 +29,7 @@
           <v-divider></v-divider>
           <v-list-group value="true" no-action>
             <template v-slot:activator>
-              <v-list-item-title>Date Filters</v-list-item-title>
+              <v-list-item-title>Discovery Date Filters</v-list-item-title>
             </template>
             <v-list-item class="pl-4">
               <v-list-item-content>
