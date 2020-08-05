@@ -27,7 +27,7 @@
             </v-list-item>
           </v-list-group>
           <v-divider></v-divider>
-          <v-list-group value="true" no-action>
+          <v-list-group no-action>
             <template v-slot:activator>
               <v-list-item-title>Discovery Date Filters</v-list-item-title>
             </template>
@@ -38,7 +38,7 @@
             </v-list-item>
           </v-list-group>
           <v-divider></v-divider>
-          <v-list-group value="true" no-action>
+          <v-list-group no-action>
             <template v-slot:activator>
               <v-list-item-title>Conesearch</v-list-item-title>
             </template>
