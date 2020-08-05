@@ -5,6 +5,7 @@
         :information="objectInformation"
         :tns="tns"
         :show="objectInformation != null"
+        :candid="firstCandid"
         card-class="grid-card"
         lg="3"
         md="6"
@@ -27,7 +28,7 @@
         :objects="objects"
         :object-data="objectInformation"
         :show="objectInformation != null"
-        cardClass="grid - card"
+        card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
@@ -150,6 +151,12 @@ export default class ObjectView extends Vue {
 
   get objectClassification() {
     return objectStore.classifications
+  }
+
+  get firstCandid() {
+    return this.objectLightcurve.detections.length > 0
+      ? this.objectLightcurve.detections.filter((x) => x.has_stamp)[0].candid
+      : null
   }
 
   get period() {
