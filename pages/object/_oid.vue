@@ -2,9 +2,7 @@
   <v-container fluid>
     <v-row align="stretch">
       <card-basic-information
-        :information="objectInformation"
-        :tns="tns"
-        :show="objectInformation != null"
+        :object="$route.params.oid"
         card-class="grid-card"
         lg="3"
         md="6"
@@ -14,7 +12,6 @@
       <card-light-curve
         :lightcurve="objectLightcurve"
         :period="period"
-        :show="objectLightcurve.loaded"
         card-class="grid-card"
         lg="6"
         md="6"
@@ -23,9 +20,6 @@
 
       <card-aladin
         v-model="selectedObject"
-        :objects="objects"
-        :object-data="objectInformation"
-        :show="objectInformation != null"
         card-class="grid-card"
         lg="3"
         md="6"
@@ -34,7 +28,6 @@
 
       <card-mag-stats
         :stats="stats"
-        :show="objectInformation != null"
         card-class="grid-card"
         lg="3"
         md="6"
@@ -43,7 +36,6 @@
 
       <card-classifiers
         :classifiers="objectClassification.classifiers"
-        :show="objectClassification.loaded"
         card-class="grid-card"
         cols="12"
         lg="3"
@@ -53,7 +45,6 @@
 
       <card-stamps
         v-model="selectedDetection"
-        :show="objectInformation != null"
         :detections="objectLightcurve.detections"
         :oid="selectedObject"
         :cross-hair-space="25"
@@ -76,7 +67,6 @@
 
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
-import { objectStore, objectsStore, filtersStore } from '~/store'
 
 @Component
 export default class ObjectView extends Vue {
@@ -88,12 +78,26 @@ export default class ObjectView extends Vue {
     }
   }
 
-  beforeMount() {
-    if (objectsStore.selected === null) {
-      this.selectedObject = this.$route.params.oid
-    } else {
-      this.selectedObject = objectsStore.selected
-    }
+  async fetch() {
+    await this.$store.dispatch('object/getObject', this.object)
+    await this.$store.dispatch(
+      'lightcurve/getLightCurve',
+      this.$route.params.oid
+    )
+    await this.$store.dispatch(
+      'probabilities/getProbabilities',
+      this.$route.params.oid
+    )
+    await this.$store.dispatch('object/getStats', this.$route.params.oid)
+    await this.$store.dispatch('object/getFeatures', this.$route.params.oid)
+    await this.$store.dispatch('object/getXmatch', {
+      ra: this.objectInformation.meanra,
+      dec: this.objectInformation.meandec,
+    })
+    await this.$store.dispatch('object/getTns', {
+      ra: this.objectInformation.meanra,
+      dec: this.objectInformation.meandec,
+    })
   }
 
   created() {
@@ -115,42 +119,47 @@ export default class ObjectView extends Vue {
     }
   }
 
-  changeObject(n) {
+  async changeObject(n) {
     if (this.objects !== null || this.objects.length !== 0) {
-      filtersStore.changeItem(n).then(() => {
-        this.$router.push(this.selectedObject)
-      })
+      await this.$store.dispatch('object/changeItem', n)
+      this.$router.push(this.selectedObject)
     }
   }
 
   get objects() {
-    return objectsStore.list
+    return this.$store.state.objects.list
   }
 
   get selectedObject() {
-    return objectsStore.selected
+    return this.$store.state.object.objectId
   }
 
-  set selectedObject(val) {
-    objectStore.getObject(val).catch(() => {
-      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
-    })
-  }
+  set selectedObject(val) {}
 
   get objectInformation() {
-    return objectStore.objectInformation
+    return this.$store.state.object.object
+  }
+
+  get error() {
+    const error = this.$store.state.object.error
+    if (error.response.status === 404)
+      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
+    return error
   }
 
   get objectLightcurve() {
-    return objectStore.objectLightcurve
+    return {
+      detections: this.$store.state.lightcurve.detections,
+      nonDetections: this.$store.state.lightcurve.nonDetections,
+    }
   }
 
   get objectClassification() {
-    return objectStore.classifications
+    return this.$store.state.probabilities.probabilities
   }
 
   get period() {
-    const periods = objectStore.features.data.filter(
+    const periods = this.$store.state.features.features.filter(
       (x) => x.name === 'Period_fit_v2'
     )
     if (periods.length === 0) {
@@ -158,24 +167,14 @@ export default class ObjectView extends Vue {
     } else if (periods.length === 1) {
       return periods[0].value
     } else {
-      const nDet = objectStore.features.data.filter((x) => x.name === 'n_det')
+      const nDet = this.$store.state.features.features.filter(
+        (x) => x.name === 'n_det'
+      )
       const max = nDet.reduce((prev, current) =>
         prev.value > current.value ? prev : current
       )
       return periods.find((x) => x.fid === max.fid).value
     }
-  }
-
-  get tns() {
-    return objectStore.objectTNS
-  }
-
-  get crossmatches() {
-    return objectStore.crossmatches
-  }
-
-  get stats() {
-    return objectStore.stats
   }
 }
 </script>

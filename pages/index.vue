@@ -43,12 +43,12 @@ export default class Index extends Vue {
     }
   }
 
-  mounted() {
-    filtersStore.getClassifiers()
+  async fetch() {
+    await filtersStore.getClassifiers()
   }
 
   get classifiers() {
-    return filtersStore.classifiers
+    return filtersStore.classifiers.map((x) => x.name)
   }
 
   get classes() {
@@ -132,6 +132,11 @@ export default class Index extends Vue {
     filtersStore.setConesearchFilters(val)
   }
 
+  debouncedSearch = debounce(filtersStore.search, 400, {
+    leading: false,
+    trailing: true,
+  })
+
   onSearchClicked() {
     paginationStore.setPage(1)
     this.debouncedSearch()
@@ -141,18 +146,12 @@ export default class Index extends Vue {
     filtersStore.clearFilters()
   }
 
-  debouncedSearch = debounce(filtersStore.search, 400, {
-    leading: false,
-    trailing: true,
-  })
-
   onPaginationOptionsChange() {
     paginationStore.setCount(false)
     this.debouncedSearch()
   }
 
   onRowClicked(item) {
-    objectsStore.setItem(item)
     this.$router.push({ path: `/object/${item.oid}` })
   }
 }

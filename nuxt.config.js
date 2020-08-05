@@ -57,7 +57,7 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' },
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons'},
-      { 
+      {
         rel: 'stylesheet',
         href: 'https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css',
         integrity: 'sha256-OYXGS5m4oWZAAqoAKpf7Y3bIdzdd9jBfly/xCavEpGw=',
@@ -73,7 +73,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/echarts.js'],
+  plugins: ['@/plugins/echarts.js', '@/plugins/axios.js'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -97,6 +97,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/toast',
   ],
   /*
    ** Axios module configuration
