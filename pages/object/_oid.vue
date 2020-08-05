@@ -12,6 +12,7 @@
       <card-light-curve
         :lightcurve="objectLightcurve"
         :period="period"
+        :oid="selectedObject"
         card-class="grid-card"
         lg="6"
         md="6"
@@ -156,6 +157,12 @@ export default class ObjectView extends Vue {
 
   get objectClassification() {
     return this.$store.state.probabilities.probabilities
+  }
+
+  get firstCandid() {
+    return this.objectLightcurve.detections.length > 0
+      ? this.objectLightcurve.detections.filter((x) => x.has_stamp)[0].candid
+      : null
   }
 
   get period() {

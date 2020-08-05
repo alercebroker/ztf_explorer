@@ -12,7 +12,7 @@
               :items="classifiers_"
               item-value="index"
               item-text="name"
-              prepend-icon="map"
+              prepend-icon="mdi-robot"
             />
           </v-col>
         </v-row>
