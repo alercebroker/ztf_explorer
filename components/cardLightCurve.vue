@@ -2,7 +2,7 @@
   <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card :class="cardClass">
       <v-card-text>
-        <alerce-select-display :options="options">
+        <select-lightcurve :selected="selected">
           <alerce-light-curve-plot
             slot="difference"
             :detections="lightcurve.detections"
@@ -23,8 +23,22 @@
             type="folded"
             :dark="isDark"
           />
-        </alerce-select-display>
+        </select-lightcurve>
       </v-card-text>
+      <!-- OPTIONS -->
+      <v-card-actions>
+        <!--RADIO BUTTONS-->
+        <alerce-lightcurve-radio-buttons
+          v-model="selected"
+          :options="options"
+        />
+        <v-spacer />
+        <!--DOWNLOAD LIGHTCURVE-->
+        <alerce-download-lightcurve-button
+          :oid="oid"
+          :lightcurve="lightcurve"
+        />
+      </v-card-actions>
     </v-card>
   </v-col>
 </template>
@@ -50,6 +64,10 @@ export default class CardLightCurve extends Vue {
 
   @Prop({ type: String }) cardClass
 
+  @Prop({ type: String }) oid
+
+  selected = ''
+
   get isDark() {
     return this.$vuetify.theme.isDark
   }
@@ -61,18 +79,21 @@ export default class CardLightCurve extends Vue {
       default: true,
       tooltip:
         'The difference Magnitude light curve, is the absolute difference between a science and reference magnitudes.',
+      show: true,
     },
     {
       text: 'Apparent Magnitude',
       value: 'apparent',
       tooltip:
         'Apparent magnitude light curve results from adding/subtracting the fluxes from the reference and difference in the same unit system and then converting to magnitudes.',
+      show: true,
     },
     {
       text: 'Folded',
       value: 'folded',
       tooltip:
         'The Period folded light curve, where time is transformed to time modulo the period (Phase).',
+      show: true,
     },
   ]
 }
