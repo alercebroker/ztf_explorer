@@ -55,8 +55,6 @@ import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component
 export default class ObjectView extends Vue {
-  selectedDetection = 0
-
   head() {
     return {
       title: this.selectedObject ? this.selectedObject : this.$route.params.oid,
@@ -114,6 +112,13 @@ export default class ObjectView extends Vue {
 
   get selectedObject() {
     return this.$store.state.object.objectId
+  }
+
+  get selectedDetection() {
+    const detection = this.$store.state.lightcurve.detections.findIndex(
+      (x) => x.has_stamp
+    )
+    return detection
   }
 
   set selectedObject(val) {}
