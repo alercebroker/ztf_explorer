@@ -1,7 +1,20 @@
 <template>
-  <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
+  <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card :class="cardClass">
+      <v-card-text v-if="isLoading">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching data for object {{ $route.params.oid }} ...
+      </v-card-text>
+      <v-card-text v-else-if="error">
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
+      </v-card-text>
       <alerce-stamps-card
+        v-else
         v-model="localSelectedDetection"
         :detections="detections"
         :object="oid"
@@ -24,10 +37,6 @@ export default class CardStamps extends Vue {
 
   @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Boolean, default: true }) show
-
-  @Prop({ type: Array, default: () => [] }) detections
-
   @Prop({ type: String }) oid
 
   @Prop({ type: Number }) crossHairSpace
@@ -40,6 +49,18 @@ export default class CardStamps extends Vue {
 
   beforeMount() {
     this.localSelectedDetection = this.selectedDetection
+  }
+
+  get detections() {
+    return this.$store.state.lightcurve.detections
+  }
+
+  get isLoading() {
+    return this.$store.state.lightcurve.loading
+  }
+
+  get error() {
+    return this.$store.state.lightcurve.error
   }
 
   @Watch('selectedDetection')

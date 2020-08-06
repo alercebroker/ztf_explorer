@@ -2,10 +2,7 @@
   <v-container fluid>
     <v-row align="stretch">
       <card-basic-information
-        :information="objectInformation"
-        :tns="tns"
-        :show="objectInformation != null"
-        :candid="firstCandid"
+        :object="$route.params.oid"
         card-class="grid-card"
         lg="3"
         md="6"
@@ -13,9 +10,7 @@
       />
 
       <card-light-curve
-        :lightcurve="objectLightcurve"
         :period="period"
-        :show="objectLightcurve.loaded"
         :oid="selectedObject"
         card-class="grid-card"
         lg="6"
@@ -25,27 +20,15 @@
 
       <card-aladin
         v-model="selectedObject"
-        :objects="objects"
-        :object-data="objectInformation"
-        :show="objectInformation != null"
         card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
       />
 
-      <card-mag-stats
-        :stats="stats"
-        :show="objectInformation != null"
-        card-class="grid-card"
-        lg="3"
-        md="6"
-        sm="12"
-      />
+      <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" />
 
       <card-classifiers
-        :classifiers="objectClassification.classifiers"
-        :show="objectClassification.loaded"
         card-class="grid-card"
         cols="12"
         lg="3"
@@ -55,8 +38,6 @@
 
       <card-stamps
         v-model="selectedDetection"
-        :show="objectInformation != null"
-        :detections="objectLightcurve.detections"
         :oid="selectedObject"
         :cross-hair-space="25"
         card-class="grid-card"
@@ -64,21 +45,13 @@
         md="6"
       />
 
-      <card-cross-matches
-        :data="crossmatches.data"
-        :show="crossmatches.loaded"
-        cols="12"
-        lg="12"
-        md="12"
-        sm="12"
-      />
+      <card-cross-matches cols="12" lg="12" md="12" sm="12" />
     </v-row>
   </v-container>
 </template>
 
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
-import { objectStore, objectsStore, filtersStore } from '~/store'
 
 @Component
 export default class ObjectView extends Vue {
@@ -90,12 +63,23 @@ export default class ObjectView extends Vue {
     }
   }
 
-  beforeMount() {
-    if (objectsStore.selected === null) {
-      this.selectedObject = this.$route.params.oid
-    } else {
-      this.selectedObject = objectsStore.selected
-    }
+  async fetch() {
+    this.$store.dispatch('lightcurve/getLightCurve', this.$route.params.oid)
+    this.$store.dispatch('stats/getStats', this.$route.params.oid)
+    this.$store.dispatch(
+      'probabilities/getProbabilities',
+      this.$route.params.oid
+    )
+    this.$store.dispatch('features/getFeatures', this.$route.params.oid)
+    await this.$store.dispatch('object/getObject', this.$route.params.oid)
+    this.$store.dispatch('xmatches/getXmatch', {
+      ra: this.objectInformation.meanra,
+      dec: this.objectInformation.meandec,
+    })
+    this.$store.dispatch('tns/getTns', {
+      ra: this.objectInformation.meanra,
+      dec: this.objectInformation.meandec,
+    })
   }
 
   created() {
@@ -117,50 +101,36 @@ export default class ObjectView extends Vue {
     }
   }
 
-  changeObject(n) {
+  async changeObject(n) {
     if (this.objects !== null || this.objects.length !== 0) {
-      filtersStore.changeItem(n).then(() => {
-        this.$router.push(this.selectedObject)
-      })
+      await this.$store.dispatch('object/changeItem', n)
+      this.$router.push(this.selectedObject)
     }
   }
 
   get objects() {
-    return objectsStore.list
+    return this.$store.state.objects.list
   }
 
   get selectedObject() {
-    return objectsStore.selected
-      ? objectsStore.selected
-      : this.$route.params.oid
+    return this.$store.state.object.objectId
   }
 
-  set selectedObject(val) {
-    objectStore.getObject(val).catch(() => {
-      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
-    })
-  }
+  set selectedObject(val) {}
 
   get objectInformation() {
-    return objectStore.objectInformation
+    return this.$store.state.object.object
   }
 
-  get objectLightcurve() {
-    return objectStore.objectLightcurve
-  }
-
-  get objectClassification() {
-    return objectStore.classifications
-  }
-
-  get firstCandid() {
-    return this.objectLightcurve.detections.length > 0
-      ? this.objectLightcurve.detections.filter((x) => x.has_stamp)[0].candid
-      : null
+  get error() {
+    const error = this.$store.state.object.error
+    if (error.response.status === 404)
+      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
+    return error
   }
 
   get period() {
-    const periods = objectStore.features.data.filter(
+    const periods = this.$store.state.features.features.filter(
       (x) => x.name === 'Period_fit_v2'
     )
     if (periods.length === 0) {
@@ -168,24 +138,14 @@ export default class ObjectView extends Vue {
     } else if (periods.length === 1) {
       return periods[0].value
     } else {
-      const nDet = objectStore.features.data.filter((x) => x.name === 'n_det')
+      const nDet = this.$store.state.features.features.filter(
+        (x) => x.name === 'n_det'
+      )
       const max = nDet.reduce((prev, current) =>
         prev.value > current.value ? prev : current
       )
       return periods.find((x) => x.fid === max.fid).value
     }
-  }
-
-  get tns() {
-    return objectStore.objectTNS
-  }
-
-  get crossmatches() {
-    return objectStore.crossmatches
-  }
-
-  get stats() {
-    return objectStore.stats
   }
 }
 </script>

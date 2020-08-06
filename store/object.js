@@ -5,55 +5,19 @@ import {
   VuexAction,
 } from 'nuxt-property-decorator'
 
-import {
-  getObject,
-  getLightCurve,
-  getClassifications,
-  getStats,
-  getFeatures,
-} from '../api/ztf_api'
-
-import { isInTNS } from '../api/tns_api'
-
-import { xmatchall } from '../api/catshtm_api'
+function findNewObjectIndex(list, oid, n) {
+  return list.findIndex((x) => x.oid === oid) + n
+}
 
 @Module({ name: 'object', namespaced: true, stateFactory: true })
 export default class Object_ extends VuexModule {
-  status = null
+  loading = false
   objectId = null
-  objectInformation = null
-  objectLightcurve = {
-    loaded: false,
-    detections: [],
-    non_detections: [],
-  }
-
-  stats = []
-
+  object = null
+  error = null
   bandMap = {
     '1': 'g',
     '2': 'r',
-  }
-
-  classifications = {
-    loaded: false,
-    classifiers: [],
-  }
-
-  objectTNS = {
-    type: '-',
-    name: '-',
-    redshift: '-',
-  }
-
-  crossmatches = {
-    loaded: false,
-    data: [],
-  }
-
-  features = {
-    loaded: false,
-    data: [],
   }
 
   @VuexMutation
@@ -62,70 +26,66 @@ export default class Object_ extends VuexModule {
   }
 
   @VuexMutation
-  setObjectInformation(val) {
-    this.objectInformation = val.data
-    this.status = val.status
+  setObject(val) {
+    this.object = val
   }
 
   @VuexMutation
-  setObjectLightcurve(val) {
-    this.objectLightcurve = val.data
-    this.objectLightcurve.loaded = val.status === 200
+  setLoading(val) {
+    this.loading = val
   }
 
   @VuexMutation
-  setTNSInformation(val) {
-    this.objectTNS = {
-      type: val.object_type ? val.object_type : '-',
-      name: val.object_name ? val.object_name : '-',
-      redshift: val.object_data ? val.object_data.redshift : '-',
-    }
-    this.status = val.status
-  }
-
-  @VuexMutation
-  setStats(val) {
-    this.stats = val
-  }
-
-  @VuexMutation
-  setClassifications(val) {
-    this.classifications.classifiers = val.data
-    this.classifications.loaded = val.status === 200
-  }
-
-  @VuexMutation
-  setCrossMatches(val) {
-    this.crossmatches.data = val.data
-    this.crossmatches.loaded = val.status === 200
-  }
-
-  @VuexMutation
-  setFeatures(val) {
-    this.features.data = val.data
-    this.features.loaded = val.status === 200
+  setError(val) {
+    this.error = val
   }
 
   @VuexAction({ rawError: true })
   async getObject(val) {
-    this.setObjectId(val)
-    const information = await getObject(val)
-    this.setObjectInformation(information)
-    const lightcurve = await getLightCurve(val)
-    this.setObjectLightcurve(lightcurve)
-    const classifications = await getClassifications(val)
-    this.setClassifications(classifications)
-    const stats = await getStats(val)
-    this.setStats(stats.data)
-    const features = await getFeatures(val)
-    this.setFeatures(features)
-    const xmatch = await xmatchall(
-      information.data.meanra,
-      information.data.meandec,
-      50
+    if (this.loading) return
+    this.setLoading(true)
+    try {
+      const object = await this.store.$ztfApi.getObject(val)
+      this.setObject(object.data)
+      this.setError(null)
+    } catch (error) {
+      this.setError(error)
+    }
+    this.setLoading(false)
+  }
+
+  @VuexAction({ rawError: true })
+  async changeItem(n) {
+    const nextObjectIndex = findNewObjectIndex(
+      this.store.state.objects.list,
+      this.objectId,
+      n
     )
-    this.setCrossMatches(xmatch)
-    const tns = await isInTNS(information.data.meanra, information.data.meandec)
-    this.setTNSInformation(tns)
+    if (
+      nextObjectIndex >= 0 &&
+      nextObjectIndex < this.store.state.objects.list.length
+    ) {
+      this.setObjectId(this.store.state.objects.list[nextObjectIndex].oid)
+    } else if (nextObjectIndex > 0 && this.store.state.pagination.hasNext) {
+      this.context.dispatch(
+        'pagination/setPage',
+        this.store.state.pagination.next,
+        { root: true }
+      )
+      this.context.dispatch('pagination/goToNext')
+      await this.context.dispatch('filters/search').search()
+      this.setObjectId(this.store.state.objects.list[0].oid)
+    } else if (nextObjectIndex < 0 && this.store.state.pagination.hasPrev) {
+      this.context.dispatch(
+        'pagination/setPage',
+        this.store.state.pagination.prev,
+        { root: true }
+      )
+      this.context.dispatch('pagination/goToPrev', null, { root: true })
+      await this.context.dispatch('filters/search', null, { root: true })
+      this.setObjectId(
+        this.store.state.objects.list[this.store.state.objects.list.length - 1]
+      )
+    }
   }
 }

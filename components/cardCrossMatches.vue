@@ -1,5 +1,5 @@
 <template>
-  <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
+  <v-col v-if="!isLoading && !error" :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card>
       <alerce-cross-matches :catalogs="catalogs" />
     </v-card>
@@ -21,14 +21,20 @@ export default class CardCrossMatches extends Vue {
   @Prop({ type: Number | String, default: 12 })
   sm
 
-  @Prop({ type: Boolean, default: true })
-  show
+  get xmatches() {
+    return this.$store.state.xmatches.xmatches
+  }
 
-  @Prop({ type: Array, required: true, default: () => [] })
-  data
+  get isLoading() {
+    return this.$store.state.xmatches.loading
+  }
+
+  get error() {
+    return this.$store.state.xmatches.error
+  }
 
   get catalogs() {
-    const catalogs_ = this.data.map((x) => {
+    const catalogs_ = this.xmatches.map((x) => {
       const catalogName = Object.keys(x)[0]
       const fields = Object.keys(x[catalogName]).map((y) => {
         return {

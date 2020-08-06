@@ -81,7 +81,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/echarts.js'],
+  plugins: ['@/plugins/echarts.js', '@/plugins/axios.js'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -105,6 +105,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/toast',
   ],
   /*
    ** Axios module configuration

@@ -4,9 +4,7 @@ import {
   VuexMutation,
   VuexAction,
 } from 'nuxt-property-decorator'
-import { search, getClassifiers, getClasses } from '../api/ztf_api'
-import { objectStore, objectsStore, paginationStore } from '~/store'
-
+import { objectsStore, paginationStore } from '~/store'
 const defaultState = {
   oid: null,
   selectedClassifier: null,
@@ -20,6 +18,7 @@ const defaultState = {
   dec: null,
   radius: null,
   searching: false,
+  error: null,
 }
 
 @Module({
@@ -40,10 +39,16 @@ export default class Filters extends VuexModule {
   dec = defaultState.dec
   radius = defaultState.radius
   searching = defaultState.searching
+  error = defaultState.error
 
   @VuexMutation
   setSearching(val) {
     this.searching = val
+  }
+
+  @VuexMutation
+  setError(val) {
+    this.error = val
   }
 
   get generalFilters() {
@@ -96,7 +101,6 @@ export default class Filters extends VuexModule {
   setClassifiers(classifiers) {
     this.classifiers = classifiers.map((x) => {
       x.name = x.classifier_name
-      delete x.classifier_name
       return x
     })
   }
@@ -123,7 +127,7 @@ export default class Filters extends VuexModule {
   async search() {
     this.setSearching(true)
     try {
-      const result = await search({
+      const result = await this.store.$ztfApi.search({
         ...this.generalFilters,
         ...this.dateFilters,
         ...this.conesearchFilters,
@@ -131,28 +135,24 @@ export default class Filters extends VuexModule {
       })
       objectsStore.set(result.data.items)
       this.setPaginationState(result.data)
-    } catch (e) {
-      // TODO Handle error here
-      // Maybe error can be handled outside this module in API module
-      // and then trigger a specific mutation on this state given the error
-      // this.handleSearchError(e)
-      console.log(e)
+    } catch (error) {
+      this.setError(error)
     }
     this.setSearching(false)
   }
 
-  handleSearchError() {}
-
   @VuexAction({ rawError: true })
   async getClassifiers() {
-    const result = await getClassifiers()
+    const result = await this.store.$ztfApi.getClassifiers()
     this.setClassifiers(result.data)
   }
 
-  @VuexAction({ rawError: true })
-  async getClasses(selectedClassifier) {
-    const result = await getClasses(selectedClassifier)
-    this.setClasses(result.data)
+  @VuexAction
+  getClasses(selectedClassifier) {
+    const classifier = this.classifiers.find(
+      (c) => c.name === selectedClassifier
+    )
+    this.setClasses(classifier.classes)
   }
 
   @VuexMutation
@@ -175,26 +175,5 @@ export default class Filters extends VuexModule {
   clearFilters() {
     this.setDefaultState()
     this.getClassifiers()
-  }
-
-  @VuexAction
-  async changeItem(n) {
-    const nextObject = objectsStore.indexSelected + n
-    if (nextObject >= 0 && nextObject < objectsStore.list.length) {
-      const newItem = objectsStore.list[nextObject]
-      objectsStore.setItem(newItem)
-    } else if (nextObject > 0 && paginationStore.hasNext) {
-      paginationStore.setPage(paginationStore.next)
-      paginationStore.goToNext()
-      await this.search()
-      objectsStore.setIndexSelected(0)
-      objectStore.getObject(objectsStore.selected)
-    } else if (nextObject < 0 && paginationStore.hasPrev) {
-      paginationStore.setPage(paginationStore.prev)
-      paginationStore.goToPrev()
-      await this.search()
-      objectsStore.setIndexSelected(paginationStore.perPage - 1)
-      objectStore.getObject(objectsStore.selected)
-    }
   }
 }
