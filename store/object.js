@@ -47,6 +47,7 @@ export default class Object_ extends VuexModule {
     try {
       const object = await this.store.$ztfApi.getObject(val)
       this.setObject(object.data)
+      this.setError(null)
     } catch (error) {
       this.setError(error)
     }

@@ -1,6 +1,20 @@
 <template>
-  <v-col v-show="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card :class="cardClass">
+  <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
+    <v-card v-if="isLoading || error" :class="cardClass">
+      <v-card-text v-if="isLoading">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching data for object {{ $route.params.oid }} ...
+      </v-card-text>
+      <v-card-text v-else-if="error">
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
+      </v-card-text>
+    </v-card>
+    <v-card v-else :class="cardClass">
       <v-card-title>Magnitude Statistics</v-card-title>
       <v-card-text>
         <alerce-mag-stats
@@ -16,7 +30,6 @@
 
 <script>
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
-import { objectStore } from '~/store'
 @Component
 export default class CardMagStats extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
@@ -27,20 +40,29 @@ export default class CardMagStats extends Vue {
 
   @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Boolean, default: true }) show
-
-  @Prop({ type: Array, required: true }) stats
-
   @Prop({ type: String }) cardClass
 
   localStats = []
 
-  mounted() {
+  beforeMount() {
     if (this.stats.length) this.formatStats(this.stats)
   }
 
+  get stats() {
+    return this.$store.state.stats.stats
+  }
+
   get bandMap() {
-    return objectStore.bandMap
+    return this.$store.state.object.bandMap
+  }
+
+  get isLoading() {
+    console.log(this.$store.state.stats.loading)
+    return this.$store.state.stats.loading
+  }
+
+  get error() {
+    return this.$store.state.stats.error
   }
 
   formatStats(stats) {

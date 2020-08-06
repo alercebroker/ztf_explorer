@@ -8,6 +8,7 @@ import {
 @Module({ name: 'probabilities', namespaced: true, stateFactory: true })
 export default class ProbabilitiesStore extends VuexModule {
   loading = false
+  error = null
   probabilities = []
 
   @VuexMutation
@@ -20,11 +21,21 @@ export default class ProbabilitiesStore extends VuexModule {
     this.loading = val
   }
 
+  @VuexMutation
+  setError(val) {
+    this.error = val
+  }
+
   @VuexAction({ rawError: true })
   async getProbabilities(val) {
     this.setLoading(true)
-    const probabilities = await this.store.$ztfApi.getProbabilities(val)
-    this.setProbabilities(probabilities.data)
+    try {
+      const probabilities = await this.store.$ztfApi.getProbabilities(val)
+      this.setProbabilities(probabilities.data)
+      this.setError(null)
+    } catch (error) {
+      this.setError(error)
+    }
     this.setLoading(false)
   }
 }

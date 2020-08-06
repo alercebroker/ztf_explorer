@@ -52,8 +52,6 @@ export default class CardBasicInformation extends Vue {
 
   @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Number | String, default: 0 }) candid
-
   @Prop({ type: Boolean, default: true }) show
 
   @Prop({ type: String }) cardClass
@@ -77,6 +75,11 @@ export default class CardBasicInformation extends Vue {
 
   get tns() {
     return this.$store.state.tns
+  }
+
+  get candid() {
+    return this.$store.state.lightcurve.detections.find((x) => x.has_stamp)
+      .candid
   }
 }
 </script>

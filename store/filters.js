@@ -18,6 +18,7 @@ const defaultState = {
   dec: null,
   radius: null,
   searching: false,
+  error: null,
 }
 
 @Module({
@@ -38,10 +39,16 @@ export default class Filters extends VuexModule {
   dec = defaultState.dec
   radius = defaultState.radius
   searching = defaultState.searching
+  error = defaultState.error
 
   @VuexMutation
   setSearching(val) {
     this.searching = val
+  }
+
+  @VuexMutation
+  setError(val) {
+    this.error = val
   }
 
   get generalFilters() {
@@ -129,13 +136,7 @@ export default class Filters extends VuexModule {
       objectsStore.set(result.data.items)
       this.setPaginationState(result.data)
     } catch (error) {
-      if (error.response.status === 404) {
-        this.store.$toast
-          .show(
-            'Your search did not return any object. Try refining your query'
-          )
-          .goAway(3000)
-      }
+      this.setError(error)
     }
     this.setSearching(false)
   }

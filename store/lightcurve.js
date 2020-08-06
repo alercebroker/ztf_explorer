@@ -8,6 +8,7 @@ import {
 @Module({ name: 'lightcurve', namespaced: true, stateFactory: true })
 export default class LightCurveStore extends VuexModule {
   loading = false
+  error = null
   detections = []
   nonDetections = []
 
@@ -23,15 +24,25 @@ export default class LightCurveStore extends VuexModule {
 
   @VuexMutation
   setLoading(val) {
-    this.setLoading = val
+    this.loading = val
+  }
+
+  @VuexMutation
+  setError(val) {
+    this.error = val
   }
 
   @VuexAction({ rawError: true })
   async getLightCurve(val) {
     this.setLoading(true)
-    const lightCurve = await this.store.$ztfApi.getLightCurve(val)
-    this.setDetections(lightCurve.data.detections)
-    this.setNonDetections(lightCurve.data.non_detections)
+    try {
+      const lightCurve = await this.store.$ztfApi.getLightCurve(val)
+      this.setDetections(lightCurve.data.detections)
+      this.setNonDetections(lightCurve.data.non_detections)
+      this.setError(null)
+    } catch (error) {
+      this.setError(error)
+    }
     this.setLoading(false)
   }
 }

@@ -8,6 +8,7 @@ import {
 @Module({ name: 'xmatches', namespaced: true, stateFactory: true })
 export default class XmatchesStore extends VuexModule {
   loading = false
+  error = null
   xmatches = []
 
   @VuexMutation
@@ -20,16 +21,26 @@ export default class XmatchesStore extends VuexModule {
     this.xmatches = val
   }
 
+  @VuexMutation
+  setError(val) {
+    this.error = val
+  }
+
   @VuexAction({ rawError: true })
   async getXmatch(payload) {
     this.setLoading(true)
-    payload.radius = payload.radius ? payload.radius : 50
-    const xmatches = await this.store.$catsHtmApi.xmatchall(
-      payload.ra,
-      payload.dec,
-      payload.radius
-    )
-    this.setXmatches(xmatches.data)
+    try {
+      payload.radius = payload.radius ? payload.radius : 50
+      const xmatches = await this.store.$catsHtmApi.xmatchall(
+        payload.ra,
+        payload.dec,
+        payload.radius
+      )
+      this.setXmatches(xmatches.data)
+      this.setError(null)
+    } catch (error) {
+      this.setError(error)
+    }
     this.setLoading(false)
   }
 }

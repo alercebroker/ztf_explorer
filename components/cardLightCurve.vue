@@ -1,6 +1,20 @@
 <template>
-  <v-col v-if="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card :class="cardClass">
+  <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
+    <v-card v-if="isLoading || error" :class="cardClass">
+      <v-card-text v-if="isLoading">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching data for object {{ $route.params.oid }} ...
+      </v-card-text>
+      <v-card-text v-if="error">
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
+      </v-card-text>
+    </v-card>
+    <v-card v-else :class="cardClass">
       <v-card-text>
         <select-lightcurve :selected="selected">
           <alerce-light-curve-plot
@@ -56,8 +70,6 @@ export default class CardLightCurve extends Vue {
 
   @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Object, default: () => {} }) lightcurve
-
   @Prop({ type: Number, default: 1 }) period
 
   @Prop({ type: Boolean, default: true }) show
@@ -70,6 +82,21 @@ export default class CardLightCurve extends Vue {
 
   get isDark() {
     return this.$vuetify.theme.isDark
+  }
+
+  get isLoading() {
+    return this.$store.state.lightcurve.loading
+  }
+
+  get error() {
+    return this.$store.state.lightcurve.error
+  }
+
+  get lightcurve() {
+    return {
+      detections: this.$store.state.lightcurve.detections,
+      nonDetections: this.$store.state.lightcurve.nonDetections,
+    }
   }
 
   options = [

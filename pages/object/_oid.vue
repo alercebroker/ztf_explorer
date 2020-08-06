@@ -10,7 +10,6 @@
       />
 
       <card-light-curve
-        :lightcurve="objectLightcurve"
         :period="period"
         :oid="selectedObject"
         card-class="grid-card"
@@ -27,16 +26,9 @@
         sm="12"
       />
 
-      <card-mag-stats
-        :stats="stats"
-        card-class="grid-card"
-        lg="3"
-        md="6"
-        sm="12"
-      />
+      <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" />
 
       <card-classifiers
-        :classifiers="objectClassification.classifiers"
         card-class="grid-card"
         cols="12"
         lg="3"
@@ -46,7 +38,6 @@
 
       <card-stamps
         v-model="selectedDetection"
-        :detections="objectLightcurve.detections"
         :oid="selectedObject"
         :cross-hair-space="25"
         card-class="grid-card"
@@ -55,8 +46,6 @@
       />
 
       <card-cross-matches
-        :data="crossmatches.data"
-        :show="crossmatches.loaded"
         cols="12"
         lg="12"
         md="12"
@@ -79,23 +68,20 @@ export default class ObjectView extends Vue {
     }
   }
 
-  async fetch() {
-    await this.$store.dispatch('object/getObject', this.object)
-    await this.$store.dispatch(
-      'lightcurve/getLightCurve',
-      this.$route.params.oid
-    )
-    await this.$store.dispatch(
+  fetch() {
+    this.$store.dispatch('object/getObject', this.object)
+    this.$store.dispatch('lightcurve/getLightCurve', this.$route.params.oid)
+    this.$store.dispatch('stats/getStats', this.$route.params.oid)
+    this.$store.dispatch(
       'probabilities/getProbabilities',
       this.$route.params.oid
     )
-    await this.$store.dispatch('object/getStats', this.$route.params.oid)
-    await this.$store.dispatch('object/getFeatures', this.$route.params.oid)
-    await this.$store.dispatch('object/getXmatch', {
+    this.$store.dispatch('features/getFeatures', this.$route.params.oid)
+    this.$store.dispatch('xmatches/getXmatch', {
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
     })
-    await this.$store.dispatch('object/getTns', {
+    this.$store.dispatch('tns/getTns', {
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
     })
@@ -148,22 +134,11 @@ export default class ObjectView extends Vue {
     return error
   }
 
-  get objectLightcurve() {
-    return {
-      detections: this.$store.state.lightcurve.detections,
-      nonDetections: this.$store.state.lightcurve.nonDetections,
-    }
-  }
-
-  get objectClassification() {
-    return this.$store.state.probabilities.probabilities
-  }
-
-  get firstCandid() {
-    return this.objectLightcurve.detections.length > 0
-      ? this.objectLightcurve.detections.filter((x) => x.has_stamp)[0].candid
-      : null
-  }
+  // get firstCandid() {
+  //   return this.objectLightcurve.detections.length > 0
+  //     ? this.objectLightcurve.detections.filter((x) => x.has_stamp)[0].candid
+  //     : null
+  // }
 
   get period() {
     const periods = this.$store.state.features.features.filter(

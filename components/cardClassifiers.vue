@@ -1,6 +1,20 @@
 <template>
-  <v-col v-show="show" :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card :class="cardClass">
+  <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
+    <v-card v-if="isLoading || error" :class="cardClass">
+      <v-card-text v-if="isLoading">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching data for object {{ $route.params.oid }} ...
+      </v-card-text>
+      <v-card-text v-else-if="error">
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
+      </v-card-text>
+    </v-card>
+    <v-card v-else :class="cardClass">
       <v-toolbar dense flat>
         <v-row align="center">
           <v-col cols="6">
@@ -37,10 +51,6 @@ export default class CardClassifiers extends Vue {
   @Prop({ type: Number | String, default: 12 }) md
 
   @Prop({ type: Number | String, default: 12 }) sm
-
-  @Prop({ type: Array, required: true, default: () => [] }) classifiers
-
-  @Prop({ type: Boolean, default: true }) show
 
   @Prop({ type: String }) cardClass
 
@@ -90,6 +100,18 @@ export default class CardClassifiers extends Vue {
       })
     })
     return res
+  }
+
+  get classifiers() {
+    return this.$store.state.probabilities.probabilities
+  }
+
+  get isLoading() {
+    return this.$store.state.probabilities.loading
+  }
+
+  get error() {
+    return this.$store.state.probabilities.error
   }
 }
 </script>

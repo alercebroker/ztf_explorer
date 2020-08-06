@@ -9,10 +9,16 @@ import {
 export default class StatsStore extends VuexModule {
   stats = []
   loading = false
+  error = null
 
   @VuexMutation
   setStats(val) {
     this.stats = val
+  }
+
+  @VuexMutation
+  setError(val) {
+    this.error = val
   }
 
   @VuexMutation
@@ -23,8 +29,13 @@ export default class StatsStore extends VuexModule {
   @VuexAction({ rawError: true })
   async getStats(val) {
     this.setLoading(true)
-    const stats = await this.store.$ztfApi.getStats(val)
-    this.setStats(stats.data)
+    try {
+      const stats = await this.store.$ztfApi.getStats(val)
+      this.setStats(stats.data)
+      this.setError(null)
+    } catch (error) {
+      this.setError(error)
+    }
     this.setLoading(false)
   }
 }
