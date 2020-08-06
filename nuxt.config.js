@@ -55,13 +55,21 @@ export default {
           'https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css',
       },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons'},
       {
         rel: 'stylesheet',
-        href: 'https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css',
+        href:
+          'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons',
+      },
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+      },
+      {
+        rel: 'stylesheet',
+        href:
+          'https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css',
         integrity: 'sha256-OYXGS5m4oWZAAqoAKpf7Y3bIdzdd9jBfly/xCavEpGw=',
-        crossorigin: 'anonymous'
+        crossorigin: 'anonymous',
       },
     ],
   },
@@ -88,8 +96,8 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    'component-library/nuxt',
-    ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}` }]
+    '@alerce/components/nuxt',
+    ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}` }],
   ],
   /*
    ** Nuxt.js modules
