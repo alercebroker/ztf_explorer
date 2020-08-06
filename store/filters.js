@@ -12,6 +12,7 @@ const defaultState = {
   classifiers: [],
   classes: [],
   probability: 0,
+  ranking: 1,
   ndet: [0, 1000],
   firstmjd: [null, null],
   ra: null,
@@ -40,6 +41,7 @@ export default class Filters extends VuexModule {
   radius = defaultState.radius
   searching = defaultState.searching
   error = defaultState.error
+  ranking = defaultState.ranking
 
   @VuexMutation
   setSearching(val) {
@@ -58,6 +60,7 @@ export default class Filters extends VuexModule {
       selectedClass: this.selectedClass,
       probability: this.probability,
       ndet: this.ndet,
+      ranking: this.ranking,
     }
   }
 
@@ -68,6 +71,7 @@ export default class Filters extends VuexModule {
     this.selectedClassifier = filters.selectedClassifier
     this.probability = filters.probability
     this.ndet = filters.ndet
+    this.ranking = filters.ranking
   }
 
   get dateFilters() {
@@ -169,6 +173,7 @@ export default class Filters extends VuexModule {
     this.dec = defaultState.dec
     this.radius = defaultState.radius
     this.searching = defaultState.searching
+    this.ranking = defaultState.ranking
   }
 
   @VuexAction()
