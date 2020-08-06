@@ -13,7 +13,7 @@ export default class ProbabilitiesStore extends VuexModule {
 
   @VuexMutation
   setProbabilities(val) {
-    this.classifiers = val
+    this.probabilities = val
   }
 
   @VuexMutation

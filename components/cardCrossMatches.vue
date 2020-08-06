@@ -21,7 +21,7 @@ export default class CardCrossMatches extends Vue {
   @Prop({ type: Number | String, default: 12 })
   sm
 
-  get data() {
+  get xmatches() {
     return this.$store.state.xmatches.xmatches
   }
 
@@ -34,7 +34,7 @@ export default class CardCrossMatches extends Vue {
   }
 
   get catalogs() {
-    const catalogs_ = this.data.map((x) => {
+    const catalogs_ = this.xmatches.map((x) => {
       const catalogName = Object.keys(x)[0]
       const fields = Object.keys(x[catalogName]).map((y) => {
         return {

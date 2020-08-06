@@ -78,8 +78,10 @@ export default class CardBasicInformation extends Vue {
   }
 
   get candid() {
-    return this.$store.state.lightcurve.detections.find((x) => x.has_stamp)
-      .candid
+    const detection = this.$store.state.lightcurve.detections.find(
+      (x) => x.has_stamp
+    )
+    return detection ? detection.candid : null
   }
 }
 </script>

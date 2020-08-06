@@ -22,7 +22,7 @@ function renameFields(params) {
 
 export default function ({ $axios, store, redirect }, inject) {
   const ztfApi = $axios.create({
-    baseURL: 'http://3.212.59.238:8082/',
+    baseURL: 'http://dev.api.alerce.online/',
   })
 
   ztfApi.search = (searchParameters) => {

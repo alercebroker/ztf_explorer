@@ -13,7 +13,7 @@ export default class FeaturesStore extends VuexModule {
 
   @VuexMutation
   setFeatures(val) {
-    this.features = val
+    this.features = val.data
   }
 
   @VuexMutation
@@ -30,7 +30,7 @@ export default class FeaturesStore extends VuexModule {
   async getFeatures(val) {
     this.setLoading(true)
     try {
-      this.setFeatures(await this.store.$ztfApi.getFeatures(val.data))
+      this.setFeatures(await this.store.$ztfApi.getFeatures(val))
       this.setError(null)
     } catch (error) {
       this.setError(error)

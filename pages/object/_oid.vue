@@ -45,12 +45,7 @@
         md="6"
       />
 
-      <card-cross-matches
-        cols="12"
-        lg="12"
-        md="12"
-        sm="12"
-      />
+      <card-cross-matches cols="12" lg="12" md="12" sm="12" />
     </v-row>
   </v-container>
 </template>
@@ -68,8 +63,7 @@ export default class ObjectView extends Vue {
     }
   }
 
-  fetch() {
-    this.$store.dispatch('object/getObject', this.object)
+  async fetch() {
     this.$store.dispatch('lightcurve/getLightCurve', this.$route.params.oid)
     this.$store.dispatch('stats/getStats', this.$route.params.oid)
     this.$store.dispatch(
@@ -77,6 +71,7 @@ export default class ObjectView extends Vue {
       this.$route.params.oid
     )
     this.$store.dispatch('features/getFeatures', this.$route.params.oid)
+    await this.$store.dispatch('object/getObject', this.$route.params.oid)
     this.$store.dispatch('xmatches/getXmatch', {
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
@@ -133,12 +128,6 @@ export default class ObjectView extends Vue {
       this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
     return error
   }
-
-  // get firstCandid() {
-  //   return this.objectLightcurve.detections.length > 0
-  //     ? this.objectLightcurve.detections.filter((x) => x.has_stamp)[0].candid
-  //     : null
-  // }
 
   get period() {
     const periods = this.$store.state.features.features.filter(
