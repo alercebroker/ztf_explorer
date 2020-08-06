@@ -58,7 +58,7 @@ export default class Filters extends VuexModule {
       oid: this.oid,
       selectedClassifier: this.selectedClassifier,
       selectedClass: this.selectedClass,
-      probability: this.probability,
+      probability: this.probability > 0 ? this.probability : null,
       ndet: this.ndet,
       ranking: this.ranking,
     }
