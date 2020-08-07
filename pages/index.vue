@@ -43,8 +43,9 @@ export default class Index extends Vue {
     }
   }
 
-  async fetch() {
-    await filtersStore.getClassifiers()
+  fetch() {
+    filtersStore.getClassifiers()
+    filtersStore.getLimitValues()
   }
 
   get classifiers() {

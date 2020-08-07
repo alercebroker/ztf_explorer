@@ -12,8 +12,10 @@ const defaultState = {
   classifiers: [],
   classes: [],
   probability: 0,
-  ndet: [0, 1000],
+  ndet: [1, 2000],
   firstmjd: [null, null],
+  limitNdet: [1, 2000],
+  limitMjd: [null, null],
   ra: null,
   dec: null,
   radius: null,
@@ -35,6 +37,8 @@ export default class Filters extends VuexModule {
   probability = defaultState.probability
   ndet = defaultState.ndet
   firstmjd = defaultState.firstmjd
+  limitNdet = defaultState.limitNdet
+  limitMjd = defaultState.limitMjd
   ra = defaultState.ra
   dec = defaultState.dec
   radius = defaultState.radius
@@ -59,6 +63,26 @@ export default class Filters extends VuexModule {
       probability: this.probability,
       ndet: this.ndet,
     }
+  }
+
+  @VuexMutation
+  setNdet(val) {
+    this.ndet = val
+  }
+
+  @VuexMutation
+  setFirstMjd(val) {
+    this.firstmjd = val
+  }
+
+  @VuexMutation
+  setLimitNdet(val) {
+    this.limitNdet = val
+  }
+
+  @VuexMutation
+  setLimitMjd(val) {
+    this.limitMjd = val
   }
 
   @VuexMutation
@@ -153,6 +177,18 @@ export default class Filters extends VuexModule {
       (c) => c.name === selectedClassifier
     )
     this.setClasses(classifier.classes)
+  }
+
+  @VuexAction
+  async getLimitValues() {
+    let resp = await this.store.$ztfApi.getLimitValues()
+    resp = resp.data
+    const limitNdet = [resp.min_ndet, resp.max_ndet]
+    const limitMjd = [resp.min_firstmjd, resp.max_firstmjd]
+    this.setNdet(limitNdet)
+    this.setFirstMjd(limitMjd)
+    this.setLimitNdet(limitNdet)
+    this.setLimitMjd(limitMjd)
   }
 
   @VuexMutation

@@ -63,6 +63,10 @@ export default function ({ $axios, store, redirect }, inject) {
     return ztfApi.get(`objects/${objectId}/features`)
   }
 
+  ztfApi.getLimitValues = () => {
+    return ztfApi.get('objects/limit_values')
+  }
+
   const tnsApi = $axios.create({
     baseURL: 'https://tns.alerce.online/',
     headers: {
