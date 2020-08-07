@@ -12,7 +12,7 @@ const defaultState = {
   classifiers: [],
   classes: [],
   probability: 0,
-  ranking: 1,
+  ranking: null,
   ndet: [0, 2000],
   firstmjd: [null, null],
   limitNdet: [1, 2000],
