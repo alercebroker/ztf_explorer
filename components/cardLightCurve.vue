@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
 @Component
 export default class CardLightCurve extends Vue {
@@ -99,14 +99,18 @@ export default class CardLightCurve extends Vue {
     }
   }
 
+  get objectInformation() {
+    return this.$store.state.object.object
+  }
+
   options = [
     {
       text: 'Difference Magnitude',
       value: 'difference',
-      default: true,
       tooltip:
         'The difference Magnitude light curve, is the absolute difference between a science and reference magnitudes.',
       show: true,
+      default: true,
     },
     {
       text: 'Apparent Magnitude',
@@ -123,5 +127,20 @@ export default class CardLightCurve extends Vue {
       show: true,
     },
   ]
+
+  @Watch('objectInformation')
+  onObjectInformation(val) {
+    this.options.forEach((x) => {
+      switch (x.value) {
+        case 'apparent':
+          x.show = val.corrected
+          x.default = val.corrected
+          break
+        case 'difference':
+          x.default = !val.corrected
+          break
+      }
+    })
+  }
 }
 </script>
