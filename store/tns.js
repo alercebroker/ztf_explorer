@@ -35,10 +35,11 @@ export default class TnsStore extends VuexModule {
   @VuexAction({ rawError: true })
   async getTns(payload) {
     this.setLoading(true)
-    const tnsInformation = await this.store.$tnsApi.isInTNS(
+    let tnsInformation = await this.store.$tnsApi.isInTNS(
       payload.ra,
       payload.dec
     )
+    tnsInformation = tnsInformation.data
     this.setType(tnsInformation.object_type ? tnsInformation.object_type : '-')
     this.setName(tnsInformation.object_name ? tnsInformation.object_name : '-')
     this.setRedShift(
