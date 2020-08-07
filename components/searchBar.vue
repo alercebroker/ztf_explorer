@@ -20,6 +20,7 @@
               <v-list-item-content>
                 <alerce-default-search
                   v-model="generalFiltersSync"
+                  :limit-ndet="limitNdet"
                   :classifiers="classifiers"
                   :classes="classes"
                 />
@@ -80,6 +81,10 @@ export default class SearchBar extends Vue {
   @PropSync('panels', { type: Number }) panelsSync
   @Prop({ type: Array }) classifiers
   @Prop({ type: Array }) classes
+
+  get limitNdet() {
+    return this.$store.state.filters.limitNdet
+  }
 
   onSearchClicked() {
     this.$emit('search')
