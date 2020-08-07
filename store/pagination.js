@@ -14,8 +14,8 @@ export default class Pagination extends VuexModule {
   hasNext = null
   hasPrev = null
   perPage = 20
-  sortBy = null
-  sortDesc = null
+  sortBy = 'probability'
+  sortDesc = true
   count = 'true'
 
   @VuexMutation
