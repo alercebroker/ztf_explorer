@@ -20,7 +20,7 @@
           <alerce-light-curve-plot
             slot="difference"
             :detections="lightcurve.detections"
-            :non-detections="lightcurve['non_detections']"
+            :non-detections="lightcurve.nonDetections"
             type="difference"
             :dark="isDark"
           />
