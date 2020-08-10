@@ -136,7 +136,7 @@ export default class ObjectView extends Vue {
 
   get period() {
     const periods = this.$store.state.features.features.filter(
-      (x) => x.name === 'Period_fit_v2'
+      (x) => x.name === 'Multiband_period'
     )
     if (periods.length === 0) {
       return 1
