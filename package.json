@@ -12,10 +12,11 @@
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "lint": "npm run lint:js && npm run lint:style",
+    "deploy": "gulp deploy",
     "test": "jest"
   },
   "dependencies": {
-    "@alerce/components": "0.0.4-dev",
+    "@alerce/components": "0.0.7-dev",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/toast": "^3.3.1",
     "@nuxtjs/vuetify": "^1.11.2",

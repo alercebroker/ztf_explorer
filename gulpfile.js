@@ -37,7 +37,7 @@ gulp.task('deploy', function () {
   // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property
   const publisher = awspublish.create(config)
 
-  let g = gulp.src('./*' + config.distDir + '/**')
+  let g = gulp.src('./' + config.distDir + '/**/*')
   // publisher will add Content-Length, Content-Type and headers specified above
   // If not specified it will set x-amz-acl to public-read by default
   g = g.pipe(
