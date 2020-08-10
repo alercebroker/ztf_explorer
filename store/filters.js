@@ -13,7 +13,7 @@ const defaultState = {
   classes: [],
   probability: 0,
   ranking: null,
-  ndet: [0, 2000],
+  ndet: [null, null],
   firstmjd: [null, null],
   limitNdet: [1, 2000],
   limitMjd: [null, null],
@@ -189,8 +189,6 @@ export default class Filters extends VuexModule {
     resp = resp.data
     const limitNdet = [resp.min_ndet, resp.max_ndet]
     const limitMjd = [resp.min_firstmjd, resp.max_firstmjd]
-    this.setNdet(limitNdet)
-    this.setFirstMjd(limitMjd)
     this.setLimitNdet(limitNdet)
     this.setLimitMjd(limitMjd)
   }
