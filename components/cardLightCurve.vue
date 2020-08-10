@@ -49,8 +49,9 @@
         <v-spacer />
         <!--DOWNLOAD LIGHTCURVE-->
         <alerce-download-lightcurve-button
-          :oid="oid"
-          :lightcurve="lightcurve"
+          :oid="objectInformation.oid"
+          :detections="lightcurve.detections"
+          :nonDetections="lightcurve.nonDetections"
         />
       </v-card-actions>
     </v-card>
@@ -75,8 +76,6 @@ export default class CardLightCurve extends Vue {
   @Prop({ type: Boolean, default: true }) show
 
   @Prop({ type: String }) cardClass
-
-  @Prop({ type: String }) oid
 
   selected = ''
 
