@@ -99,7 +99,9 @@ export default class Filters extends VuexModule {
   }
 
   get dateFilters() {
-    return this.firstmjd
+    return {
+      firstmjd: this.firstmjd,
+    }
   }
 
   @VuexMutation
