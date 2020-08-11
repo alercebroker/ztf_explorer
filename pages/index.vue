@@ -116,8 +116,8 @@ export default class Index extends Vue {
 
   get dateFilters() {
     return {
-      minMjd: filtersStore.dateFilters.firstmjd[0],
-      maxMjd: filtersStore.dateFilters.firstmjd[1],
+      minMjd: filtersStore.dateFilters[0],
+      maxMjd: filtersStore.dateFilters[1],
     }
   }
 

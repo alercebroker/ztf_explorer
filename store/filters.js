@@ -99,15 +99,12 @@ export default class Filters extends VuexModule {
   }
 
   get dateFilters() {
-    return {
-      firstmjd: this.firstmjd,
-    }
+    return this.firstmjd
   }
 
   @VuexMutation
   setDateFilters(filters) {
-    this.firstmjd[0] = filters.minMjd
-    this.firstmjd[1] = filters.maxMjd
+    this.firstmjd = [filters.minMjd, filters.maxMjd]
   }
 
   get conesearchFilters() {
