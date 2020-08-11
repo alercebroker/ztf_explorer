@@ -7,8 +7,6 @@ name: S3Deploy
 on:
   push:
     branches: [ nuxt-js ]
-  pull_request:
-    branches: [ nuxt-js ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
