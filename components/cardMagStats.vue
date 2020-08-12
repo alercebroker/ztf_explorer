@@ -57,7 +57,6 @@ export default class CardMagStats extends Vue {
   }
 
   get isLoading() {
-    console.log(this.$store.state.stats.loading)
     return this.$store.state.stats.loading
   }
 

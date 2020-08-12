@@ -5,10 +5,6 @@ import {
   VuexAction,
 } from 'nuxt-property-decorator'
 
-function findNewObjectIndex(list, oid, n) {
-  return list.findIndex((x) => x.oid === oid) + n
-}
-
 @Module({ name: 'object', namespaced: true, stateFactory: true })
 export default class Object_ extends VuexModule {
   loading = false
@@ -47,6 +43,7 @@ export default class Object_ extends VuexModule {
     try {
       const object = await this.store.$ztfApi.getObject(val)
       this.setObject(object.data)
+      this.setObjectId(object.data.oid)
       this.setError(null)
     } catch (error) {
       this.setError(error)
@@ -56,35 +53,29 @@ export default class Object_ extends VuexModule {
 
   @VuexAction({ rawError: true })
   async changeItem(n) {
-    const nextObjectIndex = findNewObjectIndex(
-      this.store.state.objects.list,
-      this.objectId,
+    const nextObjectIndex =
+      this.store.state.objects.list.findIndex((x) => x.oid === this.objectId) +
       n
-    )
     if (
       nextObjectIndex >= 0 &&
       nextObjectIndex < this.store.state.objects.list.length
     ) {
+      // set next object
       this.setObjectId(this.store.state.objects.list[nextObjectIndex].oid)
     } else if (nextObjectIndex > 0 && this.store.state.pagination.hasNext) {
-      this.context.dispatch(
-        'pagination/setPage',
-        this.store.state.pagination.next,
-        { root: true }
-      )
-      this.context.dispatch('pagination/goToNext')
-      await this.context.dispatch('filters/search').search()
+      // get next page from API
+      this.context.dispatch('pagination/goToNext', null, { root: true })
+      await this.context.dispatch('filters/search', null, { root: true })
+      // set first object of result page
       this.setObjectId(this.store.state.objects.list[0].oid)
     } else if (nextObjectIndex < 0 && this.store.state.pagination.hasPrev) {
-      this.context.dispatch(
-        'pagination/setPage',
-        this.store.state.pagination.prev,
-        { root: true }
-      )
+      // get previous page from API
       this.context.dispatch('pagination/goToPrev', null, { root: true })
       await this.context.dispatch('filters/search', null, { root: true })
+      // set last object from result page
       this.setObjectId(
         this.store.state.objects.list[this.store.state.objects.list.length - 1]
+          .oid
       )
     }
   }

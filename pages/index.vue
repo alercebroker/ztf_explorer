@@ -148,7 +148,6 @@ export default class Index extends Vue {
   }
 
   onPaginationOptionsChange() {
-    paginationStore.setCount(false)
     this.debouncedSearch()
   }
 
