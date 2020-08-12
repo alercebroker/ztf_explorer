@@ -16,24 +16,19 @@
     </v-card>
     <v-card v-else :class="cardClass">
       <v-toolbar dense flat>
-        <v-row align="center">
-          <v-col cols="6">
-            <v-toolbar-title>Classification</v-toolbar-title>
-          </v-col>
-          <v-col cols="6" class="mt-4">
-            <v-select
-              v-model="selected"
-              :items="classifiers_"
-              item-value="index"
-              item-text="name"
-              prepend-icon="mdi-robot"
-            />
-          </v-col>
-        </v-row>
+        <v-toolbar-title>Classification</v-toolbar-title>
       </v-toolbar>
       <v-divider />
       <v-card-text v-if="plotData" style="height: 100%;">
-        <alerce-radar-plot :data="plotData" style="height: 100%;" />
+        <v-select
+          v-model="selected"
+          :items="classifiers_"
+          item-value="index"
+          item-text="name"
+          prepend-icon="mdi-robot"
+          class="py-0 my-0"
+        />
+        <alerce-radar-plot :data="plotData" />
       </v-card-text>
     </v-card>
   </v-col>
@@ -115,3 +110,9 @@ export default class CardClassifiers extends Vue {
   }
 }
 </script>
+
+<style scoped>
+.v-input__slot {
+  margin-bottom: 0;
+}
+</style>
