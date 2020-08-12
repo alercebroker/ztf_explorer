@@ -20,6 +20,13 @@ function renameFields(params) {
   return params
 }
 
+function filterFunc(prefix, value) {
+  if (value === '') {
+    return
+  }
+  return value
+}
+
 export default function ({ $axios, store, redirect }, inject) {
   const ztfApi = $axios.create({
     baseURL: 'http://dev.api.alerce.online/',
@@ -31,7 +38,11 @@ export default function ({ $axios, store, redirect }, inject) {
     return ztfApi.get('objects/', {
       params: searchParameters,
       paramsSerializer(params) {
-        return qs.stringify(params, { arrayFormat: 'repeat', skipNulls: true })
+        return qs.stringify(params, {
+          arrayFormat: 'repeat',
+          skipNulls: true,
+          filter: filterFunc,
+        })
       },
     })
   }
