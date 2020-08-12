@@ -6,7 +6,7 @@
           indeterminate
           color="primary"
         ></v-progress-circular>
-        Fetching data for object {{ $route.params.oid }} ...
+        Fetching data for object {{ objectId }} ...
       </v-card-text>
       <v-card-text v-if="error">
         <v-alert text prominent type="error" icon="mdi-cloud-alert">
@@ -49,9 +49,9 @@
         <v-spacer />
         <!--DOWNLOAD LIGHTCURVE-->
         <alerce-download-lightcurve-button
-          :oid="objectInformation.oid"
+          :oid="objectId"
           :detections="lightcurve.detections"
-          :nonDetections="lightcurve.nonDetections"
+          :non-detections="lightcurve.nonDetections"
         />
       </v-card-actions>
     </v-card>
@@ -100,6 +100,10 @@ export default class CardLightCurve extends Vue {
 
   get objectInformation() {
     return this.$store.state.object.object
+  }
+
+  get objectId() {
+    return this.$store.state.object.objectId
   }
 
   options = [
