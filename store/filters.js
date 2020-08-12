@@ -139,14 +139,14 @@ export default class Filters extends VuexModule {
 
   @VuexAction()
   setPaginationState(result) {
-    if (result.total) {
+    if (paginationStore.count) {
       paginationStore.setTotal(result.total)
+      paginationStore.setPage(result.page)
+      paginationStore.setNext(result.next)
+      paginationStore.setPrev(result.prev)
+      paginationStore.setHasNext(result.has_next)
+      paginationStore.setHasPrev(result.has_prev)
     }
-    paginationStore.setPage(result.page)
-    paginationStore.setNext(result.next)
-    paginationStore.setPrev(result.prev)
-    paginationStore.setHasNext(result.has_next)
-    paginationStore.setHasPrev(result.has_prev)
     paginationStore.setCount('true')
   }
 
