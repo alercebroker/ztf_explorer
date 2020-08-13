@@ -91,4 +91,9 @@ export default class Pagination extends VuexModule {
       this.setPage(this.prev)
     }
   }
+
+  @VuexAction
+  changePage(val) {
+    this.setPage(val)
+  }
 }
