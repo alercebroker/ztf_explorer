@@ -1,5 +1,6 @@
 <template>
   <v-app dark>
+    <navigation-bar />
     <alerce-a-header title="ALeRCE ZTF Explorer" :items="items" />
     <v-main>
       <nuxt />
