@@ -79,4 +79,9 @@ export default class Object_ extends VuexModule {
       )
     }
   }
+
+  @VuexAction({ rawError: true })
+  changeObjectId(val) {
+    this.setObjectId(val)
+  }
 }

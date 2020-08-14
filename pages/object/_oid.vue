@@ -50,9 +50,9 @@
 </template>
 
 <script>
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
-@Component
+@Component({ layout: 'oid' })
 export default class ObjectView extends Vue {
   head() {
     return {
@@ -61,14 +61,13 @@ export default class ObjectView extends Vue {
   }
 
   async fetch() {
-    this.$store.dispatch('lightcurve/getLightCurve', this.$route.params.oid)
-    this.$store.dispatch('stats/getStats', this.$route.params.oid)
-    this.$store.dispatch(
-      'probabilities/getProbabilities',
-      this.$route.params.oid
-    )
-    this.$store.dispatch('features/getFeatures', this.$route.params.oid)
-    await this.$store.dispatch('object/getObject', this.$route.params.oid)
+    let oid = this.$route.params.oid
+    if (this.selectedObject) oid = this.selectedObject
+    this.$store.dispatch('lightcurve/getLightCurve', oid)
+    this.$store.dispatch('stats/getStats', oid)
+    this.$store.dispatch('probabilities/getProbabilities', oid)
+    this.$store.dispatch('features/getFeatures', oid)
+    await this.$store.dispatch('object/getObject', oid)
     this.$store.dispatch('xmatches/getXmatch', {
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
@@ -143,6 +142,11 @@ export default class ObjectView extends Vue {
       )
       return periods.find((x) => x.fid === max.fid).value
     }
+  }
+
+  @Watch('selectedObject')
+  onSelectedObjectChange(val) {
+    this.$fetch()
   }
 }
 </script>
