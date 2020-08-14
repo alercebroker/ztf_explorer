@@ -11,6 +11,7 @@ export default class LightCurveStore extends VuexModule {
   error = null
   detections = []
   nonDetections = []
+  selectedDetection = null
 
   @VuexMutation
   setDetections(val) {
@@ -32,6 +33,16 @@ export default class LightCurveStore extends VuexModule {
     this.error = val
   }
 
+  @VuexMutation
+  setSelectedDetection(val) {
+    this.selectedDetection = val
+  }
+
+  @VuexAction
+  changeDetection(val) {
+    this.setSelectedDetection(val)
+  }
+
   @VuexAction({ rawError: true })
   async getLightCurve(val) {
     this.setLoading(true)
@@ -39,6 +50,7 @@ export default class LightCurveStore extends VuexModule {
       const lightCurve = await this.store.$ztfApi.getLightCurve(val)
       this.setDetections(lightCurve.data.detections)
       this.setNonDetections(lightCurve.data.non_detections)
+      this.setSelectedDetection(null)
       this.setError(null)
     } catch (error) {
       this.setError(error)
