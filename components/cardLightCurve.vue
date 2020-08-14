@@ -15,7 +15,7 @@
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
-      <v-card-text>
+      <v-card-text class="pb-0">
         <select-lightcurve :selected="selected">
           <alerce-light-curve-plot
             slot="difference"
@@ -40,7 +40,7 @@
         </select-lightcurve>
       </v-card-text>
       <!-- OPTIONS -->
-      <v-card-actions>
+      <v-card-actions class="py-0">
         <!--RADIO BUTTONS-->
         <alerce-lightcurve-radio-buttons
           v-model="selected"

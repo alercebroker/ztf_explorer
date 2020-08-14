@@ -1,7 +1,12 @@
 <template>
   <v-col v-if="!isLoading && !error" :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card>
-      <alerce-cross-matches :catalogs="catalogs" />
+      <v-card-title>
+        Crossmatch
+      </v-card-title>
+      <v-card-text class="pb-0">
+        <alerce-cross-matches :catalogs="catalogs" />
+      </v-card-text>
     </v-card>
   </v-col>
 </template>
