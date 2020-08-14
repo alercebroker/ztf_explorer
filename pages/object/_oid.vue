@@ -37,7 +37,6 @@
       />
 
       <card-stamps
-        v-model="selectedDetection"
         :oid="selectedObject"
         :cross-hair-space="25"
         card-class="grid-card"
@@ -112,13 +111,6 @@ export default class ObjectView extends Vue {
 
   get selectedObject() {
     return this.$store.state.object.objectId
-  }
-
-  get selectedDetection() {
-    const detection = this.$store.state.lightcurve.detections.findIndex(
-      (x) => x.has_stamp
-    )
-    return detection
   }
 
   set selectedObject(val) {}

@@ -15,7 +15,7 @@
       </v-card-text>
       <alerce-stamps-card
         v-else
-        v-model="localSelectedDetection"
+        v-model="selectedDetection"
         :detections="detections"
         :object="oid"
         :cross-hair-space="crossHairSpace"
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { Vue, Component, Prop, Model, Watch } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class CardStamps extends Vue {
@@ -43,14 +43,6 @@ export default class CardStamps extends Vue {
 
   @Prop({ type: String }) cardClass
 
-  @Model('selectDetection', { type: Number, default: 0 }) selectedDetection
-
-  localSelectedDetection = 0
-
-  beforeMount() {
-    this.localSelectedDetection = this.selectedDetection
-  }
-
   get detections() {
     return this.$store.state.lightcurve.detections
   }
@@ -63,9 +55,17 @@ export default class CardStamps extends Vue {
     return this.$store.state.lightcurve.error
   }
 
-  @Watch('selectedDetection')
-  onSelectedDetectionChange(newVal) {
-    this.localSelectedDetection = newVal
+  get selectedDetection() {
+    if (this.$store.state.lightcurve.selectedDetection != null)
+      return this.$store.state.lightcurve.selectedDetection
+    const detection = this.$store.state.lightcurve.detections.findIndex(
+      (x) => x.has_stamp
+    )
+    return detection
+  }
+
+  set selectedDetection(val) {
+    this.$store.dispatch('lightcurve/changeDetection', val)
   }
 }
 </script>

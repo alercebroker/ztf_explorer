@@ -23,12 +23,14 @@
             :non-detections="lightcurve.nonDetections"
             type="difference"
             :dark="isDark"
+            @detectionClick="onDetectionClick"
           />
           <alerce-light-curve-plot
             slot="apparent"
             :detections="lightcurve.detections"
             type="apparent"
             :dark="isDark"
+            @detectionClick="onDetectionClick"
           />
           <alerce-light-curve-plot
             slot="folded"
@@ -36,6 +38,7 @@
             :period="period"
             type="folded"
             :dark="isDark"
+            @detectionClick="onDetectionClick"
           />
         </select-lightcurve>
       </v-card-text>
@@ -144,6 +147,10 @@ export default class CardLightCurve extends Vue {
           break
       }
     })
+  }
+
+  onDetectionClick(val) {
+    this.$store.dispatch('lightcurve/changeDetection', val.index)
   }
 }
 </script>
