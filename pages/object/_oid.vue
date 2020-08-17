@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row align="stretch">
       <card-basic-information
         :object="$route.params.oid"
@@ -31,7 +31,7 @@
       <card-classifiers
         card-class="grid-card"
         cols="12"
-        lg="3"
+        lg="4"
         md="6"
         sm="12"
       />
@@ -40,7 +40,7 @@
         :oid="selectedObject"
         :cross-hair-space="25"
         card-class="grid-card"
-        lg="6"
+        lg="5"
         md="6"
       />
 
@@ -153,5 +153,9 @@ export default class ObjectView extends Vue {
 <style>
 .grid-card {
   height: 100%;
+}
+*[class^='col-'] {
+  padding-top: 0;
+  padding-left: 0;
 }
 </style>

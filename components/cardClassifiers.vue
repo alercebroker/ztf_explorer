@@ -15,10 +15,6 @@
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
-      <v-toolbar dense flat>
-        <v-toolbar-title>Classification</v-toolbar-title>
-      </v-toolbar>
-      <v-divider />
       <v-card-text v-if="plotData" style="height: 100%;">
         <v-select
           v-model="selected"

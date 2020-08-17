@@ -8,12 +8,12 @@ const parallelize = require('concurrent-transform')
 const config = {
   // Required
   params: {
-    Bucket: process.env.AWS_BUCKET_NAME
+    Bucket: process.env.AWS_BUCKET_NAME,
   },
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    signatureVersion: 'v3'
+    signatureVersion: 'v3',
   },
 
   // Optional
@@ -29,7 +29,7 @@ const config = {
   indexRootPath: true,
   cacheFileName: '.awspublish',
   concurrentUploads: 10,
-  wait: true // wait for CloudFront invalidation to complete (about 30-60 seconds)
+  wait: true, // wait for CloudFront invalidation to complete (about 30-60 seconds)
 }
 
 gulp.task('deploy', function () {

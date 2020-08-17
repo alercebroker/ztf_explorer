@@ -15,7 +15,7 @@
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
-      <v-card-title>Magnitude Statistics</v-card-title>
+      <v-card-title class="pb-0">Magnitude Statistics</v-card-title>
       <v-card-text>
         <alerce-mag-stats
           :stats="localStats"
