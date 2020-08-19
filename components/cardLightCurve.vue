@@ -74,7 +74,7 @@ export default class CardLightCurve extends Vue {
 
   @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Number, default: 1 }) period
+  @Prop({ type: Number, default: null }) period
 
   @Prop({ type: Boolean, default: true }) show
 
@@ -146,7 +146,7 @@ export default class CardLightCurve extends Vue {
           x.default = !val.corrected
           break
         case 'folded':
-          x.show = val.corrected
+          x.show = this.period !== null
           break
       }
     })
