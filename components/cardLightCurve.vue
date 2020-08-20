@@ -15,6 +15,7 @@
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
+      aaa {{ period !== null }} {{ period }}
       <v-card-text class="pb-0">
         <select-lightcurve :selected="selected">
           <alerce-light-curve-plot
@@ -150,6 +151,11 @@ export default class CardLightCurve extends Vue {
           break
       }
     })
+  }
+
+  @Watch('period')
+  onPeriod(val) {
+    this.options[2].show = val !== null && this.objectInformation.corrected
   }
 
   onDetectionClick(val) {
