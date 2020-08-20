@@ -146,7 +146,7 @@ export default class CardLightCurve extends Vue {
           x.default = !val.corrected
           break
         case 'folded':
-          x.show = this.period !== null
+          x.show = this.period !== null && val.corrected
           break
       }
     })
