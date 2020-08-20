@@ -152,6 +152,11 @@ export default class CardLightCurve extends Vue {
     })
   }
 
+  @Watch('period')
+  onPeriod(val) {
+    this.options[2].show = val !== null && this.objectInformation.corrected
+  }
+
   onDetectionClick(val) {
     this.$store.dispatch('lightcurve/changeDetection', val.index)
   }
