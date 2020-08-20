@@ -352,9 +352,9 @@ export default {
                 //         : "#"
                 // },
                 {
-                    name: "SDSS DR15",
+                    name: "SDSS DR16",
                     link: this.ztf_object
-                        ? "http://skyserver.sdss.org/dr15/en/tools/chart/navi.aspx?ra=" +
+                        ? "http://skyserver.sdss.org/dr16/en/tools/chart/navi.aspx?ra=" +
                           this.ztf_object.meanra +
                           "&dec=" +
                           this.ztf_object.meandec
