@@ -130,17 +130,9 @@ export default class ObjectView extends Vue {
       (x) => x.name === 'Multiband_period'
     )
     if (periods.length === 0) {
-      return 1
-    } else if (periods.length === 1) {
-      return periods[0].value
+      return null
     } else {
-      const nDet = this.$store.state.features.features.filter(
-        (x) => x.name === 'n_det'
-      )
-      const max = nDet.reduce((prev, current) =>
-        prev.value > current.value ? prev : current
-      )
-      return periods.find((x) => x.fid === max.fid).value
+      return periods[0].value
     }
   }
 

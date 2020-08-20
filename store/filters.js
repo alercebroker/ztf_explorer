@@ -6,7 +6,7 @@ import {
 } from 'nuxt-property-decorator'
 import { objectsStore, paginationStore } from '~/store'
 const defaultState = {
-  oid: null,
+  oid: [],
   selectedClassifier: null,
   selectedClass: null,
   classifiers: [],
