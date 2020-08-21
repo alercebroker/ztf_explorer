@@ -26,6 +26,15 @@
         />
         <alerce-radar-plot :data="plotData" />
       </v-card-text>
+      <v-card-text v-else class="fill-height">
+        <v-row align="center" justify="center" class="fill-height" no-gutters>
+          <v-col align-self="center">
+            <v-alert icon="mdi-alert" border="left" outlined>
+              <p v-html="messageNotFound" class="ma-0"></p>
+            </v-alert>
+          </v-col>
+        </v-row>
+      </v-card-text>
     </v-card>
   </v-col>
 </template>
@@ -77,6 +86,10 @@ export default class CardClassifiers extends Vue {
     return this.classifiers_.length > 0
       ? this.classifiers_[this.selected].probs
       : null
+  }
+
+  get messageNotFound() {
+    return `The object <b> ${this.$store.state.object.objectId} </b> has not been classified yet.`
   }
 
   get classifiers_() {
