@@ -106,6 +106,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/toast',
+    '@nuxtjs/pwa',
   ],
   /*
    ** Axios module configuration
@@ -131,6 +132,25 @@ export default {
           success: colors.green.accent3,
         },
       },
+    },
+  },
+  pwa: {
+    icon: false,
+    manifest: {
+      name: 'ALeRCE Explorer',
+    },
+    workbox: {
+      runtimeCaching: [
+        {
+          urlPattern: 'https://alerce-static.s3.amazonaws.com/*',
+        },
+        {
+          urlPattern: 'http://alasky.u-strasbg.fr/MocServer/*',
+        },
+        {
+          urlPattern: 'http://dev.api.alerce.online/*',
+        },
+      ],
     },
   },
   /*
