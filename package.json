@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "component-library": "file:../component-library",
+    "@alerce/components": "0.0.13-dev",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/toast": "^3.3.1",
     "@nuxtjs/vuetify": "^1.11.2",
