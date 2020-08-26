@@ -30,7 +30,9 @@
         <v-row align="center" justify="center" class="fill-height" no-gutters>
           <v-col align-self="center">
             <v-alert icon="mdi-alert" border="left" outlined>
-              <p v-html="messageNotFound" class="ma-0"></p>
+              <p class="ma-0">
+                The object <b> {{ objectId }} </b> has not been classified yet.
+              </p>
             </v-alert>
           </v-col>
         </v-row>
@@ -88,10 +90,6 @@ export default class CardClassifiers extends Vue {
       : null
   }
 
-  get messageNotFound() {
-    return `The object <b> ${this.$store.state.object.objectId} </b> has not been classified yet.`
-  }
-
   get classifiers_() {
     const grouped = this.groupBy(this.classifiers, 'classifier_name')
     const keys = Object.keys(grouped)
@@ -116,6 +114,10 @@ export default class CardClassifiers extends Vue {
 
   get error() {
     return this.$store.state.probabilities.error
+  }
+
+  get objectId() {
+    return this.$store.state.object.objectId
   }
 }
 </script>
