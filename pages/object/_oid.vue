@@ -67,6 +67,7 @@ export default class ObjectView extends Vue {
     this.$store.dispatch('stats/getStats', oid)
     this.$store.dispatch('probabilities/getProbabilities', oid)
     this.$store.dispatch('features/getFeatures', oid)
+    this.$store.dispatch('tns/setDefaultValues')
     await this.$store.dispatch('object/getObject', oid)
     this.$store.dispatch('xmatches/getXmatch', {
       ra: this.objectInformation.meanra,
