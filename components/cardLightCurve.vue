@@ -138,12 +138,12 @@ export default class CardLightCurve extends Vue {
   onObjectInformation(val) {
     this.options.forEach((x) => {
       switch (x.value) {
+        case 'difference':
+          x.default = !val.corrected
+          break
         case 'apparent':
           x.show = val.corrected
           x.default = val.corrected
-          break
-        case 'difference':
-          x.default = !val.corrected
           break
         case 'folded':
           x.show = this.period !== null && val.corrected
@@ -154,7 +154,9 @@ export default class CardLightCurve extends Vue {
 
   @Watch('period')
   onPeriod(val) {
-    this.options[2].show = val !== null && this.objectInformation.corrected
+    if (this.objectInformation) {
+      this.options[2].show = val !== null && this.objectInformation.corrected
+    }
   }
 
   onDetectionClick(val) {

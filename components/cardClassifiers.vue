@@ -26,6 +26,17 @@
         />
         <alerce-radar-plot :data="plotData" />
       </v-card-text>
+      <v-card-text v-else class="fill-height">
+        <v-row align="center" justify="center" class="fill-height" no-gutters>
+          <v-col align-self="center">
+            <v-alert icon="mdi-alert" border="left" outlined>
+              <p class="ma-0">
+                The object <b> {{ objectId }} </b> has not been classified yet.
+              </p>
+            </v-alert>
+          </v-col>
+        </v-row>
+      </v-card-text>
     </v-card>
   </v-col>
 </template>
@@ -103,6 +114,10 @@ export default class CardClassifiers extends Vue {
 
   get error() {
     return this.$store.state.probabilities.error
+  }
+
+  get objectId() {
+    return this.$store.state.object.objectId
   }
 }
 </script>
