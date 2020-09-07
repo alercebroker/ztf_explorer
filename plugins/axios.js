@@ -29,7 +29,7 @@ function filterFunc(prefix, value) {
 
 export default function ({ $axios, store, redirect }, inject) {
   const ztfApi = $axios.create({
-    baseURL: 'http://dev.api.alerce.online/',
+    baseURL: 'https://dev.api.alerce.online/',
   })
 
   ztfApi.search = (searchParameters) => {
