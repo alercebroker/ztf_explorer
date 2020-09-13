@@ -100,7 +100,10 @@ export default {
     },
   },
   pwa: {
-    icon: false,
+    icon: {
+      source: '~/assests/alerce_logo.svg',
+      fileName: 'alerce_logo.svg',
+    },
     manifest: {
       name: 'ALeRCE Explorer',
     },
