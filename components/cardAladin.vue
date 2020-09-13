@@ -83,3 +83,6 @@ export default class CardAladin extends Vue {
   }
 }
 </script>
+<style>
+@import 'https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css';
+</style>

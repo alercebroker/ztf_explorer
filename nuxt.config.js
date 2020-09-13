@@ -28,49 +28,14 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    script: [
-      {
-        type: 'text/javascript',
-        src:
-          'https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.js',
-        charset: 'utf-8',
-        body: true,
-      },
-
-      {
-        type: 'text/javascript',
-        src: 'https://code.jquery.com/jquery-1.12.1.min.js',
-        charset: 'utf-8',
-      },
-    ],
+    script: [],
     link: [
       {
         rel: 'icon',
         type: 'image/x-icon',
         href: '/favicon.ico',
       },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css',
-      },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons',
-      },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
-      },
-      {
-        rel: 'stylesheet',
-        href:
-          'https://cdnjs.cloudflare.com/ajax/libs/intro.js/2.9.3/introjs.css',
-        integrity: 'sha256-OYXGS5m4oWZAAqoAKpf7Y3bIdzdd9jBfly/xCavEpGw=',
-        crossorigin: 'anonymous',
-      },
     ],
   },
   /*
@@ -106,6 +71,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/toast',
+    '@nuxtjs/pwa',
   ],
   /*
    ** Axios module configuration
@@ -131,6 +97,28 @@ export default {
           success: colors.green.accent3,
         },
       },
+    },
+  },
+  pwa: {
+    icon: {
+      source: '~/assests/explorer.png',
+      fileName: 'explorer.png',
+    },
+    manifest: {
+      name: 'ALeRCE Explorer',
+    },
+    workbox: {
+      runtimeCaching: [
+        {
+          urlPattern: 'https://alerce-static.s3.amazonaws.com/*',
+        },
+        {
+          urlPattern: 'http://alasky.u-strasbg.fr/MocServer/*',
+        },
+        {
+          urlPattern: 'http://dev.api.alerce.online/*',
+        },
+      ],
     },
   },
   /*
