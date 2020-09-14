@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12">
+    <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12" @keyup="onKeyUp">
       <search-bar
         :panels.sync="panels"
         :general-filters.sync="generalFilters"
@@ -137,6 +137,12 @@ export default class Index extends Vue {
     leading: false,
     trailing: true,
   })
+
+  onKeyUp(key) {
+    if (key.key === 'Enter') {
+      this.onSearchClicked()
+    }
+  }
 
   onSearchClicked() {
     paginationStore.setPage(1)
