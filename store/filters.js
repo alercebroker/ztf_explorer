@@ -24,6 +24,8 @@ const defaultState = {
   error: null,
 }
 
+const qs = require('qs')
+
 @Module({
   name: 'filters',
   namespaced: true,
@@ -66,6 +68,22 @@ export default class Filters extends VuexModule {
       ndet: this.ndet,
       ranking: this.ranking,
     }
+  }
+
+  get querystring() {
+    return qs.stringify(
+      {
+        ...this.generalFilters,
+        ...this.dateFilters,
+        ...this.conesearchFilters,
+        ...paginationStore.pageFilters,
+      },
+      {
+        arrayFormat: 'repeat',
+        skipNulls: true,
+        filter: (prefix, value) => (value === '' ? null : value),
+      }
+    )
   }
 
   @VuexMutation
