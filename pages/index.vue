@@ -53,6 +53,9 @@ export default class Index extends Vue {
   }
 
   paramsToJson(query) {
+    if (query.oid !== null && typeof query.oid === 'string') {
+      query.oid = [query.oid]
+    }
     this.generalFilters = query
     this.dateFilters = query
     this.conesearchFilters = query

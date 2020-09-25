@@ -114,7 +114,9 @@ export default class Filters extends VuexModule {
     this.probability = filters.probability
     this.ndet = filters.ndet
     this.ranking = filters.ranking
-    paginationStore.setSortBy(filters.oid.length > 1 ? null : 'probability')
+    if (filters.oid !== undefined) {
+      paginationStore.setSortBy(filters.oid.length > 1 ? null : 'probability')
+    }
   }
 
   get dateFilters() {
