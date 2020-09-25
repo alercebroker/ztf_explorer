@@ -114,7 +114,7 @@ export default class Filters extends VuexModule {
     this.probability = filters.probability
     this.ndet = filters.ndet
     this.ranking = filters.ranking
-    if (filters.oid !== null) {
+    if (filters.oid !== undefined) {
       paginationStore.setSortBy(filters.oid.length > 1 ? null : 'probability')
     }
   }
