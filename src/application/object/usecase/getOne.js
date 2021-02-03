@@ -2,34 +2,36 @@ import HttpError from '../../../shared/error/httpError'
 import { ParseError } from '../../../shared/error'
 
 /**
- * Gets an object given an objectId
+ * Gets an object given an objectId and executes callbacks
+ * You should call getOne(service).execute(oid, {callbacks})
  * @param { ObjectService } service an ObjectService that performs API calls
- * @param { string } objectId the identifier for the object
- * @return { Object_ } an object instance
+ * @return {function} A function that executes callbacks
  */
-export function getOne(service, objectId) {
+export function getOne(service) {
   return { execute }
-
-  async function execute({
-    returnSuccess,
-    returnClientError,
-    returnServerError,
-    returnParseError,
-  }) {
+  /**
+   * Calls service getOne and executes callbacks
+   * @param { string } objectId the identifier for the object
+   * @param { Object } callbacks Object that should contain a returnSuccess, returnClientError, returnServerError, returnParseError
+   */
+  async function execute(
+    objectId,
+    { returnSuccess, returnClientError, returnServerError, returnParseError }
+  ) {
     const result = await service.getOne(objectId)
     if (result.isFailure) {
       if (result.error instanceof HttpError) {
         if (result.error.isClientError()) {
-          returnClientError()
+          returnClientError(result.error)
           return
         }
         if (result.error.isServerError()) {
-          returnServerError()
+          returnServerError(result.error)
           return
         }
       }
       if (result.error instanceof ParseError) {
-        returnParseError()
+        returnParseError(result.error)
         return
       }
     }

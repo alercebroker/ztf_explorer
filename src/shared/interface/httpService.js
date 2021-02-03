@@ -1,10 +1,9 @@
-import { ParseError } from '../error'
 import HttpError from '../error/httpError'
 import { Result } from '../result'
 
 const axios = require('axios')
 
-export default class ZtfApi {
+export default class HttpService {
   constructor(baseUrl) {
     this.baseUrl = baseUrl
     this.axiosService = axios.create({
@@ -64,8 +63,9 @@ export default class ZtfApi {
     try {
       const response = await this.axiosService.get(url, config)
       return parser.toDomain(response.data)
-    } catch (error) {
-      return error
+    } catch (resultError) {
+      // catched error should be an HttpError wrapped in a Result object
+      return resultError
     }
   }
 }

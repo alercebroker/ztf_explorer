@@ -37,7 +37,9 @@ export default class Result {
         if (result.isFailure) return result
       }
     }
-    if (results.isFailure) return results
+    if (results instanceof Result) {
+      if (results.isFailure) return results
+    }
     return Result.ok()
   }
 }

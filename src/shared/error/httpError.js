@@ -10,15 +10,15 @@ export default class HttpError extends Error {
     this.message = message || httpStatusCode[status]
   }
 
-  isClientError(): boolean {
+  isClientError() {
     return this.status >= 400 && this.status <= 499
   }
 
-  isServerError(): boolean {
+  isServerError() {
     return this.status >= 500 && this.status <= 599
   }
 
-  static fromStatus(status: number, message?: string) {
+  static fromStatus(status, message) {
     return new this(status, message)
   }
 }
