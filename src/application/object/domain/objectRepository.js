@@ -11,7 +11,7 @@ class ObjectRepository {
    * Gets one object by objectId
    * @param { Filter } searchParameters parameters used to filter objects
    */
-  getAll(searchParameters) {
+  getMany(searchParameters) {
     throw new Error('ERR_METHOD_NOT_IMPLEMENTED')
   }
 }

@@ -1,53 +1,48 @@
-class Object_ {
-  constructor(
-    oid,
-    ndethist,
-    ncovhist,
-    mjdstarthist,
-    mjdendhist,
-    corrected,
-    stellar,
-    ndet,
-    grMax,
-    grMaxCorr,
-    grMean,
-    grMeanCorr,
-    firstmjd,
-    lastmjd,
-    deltajd,
-    meanra,
-    meandec,
-    sigmara,
-    sigmadec,
-    className,
-    classifier,
-    probability,
-    stepIdCorr
-  ) {
-    this.oid = oid
-    this.ndethist = ndethist
-    this.ncovhist = ncovhist
-    this.mjdstarthist = mjdstarthist
-    this.mjdendhist = mjdendhist
-    this.corrected = corrected
-    this.stellar = stellar
-    this.ndet = ndet
-    this.g_r_max = grMax
-    this.g_r_max_corr = grMaxCorr
-    this.g_r_mean = grMean
-    this.g_r_mean_corr = grMeanCorr
-    this.firstmjd = firstmjd
-    this.lastmjd = lastmjd
-    this.deltajd = deltajd
-    this.meanra = meanra
-    this.meandec = meandec
-    this.sigmara = sigmara
-    this.sigmadec = sigmadec
-    this.class_name = className
-    this.classifier = classifier
-    this.probability = probability
-    this.step_id_corr = stepIdCorr
+export class Object_ {
+  constructor(data) {
+    this.oid = data.oid
+    this.ndethist = data.ndethist
+    this.ncovhist = data.ncovhist
+    this.mjdstarthist = data.mjdstarthist
+    this.mjdendhist = data.mjdendhist
+    this.corrected = data.corrected
+    this.stellar = data.stellar
+    this.ndet = data.ndet
+    this.grMax = data.grMax
+    this.grMaxCorr = data.grMaxCorr
+    this.grMean = data.grMean
+    this.grMeanCorr = data.grMeanCorr
+    this.firstmjd = data.firstmjd
+    this.lastmjd = data.lastmjd
+    this.deltajd = data.deltajd
+    this.meanra = data.meanra
+    this.meandec = data.meandec
+    this.sigmara = data.sigmara
+    this.sigmadec = data.sigmadec
+    this.className = data.className
+    this.classifier = data.classifier
+    this.probability = data.probability
+    this.stepIdCorr = data.stepIdCorr
+    this.validate()
+  }
+
+  validate() {
+    const notNull = [
+      this.oid,
+      this.firstmjd,
+      this.ndet,
+      this.lastmjd,
+      this.deltajd,
+      this.meanra,
+      this.meandec,
+      this.corrected,
+      this.grMax,
+      this.grMean,
+    ]
+    notNull.forEach((x) => {
+      if (!x) {
+        throw new Error('Invalid Object')
+      }
+    })
   }
 }
-
-export { Object_ }

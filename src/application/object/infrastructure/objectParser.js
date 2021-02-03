@@ -1,58 +1,43 @@
-import { Object_ } from '../domain/object'
-import { ParseError } from '../../../shared/error/parseError'
+import Parser from '../../../shared/generic/parser'
+import { Object_ } from '../domain'
+import { Result } from '../../../shared/result'
 
-class ObjectParser {
+export default class ObjectParser extends Parser {
   /**
-   * Parses API response object(s) to domain data object
-   * @param {*} response an axios response object returned from api call
-   * @return { Object_ | Array<Object_> } a domain object or an array of objects
+   * Parses API data object(s) to domain data entity
+   * @param { Object } data a response data object returned from api call
+   * @return { Result | Array<Result> } a domain object or an array of objects
    */
-  toDomain(response) {
-    if ('items' in response.data) {
-      const respObj = response.data.items
-      return respObj.map((x) => this.parseObject(x))
+  toDomain(data) {
+    if ('items' in data) {
+      const respObj = data.items
+      const results = respObj.map((x) => {
+        const extra = {
+          grMax: x.g_r_max,
+          grMaxCorr: x.g_r_max_corr,
+          grMean: x.g_r_mean,
+          grMeanCorr: x.g_r_mean_corr,
+          stepIdCorr: x.step_id_corr,
+          className: x.class,
+        }
+        return this.parseObject(x, Object_, extra)
+      })
+      const combined = Result.combine(results)
+      if (combined.isFailure) {
+        return combined
+      }
+      return results
     } else {
-      const respObj = response.data
-      return this.parseObject(respObj)
-    }
-  }
-
-  /**
-   * Parses a object returned from API call to a domain object
-   * @param {Object} respObj an Object to convert
-   * @return { Object_ } a domain object
-   * */
-  parseObject(respObj) {
-    try {
-      return new Object_(
-        respObj.oid,
-        respObj.ndethist,
-        respObj.ncovhist,
-        respObj.mjdstarthist,
-        respObj.mjdendhist,
-        respObj.corrected,
-        respObj.stellar,
-        respObj.ndet,
-        respObj.g_r_max,
-        respObj.g_r_max_corr,
-        respObj.g_r_mean,
-        respObj.g_r_mean_corr,
-        respObj.firstmjd,
-        respObj.lastmjd,
-        respObj.deltajd,
-        respObj.meanra,
-        respObj.meandec,
-        respObj.sigmara,
-        respObj.sigmadec,
-        respObj.class,
-        respObj.classifier,
-        respObj.probability,
-        respObj.step_id_corr
-      )
-    } catch (error) {
-      throw new ParseError('Error parsing object: ' + error)
+      const respObj = data
+      const extra = {
+        grMax: respObj.g_r_max,
+        grMaxCorr: respObj.g_r_max_corr,
+        grMean: respObj.g_r_mean,
+        grMeanCorr: respObj.g_r_mean_corr,
+        stepIdCorr: respObj.step_id_corr,
+      }
+      const result = this.parseObject(respObj, Object_, extra)
+      return result
     }
   }
 }
-
-export { ObjectParser }
