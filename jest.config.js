@@ -15,7 +15,7 @@ module.exports = {
     '<rootDir>/ui/components/**/*.vue',
     '<rootDir>/ui/pages/**/*.vue',
     '<rootDir>/application/**/*.js',
-    '!**/store.js',
+    // '!**/store.js',
     '!**/*.mock.js',
     '!**/index.js',
   ],

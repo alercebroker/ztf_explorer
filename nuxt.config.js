@@ -50,7 +50,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/echarts.js', '@/plugins/axios.js'],
+  plugins: ['@/plugins/echarts.js', '@/plugins/axios.js', '@/plugins/services'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -142,6 +142,6 @@ export default {
         )
       }
     },
-    transpile: ['vuex-module-decorators'],
+    transpile: ['vuex-module-decorators', 'services'],
   },
 }

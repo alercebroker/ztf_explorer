@@ -6,19 +6,13 @@ import {
 } from 'nuxt-property-decorator'
 
 @Module({ name: 'object', namespaced: true, stateFactory: true })
-export default class Object_ extends VuexModule {
+export default class ObjectStore extends VuexModule {
   loading = false
-  objectId = null
   object = null
   error = null
   bandMap = {
     '1': 'g',
     '2': 'r',
-  }
-
-  @VuexMutation
-  setObjectId(val) {
-    this.objectId = val
   }
 
   @VuexMutation
@@ -37,18 +31,31 @@ export default class Object_ extends VuexModule {
   }
 
   @VuexAction({ rawError: true })
-  async getObject(val) {
+  async getObject(oid) {
     if (this.loading) return
     this.setLoading(true)
-    try {
-      const object = await this.store.$ztfApi.getObject(val)
-      this.setObject(object.data)
-      this.setObjectId(object.data.oid)
-      this.setError(null)
-    } catch (error) {
-      this.setError(error)
-    }
-    this.setLoading(false)
+    await this.store.$services.objects.getOne.execute(oid, {
+      returnSuccess: (object) => {
+        this.setObject(object)
+        this.setError(null)
+        this.setLoading(false)
+      },
+      returnClientError: (error) => {
+        this.setError(error.message)
+        this.setObject(null)
+        this.setLoading(false)
+      },
+      returnServerError: (error) => {
+        this.setError(error.message)
+        this.setObject(null)
+        this.setLoading(false)
+      },
+      returnParseError: (error) => {
+        this.setError(error.message)
+        this.setObject(null)
+        this.setLoading(false)
+      },
+    })
   }
 
   @VuexAction({ rawError: true })
@@ -78,10 +85,5 @@ export default class Object_ extends VuexModule {
           .oid
       )
     }
-  }
-
-  @VuexAction({ rawError: true })
-  changeObjectId(val) {
-    this.setObjectId(val)
   }
 }
