@@ -1,17 +1,18 @@
 import {
   apiObjectsMock,
   apiSingleObjectMock,
-} from '../../../shared/interface/httpService.mock'
-import { ParseError } from '../../../shared/error'
-import { mockObjects } from '../domain'
+} from '@shared/http/httpService.mock'
+import { ParseError } from '@shared/error'
+import { mockObjects } from '@app/object/domain'
 import ObjectParser from './objectParser'
 
 describe('ObjectParser', () => {
   describe('toDomain', () => {
     it('should convert response with multiple items to domain object', () => {
       const parser = new ObjectParser()
-      const results = parser.toDomain(apiObjectsMock())
-      const objs = results.map((result) => result.getValue())
+      const result = parser.toDomain(apiObjectsMock())
+      if (result.isFailure) throw new ParseError(result.error.message)
+      const objs = result.getValue()
       expect(objs).toStrictEqual(mockObjects())
     })
     it('should convert response with single item to domain object', () => {

@@ -1,8 +1,11 @@
 module.exports = {
-  rootDir: 'src/',
+  rootDir: '.',
   moduleNameMapper: {
-    '^@/(.*)$': '<rootDir>/$1',
-    '^~/(.*)$': '<rootDir>/$1',
+    '^@@/(?!node_modules)(.*)$': '<rootDir>/$1',
+    '^~~/(?!node_modules)(.*)$': '<rootDir>/src/$1',
+    '^@app/(.*)': '<rootDir>/src/application/$1',
+    '^@shared/(.*)': '<rootDir>/src/shared/$1',
+    '^@ui/(.*)': '<rootDir>/src/ui/$1',
     '^vue$': 'vue/dist/vue.common.js',
   },
   moduleFileExtensions: ['js', 'vue', 'json'],

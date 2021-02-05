@@ -32,14 +32,14 @@ export default class Result {
   }
 
   static combine(results) {
-    if (Array.isArray(results)) {
-      for (const result of results) {
-        if (result.isFailure) return result
-      }
-    }
-    if (results instanceof Result) {
-      if (results.isFailure) return results
-    }
-    return Result.ok()
+    return results.reduce(
+      (acc, result) =>
+        acc.isSuccess
+          ? result.isFailure
+            ? this.fail(result.error)
+            : this.ok(acc.getValue().concat(result.getValue()))
+          : acc,
+      this.ok([])
+    )
   }
 }

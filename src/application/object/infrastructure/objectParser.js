@@ -1,12 +1,12 @@
-import Parser from '../../../shared/generic/parser'
-import { Object_ } from '../domain'
-import { Result } from '../../../shared/result'
+import Parser from '@shared/generic/parser'
+import { Object_ } from '@app/object/domain'
+import { Result } from '@shared/result'
 
 export default class ObjectParser extends Parser {
   /**
    * Parses API data object(s) to domain data entity
    * @param { Object } data a response data object returned from api call
-   * @return { Result | Array<Result> } a domain object or an array of objects
+   * @return { Result } a result containing domain object or array
    */
   toDomain(data) {
     if ('items' in data) {
@@ -22,11 +22,7 @@ export default class ObjectParser extends Parser {
         }
         return this.parseObject(x, Object_, extra)
       })
-      const combined = Result.combine(results)
-      if (combined.isFailure) {
-        return combined
-      }
-      return results
+      return Result.combine(results)
     } else {
       const respObj = data
       const extra = {
@@ -36,8 +32,7 @@ export default class ObjectParser extends Parser {
         grMeanCorr: respObj.g_r_mean_corr,
         stepIdCorr: respObj.step_id_corr,
       }
-      const result = this.parseObject(respObj, Object_, extra)
-      return result
+      return this.parseObject(respObj, Object_, extra)
     }
   }
 }

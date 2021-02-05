@@ -24,7 +24,9 @@ export default class Parser {
       })
       return Result.ok(entity)
     } catch (error) {
-      return Result.fail(new ParseError('Error creating entity' + error))
+      return Result.fail(
+        new ParseError('Error creating entity: ' + error.message)
+      )
     }
   }
 }

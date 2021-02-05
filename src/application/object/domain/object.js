@@ -27,21 +27,21 @@ export class Object_ {
   }
 
   validate() {
-    const notNull = [
-      this.oid,
-      this.firstmjd,
-      this.ndet,
-      this.lastmjd,
-      this.deltajd,
-      this.meanra,
-      this.meandec,
-      this.corrected,
-      this.grMax,
-      this.grMean,
-    ]
-    notNull.forEach((x) => {
-      if (!x) {
-        throw new Error('Invalid Object')
+    const notNull = {
+      oid: this.oid,
+      firstmjd: this.firstmjd,
+      ndet: this.ndet,
+      lastmjd: this.lastmjd,
+      deltajd: this.deltajd,
+      meanra: this.meanra,
+      meandec: this.meandec,
+      corrected: this.corrected,
+      grMax: this.grMax,
+      grMean: this.grMean,
+    }
+    Object.keys(notNull).forEach((key) => {
+      if (!notNull[key]) {
+        throw new Error('Property ' + key + " can't be null or undefined")
       }
     })
   }

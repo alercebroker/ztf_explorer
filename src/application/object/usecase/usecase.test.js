@@ -1,8 +1,8 @@
-import { ObjectService } from '../infrastructure'
-import HttpError from '../../../shared/error/httpError'
-import { ParseError } from '../../../shared/error'
-import { Result } from '../../../shared/result'
-import { mockObjects } from '../domain'
+import { ObjectService } from '@app/object/infrastructure'
+import HttpError from '@shared/http/httpError'
+import { ParseError } from '@shared/error'
+import { Result } from '@shared/result'
+import { mockObjects } from '@app/object/domain'
 import { getOne } from './getOne'
 import { getMany } from './getMany'
 
@@ -67,9 +67,7 @@ describe('getOne', () => {
 describe('getMany', () => {
   it('should call service and execute success callback', async () => {
     const service = new ObjectService()
-    service.getMany.mockResolvedValue(
-      mockObjects().map((obj) => Result.ok(obj))
-    )
+    service.getMany.mockResolvedValue(Result.ok(mockObjects()))
     const mockCallbacks = {
       returnSuccess: (value) => {
         expect(value).toStrictEqual(mockObjects())
@@ -110,10 +108,7 @@ describe('getMany', () => {
   })
   it('should call service and execute parseError callback', async () => {
     const service = new ObjectService()
-    service.getMany.mockResolvedValue([
-      Result.ok('someValue'),
-      Result.fail(new ParseError()),
-    ])
+    service.getMany.mockResolvedValue(Result.fail(new ParseError()))
     const mockCallbacks = {
       returnSuccess: jest.fn(),
       returnClientError: jest.fn(),

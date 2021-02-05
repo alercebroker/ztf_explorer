@@ -1,6 +1,6 @@
-import HttpError from '../../../shared/error/httpError'
-import { ParseError } from '../../../shared/error'
-import { Result } from '../../../shared/result'
+import HttpError from '@shared/http/httpError'
+import { ParseError } from '@shared/error'
+import { Result } from '@shared/result'
 
 /**
  * Gets an object given an objectId
@@ -15,23 +15,22 @@ export function getMany(service) {
     { returnSuccess, returnClientError, returnServerError, returnParseError }
   ) {
     const results = await service.getMany(searchParams)
-    const combined = Result.combine(results)
-    if (combined.isFailure) {
-      if (combined.error instanceof HttpError) {
-        if (combined.error.isClientError()) {
-          returnClientError(combined.error)
+    if (results.isFailure) {
+      if (results.error instanceof HttpError) {
+        if (results.error.isClientError()) {
+          returnClientError(results.error)
           return
         }
-        if (combined.error.isServerError()) {
-          returnServerError(combined.error)
+        if (results.error.isServerError()) {
+          returnServerError(results.error)
           return
         }
       }
-      if (combined.error instanceof ParseError) {
-        returnParseError(combined.error)
+      if (results.error instanceof ParseError) {
+        returnParseError(results.error)
         return
       }
     }
-    return results.map((result) => result.getValue())
+    return results.getValue()
   }
 }

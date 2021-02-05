@@ -1,11 +1,11 @@
-import HttpService from '../../../shared/interface/httpService'
-import { Result } from '../../../shared/result'
-import HttpError from '../../../shared/error/httpError'
-import { ParseError } from '../../../shared/error'
-import { mockObjects } from '../domain/object.mock'
+import HttpError from '@shared/http/httpError'
+import HttpService from '@shared/http/httpService'
+import { Result } from '@shared/result'
+import { ParseError } from '@shared/error'
+import { mockObjects } from '@app/object/domain/object.mock'
 import ObjectService from './objectService'
 
-jest.mock('../../../shared/interface/httpService')
+jest.mock('../../../shared/http/httpService')
 
 beforeEach(() => {
   // Clear all instances and calls to constructor and all methods:

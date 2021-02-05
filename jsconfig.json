@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@@/*": ["./*"],
+      "~~/*": ["./*"],
+      "@app/*": ["./src/application/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@ui/*": ["./src/ui/*"]
+    }
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".nuxt", "dist"]
 }

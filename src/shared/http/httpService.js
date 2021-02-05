@@ -1,5 +1,5 @@
-import HttpError from '../error/httpError'
 import { Result } from '../result'
+import HttpError from './httpError'
 
 const axios = require('axios')
 

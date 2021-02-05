@@ -1,5 +1,5 @@
-import HttpError from '../../../shared/error/httpError'
-import { ParseError } from '../../../shared/error'
+import HttpError from '@shared/http/httpError'
+import { ParseError } from '@shared/error'
 
 /**
  * Gets an object given an objectId and executes callbacks
