@@ -57,7 +57,7 @@ export default class HttpService {
    * Performs an axios GET operation
    * @param { Object } obj an Object containing url and config to pass to the axios instance
    * @param { Parser } parser a parser to parse the response
-   * @return { Result | Array<Result> } a Return object that contains an entity as value
+   * @return { Result } a Return object that contains an entity as value
    * */
   async get({ url, config }, parser) {
     try {

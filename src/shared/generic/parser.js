@@ -1,5 +1,9 @@
 import { Result } from '../result'
-import { ParseError } from '../error'
+import {
+  ParseError,
+  METHOD_NOT_IMPLEMENTED,
+  PARSE_ENTITY_FAILED,
+} from '../error'
 
 export default class Parser {
   /**
@@ -8,7 +12,7 @@ export default class Parser {
    * @return { Object_ | Array<Object_> } a domain object or an array of objects
    */
   toDomain(response) {
-    throw new Error('ERR_METHOD_NOT_IMPLEMENTED')
+    throw new Error(METHOD_NOT_IMPLEMENTED)
   }
 
   /**
@@ -24,9 +28,7 @@ export default class Parser {
       })
       return Result.ok(entity)
     } catch (error) {
-      return Result.fail(
-        new ParseError('Error creating entity: ' + error.message)
-      )
+      return Result.fail(new ParseError(PARSE_ENTITY_FAILED + error.message))
     }
   }
 }

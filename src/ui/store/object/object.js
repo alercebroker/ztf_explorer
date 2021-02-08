@@ -57,33 +57,4 @@ export default class ObjectStore extends VuexModule {
       },
     })
   }
-
-  @VuexAction({ rawError: true })
-  async changeItem(n) {
-    const nextObjectIndex =
-      this.store.state.objects.list.findIndex((x) => x.oid === this.objectId) +
-      n
-    if (
-      nextObjectIndex >= 0 &&
-      nextObjectIndex < this.store.state.objects.list.length
-    ) {
-      // set next object
-      this.setObjectId(this.store.state.objects.list[nextObjectIndex].oid)
-    } else if (nextObjectIndex > 0 && this.store.state.pagination.hasNext) {
-      // get next page from API
-      this.context.dispatch('pagination/goToNext', null, { root: true })
-      await this.context.dispatch('filters/search', null, { root: true })
-      // set first object of result page
-      this.setObjectId(this.store.state.objects.list[0].oid)
-    } else if (nextObjectIndex < 0 && this.store.state.pagination.hasPrev) {
-      // get previous page from API
-      this.context.dispatch('pagination/goToPrev', null, { root: true })
-      await this.context.dispatch('filters/search', null, { root: true })
-      // set last object from result page
-      this.setObjectId(
-        this.store.state.objects.list[this.store.state.objects.list.length - 1]
-          .oid
-      )
-    }
-  }
 }

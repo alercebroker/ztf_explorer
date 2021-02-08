@@ -31,6 +31,13 @@ export default class Result {
     return new this(false, error, null)
   }
 
+  /**
+   * Combines an array of results to a single result which value is an
+   * array of all the result values. If one result is an error,
+   * it returns that errored result.
+   * @param { Array<Result> } results The array of results to be combined
+   * @return { Result } A single result with an array as value, or an error
+   * */
   static combine(results) {
     return results.reduce(
       (acc, result) =>

@@ -1,8 +1,7 @@
 /* eslint-disable */
 import { getModule } from 'nuxt-property-decorator'
 import Filters from '~/store/filters'
-import Object_ from '~/store/object'
-import Objects from '~/store/objects'
+import { ObjectStore, ObjectsStore } from '@ui/store/object'
 import Pagination from '~/store/pagination'
 import LightCurveStore from '~/store/lightcurve'
 import FeaturesStore from '~/store/features'
