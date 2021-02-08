@@ -1,6 +1,5 @@
 import HttpError from '@shared/http/httpError'
 import { ParseError } from '@shared/error'
-import { Result } from '@shared/result'
 
 /**
  * Gets an object given an objectId

@@ -1,3 +1,4 @@
+import { Result } from '@@/src/shared/result'
 import { ObjectRepository } from '../domain/'
 import ObjectParser from './objectParser'
 const qs = require('qs')
@@ -12,20 +13,24 @@ export default class ObjectService extends ObjectRepository {
   /**
    * Gets an object from the API and parses to domain object wrapped in result object
    * @param { string } objectId is the object identifier
-   * @return { Result } Result object
+   * @return { Result<Object> } Result object represented in serialized JSON
    */
   async getOne(objectId) {
-    return await this.api.get({ url: `objects/${objectId}` }, this.parser)
+    let result = await this.api.get({ url: `objects/${objectId}` }, this.parser)
+    if (result.isSuccess) {
+      result = Result.ok(result.getValue().serialize())
+    }
+    return result
   }
 
   /**
    * Gets a list of objects from the API and parses them to a list of domain objects
-   * @param { Filter } searchParameters a Filter instance with the params passed to the API
-   * @return { Array<Result> } an array of domain objects
+   * @param { Object } searchParameters Filter instance with the params passed to the API
+   * @return { Result<Object[]> } Result with value containing array of serialized objects
    */
   async getMany(searchParameters) {
     const paramsSerializer = this._paramsSerializer
-    return await this.api.get(
+    let result = await this.api.get(
       {
         url: 'objects/',
         config: {
@@ -35,6 +40,10 @@ export default class ObjectService extends ObjectRepository {
       },
       this.parser
     )
+    if (result.isSuccess) {
+      result = Result.ok(result.getValue().map((x) => x.serialize()))
+    }
+    return result
   }
 
   _filterFunc(prefix, value) {

@@ -2,7 +2,7 @@ import HttpError from '@shared/http/httpError'
 import HttpService from '@shared/http/httpService'
 import { Result } from '@shared/result'
 import { ParseError } from '@shared/error'
-import { mockObjects } from '@app/object/domain/object.mock'
+import { mockObjectsData, mockObjects } from '@app/object/domain/object.mock'
 import ObjectService from './objectService'
 
 jest.mock('../../../shared/http/httpService')
@@ -21,7 +21,7 @@ describe('ObjectService', () => {
       const result = await objectService.getOne('ZTF19aanfyey')
       expect(result).toBeInstanceOf(Result)
       const obj = result.getValue()
-      expect(obj).toStrictEqual(mockObjects()[0])
+      expect(obj).toStrictEqual(mockObjectsData()[0])
     })
     it('should return an errored result if api call fails', async () => {
       const api = new HttpService('falseApiUrl')
@@ -43,13 +43,12 @@ describe('ObjectService', () => {
   describe('getMany', () => {
     it('should call api and return array of results', async () => {
       const api = new HttpService('falseApiUrl')
-      const mockResults = mockObjects().map((obj) => Result.ok(obj))
+      const mockResults = Result.ok(mockObjects().map((obj) => obj))
       api.get.mockResolvedValue(mockResults)
       const objectService = new ObjectService(api)
       const results = await objectService.getMany({})
-      expect(results.length).toBe(mockResults.length)
-      const objects = results.map((result) => result.getValue())
-      expect(objects).toStrictEqual(mockObjects())
+      expect(results.getValue().length).toBe(mockResults.getValue().length)
+      expect(results.getValue()).toStrictEqual(mockObjectsData())
     })
     it('should return an errored result if api call fails', async () => {
       const api = new HttpService('falseApiUrl')

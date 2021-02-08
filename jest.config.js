@@ -15,9 +15,9 @@ module.exports = {
   },
   collectCoverage: true,
   collectCoverageFrom: [
-    '<rootDir>/ui/components/**/*.vue',
-    '<rootDir>/ui/pages/**/*.vue',
-    '<rootDir>/application/**/*.js',
+    '<rootDir>/src/ui/components/**/*.vue',
+    '<rootDir>/src/ui/pages/**/*.vue',
+    '<rootDir>/src/application/**/*.js',
     // '!**/store.js',
     '!**/*.mock.js',
     '!**/index.js',

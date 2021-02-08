@@ -1,5 +1,8 @@
-export class Object_ {
+import Entity from '@@/src/shared/generic/entity'
+
+export class Object_ extends Entity {
   constructor(data) {
+    super()
     this.oid = data.oid
     this.ndethist = data.ndethist
     this.ncovhist = data.ncovhist
