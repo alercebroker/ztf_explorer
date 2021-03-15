@@ -1,5 +1,14 @@
 <template>
-    <div>
+    <v-container>
+        <v-alert
+        dense
+        dismissible
+        color="yellow darken-3"
+        icon="mdi-alert"
+        border="left"
+        type="warning">
+            ALeRCE ZTF Explorer will be updated on March 26. The beta version is in <a href="https://dev.alerce.online/">https://dev.alerce.online/</a>
+        </v-alert>
         <div
             v-if="$vuetify.breakpoint.smAndDown"
             dark
@@ -36,7 +45,7 @@
                 </v-card-text>
             </v-card>
         </div>
-    </div>
+    </v-container>
 </template>
 
 <script>
