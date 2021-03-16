@@ -61,7 +61,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
-    '@alerce/components/nuxt',
+    'component-library/nuxt',
     ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}` }],
   ],
   /*
