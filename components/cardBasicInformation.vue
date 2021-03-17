@@ -22,6 +22,7 @@
         <alerce-finding-chart-button :oid="information.oid" :candid="candid" />
 
         <alerce-tns-information
+          :loading="tns.loading"
           :type="tns.type"
           :name="tns.name"
           :redshift="tns.redshift"

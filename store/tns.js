@@ -32,6 +32,14 @@ export default class TnsStore extends VuexModule {
     this.loading = val
   }
 
+  @VuexAction
+  setDefaultValues() {
+    this.setType('-')
+    this.setName('-')
+    this.setRedShift('-')
+    this.setLoading(false)
+  }
+
   @VuexAction({ rawError: true })
   async getTns(payload) {
     this.setLoading(true)
