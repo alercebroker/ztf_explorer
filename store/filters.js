@@ -24,6 +24,8 @@ const defaultState = {
   error: null,
 }
 
+const qs = require('qs')
+
 @Module({
   name: 'filters',
   namespaced: true,
@@ -68,6 +70,22 @@ export default class Filters extends VuexModule {
     }
   }
 
+  get querystring() {
+    return qs.stringify(
+      {
+        ...this.generalFilters,
+        ...this.dateFilters,
+        ...this.conesearchFilters,
+        ...paginationStore.pageFilters,
+      },
+      {
+        arrayFormat: 'repeat',
+        skipNulls: true,
+        filter: (prefix, value) => (value === '' ? null : value),
+      }
+    )
+  }
+
   @VuexMutation
   setNdet(val) {
     this.ndet = val
@@ -96,6 +114,9 @@ export default class Filters extends VuexModule {
     this.probability = filters.probability
     this.ndet = filters.ndet
     this.ranking = filters.ranking
+    if (filters.oid !== undefined) {
+      paginationStore.setSortBy(filters.oid.length > 1 ? null : 'probability')
+    }
   }
 
   get dateFilters() {

@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12">
+    <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12" @keyup="onKeyUp">
       <search-bar
         :panels.sync="panels"
         :general-filters.sync="generalFilters"
@@ -46,6 +46,26 @@ export default class Index extends Vue {
   fetch() {
     filtersStore.getClassifiers()
     filtersStore.getLimitValues()
+    if (Object.keys(this.$route.query).length) {
+      this.paramsToJson(this.$route.query)
+      this.onPaginationOptionsChange()
+    }
+  }
+
+  paramsToJson(query) {
+    if (query.oid !== null && typeof query.oid === 'string') {
+      query.oid = [query.oid]
+    }
+    this.generalFilters = query
+    this.dateFilters = query
+    this.conesearchFilters = query
+    this.page = parseInt(query.page)
+    this.sortBy = query.order_by
+    this.sortDesc = query.order_mode === 'DESC'
+  }
+
+  get querystring() {
+    return filtersStore.querystring
   }
 
   get classifiers() {
@@ -138,8 +158,15 @@ export default class Index extends Vue {
     trailing: true,
   })
 
+  onKeyUp(key) {
+    if (key.key === 'Enter') {
+      this.onSearchClicked()
+    }
+  }
+
   onSearchClicked() {
     paginationStore.setPage(1)
+    this.$router.replace(`?${this.querystring}`)
     this.debouncedSearch()
   }
 
@@ -148,6 +175,7 @@ export default class Index extends Vue {
   }
 
   onPaginationOptionsChange() {
+    this.$router.replace(`?${this.querystring}`)
     this.debouncedSearch()
   }
 
