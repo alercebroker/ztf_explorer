@@ -50,7 +50,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/echarts.js', '@/plugins/axios.js', '@/plugins/services'],
+  plugins: ['@/plugins/echarts.js', '@/plugins/axios.js'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

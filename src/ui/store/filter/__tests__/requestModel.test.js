@@ -1,5 +1,5 @@
-import { mockFiltersData } from './filter.mock'
-import FilterParams from './filter'
+import { mockFiltersData } from './requestModel.mock'
+import FilterParams from '../requestModel'
 describe('Filter', () => {
   describe('Initialize', () => {
     it('creates filters with valid arguments', () => {

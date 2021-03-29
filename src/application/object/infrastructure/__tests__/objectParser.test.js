@@ -4,7 +4,7 @@ import {
 } from '@shared/http/httpService.mock'
 import { ParseError } from '@shared/error'
 import { mockObjects } from '@app/object/domain'
-import ObjectParser from './objectParser'
+import ObjectParser from '../objectParser'
 
 describe('ObjectParser', () => {
   describe('toDomain', () => {

@@ -4,9 +4,16 @@ import {
   VuexMutation,
   VuexAction,
 } from 'nuxt-property-decorator'
+import { provideVuex, consume } from 'provide-consume-decorator'
+import { provideObject } from '@app/object/provider'
 
 @Module({ name: 'objects', namespaced: true, stateFactory: true })
+@provideVuex({
+  test: 'test',
+})
 export default class ObjectsStore extends VuexModule {
+  @consume('test') tp
+
   objectList = []
   loading = false
   error = null
@@ -30,7 +37,7 @@ export default class ObjectsStore extends VuexModule {
   async getObjectList(params) {
     if (this.loading) return
     this.setLoading(true)
-    await this.store.$services.objects.getMany.execute(params, {
+    await this.service.objects.getMany.execute(params, {
       returnSuccess: (objects) => {
         this.setObjectList(objects)
         this.setError(null)

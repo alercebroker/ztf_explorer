@@ -1,4 +1,4 @@
-import { Object_ } from './object'
+import { Object_ } from '../object'
 import { mockObjectsData } from './object.mock'
 
 describe('Object', () => {

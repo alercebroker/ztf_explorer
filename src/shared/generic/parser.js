@@ -20,7 +20,7 @@ export default class Parser {
    * @param {Object} obj an Object to convert
    * @return { Entity } a domain entity
    * */
-  parseObject(obj, Entity, extra = {}) {
+  _parseObject(obj, Entity, extra = {}) {
     try {
       const entity = new Entity({
         ...obj,

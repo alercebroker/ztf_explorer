@@ -1,4 +1,4 @@
-import { initialiseStores } from '~/utils/store-accessor'
+import { initialiseStores } from '@@/src/ui/utils/store-accessor'
 const initializer = (store) => initialiseStores(store)
 export const plugins = [initializer]
-export * from '~/utils/store-accessor'
+export * from '@@/src/ui/utils/store-accessor'

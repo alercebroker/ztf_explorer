@@ -1,4 +1,4 @@
-import FilterParams from './filter'
+import FilterParams from '../requestModel'
 export const mockFiltersData = () => {
   return {
     oid: ['Oid1', 'Oid2'],
@@ -21,4 +21,27 @@ export const mockFiltersData = () => {
   }
 }
 
+export const mockEmptyFiltersData = () => {
+  return {
+    oid: null,
+    classifier: null,
+    classifier_version: null,
+    class: null,
+    ranking: 1,
+    ndet: [],
+    probability: null,
+    firstmjd: [],
+    lastmjd: [],
+    ra: null,
+    dec: null,
+    radius: null,
+    page: 1,
+    page_size: 1,
+    count: 'true',
+    order_by: null,
+    order_mode: null,
+  }
+}
+
 export const mockFilters = () => new FilterParams(mockFiltersData())
+export const mockEmptyFilters = () => new FilterParams()

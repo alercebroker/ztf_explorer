@@ -1,4 +1,4 @@
-import { Object_ } from './object'
+import { Object_ } from '../object'
 
 export const mockObjectsData = () => [
   {

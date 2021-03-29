@@ -20,7 +20,7 @@ export default class ObjectParser extends Parser {
           stepIdCorr: x.step_id_corr,
           className: x.class,
         }
-        return this.parseObject(x, Object_, extra)
+        return this._parseObject(x, Object_, extra)
       })
       return Result.combine(results)
     } else {
@@ -32,7 +32,7 @@ export default class ObjectParser extends Parser {
         grMeanCorr: respObj.g_r_mean_corr,
         stepIdCorr: respObj.step_id_corr,
       }
-      return this.parseObject(respObj, Object_, extra)
+      return this._parseObject(respObj, Object_, extra)
     }
   }
 }
