@@ -15,7 +15,7 @@
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
-      <v-card-text v-if="plotData" style="height: 100%;">
+      <v-card-text v-if="plotData" style="height: 100%">
         <v-select
           v-model="selected"
           :items="classifiers_"

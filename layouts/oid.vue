@@ -7,9 +7,7 @@
       @transitionend="onTransition"
     >
       <object-list>
-        <template v-if="drawerMini" v-slot:header>
-          Object List
-        </template>
+        <template v-if="drawerMini" v-slot:header> Object List </template>
         <template v-else v-slot:header>
           <h1>Object List</h1>
         </template>

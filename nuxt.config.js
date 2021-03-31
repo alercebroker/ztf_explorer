@@ -46,7 +46,13 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/echarts.js', '@/plugins/axios.js'],
+  plugins: [
+    '@/plugins/echarts.js',
+    '@/plugins/ztfApi.js',
+    '@/plugins/tnsApi.js',
+    '@/plugins/catsHtmApi.js',
+    '@/plugins/avro.js'
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -56,12 +62,9 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
     '@alerce/components/nuxt',
+    '@nuxtjs/eslint-module',
     ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}` }],
   ],
   /*

@@ -12,8 +12,8 @@ export default class Object_ extends VuexModule {
   object = null
   error = null
   bandMap = {
-    '1': 'g',
-    '2': 'r',
+    1: 'g',
+    2: 'r',
   }
 
   @VuexMutation
