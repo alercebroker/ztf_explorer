@@ -1,8 +1,7 @@
-# ignore server configuration
-*.azcli
-
+# Created by .ignore support plugin (hsz.mobi)
+### Node template
 # Logs
-logs
+/logs
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -32,15 +31,14 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (http://nodejs.org/api/addons.html)
+# Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
 # Dependency directories
 node_modules/
 jspm_packages/
-node_modules/.cache/
 
-# Typescript v1 declaration files
+# TypeScript v1 declaration files
 typings/
 
 # Optional npm cache directory
@@ -61,49 +59,36 @@ typings/
 # dotenv environment variables file
 .env
 
-# See http://help.github.com/ignore-files/ for more about ignoring files.
+# parcel-bundler cache (https://parceljs.org/)
+.cache
 
-# ignore server configuration
-env/development.js
-docker-compose.local.yml
-*.azcli
+# next.js build output
+.next
 
-# compiled output
-/dist
-/tmp
-/out-tsc
+# nuxt.js build output
+.nuxt
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# Nuxt generate
+dist
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# vuepress build output
+.vuepress/dist
 
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-testem.log
-/typings
+# Serverless directories
+.serverless
 
-# e2e
-/e2e/*.js
-/e2e/*.map
+# IDE / Editor
+.idea
 
-# System Files
+# Service worker
+sw.*
+
+# macOS
 .DS_Store
-Thumbs.db
 
-#.vscode
+# Vim swap files
+*.swp
+
+# Deploy files
+deploy.sh
+.awspublish-*
