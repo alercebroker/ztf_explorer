@@ -61,7 +61,12 @@ export default class CardClassifiers extends Vue {
   /*
   Format probabilities of API to array of objects: { name: class_name, value: prob_of_class}
   */
-  formatProbs(probs) {
+  formatProbs(probs, version = null) {
+    if (version) {
+      probs = probs.filter((prob) => {
+        return prob.classifier_version === version
+      })
+    }
     return probs.map((k) => {
       return {
         name: k.class_name,
@@ -95,13 +100,22 @@ export default class CardClassifiers extends Vue {
     const keys = Object.keys(grouped)
     const res = []
     keys.forEach((k, i) => {
+      const latestVersion = this.getLatestVersion(grouped[k])
       res.push({
         name: this.formatClassifierName(k),
-        probs: this.formatProbs(grouped[k]),
+        probs: this.formatProbs(grouped[k], latestVersion),
         index: i,
       })
     })
     return res
+  }
+
+  getLatestVersion(classes) {
+    const uniqueVersions = Array.from(
+      new Set(classes.map((item) => item.classifier_version))
+    )
+    uniqueVersions.sort()
+    return uniqueVersions.slice(-1)[0]
   }
 
   get classifiers() {
