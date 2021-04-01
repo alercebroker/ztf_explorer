@@ -27,9 +27,9 @@ function filterFunc(prefix, value) {
   return value
 }
 
-export default function ({ $axios }, inject) {
+export default function ({ $axios, $config }, inject) {
   const ztfApi = $axios.create({
-    baseURL: 'https://api.alerce.online/ztf/v1/',
+    baseURL: $config.ztfApiBaseUrl,
   })
 
   ztfApi.search = (searchParameters) => {
