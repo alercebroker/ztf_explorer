@@ -10,8 +10,8 @@ env:
   AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME_DEV }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  NODE_ENV: production
-  APP_TITLE: ALeRCE Explorer - Development Build
+  NODE_ENV: staging
+  APP_TITLE: ALeRCE Explorer - Staging Build
   ZTF_API_BASE_URL: https://dev.api.alerce.online
   CATSHTM_API_BASE_URL: https://catshtm.alerce.online
   AVRO_API_BASE_URL: https://avro.alerce.online
