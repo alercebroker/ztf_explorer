@@ -64,6 +64,7 @@ export default {
     '@nuxtjs/vuetify',
     '@alerce/components/nuxt',
     '@nuxtjs/eslint-module',
+    '@nuxtjs/google-analytics',
   ],
   /*
    ** Nuxt.js modules
@@ -74,6 +75,9 @@ export default {
     '@nuxtjs/toast',
     '@nuxtjs/pwa',
   ],
+  googleAnalytics: {
+    id: process.env.GOOGLE_ANALYTICS_ID, // Use as fallback if no runtime config is provided
+  },
   /*
    ** Process runtime config
    */
@@ -87,6 +91,9 @@ export default {
       process.env.NODE_ENV === 'production'
         ? 'https://ztf.api.alerce.online'
         : 'https://dev.api.alerce.online',
+    googleAnalytics: {
+      id: process.env.GOOGLE_ANALYTICS_ID,
+    },
   },
   privateRuntimeConfig: {},
   /*
