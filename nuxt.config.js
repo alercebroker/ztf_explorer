@@ -76,7 +76,10 @@ export default {
     '@nuxtjs/pwa',
   ],
   googleAnalytics: {
-    id: process.env.GOOGLE_ANALYTICS_ID, // Use as fallback if no runtime config is provided
+    id:
+      process.env.NODE_ENV === 'production'
+        ? process.env.GOOGLE_ANALYTICS_ID
+        : '',
   },
   /*
    ** Process runtime config
@@ -92,7 +95,10 @@ export default {
         ? 'https://ztf.api.alerce.online'
         : 'https://dev.api.alerce.online',
     googleAnalytics: {
-      id: process.env.GOOGLE_ANALYTICS_ID,
+      id:
+        process.env.NODE_ENV === 'production'
+          ? process.env.GOOGLE_ANALYTICS_ID
+          : '',
     },
   },
   privateRuntimeConfig: {},
