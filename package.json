@@ -16,7 +16,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@alerce/components": "0.0.22-dev",
+    "@alerce/components": "0.0.23-dev",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/pwa": "^3.0.1",
     "@nuxtjs/toast": "^3.3.1",

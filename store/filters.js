@@ -160,15 +160,7 @@ export default class Filters extends VuexModule {
 
   @VuexAction()
   setPaginationState(result) {
-    if (paginationStore.count) {
-      paginationStore.setTotal(result.total)
-      paginationStore.setPage(result.page)
-      paginationStore.setNext(result.next)
-      paginationStore.setPrev(result.prev)
-      paginationStore.setHasNext(result.has_next)
-      paginationStore.setHasPrev(result.has_prev)
-    }
-    paginationStore.setCount('true')
+    paginationStore.setTotal(result.data.items.length + 1)
   }
 
   @VuexAction({ rawError: true })
@@ -182,7 +174,7 @@ export default class Filters extends VuexModule {
         ...paginationStore.pageFilters,
       })
       objectsStore.set(result.data.items)
-      this.setPaginationState(result.data)
+      this.setPaginationState(result)
     } catch (error) {
       this.setError(error)
     }
