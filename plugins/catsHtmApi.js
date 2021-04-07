@@ -1,6 +1,6 @@
-export default function ({ $axios }, inject) {
+export default function ({ $axios, $config }, inject) {
   const catsHtmApi = $axios.create({
-    baseURL: 'https://catshtm.alerce.online/',
+    baseURL: $config.catshtmApiBaseUrl,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

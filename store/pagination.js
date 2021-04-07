@@ -9,14 +9,10 @@ import {
 export default class Pagination extends VuexModule {
   total = null
   page = 1
-  next = null
-  prev = null
-  hasNext = null
-  hasPrev = null
   perPage = 20
   sortBy = 'probability'
   sortDesc = true
-  count = 'true'
+  count = 'false'
 
   @VuexMutation
   setTotal(val) {
@@ -26,26 +22,6 @@ export default class Pagination extends VuexModule {
   @VuexMutation
   setPage(val) {
     this.page = val
-  }
-
-  @VuexMutation
-  setNext(val) {
-    this.next = val
-  }
-
-  @VuexMutation
-  setPrev(val) {
-    this.prev = val
-  }
-
-  @VuexMutation
-  setHasNext(val) {
-    this.hasNext = val
-  }
-
-  @VuexMutation
-  setHasPrev(val) {
-    this.hasPrev = val
   }
 
   @VuexMutation
@@ -80,15 +56,15 @@ export default class Pagination extends VuexModule {
 
   @VuexAction
   goToNext() {
-    if (this.hasNext) {
-      this.setPage(this.next)
+    if (this.store.state.objects.list.length === this.perPage) {
+      this.setPage(this.page + 1)
     }
   }
 
   @VuexAction
   goToPrev() {
-    if (this.hasPrev) {
-      this.setPage(this.prev)
+    if (this.page > 1) {
+      this.setPage(this.page - 1)
     }
   }
 

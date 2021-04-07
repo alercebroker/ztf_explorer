@@ -1,6 +1,6 @@
-export default function ({ $axios }, inject) {
+export default function ({ $axios, $config }, inject) {
   const tnsApi = $axios.create({
-    baseURL: 'https://tns.alerce.online/',
+    baseURL: $config.tnsApiBaseUrl,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

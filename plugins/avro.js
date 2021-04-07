@@ -1,6 +1,6 @@
-export default function ({ $axios }, inject) {
+export default function ({ $axios, $config }, inject) {
   const avroApi = $axios.create({
-    baseURL: 'https://avro.alerce.online',
+    baseURL: $config.avroApiBaseUrl,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

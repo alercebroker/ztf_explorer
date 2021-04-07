@@ -62,13 +62,15 @@ export default class Object_ extends VuexModule {
     ) {
       // set next object
       this.setObjectId(this.store.state.objects.list[nextObjectIndex].oid)
-    } else if (nextObjectIndex > 0 && this.store.state.pagination.hasNext) {
+    } else if (nextObjectIndex > 0) {
       // get next page from API
       this.context.dispatch('pagination/goToNext', null, { root: true })
       await this.context.dispatch('filters/search', null, { root: true })
-      // set first object of result page
-      this.setObjectId(this.store.state.objects.list[0].oid)
-    } else if (nextObjectIndex < 0 && this.store.state.pagination.hasPrev) {
+      if (this.store.state.objects.list.length) {
+        // set first object of result page
+        this.setObjectId(this.store.state.objects.list[0].oid)
+      }
+    } else if (nextObjectIndex < 0 && this.store.state.pagination.page > 1) {
       // get previous page from API
       this.context.dispatch('pagination/goToPrev', null, { root: true })
       await this.context.dispatch('filters/search', null, { root: true })
