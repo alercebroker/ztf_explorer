@@ -1,6 +1,5 @@
 import path from 'path'
 import colors from 'vuetify/es5/util/colors'
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 export default {
   /*
    ** Nuxt rendering mode
@@ -17,8 +16,8 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.VUE_APP_TITLE,
-    title: process.env.VUE_APP_TITLE || '',
+    titleTemplate: '%s - ' + process.env.APP_TITLE,
+    title: process.env.APP_TITLE || '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -46,7 +45,13 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/echarts.js', '@/plugins/axios.js'],
+  plugins: [
+    '@/plugins/echarts.js',
+    '@/plugins/ztfApi.js',
+    '@/plugins/tnsApi.js',
+    '@/plugins/catsHtmApi.js',
+    '@/plugins/avro.js',
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -56,13 +61,10 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
-    '@nuxtjs/eslint-module',
-    // Doc: https://github.com/nuxt-community/stylelint-module
-    '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
     '@alerce/components/nuxt',
-    ['@nuxtjs/dotenv', { filename: `.env.${process.env.NODE_ENV}` }],
+    '@nuxtjs/eslint-module',
+    '@nuxtjs/google-analytics',
   ],
   /*
    ** Nuxt.js modules
@@ -73,6 +75,33 @@ export default {
     '@nuxtjs/toast',
     '@nuxtjs/pwa',
   ],
+  googleAnalytics: {
+    id:
+      process.env.NODE_ENV === 'production'
+        ? process.env.GOOGLE_ANALYTICS_ID
+        : '',
+  },
+  /*
+   ** Process runtime config
+   */
+  publicRuntimeConfig: {
+    avroApiBaseUrl:
+      process.env.AVRO_API_BASE_URL || 'https://avro.alerce.online',
+    catshtmApiBaseUrl:
+      process.env.CATSHTM_API_BASE_URL || 'https://catshtm.alerce.online',
+    tnsApiBaseUrl: process.env.TNS_API_BASE_URL || 'https://tns.alerce.online',
+    ztfApiBaseUrl:
+      process.env.NODE_ENV === 'production'
+        ? 'https://ztf.api.alerce.online'
+        : 'https://dev.api.alerce.online',
+    googleAnalytics: {
+      id:
+        process.env.NODE_ENV === 'production'
+          ? process.env.GOOGLE_ANALYTICS_ID
+          : '',
+    },
+  },
+  privateRuntimeConfig: {},
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options

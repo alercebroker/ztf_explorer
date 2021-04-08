@@ -1,9 +1,7 @@
 <template>
   <v-col v-if="!isLoading && !error" :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card>
-      <v-card-title>
-        Crossmatch
-      </v-card-title>
+      <v-card-title> Crossmatch </v-card-title>
       <v-card-text class="pb-0">
         <alerce-cross-matches :catalogs="catalogs" />
       </v-card-text>

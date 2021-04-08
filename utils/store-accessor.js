@@ -10,6 +10,7 @@ import ProbabilitiesStore from '~/store/probabilities'
 import StatsStore from '~/store/stats'
 import TnsStore from '~/store/tns'
 import XmatchesStore from '~/store/xmatches'
+import AvroStore from '~/store/avro'
 
 let filtersStore = null
 let objectStore = null
@@ -21,6 +22,7 @@ let probabilitiesStore = null
 let statsStore = null
 let tnsStore = null
 let xmatchesStore = null
+let avroStore = null
 
 function initialiseStores(store) {
   filtersStore = getModule(Filters, store)
@@ -33,6 +35,7 @@ function initialiseStores(store) {
   statsStore = getModule(StatsStore, store)
   tnsStore = getModule(TnsStore, store)
   xmatchesStore = getModule(XmatchesStore, store)
+  avroStore = getModule(AvroStore, store)
 }
 
 export {
@@ -47,4 +50,5 @@ export {
   statsStore,
   tnsStore,
   xmatchesStore,
+  avroStore
 }

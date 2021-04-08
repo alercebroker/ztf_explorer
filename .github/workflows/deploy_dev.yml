@@ -1,0 +1,32 @@
+name: S3DeployDev
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the develop branch
+on:
+  push:
+    branches: [ develop ]
+
+env:
+  AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME_DEV }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  NODE_ENV: staging
+  APP_TITLE: ALeRCE Explorer - Staging Build
+  ZTF_API_BASE_URL: https://dev.api.alerce.online
+  CATSHTM_API_BASE_URL: https://catshtm.alerce.online
+  AVRO_API_BASE_URL: https://avro.alerce.online
+  TNS_API_BASE_URL: https://tns.alerce.online
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - run: npm install
+      - run: npm run generate
+      - run: npm run deploy
+        

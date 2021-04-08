@@ -2,9 +2,7 @@
   <v-app dark>
     <v-row justify="center">
       <v-col class="text-center" cols="6" lg="6" md="6" sm="6">
-        <p class="text-lg-h2 text-md-h4 text-sm-h6 text-xs-body-1">
-          404 Error
-        </p>
+        <p class="text-lg-h2 text-md-h4 text-sm-h6 text-xs-body-1">404 Error</p>
         <span class="text-lg-h4 text-md-h6 text-sm-body-1 text-xs-body-2">
           The page was not found.
         </span>
@@ -14,7 +12,7 @@
         </p>
         <a :href="selectedMessage.url">
           <v-img
-            style="margin: auto;"
+            style="margin: auto"
             width="50%"
             :src="selectedMessage.image"
           ></v-img>

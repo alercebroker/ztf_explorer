@@ -27,9 +27,9 @@ function filterFunc(prefix, value) {
   return value
 }
 
-export default function ({ $axios, store, redirect }, inject) {
+export default function ({ $axios, $config }, inject) {
   const ztfApi = $axios.create({
-    baseURL: 'https://dev.api.alerce.online/',
+    baseURL: $config.ztfApiBaseUrl,
   })
 
   ztfApi.search = (searchParameters) => {
@@ -78,37 +78,5 @@ export default function ({ $axios, store, redirect }, inject) {
     return ztfApi.get('objects/limit_values')
   }
 
-  const tnsApi = $axios.create({
-    baseURL: 'https://tns.alerce.online/',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-
-  tnsApi.isInTNS = (ra, dec) => {
-    return tnsApi.post('search', { ra, dec })
-  }
-
-  const catsHtmApi = $axios.create({
-    baseURL: 'https://catshtm.alerce.online/',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  })
-
-  catsHtmApi.xmatchall = (ra, dec, radius) => {
-    return catsHtmApi.get('/crossmatch_all', {
-      params: {
-        ra,
-        dec,
-        radius,
-      },
-    })
-  }
-
   inject('ztfApi', ztfApi)
-  inject('tnsApi', tnsApi)
-  inject('catsHtmApi', catsHtmApi)
 }

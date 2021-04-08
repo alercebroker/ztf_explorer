@@ -15,11 +15,22 @@
       </v-card-text>
       <v-card-text v-else>
         <alerce-basic-information :information="information" />
-        <alerce-catalogs-buttons
-          :ra="information.meanra"
-          :dec="information.meandec"
-        />
-        <alerce-finding-chart-button :oid="information.oid" :candid="candid" />
+        <v-row justify="center" wrap>
+          <v-col cols="6">
+            <alerce-finding-chart-button
+              :oid="information.oid"
+              :candid="candid"
+              :useIcon="false"
+            />
+          </v-col>
+          <v-col cols="6">
+            <alerce-catalogs-buttons
+              :ra="information.meanra"
+              :dec="information.meandec"
+              title="Catalogs"
+            />
+          </v-col>
+        </v-row>
 
         <alerce-tns-information
           :loading="tns.loading"

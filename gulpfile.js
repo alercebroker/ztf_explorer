@@ -10,11 +10,8 @@ const config = {
   params: {
     Bucket: process.env.AWS_BUCKET_NAME,
   },
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    signatureVersion: 'v3',
-  },
+
+  region: 'us-east-1',
 
   // Optional
   deleteOldVersions: false, // NOT FOR PRODUCTION
@@ -32,7 +29,7 @@ const config = {
   wait: true, // wait for CloudFront invalidation to complete (about 30-60 seconds)
 }
 
-gulp.task('deploy', function () {
+gulp.task('deploy', function() {
   // create a new publisher using S3 options
   // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property
   const publisher = awspublish.create(config)

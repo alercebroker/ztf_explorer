@@ -19,8 +19,24 @@
         :detections="detections"
         :object="oid"
         :cross-hair-space="crossHairSpace"
+        @avroClick="onAvroClick"
       />
     </v-card>
+    <v-dialog v-model="avroDialogOpen" max-width="700px">
+      <alerce-full-avro-table :avro="avro">
+        <template v-if="avroLoading" v-slot:table>
+          <v-progress-linear indeterminate></v-progress-linear>
+        </template>
+        <template v-slot:actions>
+          <v-card-actions>
+            <div class="flex-grow-1"></div>
+            <v-btn color="primary darken-1" text @click="avroDialogOpen = false"
+              >Close</v-btn
+            >
+          </v-card-actions>
+        </template>
+      </alerce-full-avro-table>
+    </v-dialog>
   </v-col>
 </template>
 
@@ -42,6 +58,8 @@ export default class CardStamps extends Vue {
   @Prop({ type: Number }) crossHairSpace
 
   @Prop({ type: String }) cardClass
+
+  avroDialogOpen = false
 
   get detections() {
     return this.$store.state.lightcurve.detections
@@ -66,6 +84,23 @@ export default class CardStamps extends Vue {
 
   set selectedDetection(val) {
     this.$store.dispatch('lightcurve/changeDetection', val)
+  }
+
+  get avroLoading() {
+    return this.$store.state.avro.loading
+  }
+
+  get avro() {
+    return this.$store.state.avro.avro.candidate
+  }
+
+  onAvroClick(payload) {
+    this.avroDialogOpen = true
+    const detection = this.detections[payload]
+    this.$store.dispatch('avro/getAvro', {
+      oid: this.oid,
+      candid: detection.candid,
+    })
   }
 }
 </script>
