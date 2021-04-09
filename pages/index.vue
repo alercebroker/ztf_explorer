@@ -8,6 +8,7 @@
         :conesearch-filters.sync="conesearchFilters"
         :classes="classes"
         :classifiers="classifiers"
+        :loading="searching"
         @search="onSearchClicked"
         @clear="onClearClicked"
       />
