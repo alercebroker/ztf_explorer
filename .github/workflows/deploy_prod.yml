@@ -28,6 +28,5 @@ jobs:
         with:
           node-version: 15
       - run: npm install
-      - run: npm install gulp@4.0.2 gulp-awspublish@4.1.2 gulp-cloudfront-invalidate-aws-publish@1.0.0
       - run: npm run generate
       - run: npm run deploy

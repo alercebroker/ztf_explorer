@@ -28,7 +28,10 @@
     "nuxt": "^2.14.0",
     "nuxt-property-decorator": "^2.7.2",
     "qs": "^6.9.4",
-    "vue-echarts": "^5.0.0-beta.0"
+    "vue-echarts": "^5.0.0-beta.0",
+    "gulp": "^4.0.2",
+    "gulp-awspublish": "^4.1.2",
+    "gulp-cloudfront-invalidate-aws-publish": "^1.0.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",
@@ -43,9 +46,6 @@
     "eslint-plugin-nuxt": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-vue": "^6.2.2",
-    "gulp": "^4.0.2",
-    "gulp-awspublish": "^4.1.2",
-    "gulp-cloudfront-invalidate-aws-publish": "^1.0.0",
     "jest": "^26.0.1",
     "prettier": "^2.2.1",
     "vue-jest": "^3.0.4"
