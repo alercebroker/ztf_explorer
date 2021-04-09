@@ -53,7 +53,11 @@
             <v-list-item-content>
               <v-row>
                 <v-col lg="8" md="12">
-                  <v-btn color="primary" block @click="onSearchClicked"
+                  <v-btn
+                    color="primary"
+                    block
+                    :disabled="loading"
+                    @click="onSearchClicked"
                     >search</v-btn
                   >
                 </v-col>
@@ -81,6 +85,7 @@ export default class SearchBar extends Vue {
   @PropSync('panels', { type: Number }) panelsSync
   @Prop({ type: Array }) classifiers
   @Prop({ type: Array }) classes
+  @Prop({ type: Boolean, default: false }) loading
 
   get limitNdet() {
     return this.$store.state.filters.limitNdet

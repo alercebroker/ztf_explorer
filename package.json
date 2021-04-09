@@ -22,17 +22,17 @@
     "@nuxtjs/pwa": "^3.0.1",
     "@nuxtjs/toast": "^3.3.1",
     "@nuxtjs/vuetify": "^1.11.2",
+    "concurrent-transform": "^1.0.0",
     "echarts": "^4.8.0",
+    "gulp": "^4.0.2",
+    "gulp-awspublish": "^4.1.2",
+    "gulp-cloudfront-invalidate-aws-publish": "^1.0.0",
     "julian": "^0.2.0",
     "lodash.debounce": "^4.0.8",
     "nuxt": "^2.14.0",
     "nuxt-property-decorator": "^2.7.2",
     "qs": "^6.9.4",
-    "vue-echarts": "^5.0.0-beta.0",
-    "gulp": "^4.0.2",
-    "gulp-awspublish": "^4.1.2",
-    "gulp-cloudfront-invalidate-aws-publish": "^1.0.0",
-    "concurrent-transform": "^1.0.0"
+    "vue-echarts": "^5.0.0-beta.0"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",
