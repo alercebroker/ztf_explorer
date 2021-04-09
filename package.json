@@ -18,6 +18,7 @@
   "dependencies": {
     "@alerce/components": "0.0.26-dev",
     "@nuxtjs/axios": "^5.11.0",
+    "@nuxtjs/google-analytics": "^2.4.0",
     "@nuxtjs/pwa": "^3.0.1",
     "@nuxtjs/toast": "^3.3.1",
     "@nuxtjs/vuetify": "^1.11.2",
@@ -32,7 +33,6 @@
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
-    "@nuxtjs/google-analytics": "^2.4.0",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",

@@ -60,12 +60,14 @@ export default {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    '@nuxtjs/vuetify',
-    '@alerce/components/nuxt',
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/google-analytics',
-  ],
+  buildModules:
+    process.env.NODE_ENV !== 'production'
+      ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
+      : [
+          '@nuxtjs/vuetify',
+          '@alerce/components/nuxt',
+          '@nuxtjs/google-analytics',
+        ],
   /*
    ** Nuxt.js modules
    */
