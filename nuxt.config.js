@@ -94,8 +94,8 @@ export default {
     tnsApiBaseUrl: process.env.TNS_API_BASE_URL || 'https://tns.alerce.online',
     ztfApiBaseUrl:
       process.env.NODE_ENV === 'production'
-        ? 'https://ztf.api.alerce.online'
-        : 'https://dev.api.alerce.online',
+        ? process.env.ZTF_API_BASE_URL || 'https://api.alerce.online/ztf/v1'
+        : process.env.ZTF_API_BASE_URL || 'https://dev.api.alerce.online',
     googleAnalytics: {
       id:
         process.env.NODE_ENV === 'production'
