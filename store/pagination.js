@@ -54,6 +54,17 @@ export default class Pagination extends VuexModule {
     }
   }
 
+  get defaultPageFilters() {
+    return {
+      count: 'false',
+      page: 1,
+      perPage: 20,
+      ranking: 1,
+      sortBy: 'probability',
+      sortDesc: 'true',
+    }
+  }
+
   @VuexAction
   goToNext() {
     if (this.store.state.objects.list.length === this.perPage) {

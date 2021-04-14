@@ -12,7 +12,7 @@ const defaultState = {
   classifiers: [],
   classes: [],
   probability: 0,
-  ranking: null,
+  ranking: 1,
   ndet: [null, null],
   firstmjd: [null, null],
   limitNdet: [1, 2000],
@@ -70,6 +70,18 @@ export default class Filters extends VuexModule {
     }
   }
 
+  get defaultGeneralFilters() {
+    return {
+      oid: defaultState.oid,
+      selectedClassifier: defaultState.selectedClassifier,
+      selectedClass: defaultState.selectedClass,
+      probability:
+        defaultState.probability > 0 ? defaultState.probability : null,
+      ndet: defaultState.ndet,
+      ranking: defaultState.ranking,
+    }
+  }
+
   get querystring() {
     return qs.stringify(
       {
@@ -77,6 +89,22 @@ export default class Filters extends VuexModule {
         ...this.dateFilters,
         ...this.conesearchFilters,
         ...paginationStore.pageFilters,
+      },
+      {
+        arrayFormat: 'repeat',
+        skipNulls: true,
+        filter: (prefix, value) => (value === '' ? null : value),
+      }
+    )
+  }
+
+  get defaultQuerystring() {
+    return qs.stringify(
+      {
+        ...this.defaultGeneralFilters,
+        ...this.defaultDateFilters,
+        ...this.defaultConesearchFilters,
+        ...paginationStore.defaultPageFilters,
       },
       {
         arrayFormat: 'repeat',
@@ -113,15 +141,21 @@ export default class Filters extends VuexModule {
     this.selectedClassifier = filters.selectedClassifier
     this.probability = filters.probability
     this.ndet = filters.ndet
-    this.ranking = filters.ranking
-    if (filters.oid !== undefined) {
-      paginationStore.setSortBy(filters.oid.length > 1 ? null : 'probability')
+    this.ranking = 1
+    if (Array.isArray(this.oid)) {
+      paginationStore.setSortBy(this.oid.length > 1 ? null : 'probability')
     }
   }
 
   get dateFilters() {
     return {
       firstmjd: this.firstmjd,
+    }
+  }
+
+  get defaultDateFilters() {
+    return {
+      firstmjd: defaultState.firstmjd,
     }
   }
 
@@ -135,6 +169,14 @@ export default class Filters extends VuexModule {
       ra: this.ra,
       dec: this.dec,
       radius: this.radius,
+    }
+  }
+
+  get defaultConesearchFilters() {
+    return {
+      ra: defaultState.ra,
+      dec: defaultState.dec,
+      radius: defaultState.radius,
     }
   }
 
@@ -158,7 +200,7 @@ export default class Filters extends VuexModule {
     this.classes = classes
   }
 
-  @VuexAction()
+  @VuexAction({ rawError: true })
   setPaginationState(result) {
     paginationStore.setTotal(result.data.items.length + 1)
   }
@@ -187,7 +229,7 @@ export default class Filters extends VuexModule {
     this.setClassifiers(result.data)
   }
 
-  @VuexAction
+  @VuexAction({ rawError: true })
   getClasses(selectedClassifier) {
     const classifier = this.classifiers.find(
       (c) => c.name === selectedClassifier
@@ -195,7 +237,7 @@ export default class Filters extends VuexModule {
     this.setClasses(classifier.classes)
   }
 
-  @VuexAction
+  @VuexAction({ rawError: true })
   async getLimitValues() {
     let resp = await this.store.$ztfApi.getLimitValues()
     resp = resp.data
@@ -222,7 +264,7 @@ export default class Filters extends VuexModule {
     this.ranking = defaultState.ranking
   }
 
-  @VuexAction()
+  @VuexAction({ rawError: true })
   clearFilters() {
     this.setDefaultState()
     this.getClassifiers()
