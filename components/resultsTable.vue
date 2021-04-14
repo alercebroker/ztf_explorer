@@ -173,11 +173,13 @@ export default class ResultTableWrapper extends Vue {
     return item
   }
 
+  @Emit('pageChangeClick')
   onPageChange(val) {
     this.pageSync = val
     return val
   }
 
+  @Emit('sortChangeClick')
   onSortChange(val) {
     this.sortBySync = val.sortBy.length ? val.sortBy[0] : null
     this.sortDescSync = val.sortDesc.length ? val.sortDesc[0] : null
