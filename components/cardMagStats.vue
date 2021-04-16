@@ -15,12 +15,24 @@
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
-      <v-card-title class="pb-0">Magnitude Statistics</v-card-title>
+      <v-card-title>
+        Magnitude Statistics
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <v-icon v-on="on">mdi-information</v-icon>
+          </template>
+          <span>
+            Magnitudes shown are the corrected version if corrected is true. For
+            more information on correction visit
+            http://alerce.science/alerce-pipeline/
+          </span>
+        </v-tooltip>
+      </v-card-title>
       <v-card-text>
         <alerce-mag-stats
           :stats="localStats"
           :hide-default-footer="false"
-          :items-per-page="7"
+          :items-per-page="5"
           dense
         />
       </v-card-text>

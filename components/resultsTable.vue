@@ -5,6 +5,7 @@
     :total="total"
     :loading="loading"
     :column-options="selectedColumnOptions"
+    :no-data-text="noDataText"
     @rowClicked="onRowClicked"
     @pageChange="onPageChange"
     @sortByChange="onSortChange"
@@ -13,6 +14,7 @@
 
 <script>
 import { Vue, Component, Prop, PropSync, Emit } from 'nuxt-property-decorator'
+import { objectsStore } from '~/store'
 @Component
 export default class ResultTableWrapper extends Vue {
   @Prop({ type: Array }) items
@@ -187,6 +189,10 @@ export default class ResultTableWrapper extends Vue {
       sortBy: val.sortBy.length ? val.sortBy[0] : null,
       sortDesc: val.sortDesc.length ? val.sortDesc[0] : null,
     }
+  }
+
+  get noDataText() {
+    return objectsStore.noDataText
   }
 }
 </script>
