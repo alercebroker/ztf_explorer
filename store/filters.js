@@ -216,6 +216,11 @@ export default class Filters extends VuexModule {
         ...paginationStore.pageFilters,
       })
       objectsStore.set(result.data.items)
+      if (result.data.items.length === 0) {
+        objectsStore.setNoDataText(
+          'We could not find any object with the selected filters'
+        )
+      }
       this.setPaginationState(result)
     } catch (error) {
       this.setError(error)

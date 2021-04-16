@@ -4,19 +4,13 @@
       v-if="showDrawer"
       app
       expand-on-hover
+      mini-variant-width="150"
+      width="150"
       @transitionend="onTransition"
     >
       <object-list>
-        <template v-if="drawerMini" v-slot:header> Object List </template>
-        <template v-else v-slot:header>
-          <h1>Object List</h1>
-        </template>
         <template v-slot:pagination="page">
-          <simple-pagination
-            v-if="!drawerMini"
-            :value="page.page"
-            @input="page.onInput"
-          />
+          <simple-pagination :value="page.page" @input="page.onInput" />
         </template>
       </object-list>
     </v-navigation-drawer>
