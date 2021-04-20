@@ -137,6 +137,9 @@ export default class Filters extends VuexModule {
   @VuexMutation
   setGeneralFilters(filters) {
     this.oid = filters.oid
+    if (filters.selectedClassifier !== this.selectedClassifier) {
+      this.selectedClass = null
+    }
     this.selectedClass = filters.selectedClass
     this.selectedClassifier = filters.selectedClassifier
     this.probability = filters.probability

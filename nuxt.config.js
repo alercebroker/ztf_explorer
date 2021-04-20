@@ -51,6 +51,7 @@ export default {
     '@/plugins/tnsApi.js',
     '@/plugins/catsHtmApi.js',
     '@/plugins/avro.js',
+    '@/plugins/validation.js',
   ],
   /*
    ** Auto import components
