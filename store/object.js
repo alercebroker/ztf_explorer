@@ -11,6 +11,7 @@ export default class Object_ extends VuexModule {
   objectId = null
   object = null
   error = null
+  activeRequest = null
   bandMap = {
     1: 'g',
     2: 'r',
@@ -36,19 +37,33 @@ export default class Object_ extends VuexModule {
     this.error = val
   }
 
+  @VuexMutation
+  setActiveRequest(req) {
+    this.activeRequest = req
+  }
+
   @VuexAction({ rawError: true })
   async getObject(val) {
     if (this.loading) return
     this.setLoading(true)
+    if (this.activeRequest) {
+      this.activeRequest.cancel('Cancel request due to new request sent')
+      this.setActiveRequest(null)
+    }
+    this.setActiveRequest(this.store.$axios.CancelToken.source())
     try {
-      const object = await this.store.$ztfApi.getObject(val)
+      const object = await this.store.$ztfApi.getObject(val, this.activeRequest)
+      this.setActiveRequest(null)
       this.setObject(object.data)
       this.setObjectId(object.data.oid)
       this.setError(null)
+      this.setLoading(false)
     } catch (error) {
-      this.setError(error)
+      if (!error.message.startsWith('Cancel request')) {
+        this.setError(error)
+        this.setLoading(false)
+      }
     }
-    this.setLoading(false)
   }
 
   @VuexAction({ rawError: true })

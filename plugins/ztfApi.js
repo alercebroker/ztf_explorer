@@ -32,7 +32,7 @@ export default function ({ $axios, $config }, inject) {
     baseURL: $config.ztfApiBaseUrl,
   })
 
-  ztfApi.search = (searchParameters) => {
+  ztfApi.search = (searchParameters, request) => {
     searchParameters = renameFields(searchParameters)
     searchParameters.order_mode = convertOrderMode(searchParameters.order_mode)
     return ztfApi.get('objects/', {
@@ -44,38 +44,63 @@ export default function ({ $axios, $config }, inject) {
           filter: filterFunc,
         })
       },
+      cancelToken: request.token,
     })
   }
 
-  ztfApi.getClassifiers = () => {
-    return ztfApi.get('classifiers/')
+  ztfApi.getClassifiers = (request = null) => {
+    return ztfApi.get(
+      'classifiers/',
+      request ? { cancelToken: request.token } : {}
+    )
   }
 
-  ztfApi.getClasses = (classifier, classifierVersion) => {
-    return ztfApi.get(`classifiers/${classifier}/${classifierVersion}/classes`)
+  ztfApi.getClasses = (classifier, classifierVersion, request = null) => {
+    return ztfApi.get(
+      `classifiers/${classifier}/${classifierVersion}/classes`,
+      request ? { cancelToken: request.token } : {}
+    )
   }
 
-  ztfApi.getObject = (objectId) => {
-    return ztfApi.get(`objects/${objectId}`)
+  ztfApi.getObject = (objectId, request = null) => {
+    return ztfApi.get(
+      `objects/${objectId}`,
+      request ? { cancelToken: request.token } : {}
+    )
   }
 
-  ztfApi.getLightCurve = (objectId) => {
-    return ztfApi.get(`objects/${objectId}/lightcurve`)
+  ztfApi.getLightCurve = (objectId, request = null) => {
+    return ztfApi.get(
+      `objects/${objectId}/lightcurve`,
+      request ? { cancelToken: request.token } : {}
+    )
   }
 
-  ztfApi.getStats = (oid) => {
-    return ztfApi.get(`objects/${oid}/magstats`)
+  ztfApi.getStats = (oid, request = null) => {
+    return ztfApi.get(
+      `objects/${oid}/magstats`,
+      request ? { cancelToken: request.token } : {}
+    )
   }
-  ztfApi.getProbabilities = (objectId) => {
-    return ztfApi.get(`objects/${objectId}/probabilities`)
+  ztfApi.getProbabilities = (objectId, request = null) => {
+    return ztfApi.get(
+      `objects/${objectId}/probabilities`,
+      request ? { cancelToken: request.token } : {}
+    )
   }
 
-  ztfApi.getFeatures = (objectId) => {
-    return ztfApi.get(`objects/${objectId}/features`)
+  ztfApi.getFeatures = (objectId, request = null) => {
+    return ztfApi.get(
+      `objects/${objectId}/features`,
+      request ? { cancelToken: request.token } : {}
+    )
   }
 
-  ztfApi.getLimitValues = () => {
-    return ztfApi.get('objects/limit_values')
+  ztfApi.getLimitValues = (request = null) => {
+    return ztfApi.get(
+      'objects/limit_values',
+      request ? { cancelToken: request.token } : {}
+    )
   }
 
   inject('ztfApi', ztfApi)

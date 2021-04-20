@@ -48,6 +48,7 @@ export default class Filters extends VuexModule {
   searching = defaultState.searching
   error = defaultState.error
   ranking = defaultState.ranking
+  activeRequest = null
 
   @VuexMutation
   setSearching(val) {
@@ -208,16 +209,31 @@ export default class Filters extends VuexModule {
     paginationStore.setTotal(result.data.items.length + 1)
   }
 
+  @VuexMutation
+  setActiveRequest(request) {
+    this.activeRequest = request
+  }
+
   @VuexAction({ rawError: true })
   async search() {
     this.setSearching(true)
+    if (this.activeRequest) {
+      this.activeRequest.cancel('Cancel request due to new request sent')
+      this.setActiveRequest(null)
+    }
+    this.setActiveRequest(this.store.$axios.CancelToken.source())
     try {
-      const result = await this.store.$ztfApi.search({
-        ...this.generalFilters,
-        ...this.dateFilters,
-        ...this.conesearchFilters,
-        ...paginationStore.pageFilters,
-      })
+      const result = await this.store.$ztfApi.search(
+        {
+          ...this.generalFilters,
+          ...this.dateFilters,
+          ...this.conesearchFilters,
+          ...paginationStore.pageFilters,
+        },
+        this.activeRequest
+      )
+      this.setError(null)
+      this.setActiveRequest(null)
       objectsStore.set(result.data.items)
       if (result.data.items.length === 0) {
         objectsStore.setNoDataText(
@@ -225,10 +241,13 @@ export default class Filters extends VuexModule {
         )
       }
       this.setPaginationState(result)
+      this.setSearching(false)
     } catch (error) {
-      this.setError(error)
+      if (!error.message.startsWith('Cancel request')) {
+        this.setError(error)
+        this.setSearching(false)
+      }
     }
-    this.setSearching(false)
   }
 
   @VuexAction({ rawError: true })
