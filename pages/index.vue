@@ -1,17 +1,20 @@
 <template>
   <v-row>
-    <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12" @keyup="onKeyUp">
-      <search-bar
-        :panels.sync="panels"
-        :general-filters.sync="generalFilters"
-        :date-filters.sync="dateFilters"
-        :conesearch-filters.sync="conesearchFilters"
-        :classes="classes"
-        :classifiers="classifiers"
-        :loading="searching"
-        @search="onSearchClicked"
-        @clear="onClearClicked"
-      />
+    <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12">
+      <validation-observer ref="filters" v-slot="{ invalid }">
+        <search-bar
+          :panels.sync="panels"
+          :general-filters.sync="generalFilters"
+          :date-filters.sync="dateFilters"
+          :conesearch-filters.sync="conesearchFilters"
+          :classes="classes"
+          :classifiers="classifiers"
+          :loading="searching"
+          :invalid="invalid"
+          @search="onSearchClicked"
+          @clear="onClearClicked"
+        />
+      </validation-observer>
     </v-col>
     <v-col xs="12" sm="12" md="9" lg="9" xl="9" cols="12">
       <results-table
@@ -52,12 +55,16 @@ export default class Index extends Vue {
       this.$route.fullPath.slice(2) !== filtersStore.defaultQuerystring
     ) {
       this.paramsToJson(this.$route.query)
-      this.debouncedSearch()
+      // Wait until the models are updated in the UI
+      this.$nextTick(() => {
+        this.$refs.filters.validate().then((success) => {
+          if (success) this.debouncedSearch()
+        })
+      })
     }
   }
 
   paramsToJson(query) {
-    console.log(query)
     if (query.oid !== undefined && !Array.isArray(query.oid)) {
       query.oid = [query.oid]
     }
@@ -206,12 +213,6 @@ export default class Index extends Vue {
     leading: false,
     trailing: true,
   })
-
-  onKeyUp(key) {
-    if (key.key === 'Enter') {
-      this.onSearchClicked()
-    }
-  }
 
   onSearchClicked() {
     paginationStore.setPage(1)
