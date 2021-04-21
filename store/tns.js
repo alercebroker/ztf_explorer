@@ -11,6 +11,8 @@ export default class TnsStore extends VuexModule {
   type = '-'
   name = '-'
   redshift = '-'
+  reporter = null
+  discoverer = null
 
   @VuexMutation
   setType(val) {
@@ -28,6 +30,16 @@ export default class TnsStore extends VuexModule {
   }
 
   @VuexMutation
+  setReporter(val) {
+    this.reporter = val
+  }
+
+  @VuexMutation
+  setDiscoverer(val) {
+    this.discoverer = val
+  }
+
+  @VuexMutation
   setLoading(val) {
     this.loading = val
   }
@@ -37,6 +49,8 @@ export default class TnsStore extends VuexModule {
     this.setType('-')
     this.setName('-')
     this.setRedShift('-')
+    this.setReporter(null)
+    this.setDiscoverer(null)
     this.setLoading(false)
   }
 
@@ -45,14 +59,21 @@ export default class TnsStore extends VuexModule {
     this.setLoading(true)
     let tnsInformation = await this.store.$tnsApi.isInTNS(
       payload.ra,
-      payload.dec
+      payload.dec,
+      payload.internal_name
     )
     tnsInformation = tnsInformation.data
     this.setType(tnsInformation.object_type ? tnsInformation.object_type : '-')
     this.setName(tnsInformation.object_name ? tnsInformation.object_name : '-')
-    this.setRedShift(
-      tnsInformation.object_data ? tnsInformation.object_data.redshift : '-'
-    )
+    const objectData = tnsInformation.object_data
+    this.setRedShift(objectData.redshift ? objectData.redshift : '-')
+    if (objectData && objectData.reporter === 'ALeRCE') {
+      this.setReporter(objectData.reporter)
+      this.setDiscoverer(objectData.discoverer)
+    } else {
+      this.setReporter(null)
+      this.setDiscoverer(null)
+    }
     this.setLoading(false)
   }
 }

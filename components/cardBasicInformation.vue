@@ -37,6 +37,8 @@
           :type="tns.type"
           :name="tns.name"
           :redshift="tns.redshift"
+          :discoverer="tns.discoverer"
+          :reporter="tns.reporter"
         />
       </v-card-text>
     </v-card>
