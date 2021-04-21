@@ -69,6 +69,7 @@ export default class ObjectView extends Vue {
   }
 
   async fetch() {
+    console.log('fetch')
     let oid = this.$route.params.oid
     if (this.selectedObject) oid = this.selectedObject
     lightCurveStore.getLightCurve(oid)
@@ -147,7 +148,7 @@ export default class ObjectView extends Vue {
 
   @Watch('selectedObject')
   onSelectedObjectChange(val) {
-    this.$fetch()
+    this.$router.push(val)
   }
 }
 </script>
