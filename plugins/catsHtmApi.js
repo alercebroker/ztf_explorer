@@ -7,13 +7,14 @@ export default function ({ $axios, $config }, inject) {
     },
   })
 
-  catsHtmApi.xmatchall = (ra, dec, radius) => {
+  catsHtmApi.xmatchall = (ra, dec, radius, request = null) => {
     return catsHtmApi.get('/crossmatch_all', {
       params: {
         ra,
         dec,
         radius,
       },
+      cancelToken: request ? request.token : null,
     })
   }
 

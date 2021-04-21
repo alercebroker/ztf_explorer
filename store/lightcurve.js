@@ -12,6 +12,7 @@ export default class LightCurveStore extends VuexModule {
   detections = []
   nonDetections = []
   selectedDetection = null
+  activeRequest = null
 
   @VuexMutation
   setDetections(val) {
@@ -43,18 +44,35 @@ export default class LightCurveStore extends VuexModule {
     this.setSelectedDetection(val)
   }
 
+  @VuexMutation
+  setActiveRequest(req) {
+    this.activeRequest = req
+  }
+
   @VuexAction({ rawError: true })
   async getLightCurve(val) {
     this.setLoading(true)
+    if (this.activeRequest) {
+      this.activeRequest.cancel('Cancel request due to new request sent')
+      this.setActiveRequest(null)
+    }
+    this.setActiveRequest(this.store.$axios.CancelToken.source())
     try {
-      const lightCurve = await this.store.$ztfApi.getLightCurve(val)
+      const lightCurve = await this.store.$ztfApi.getLightCurve(
+        val,
+        this.activeRequest
+      )
+      this.setActiveRequest(null)
       this.setDetections(lightCurve.data.detections)
       this.setNonDetections(lightCurve.data.non_detections)
       this.setSelectedDetection(null)
       this.setError(null)
+      this.setLoading(false)
     } catch (error) {
-      this.setError(error)
+      if (!error.message.startsWith('Cancel request')) {
+        this.setError(error)
+        this.setLoading(false)
+      }
     }
-    this.setLoading(false)
   }
 }
