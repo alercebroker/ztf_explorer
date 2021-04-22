@@ -63,7 +63,7 @@ export default {
    */
   buildModules:
     process.env.NODE_ENV !== 'production'
-      ? ['@nuxtjs/vuetify', 'component-library/nuxt', '@nuxtjs/eslint-module']
+      ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
       : [
           '@nuxtjs/vuetify',
           '@alerce/components/nuxt',
