@@ -39,6 +39,7 @@
           :redshift="tns.redshift"
           :discoverer="tns.discoverer"
           :reporter="tns.reporter"
+          :instrument="tns.instrument"
         />
       </v-card-text>
     </v-card>

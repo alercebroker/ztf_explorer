@@ -13,6 +13,7 @@ export default class TnsStore extends VuexModule {
   redshift = '-'
   reporter = null
   discoverer = null
+  instrument = null
 
   @VuexMutation
   setType(val) {
@@ -44,6 +45,11 @@ export default class TnsStore extends VuexModule {
     this.loading = val
   }
 
+  @VuexMutation
+  setInstrument(val) {
+    this.instrument = val
+  }
+
   @VuexAction
   setDefaultValues() {
     this.setType('-')
@@ -51,6 +57,7 @@ export default class TnsStore extends VuexModule {
     this.setRedShift('-')
     this.setReporter(null)
     this.setDiscoverer(null)
+    this.setInstrument(null)
     this.setLoading(false)
   }
 
@@ -70,9 +77,11 @@ export default class TnsStore extends VuexModule {
     if (objectData && objectData.reporter === 'ALeRCE') {
       this.setReporter(objectData.reporter)
       this.setDiscoverer(objectData.discoverer)
+      this.setInstrument(objectData.discovery_data_source.group_name)
     } else {
       this.setReporter(null)
       this.setDiscoverer(null)
+      this.setInstrument(null)
     }
     this.setLoading(false)
   }
