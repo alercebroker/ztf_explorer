@@ -7,8 +7,12 @@ export default function ({ $axios, $config }, inject) {
     },
   })
 
-  tnsApi.isInTNS = (ra, dec) => {
-    return tnsApi.post('search', { ra, dec })
+  tnsApi.isInTNS = (ra, dec, request = null) => {
+    return tnsApi.post(
+      'search',
+      { ra, dec },
+      request ? { cancelToken: request.token } : {}
+    )
   }
 
   inject('tnsApi', tnsApi)

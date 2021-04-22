@@ -10,6 +10,7 @@ export default class XmatchesStore extends VuexModule {
   loading = false
   error = null
   xmatches = []
+  activeRequest = null
 
   @VuexMutation
   setLoading(val) {
@@ -26,9 +27,19 @@ export default class XmatchesStore extends VuexModule {
     this.error = val
   }
 
+  @VuexMutation
+  setActiveRequest(req) {
+    this.activeRequest = req
+  }
+
   @VuexAction({ rawError: true })
   async getXmatch(payload) {
     this.setLoading(true)
+    if (this.activeRequest) {
+      this.activeRequest.cancel('Cancel request due to new request sent')
+      this.setActiveRequest(null)
+    }
+    this.setActiveRequest(this.store.$axios.CancelToken.source())
     try {
       payload.radius = payload.radius ? payload.radius : 50
       const xmatches = await this.store.$catsHtmApi.xmatchall(
@@ -36,11 +47,15 @@ export default class XmatchesStore extends VuexModule {
         payload.dec,
         payload.radius
       )
+      this.setActiveRequest(null)
       this.setXmatches(xmatches.data)
       this.setError(null)
+      this.setLoading(false)
     } catch (error) {
-      this.setError(error)
+      if (!error.message.startsWith('Cancel request')) {
+        this.setError(error)
+        this.setLoading(false)
+      }
     }
-    this.setLoading(false)
   }
 }

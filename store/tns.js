@@ -14,6 +14,8 @@ export default class TnsStore extends VuexModule {
   reporter = null
   discoverer = null
   instrument = null
+  activeRequest = null
+  error = null
 
   @VuexMutation
   setType(val) {
@@ -23,6 +25,11 @@ export default class TnsStore extends VuexModule {
   @VuexMutation
   setName(val) {
     this.name = val
+  }
+
+  @VuexMutation
+  setError(val) {
+    this.error = val
   }
 
   @VuexMutation
@@ -49,6 +56,9 @@ export default class TnsStore extends VuexModule {
   setInstrument(val) {
     this.instrument = val
   }
+  setActiveRequest(val) {
+    this.activeRequest = val
+  }
 
   @VuexAction
   setDefaultValues() {
@@ -64,25 +74,44 @@ export default class TnsStore extends VuexModule {
   @VuexAction({ rawError: true })
   async getTns(payload) {
     this.setLoading(true)
-    let tnsInformation = await this.store.$tnsApi.isInTNS(
-      payload.ra,
-      payload.dec,
-      payload.internal_name
-    )
-    tnsInformation = tnsInformation.data
-    this.setType(tnsInformation.object_type ? tnsInformation.object_type : '-')
-    this.setName(tnsInformation.object_name ? tnsInformation.object_name : '-')
-    const objectData = tnsInformation.object_data
-    this.setRedShift(objectData.redshift ? objectData.redshift : '-')
-    if (objectData && objectData.reporter === 'ALeRCE') {
-      this.setReporter(objectData.reporter)
-      this.setDiscoverer(objectData.discoverer)
-      this.setInstrument(objectData.discovery_data_source.group_name)
-    } else {
-      this.setReporter(null)
-      this.setDiscoverer(null)
-      this.setInstrument(null)
+    if (this.activeRequest) {
+      this.activeRequest.cancel('Cancel request due to new request sent')
+      this.setActiveRequest(null)
     }
-    this.setLoading(false)
+    this.setActiveRequest(this.store.$axios.CancelToken.source())
+    try {
+      let tnsInformation = await this.store.$tnsApi.isInTNS(
+        payload.ra,
+        payload.dec,
+        payload.internal_name
+      )
+      this.setActiveRequest(null)
+      tnsInformation = tnsInformation.data
+      this.setType(
+        tnsInformation.object_type ? tnsInformation.object_type : '-'
+      )
+      this.setName(
+        tnsInformation.object_name ? tnsInformation.object_name : '-'
+      )
+      const objectData = tnsInformation.object_data
+      this.setRedShift(
+        tnsInformation.object_data ? tnsInformation.object_data.redshift : '-'
+      )
+      if (objectData && objectData.reporter === 'ALeRCE') {
+        this.setReporter(objectData.reporter)
+        this.setDiscoverer(objectData.discoverer)
+        this.setInstrument(objectData.discovery_data_source.group_name)
+      } else {
+        this.setReporter(null)
+        this.setDiscoverer(null)
+        this.setInstrument(null)
+      }
+      this.setLoading(false)
+    } catch (error) {
+      if (!error.message.startsWith('Cancel request')) {
+        this.setError(error)
+        this.setLoading(false)
+      }
+    }
   }
 }
