@@ -56,6 +56,8 @@ export default class TnsStore extends VuexModule {
   setInstrument(val) {
     this.instrument = val
   }
+
+  @VuexMutation
   setActiveRequest(val) {
     this.activeRequest = val
   }
