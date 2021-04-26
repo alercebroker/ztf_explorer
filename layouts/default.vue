@@ -1,10 +1,14 @@
 <template>
   <v-app dark>
-    <alerce-a-header title="ALeRCE ZTF Explorer" :items="items" />
+    <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
+      <template v-slot:menu>
+        <theme-selector />
+      </template>
+    </misc-a-header>
     <v-main>
       <nuxt />
     </v-main>
-    <!-- <alerce-a-footer social></alerce-a-footer> -->
+    <!-- <misc-a-footer social></misc-a-footer> -->
   </v-app>
 </template>
 

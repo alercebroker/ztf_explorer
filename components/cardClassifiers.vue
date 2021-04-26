@@ -9,9 +9,9 @@
         Fetching data for object {{ $route.params.oid }} ...
       </v-card-text>
       <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">
-          {{ error }}
-        </v-alert>
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
+          error
+        }}</v-alert>
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
@@ -24,14 +24,15 @@
           prepend-icon="mdi-robot"
           class="py-0 my-0"
         />
-        <alerce-radar-plot :data="plotData" />
+        <plots-radar-plot :data="plotData" />
       </v-card-text>
       <v-card-text v-else class="fill-height">
         <v-row align="center" justify="center" class="fill-height" no-gutters>
           <v-col align-self="center">
             <v-alert icon="mdi-alert" border="left" outlined>
               <p class="ma-0">
-                The object <b> {{ objectId }} </b> has not been classified yet.
+                The object
+                <b>{{ objectId }}</b> has not been classified yet.
               </p>
             </v-alert>
           </v-col>

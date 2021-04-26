@@ -1,5 +1,5 @@
 <template>
-  <alerce-result-table
+  <tables-result-table
     :pagination-options="paginationOptions"
     :items="tableItems"
     :total="total"
@@ -111,7 +111,7 @@ export default class ResultTableWrapper extends Vue {
       show: true,
     },
     {
-      value: 'deltamjd',
+      value: 'deltajd',
       text: 'DeltaMJD (days)',
       show: true,
     },

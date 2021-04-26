@@ -24,7 +24,7 @@
                     :bails="false"
                     v-slot="{ failedRules }"
                   >
-                    <alerce-default-search
+                    <inputs-default-search
                       v-model="generalFiltersSync"
                       :limit-ndet="limitNdet"
                       :classifiers="classifiers"
@@ -43,7 +43,7 @@
               <v-list-item class="pl-4">
                 <v-list-item-content>
                   <validation-provider rules="date" v-slot="{ failedRules }">
-                    <alerce-date-search
+                    <inputs-date-search
                       v-model="dateFiltersSync"
                       :validationErrors="failedRules"
                     />
@@ -63,7 +63,7 @@
                     :bails="false"
                     v-slot="{ failedRules }"
                   >
-                    <alerce-coordinates-search
+                    <inputs-coordinates-search
                       v-model="conesearchFiltersSync"
                       :validationErrors="failedRules"
                     />

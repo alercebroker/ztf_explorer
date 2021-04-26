@@ -14,7 +14,7 @@
         </template>
       </object-list>
     </v-navigation-drawer>
-    <alerce-a-header title="ALeRCE ZTF Explorer" :items="items" />
+    <misc-a-header title="ALeRCE ZTF Explorer" :items="items" />
     <v-main>
       <nuxt />
     </v-main>

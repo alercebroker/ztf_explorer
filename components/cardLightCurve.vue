@@ -17,7 +17,7 @@
     <v-card v-else :class="cardClass">
       <v-card-text class="pb-0">
         <select-lightcurve :selected="selected">
-          <alerce-light-curve-plot
+          <plots-light-curve-plot
             slot="difference"
             :detections="lightcurve.detections"
             :non-detections="lightcurve.nonDetections"
@@ -25,14 +25,14 @@
             :dark="isDark"
             @detectionClick="onDetectionClick"
           />
-          <alerce-light-curve-plot
+          <plots-light-curve-plot
             slot="apparent"
             :detections="lightcurve.detections"
             type="apparent"
             :dark="isDark"
             @detectionClick="onDetectionClick"
           />
-          <alerce-light-curve-plot
+          <plots-light-curve-plot
             slot="folded"
             :detections="lightcurve.detections"
             :period="period"
@@ -45,13 +45,13 @@
       <!-- OPTIONS -->
       <v-card-actions class="py-0">
         <!--RADIO BUTTONS-->
-        <alerce-lightcurve-radio-buttons
+        <buttons-lightcurve-radio-buttons
           v-model="selected"
           :options="options"
         />
         <v-spacer />
         <!--DOWNLOAD LIGHTCURVE-->
-        <alerce-download-lightcurve-button
+        <buttons-download-lightcurve-button
           :oid="objectId"
           :detections="lightcurve.detections"
           :non-detections="lightcurve.nonDetections"

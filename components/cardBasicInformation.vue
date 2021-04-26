@@ -9,22 +9,22 @@
         Fetching data for object {{ $route.params.oid }} ...
       </v-card-text>
       <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">
-          {{ error }}
-        </v-alert>
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
+          error
+        }}</v-alert>
       </v-card-text>
       <v-card-text v-else>
-        <alerce-basic-information :information="information" />
+        <tables-basic-information :information="information" />
         <v-row justify="center" wrap>
           <v-col cols="6">
-            <alerce-finding-chart-button
+            <buttons-finding-chart-button
               :oid="information.oid"
               :candid="candid"
               :useIcon="false"
             />
           </v-col>
           <v-col cols="6">
-            <alerce-catalogs-buttons
+            <buttons-catalogs-buttons
               :ra="information.meanra"
               :dec="information.meandec"
               title="Catalogs"
@@ -32,7 +32,7 @@
           </v-col>
         </v-row>
 
-        <alerce-tns-information
+        <tables-tns-information
           :loading="tns.loading"
           :type="tns.type"
           :name="tns.name"
@@ -45,8 +45,7 @@
 
 <script>
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-@Component
+@Component()
 export default class CardBasicInformation extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
 

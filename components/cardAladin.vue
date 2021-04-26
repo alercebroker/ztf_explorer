@@ -9,12 +9,12 @@
         Fetching data for object {{ $route.params.oid }} ...
       </v-card-text>
       <v-card-text v-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">
-          {{ error }}
-        </v-alert>
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
+          error
+        }}</v-alert>
       </v-card-text>
     </v-card>
-    <alerce-aladin
+    <misc-aladin
       v-else
       v-model="object"
       :objects="objects"
