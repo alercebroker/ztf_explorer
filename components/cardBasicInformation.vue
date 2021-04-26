@@ -9,9 +9,9 @@
         Fetching data for object {{ $route.params.oid }} ...
       </v-card-text>
       <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
-          error
-        }}</v-alert>
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
       </v-card-text>
       <v-card-text v-else>
         <tables-basic-information :information="information" />
@@ -74,9 +74,12 @@ export default class CardBasicInformation extends Vue {
   }
 
   get information() {
-    return this.$store.state.object.object
+    const nonDetections = this.$store.state.lightcurve.nonDetections
+    const info = this.$store.state.object.object
       ? this.$store.state.object.object
       : {}
+    info['Non Detections'] = nonDetections ? nonDetections.length : null
+    return info
   }
 
   get tns() {
