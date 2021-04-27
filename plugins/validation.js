@@ -39,17 +39,30 @@ extend('oidLength', {
   message: 'You can only query for 200 object ids',
 })
 
+extend('probability', {
+  validate: (value) => {
+    if (value.probability > 0) {
+      return value.selectedClassifier != null && value.selectedClass != null
+    }
+    return true
+  },
+  message: "Can't search for probability without class",
+})
+
 extend('date', {
   validate: (value) => {
-    return value.minMjd <= value.maxMjd
+    return value.minMjd && value.maxMjd ? value.minMjd <= value.maxMjd : true
   },
-  message: "Min MJD can't be lower than max MJD",
+  message: 'Min MJD must be lower than max MJD',
 })
 
 extend('conesearch', {
   validate: (value) => {
     if (value.ra || value.dec || value.radius) {
       return (
+        value.ra &&
+        value.dec &&
+        value.radius &&
         value.ra !== '' &&
         value.dec !== '' &&
         value.radius !== '' &&

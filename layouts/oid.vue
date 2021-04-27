@@ -10,7 +10,11 @@
     >
       <object-list>
         <template v-slot:pagination="page">
-          <simple-pagination :value="page.page" @input="page.onInput" />
+          <simple-pagination
+            :value="page.page"
+            @input="page.onInput"
+            :disable-next="disableNext"
+          />
         </template>
       </object-list>
     </v-navigation-drawer>
@@ -40,6 +44,13 @@ export default class DefaultLayout extends Vue {
 
   get showDrawer() {
     return this.$store.state.objects.list.length > 0
+  }
+
+  get disableNext() {
+    return (
+      this.$store.state.objects.list.length <
+      this.$store.state.pagination.perPage
+    )
   }
 
   onTransition() {
