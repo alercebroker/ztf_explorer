@@ -11,6 +11,7 @@ import StatsStore from '~/store/stats'
 import TnsStore from '~/store/tns'
 import XmatchesStore from '~/store/xmatches'
 import AvroStore from '~/store/avro'
+import DataReleaseStore from '~/store/datarelease'
 
 let filtersStore = null
 let objectStore = null
@@ -23,6 +24,7 @@ let statsStore = null
 let tnsStore = null
 let xmatchesStore = null
 let avroStore = null
+let datareleaseStore = null
 
 function initialiseStores(store) {
   filtersStore = getModule(Filters, store)
@@ -36,6 +38,7 @@ function initialiseStores(store) {
   tnsStore = getModule(TnsStore, store)
   xmatchesStore = getModule(XmatchesStore, store)
   avroStore = getModule(AvroStore, store)
+  datareleaseStore = getModule(DataReleaseStore, store)
 }
 
 export {
@@ -50,5 +53,6 @@ export {
   statsStore,
   tnsStore,
   xmatchesStore,
-  avroStore
+  avroStore,
+  datareleaseStore,
 }
