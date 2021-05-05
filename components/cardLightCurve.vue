@@ -27,7 +27,7 @@
           />
           <plots-light-curve-plot
             slot="apparent"
-            :detections="lightcurve.detections"
+            :detections="lightcurve.detections.concat(datarelease)"
             type="apparent"
             :dark="isDark"
             @detectionClick="onDetectionClick"
@@ -99,6 +99,10 @@ export default class CardLightCurve extends Vue {
       detections: this.$store.state.lightcurve.detections,
       nonDetections: this.$store.state.lightcurve.nonDetections,
     }
+  }
+
+  get datarelease() {
+    return this.$store.state.datarelease.dataReleaseLightCurve
   }
 
   get objectInformation() {
