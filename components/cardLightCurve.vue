@@ -27,14 +27,14 @@
           />
           <plots-light-curve-plot
             slot="apparent"
-            :detections="lightcurve.detections.concat(datarelease)"
+            :detections="apparent"
             type="apparent"
             :dark="isDark"
             @detectionClick="onDetectionClick"
           />
           <plots-light-curve-plot
             slot="folded"
-            :detections="lightcurve.detections"
+            :detections="apparent"
             :period="period"
             type="folded"
             :dark="isDark"
@@ -51,6 +51,17 @@
         />
         <v-spacer />
         <!--DOWNLOAD LIGHTCURVE-->
+        <v-btn-toggle>
+          <v-btn
+            outlined
+            small
+            :disabled="datarelease.length == 0"
+            @click="displayDatarelease = !displayDatarelease"
+          >
+            <v-icon left small>mdi-eye</v-icon>Display DR
+          </v-btn>
+        </v-btn-toggle>
+        <v-spacer />
         <buttons-download-lightcurve-button
           :oid="objectId"
           :detections="lightcurve.detections"
@@ -82,6 +93,33 @@ export default class CardLightCurve extends Vue {
 
   selected = ''
 
+  displayDatarelease = false
+
+  parseObject(objectLightCurve) {
+    const drMjd = objectLightCurve.hmjd
+    const drMag = objectLightCurve.mag
+    const drMagError = objectLightCurve.magerr
+    const drFid = 100 + objectLightCurve.filterid
+    const drField = objectLightCurve.fieldid
+    const drId = objectLightCurve.objectid
+    return drMjd.map((mjd, index) => {
+      return {
+        mjd,
+        magpsf_corr: drMag[index],
+        sigmapsf_corr_ext: drMagError[index],
+        fid: drFid,
+        field: drField,
+        objectid: drId,
+        corrected: this.displayDatarelease,
+      }
+    })
+  }
+
+  parseLightCurve(lightcurves) {
+    const lcs = lightcurves.map((x) => this.parseObject(x))
+    return lcs.flat(1)
+  }
+
   get isDark() {
     return this.$vuetify.theme.isDark
   }
@@ -102,7 +140,15 @@ export default class CardLightCurve extends Vue {
   }
 
   get datarelease() {
-    return this.$store.state.datarelease.dataReleaseLightCurve
+    let dr = this.$store.state.datarelease.dataReleaseLightCurve
+    dr = this.parseLightCurve(dr)
+    return dr
+  }
+
+  get apparent() {
+    return this.displayDatarelease
+      ? this.lightcurve.detections.concat(this.datarelease)
+      : this.lightcurve.detections
   }
 
   get objectInformation() {
@@ -146,7 +192,7 @@ export default class CardLightCurve extends Vue {
           x.default = !val.corrected
           break
         case 'apparent':
-          x.show = val.corrected
+          x.show = val.corrected || this.datarelease.lenght
           x.default = val.corrected
           break
         case 'folded':

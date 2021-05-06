@@ -45,7 +45,7 @@ export default class DataReleaseStore extends VuexModule {
         val,
         this.activeRequest
       )
-      this.setDataReleaseLightcurve(lightCurves)
+      this.setDataReleaseLightcurve(lightCurves.data)
       this.setActiveRequest(null)
       this.setError(null)
       this.setLoading(false)
