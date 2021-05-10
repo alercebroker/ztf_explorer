@@ -27,14 +27,14 @@
           />
           <plots-light-curve-plot
             slot="apparent"
-            :detections="lightcurve.detections"
+            :detections="apparent"
             type="apparent"
             :dark="isDark"
             @detectionClick="onDetectionClick"
           />
           <plots-light-curve-plot
             slot="folded"
-            :detections="lightcurve.detections"
+            :detections="apparent"
             :period="period"
             type="folded"
             :dark="isDark"
@@ -50,7 +50,13 @@
           :options="options"
         />
         <v-spacer />
-        <!--DOWNLOAD LIGHTCURVE-->
+        <!-- LIGHTCURVE BUTTONS -->
+        <buttons-display-data-release
+          v-model="dataReleaseValues"
+          :datarelease="dataRelease"
+          :loading="isLoadingDataRelease"
+        />
+        <v-spacer />
         <buttons-download-lightcurve-button
           :oid="objectId"
           :detections="lightcurve.detections"
@@ -82,6 +88,8 @@ export default class CardLightCurve extends Vue {
 
   selected = ''
 
+  dataReleaseValues = []
+
   get isDark() {
     return this.$vuetify.theme.isDark
   }
@@ -99,6 +107,18 @@ export default class CardLightCurve extends Vue {
       detections: this.$store.state.lightcurve.detections,
       nonDetections: this.$store.state.lightcurve.nonDetections,
     }
+  }
+
+  get dataRelease() {
+    return this.$store.state.datarelease.dataReleaseLightCurve
+  }
+
+  get isLoadingDataRelease() {
+    return this.$store.state.datarelease.loading
+  }
+
+  get apparent() {
+    return this.lightcurve.detections.concat(this.dataReleaseValues)
   }
 
   get objectInformation() {
@@ -152,6 +172,23 @@ export default class CardLightCurve extends Vue {
     })
   }
 
+  @Watch('dataRelease')
+  onDataReleaseValues(val) {
+    this.options.forEach((x) => {
+      switch (x.value) {
+        case 'apparent':
+          x.show = this.objectInformation.corrected || val.length > 0
+          x.default = this.objectInformation.corrected
+          break
+        case 'folded':
+          x.show =
+            this.period !== null &&
+            (this.objectInformation.corrected || val.length > 0)
+          break
+      }
+    })
+  }
+
   @Watch('period')
   onPeriod(val) {
     if (this.objectInformation) {
@@ -160,7 +197,7 @@ export default class CardLightCurve extends Vue {
   }
 
   onDetectionClick(val) {
-    this.$store.dispatch('lightcurve/changeDetection', val.index)
+    if (val) this.$store.dispatch('lightcurve/changeDetection', val.index)
   }
 }
 </script>

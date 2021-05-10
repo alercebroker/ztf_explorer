@@ -59,6 +59,7 @@ import {
   tnsStore,
   objectStore,
   xmatchesStore,
+  datareleaseStore,
 } from '~/store'
 @Component({ layout: 'oid' })
 export default class ObjectView extends Vue {
@@ -77,10 +78,16 @@ export default class ObjectView extends Vue {
     featuresStore.getFeatures(oid)
     tnsStore.setDefaultValues()
     await objectStore.getObject(oid)
+    datareleaseStore.getDataReleaseLightCurve({
+      ra: this.objectInformation.meanra,
+      dec: this.objectInformation.meandec,
+      radius: 1.5,
+    })
     xmatchesStore.getXmatch({
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
     })
+
     tnsStore.getTns({
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,

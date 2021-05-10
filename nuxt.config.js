@@ -52,6 +52,7 @@ export default {
     '@/plugins/catsHtmApi.js',
     '@/plugins/avro.js',
     '@/plugins/validation.js',
+    '@/plugins/dataReleaseApi.js',
   ],
   /*
    ** Auto import components
@@ -93,6 +94,7 @@ export default {
     catshtmApiBaseUrl:
       process.env.CATSHTM_API_BASE_URL || 'https://catshtm.alerce.online',
     tnsApiBaseUrl: process.env.TNS_API_BASE_URL || 'https://tns.alerce.online',
+    drApiBaseUrl: 'https://api.alerce.online/ztf/dr5/v1',
     ztfApiBaseUrl:
       process.env.NODE_ENV === 'production'
         ? process.env.ZTF_API_BASE_URL || 'https://api.alerce.online/ztf/v1'

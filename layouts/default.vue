@@ -2,7 +2,7 @@
   <v-app dark>
     <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
       <template v-slot:menu>
-        <theme-selector />
+        <misc-theme-selector />
       </template>
     </misc-a-header>
     <v-main>
