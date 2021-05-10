@@ -50,17 +50,12 @@
           :options="options"
         />
         <v-spacer />
-        <!--DOWNLOAD LIGHTCURVE-->
-        <v-btn-toggle>
-          <v-btn
-            outlined
-            small
-            :disabled="datarelease.length == 0"
-            @click="displayDatarelease = !displayDatarelease"
-          >
-            <v-icon left small>mdi-eye</v-icon>Display DR
-          </v-btn>
-        </v-btn-toggle>
+        <!-- LIGHTCURVE BUTTONS -->
+        <buttons-display-data-release
+          v-model="dataReleaseValues"
+          :datarelease="dataRelease"
+          :loading="isLoadingDataRelease"
+        />
         <v-spacer />
         <buttons-download-lightcurve-button
           :oid="objectId"
@@ -93,32 +88,7 @@ export default class CardLightCurve extends Vue {
 
   selected = ''
 
-  displayDatarelease = false
-
-  parseObject(objectLightCurve) {
-    const drMjd = objectLightCurve.hmjd
-    const drMag = objectLightCurve.mag
-    const drMagError = objectLightCurve.magerr
-    const drFid = 100 + objectLightCurve.filterid
-    const drField = objectLightCurve.fieldid
-    const drId = objectLightCurve.objectid
-    return drMjd.map((mjd, index) => {
-      return {
-        mjd,
-        magpsf_corr: drMag[index],
-        sigmapsf_corr_ext: drMagError[index],
-        fid: drFid,
-        field: drField,
-        objectid: drId,
-        corrected: this.displayDatarelease,
-      }
-    })
-  }
-
-  parseLightCurve(lightcurves) {
-    const lcs = lightcurves.map((x) => this.parseObject(x))
-    return lcs.flat(1)
-  }
+  dataReleaseValues = []
 
   get isDark() {
     return this.$vuetify.theme.isDark
@@ -139,16 +109,16 @@ export default class CardLightCurve extends Vue {
     }
   }
 
-  get datarelease() {
-    let dr = this.$store.state.datarelease.dataReleaseLightCurve
-    dr = this.parseLightCurve(dr)
-    return dr
+  get dataRelease() {
+    return this.$store.state.datarelease.dataReleaseLightCurve
+  }
+
+  get isLoadingDataRelease() {
+    return this.$store.state.datarelease.loading
   }
 
   get apparent() {
-    return this.displayDatarelease
-      ? this.lightcurve.detections.concat(this.datarelease)
-      : this.lightcurve.detections
+    return this.lightcurve.detections.concat(this.dataReleaseValues)
   }
 
   get objectInformation() {
@@ -192,11 +162,28 @@ export default class CardLightCurve extends Vue {
           x.default = !val.corrected
           break
         case 'apparent':
-          x.show = val.corrected || this.datarelease.lenght
+          x.show = val.corrected
           x.default = val.corrected
           break
         case 'folded':
           x.show = this.period !== null && val.corrected
+          break
+      }
+    })
+  }
+
+  @Watch('dataRelease')
+  onDataReleaseValues(val) {
+    this.options.forEach((x) => {
+      switch (x.value) {
+        case 'apparent':
+          x.show = this.objectInformation.corrected || val.length > 0
+          x.default = this.objectInformation.corrected
+          break
+        case 'folded':
+          x.show =
+            this.period !== null &&
+            (this.objectInformation.corrected || val.length > 0)
           break
       }
     })
@@ -210,7 +197,7 @@ export default class CardLightCurve extends Vue {
   }
 
   onDetectionClick(val) {
-    this.$store.dispatch('lightcurve/changeDetection', val.index)
+    if (val) this.$store.dispatch('lightcurve/changeDetection', val.index)
   }
 }
 </script>
