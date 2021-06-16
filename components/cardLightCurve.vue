@@ -55,6 +55,8 @@
           v-model="dataReleaseValues"
           :datarelease="dataRelease"
           :loading="isLoadingDataRelease"
+          :plot="selected"
+          @update-plot="updatePlotSelected"
         />
         <v-spacer />
         <buttons-download-lightcurve-button
@@ -89,6 +91,31 @@ export default class CardLightCurve extends Vue {
   selected = ''
 
   dataReleaseValues = []
+
+  options = [
+    {
+      text: 'Difference Magnitude',
+      value: 'difference',
+      tooltip:
+        'The difference Magnitude light curve, is the absolute difference between a science and reference magnitudes.',
+      show: true,
+      default: true,
+    },
+    {
+      text: 'Apparent Magnitude',
+      value: 'apparent',
+      tooltip:
+        'Apparent magnitude light curve results from adding/subtracting the fluxes from the reference and difference in the same unit system and then converting to magnitudes.',
+      show: true,
+    },
+    {
+      text: 'Folded',
+      value: 'folded',
+      tooltip:
+        'The Period folded light curve, where time is transformed to time modulo the period (Phase).',
+      show: true,
+    },
+  ]
 
   get isDark() {
     return this.$vuetify.theme.isDark
@@ -128,31 +155,6 @@ export default class CardLightCurve extends Vue {
   get objectId() {
     return this.$store.state.object.objectId
   }
-
-  options = [
-    {
-      text: 'Difference Magnitude',
-      value: 'difference',
-      tooltip:
-        'The difference Magnitude light curve, is the absolute difference between a science and reference magnitudes.',
-      show: true,
-      default: true,
-    },
-    {
-      text: 'Apparent Magnitude',
-      value: 'apparent',
-      tooltip:
-        'Apparent magnitude light curve results from adding/subtracting the fluxes from the reference and difference in the same unit system and then converting to magnitudes.',
-      show: true,
-    },
-    {
-      text: 'Folded',
-      value: 'folded',
-      tooltip:
-        'The Period folded light curve, where time is transformed to time modulo the period (Phase).',
-      show: true,
-    },
-  ]
 
   @Watch('objectInformation')
   onObjectInformation(val) {
@@ -198,6 +200,10 @@ export default class CardLightCurve extends Vue {
 
   onDetectionClick(val) {
     if (val) this.$store.dispatch('lightcurve/changeDetection', val.index)
+  }
+
+  updatePlotSelected(event) {
+    this.selected = event
   }
 }
 </script>
