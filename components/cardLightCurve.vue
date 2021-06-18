@@ -50,20 +50,25 @@
           :options="options"
         />
         <v-spacer />
-        <!-- LIGHTCURVE BUTTONS -->
-        <buttons-display-data-release
-          v-model="dataReleaseValues"
-          :datarelease="dataRelease"
-          :loading="isLoadingDataRelease"
-          :plot="selected"
-          @update-plot="updatePlotSelected"
-        />
-        <v-spacer />
-        <buttons-download-lightcurve-button
-          :oid="objectId"
-          :detections="lightcurve.detections"
-          :non-detections="lightcurve.nonDetections"
-        />
+        <v-row>
+          <!-- LIGHTCURVE BUTTONS -->
+          <v-col>
+            <buttons-display-data-release
+              v-model="dataReleaseValues"
+              :datarelease="dataRelease"
+              :loading="isLoadingDataRelease"
+              :plot="selected"
+              @update-plot="updatePlotSelected"
+            />
+          </v-col>
+          <v-col>
+            <buttons-download-lightcurve-button
+              :oid="objectId"
+              :detections="lightcurve.detections"
+              :non-detections="lightcurve.nonDetections"
+            />
+          </v-col>
+        </v-row>
       </v-card-actions>
     </v-card>
   </v-col>
