@@ -43,5 +43,10 @@ export default class LightcurveRadioButtons extends Vue {
   onLocalValueChange(val) {
     this.$emit('input', val)
   }
+
+  @Watch('value')
+  onValue(val) {
+    this.localValue = val
+  }
 }
 </script>
