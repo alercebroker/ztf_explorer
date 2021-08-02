@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :fluid="doFluid">
     <v-row align="stretch">
       <card-basic-information
         :object="$route.params.oid"
@@ -156,6 +156,10 @@ export default class ObjectView extends Vue {
   onSelectedObjectChange(val) {
     this.$router.push(val)
   }
+
+  get doFluid() {
+    return this.$vuetify.breakpoint.width < 1400
+  }
 }
 </script>
 <style>
@@ -164,6 +168,5 @@ export default class ObjectView extends Vue {
 }
 *[class^='col-'] {
   padding-top: 0;
-  padding-left: 0;
 }
 </style>

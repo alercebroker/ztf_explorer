@@ -1,5 +1,5 @@
 <template>
-  <v-radio-group v-model="localValue" row>
+  <v-radio-group v-model="localValue" row class="py-0">
     <div v-for="option in options" :key="'radio-' + option.value">
       <v-radio :disabled="!option.show" :value="option.value">
         <template v-slot:label>
