@@ -13,7 +13,7 @@
           {{ error }}
         </v-alert>
       </v-card-text>
-      <v-card-text v-else>
+      <v-card-text class="pa-1" v-else>
         <tables-basic-information :information="information" />
         <v-row justify="center" wrap>
           <v-col cols="6">

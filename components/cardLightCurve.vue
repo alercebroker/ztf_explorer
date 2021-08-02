@@ -15,7 +15,7 @@
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
-      <v-card-text class="pb-0">
+      <v-card-text class="pb-0 px-1">
         <select-lightcurve :selected="selected">
           <plots-light-curve-plot
             slot="difference"
@@ -52,7 +52,7 @@
         <v-spacer />
         <v-row>
           <!-- LIGHTCURVE BUTTONS -->
-          <v-col>
+          <v-col class="py-1">
             <buttons-display-data-release
               v-model="dataReleaseValues"
               :datarelease="dataRelease"
@@ -61,7 +61,7 @@
               @update-plot="updatePlotSelected"
             />
           </v-col>
-          <v-col>
+          <v-col class="py-1">
             <buttons-download-lightcurve-button
               :oid="objectId"
               :detections="lightcurve.detections"
