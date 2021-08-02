@@ -1,17 +1,20 @@
 <template>
   <v-row>
-    <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12" @keyup="onKeyUp">
-      <search-bar
-        :panels.sync="panels"
-        :general-filters.sync="generalFilters"
-        :date-filters.sync="dateFilters"
-        :conesearch-filters.sync="conesearchFilters"
-        :classes="classes"
-        :classifiers="classifiers"
-        :loading="searching"
-        @search="onSearchClicked"
-        @clear="onClearClicked"
-      />
+    <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12">
+      <validation-observer ref="filters" v-slot="{ invalid }">
+        <search-bar
+          :panels.sync="panels"
+          :general-filters.sync="generalFilters"
+          :date-filters.sync="dateFilters"
+          :conesearch-filters.sync="conesearchFilters"
+          :classes="classes"
+          :classifiers="classifiers"
+          :loading="searching"
+          :invalid="invalid"
+          @search="onSearchClicked"
+          @clear="onClearClicked"
+        />
+      </validation-observer>
     </v-col>
     <v-col xs="12" sm="12" md="9" lg="9" xl="9" cols="12">
       <results-table
@@ -23,8 +26,8 @@
         :total="total"
         :loading="searching"
         @rowClicked="onRowClicked"
-        @update:page="onPaginationOptionsChange"
-        @update:sortBy="onPaginationOptionsChange"
+        @pageChangeClick="debouncedSearch"
+        @sortChangeClick="debouncedSearch"
       />
     </v-col>
   </v-row>
@@ -44,29 +47,81 @@ export default class Index extends Vue {
     }
   }
 
-  fetch() {
-    filtersStore.getClassifiers()
-    filtersStore.getLimitValues()
-    if (Object.keys(this.$route.query).length) {
+  async fetch() {
+    await filtersStore.getClassifiers()
+    await filtersStore.getLimitValues()
+    if (
+      Object.keys(this.$route.query).length &&
+      this.$route.fullPath.slice(2) !== filtersStore.defaultQuerystring
+    ) {
       this.paramsToJson(this.$route.query)
-      this.onPaginationOptionsChange()
+      // Wait until the models are updated in the UI
+      this.$nextTick(() => {
+        this.$refs.filters.validate().then((success) => {
+          if (success) this.debouncedSearch()
+        })
+      })
     }
   }
 
   paramsToJson(query) {
-    if (query.oid !== null && typeof query.oid === 'string') {
+    if (query.oid !== undefined && !Array.isArray(query.oid)) {
       query.oid = [query.oid]
     }
-    this.generalFilters = query
-    this.dateFilters = query
-    this.conesearchFilters = query
+    if (query.ndet !== undefined && !Array.isArray(query.ndet)) {
+      query.ndet = [query.ndet]
+    }
+    if (query.firstmjd !== undefined && !Array.isArray(query.firstmjd)) {
+      query.firstmjd = [query.firstmjd]
+    }
+    this.generalFilters = {
+      oid: 'oid' in query ? query.oid : filtersStore.defaultGeneralFilters.oid,
+      selectedClass:
+        'selectedClass' in query
+          ? query.selectedClass
+          : filtersStore.defaultGeneralFilters.selectedClass,
+      selectedClassifier:
+        'selectedClassifier' in query
+          ? query.selectedClassifier
+          : filtersStore.defaultGeneralFilters.selectedClassifier,
+      probability:
+        'probability' in query
+          ? query.probability
+          : filtersStore.defaultGeneralFilters.probability,
+      ndet:
+        'ndet' in query ? query.ndet : filtersStore.defaultGeneralFilters.ndet,
+    }
+    this.dateFilters = {
+      minMjd:
+        'firstmjd' in query
+          ? query.firstmjd[0]
+          : filtersStore.defaultDateFilters.firstmjd[0],
+      maxMjd:
+        'firstmjd' in query && query.firstmjd.length > 1
+          ? query.firstmjd[1]
+          : filtersStore.defaultDateFilters.firstmjd[1],
+    }
+    this.conesearchFilters = {
+      ra: 'ra' in query ? query.ra : filtersStore.defaultConesearchFilters.ra,
+      dec:
+        'dec' in query ? query.dec : filtersStore.defaultConesearchFilters.dec,
+      radius:
+        'radius' in query
+          ? query.radius
+          : filtersStore.defaultConesearchFilters.radius,
+    }
     this.page = parseInt(query.page)
-    this.sortBy = query.order_by
-    this.sortDesc = query.order_mode === 'DESC'
+    this.sortBy = query.sortBy
+    this.sortDesc = query.sortDesc === 'true'
   }
 
   get querystring() {
     return filtersStore.querystring
+  }
+
+  @Watch('querystring')
+  onQueryStringChange(qstr) {
+    this.$router.replace(`?${qstr}`)
   }
 
   get classifiers() {
@@ -159,25 +214,13 @@ export default class Index extends Vue {
     trailing: true,
   })
 
-  onKeyUp(key) {
-    if (key.key === 'Enter') {
-      this.onSearchClicked()
-    }
-  }
-
   onSearchClicked() {
     paginationStore.setPage(1)
-    this.$router.replace(`?${this.querystring}`)
     this.debouncedSearch()
   }
 
   onClearClicked() {
     filtersStore.clearFilters()
-  }
-
-  onPaginationOptionsChange() {
-    this.$router.replace(`?${this.querystring}`)
-    this.debouncedSearch()
   }
 
   onRowClicked(item) {

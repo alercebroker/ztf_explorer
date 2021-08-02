@@ -12,7 +12,7 @@ const defaultState = {
   classifiers: [],
   classes: [],
   probability: 0,
-  ranking: null,
+  ranking: 1,
   ndet: [null, null],
   firstmjd: [null, null],
   limitNdet: [1, 2000],
@@ -48,6 +48,7 @@ export default class Filters extends VuexModule {
   searching = defaultState.searching
   error = defaultState.error
   ranking = defaultState.ranking
+  activeRequest = null
 
   @VuexMutation
   setSearching(val) {
@@ -70,6 +71,18 @@ export default class Filters extends VuexModule {
     }
   }
 
+  get defaultGeneralFilters() {
+    return {
+      oid: defaultState.oid,
+      selectedClassifier: defaultState.selectedClassifier,
+      selectedClass: defaultState.selectedClass,
+      probability:
+        defaultState.probability > 0 ? defaultState.probability : null,
+      ndet: defaultState.ndet,
+      ranking: defaultState.ranking,
+    }
+  }
+
   get querystring() {
     return qs.stringify(
       {
@@ -77,6 +90,22 @@ export default class Filters extends VuexModule {
         ...this.dateFilters,
         ...this.conesearchFilters,
         ...paginationStore.pageFilters,
+      },
+      {
+        arrayFormat: 'repeat',
+        skipNulls: true,
+        filter: (prefix, value) => (value === '' ? null : value),
+      }
+    )
+  }
+
+  get defaultQuerystring() {
+    return qs.stringify(
+      {
+        ...this.defaultGeneralFilters,
+        ...this.defaultDateFilters,
+        ...this.defaultConesearchFilters,
+        ...paginationStore.defaultPageFilters,
       },
       {
         arrayFormat: 'repeat',
@@ -109,19 +138,28 @@ export default class Filters extends VuexModule {
   @VuexMutation
   setGeneralFilters(filters) {
     this.oid = filters.oid
+    if (filters.selectedClassifier !== this.selectedClassifier) {
+      this.selectedClass = null
+    }
     this.selectedClass = filters.selectedClass
     this.selectedClassifier = filters.selectedClassifier
     this.probability = filters.probability
     this.ndet = filters.ndet
-    this.ranking = filters.ranking
-    if (filters.oid !== undefined) {
-      paginationStore.setSortBy(filters.oid.length > 1 ? null : 'probability')
+    this.ranking = 1
+    if (Array.isArray(this.oid)) {
+      paginationStore.setSortBy(this.oid.length > 1 ? null : 'probability')
     }
   }
 
   get dateFilters() {
     return {
       firstmjd: this.firstmjd,
+    }
+  }
+
+  get defaultDateFilters() {
+    return {
+      firstmjd: defaultState.firstmjd,
     }
   }
 
@@ -135,6 +173,14 @@ export default class Filters extends VuexModule {
       ra: this.ra,
       dec: this.dec,
       radius: this.radius,
+    }
+  }
+
+  get defaultConesearchFilters() {
+    return {
+      ra: defaultState.ra,
+      dec: defaultState.dec,
+      radius: defaultState.radius,
     }
   }
 
@@ -158,27 +204,50 @@ export default class Filters extends VuexModule {
     this.classes = classes
   }
 
-  @VuexAction()
+  @VuexAction({ rawError: true })
   setPaginationState(result) {
     paginationStore.setTotal(result.data.items.length + 1)
+  }
+
+  @VuexMutation
+  setActiveRequest(request) {
+    this.activeRequest = request
   }
 
   @VuexAction({ rawError: true })
   async search() {
     this.setSearching(true)
-    try {
-      const result = await this.store.$ztfApi.search({
-        ...this.generalFilters,
-        ...this.dateFilters,
-        ...this.conesearchFilters,
-        ...paginationStore.pageFilters,
-      })
-      objectsStore.set(result.data.items)
-      this.setPaginationState(result)
-    } catch (error) {
-      this.setError(error)
+    if (this.activeRequest) {
+      this.activeRequest.cancel('Cancel request due to new request sent')
+      this.setActiveRequest(null)
     }
-    this.setSearching(false)
+    this.setActiveRequest(this.store.$axios.CancelToken.source())
+    try {
+      const result = await this.store.$ztfApi.search(
+        {
+          ...this.generalFilters,
+          ...this.dateFilters,
+          ...this.conesearchFilters,
+          ...paginationStore.pageFilters,
+        },
+        this.activeRequest
+      )
+      this.setError(null)
+      this.setActiveRequest(null)
+      objectsStore.set(result.data.items)
+      if (result.data.items.length === 0) {
+        objectsStore.setNoDataText(
+          'We could not find any object with the selected filters'
+        )
+      }
+      this.setPaginationState(result)
+      this.setSearching(false)
+    } catch (error) {
+      if (!error.message.startsWith('Cancel request')) {
+        this.setError(error)
+        this.setSearching(false)
+      }
+    }
   }
 
   @VuexAction({ rawError: true })
@@ -187,7 +256,7 @@ export default class Filters extends VuexModule {
     this.setClassifiers(result.data)
   }
 
-  @VuexAction
+  @VuexAction({ rawError: true })
   getClasses(selectedClassifier) {
     const classifier = this.classifiers.find(
       (c) => c.name === selectedClassifier
@@ -195,7 +264,7 @@ export default class Filters extends VuexModule {
     this.setClasses(classifier.classes)
   }
 
-  @VuexAction
+  @VuexAction({ rawError: true })
   async getLimitValues() {
     let resp = await this.store.$ztfApi.getLimitValues()
     resp = resp.data
@@ -222,7 +291,7 @@ export default class Filters extends VuexModule {
     this.ranking = defaultState.ranking
   }
 
-  @VuexAction()
+  @VuexAction({ rawError: true })
   clearFilters() {
     this.setDefaultState()
     this.getClassifiers()

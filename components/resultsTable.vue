@@ -1,10 +1,11 @@
 <template>
-  <alerce-result-table
+  <tables-result-table
     :pagination-options="paginationOptions"
     :items="tableItems"
     :total="total"
     :loading="loading"
     :column-options="selectedColumnOptions"
+    :no-data-text="noDataText"
     @rowClicked="onRowClicked"
     @pageChange="onPageChange"
     @sortByChange="onSortChange"
@@ -13,6 +14,7 @@
 
 <script>
 import { Vue, Component, Prop, PropSync, Emit } from 'nuxt-property-decorator'
+import { objectsStore } from '~/store'
 @Component
 export default class ResultTableWrapper extends Vue {
   @Prop({ type: Array }) items
@@ -109,7 +111,7 @@ export default class ResultTableWrapper extends Vue {
       show: true,
     },
     {
-      value: 'deltamjd',
+      value: 'deltajd',
       text: 'DeltaMJD (days)',
       show: true,
     },
@@ -173,11 +175,13 @@ export default class ResultTableWrapper extends Vue {
     return item
   }
 
+  @Emit('pageChangeClick')
   onPageChange(val) {
     this.pageSync = val
     return val
   }
 
+  @Emit('sortChangeClick')
   onSortChange(val) {
     this.sortBySync = val.sortBy.length ? val.sortBy[0] : null
     this.sortDescSync = val.sortDesc.length ? val.sortDesc[0] : null
@@ -185,6 +189,10 @@ export default class ResultTableWrapper extends Vue {
       sortBy: val.sortBy.length ? val.sortBy[0] : null,
       sortDesc: val.sortDesc.length ? val.sortDesc[0] : null,
     }
+  }
+
+  get noDataText() {
+    return objectsStore.noDataText
   }
 }
 </script>

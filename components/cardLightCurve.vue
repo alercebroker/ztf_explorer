@@ -15,9 +15,9 @@
       </v-card-text>
     </v-card>
     <v-card v-else :class="cardClass">
-      <v-card-text class="pb-0">
+      <v-card-text class="pb-0 px-1">
         <select-lightcurve :selected="selected">
-          <alerce-light-curve-plot
+          <plots-light-curve-plot
             slot="difference"
             :detections="lightcurve.detections"
             :non-detections="lightcurve.nonDetections"
@@ -25,16 +25,16 @@
             :dark="isDark"
             @detectionClick="onDetectionClick"
           />
-          <alerce-light-curve-plot
+          <plots-light-curve-plot
             slot="apparent"
-            :detections="lightcurve.detections"
+            :detections="apparent"
             type="apparent"
             :dark="isDark"
             @detectionClick="onDetectionClick"
           />
-          <alerce-light-curve-plot
+          <plots-light-curve-plot
             slot="folded"
-            :detections="lightcurve.detections"
+            :detections="apparent"
             :period="period"
             type="folded"
             :dark="isDark"
@@ -45,17 +45,30 @@
       <!-- OPTIONS -->
       <v-card-actions class="py-0">
         <!--RADIO BUTTONS-->
-        <alerce-lightcurve-radio-buttons
+        <buttons-lightcurve-radio-buttons
           v-model="selected"
           :options="options"
         />
         <v-spacer />
-        <!--DOWNLOAD LIGHTCURVE-->
-        <alerce-download-lightcurve-button
-          :oid="objectId"
-          :detections="lightcurve.detections"
-          :non-detections="lightcurve.nonDetections"
-        />
+        <v-row>
+          <!-- LIGHTCURVE BUTTONS -->
+          <v-col class="py-1">
+            <buttons-display-data-release
+              v-model="dataReleaseValues"
+              :datarelease="dataRelease"
+              :loading="isLoadingDataRelease"
+              :plot="selected"
+              @update-plot="updatePlotSelected"
+            />
+          </v-col>
+          <v-col class="py-1">
+            <buttons-download-lightcurve-button
+              :oid="objectId"
+              :detections="lightcurve.detections"
+              :non-detections="lightcurve.nonDetections"
+            />
+          </v-col>
+        </v-row>
       </v-card-actions>
     </v-card>
   </v-col>
@@ -82,32 +95,7 @@ export default class CardLightCurve extends Vue {
 
   selected = ''
 
-  get isDark() {
-    return this.$vuetify.theme.isDark
-  }
-
-  get isLoading() {
-    return this.$store.state.lightcurve.loading
-  }
-
-  get error() {
-    return this.$store.state.lightcurve.error
-  }
-
-  get lightcurve() {
-    return {
-      detections: this.$store.state.lightcurve.detections,
-      nonDetections: this.$store.state.lightcurve.nonDetections,
-    }
-  }
-
-  get objectInformation() {
-    return this.$store.state.object.object
-  }
-
-  get objectId() {
-    return this.$store.state.object.objectId
-  }
+  dataReleaseValues = []
 
   options = [
     {
@@ -134,6 +122,45 @@ export default class CardLightCurve extends Vue {
     },
   ]
 
+  get isDark() {
+    return this.$vuetify.theme.isDark
+  }
+
+  get isLoading() {
+    return this.$store.state.lightcurve.loading
+  }
+
+  get error() {
+    return this.$store.state.lightcurve.error
+  }
+
+  get lightcurve() {
+    return {
+      detections: this.$store.state.lightcurve.detections,
+      nonDetections: this.$store.state.lightcurve.nonDetections,
+    }
+  }
+
+  get dataRelease() {
+    return this.$store.state.datarelease.dataReleaseLightCurve
+  }
+
+  get isLoadingDataRelease() {
+    return this.$store.state.datarelease.loading
+  }
+
+  get apparent() {
+    return this.lightcurve.detections.concat(this.dataReleaseValues)
+  }
+
+  get objectInformation() {
+    return this.$store.state.object.object
+  }
+
+  get objectId() {
+    return this.$store.state.object.objectId
+  }
+
   @Watch('objectInformation')
   onObjectInformation(val) {
     this.options.forEach((x) => {
@@ -152,6 +179,23 @@ export default class CardLightCurve extends Vue {
     })
   }
 
+  @Watch('dataRelease')
+  onDataReleaseValues(val) {
+    this.options.forEach((x) => {
+      switch (x.value) {
+        case 'apparent':
+          x.show = this.objectInformation.corrected || val.length > 0
+          x.default = this.objectInformation.corrected
+          break
+        case 'folded':
+          x.show =
+            this.period !== null &&
+            (this.objectInformation.corrected || val.length > 0)
+          break
+      }
+    })
+  }
+
   @Watch('period')
   onPeriod(val) {
     if (this.objectInformation) {
@@ -160,7 +204,11 @@ export default class CardLightCurve extends Vue {
   }
 
   onDetectionClick(val) {
-    this.$store.dispatch('lightcurve/changeDetection', val.index)
+    if (val) this.$store.dispatch('lightcurve/changeDetection', val.index)
+  }
+
+  updatePlotSelected(event) {
+    this.selected = event
   }
 }
 </script>

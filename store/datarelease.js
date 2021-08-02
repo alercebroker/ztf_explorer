@@ -5,21 +5,16 @@ import {
   VuexAction,
 } from 'nuxt-property-decorator'
 
-@Module({ name: 'features', namespaced: true, stateFactory: true })
-export default class FeaturesStore extends VuexModule {
+@Module({ name: 'datarelease', namespaced: true, stateFactory: true })
+export default class DataReleaseStore extends VuexModule {
   loading = false
-  error = false
-  features = []
+  error = null
   activeRequest = null
+  dataReleaseLightCurve = []
 
   @VuexMutation
-  setFeatures(val) {
-    this.features = val.data
-  }
-
-  @VuexMutation
-  setLoading(val) {
-    this.loading = val
+  setActiveRequest(req) {
+    this.activeRequest = req
   }
 
   @VuexMutation
@@ -28,12 +23,17 @@ export default class FeaturesStore extends VuexModule {
   }
 
   @VuexMutation
-  setActiveRequest(val) {
-    this.activeRequest = val
+  setLoading(val) {
+    this.loading = val
+  }
+
+  @VuexMutation
+  setDataReleaseLightcurve(val) {
+    this.dataReleaseLightCurve = val
   }
 
   @VuexAction({ rawError: true })
-  async getFeatures(val) {
+  async getDataReleaseLightCurve(val) {
     this.setLoading(true)
     if (this.activeRequest) {
       this.activeRequest.cancel('Cancel request due to new request sent')
@@ -41,9 +41,11 @@ export default class FeaturesStore extends VuexModule {
     }
     this.setActiveRequest(this.store.$axios.CancelToken.source())
     try {
-      this.setFeatures(
-        await this.store.$ztfApi.getFeatures(val, this.activeRequest)
+      const lightCurves = await this.store.$dataReleaseApi.getLightcurve(
+        val,
+        this.activeRequest
       )
+      this.setDataReleaseLightcurve(lightCurves.data)
       this.setActiveRequest(null)
       this.setError(null)
       this.setLoading(false)

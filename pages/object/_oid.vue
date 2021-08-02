@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container :fluid="doFluid">
     <v-row align="stretch">
       <card-basic-information
         :object="$route.params.oid"
@@ -51,7 +51,16 @@
 
 <script>
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
-
+import {
+  lightCurveStore,
+  statsStore,
+  probabilitiesStore,
+  featuresStore,
+  tnsStore,
+  objectStore,
+  xmatchesStore,
+  datareleaseStore,
+} from '~/store'
 @Component({ layout: 'oid' })
 export default class ObjectView extends Vue {
   head() {
@@ -63,17 +72,23 @@ export default class ObjectView extends Vue {
   async fetch() {
     let oid = this.$route.params.oid
     if (this.selectedObject) oid = this.selectedObject
-    this.$store.dispatch('lightcurve/getLightCurve', oid)
-    this.$store.dispatch('stats/getStats', oid)
-    this.$store.dispatch('probabilities/getProbabilities', oid)
-    this.$store.dispatch('features/getFeatures', oid)
-    this.$store.dispatch('tns/setDefaultValues')
-    await this.$store.dispatch('object/getObject', oid)
-    this.$store.dispatch('xmatches/getXmatch', {
+    lightCurveStore.getLightCurve(oid)
+    statsStore.getStats(oid)
+    probabilitiesStore.getProbabilities(oid)
+    featuresStore.getFeatures(oid)
+    tnsStore.setDefaultValues()
+    await objectStore.getObject(oid)
+    datareleaseStore.getDataReleaseLightCurve({
+      ra: this.objectInformation.meanra,
+      dec: this.objectInformation.meandec,
+      radius: 1.5,
+    })
+    xmatchesStore.getXmatch({
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
     })
-    this.$store.dispatch('tns/getTns', {
+
+    tnsStore.getTns({
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
     })
@@ -100,7 +115,7 @@ export default class ObjectView extends Vue {
 
   async changeObject(n) {
     if (this.objects !== null || this.objects.length !== 0) {
-      await this.$store.dispatch('object/changeItem', n)
+      await objectStore.changeItem(n)
       this.$router.push(this.selectedObject)
     }
   }
@@ -139,7 +154,11 @@ export default class ObjectView extends Vue {
 
   @Watch('selectedObject')
   onSelectedObjectChange(val) {
-    this.$fetch()
+    this.$router.push(val)
+  }
+
+  get doFluid() {
+    return this.$vuetify.breakpoint.width < 1400
   }
 }
 </script>
@@ -149,6 +168,5 @@ export default class ObjectView extends Vue {
 }
 *[class^='col-'] {
   padding-top: 0;
-  padding-left: 0;
 }
 </style>

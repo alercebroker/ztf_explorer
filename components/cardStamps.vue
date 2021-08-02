@@ -9,11 +9,11 @@
         Fetching data for object {{ $route.params.oid }} ...
       </v-card-text>
       <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">
-          {{ error }}
-        </v-alert>
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
+          error
+        }}</v-alert>
       </v-card-text>
-      <alerce-stamps-card
+      <cards-stamps-card
         v-else
         v-model="selectedDetection"
         :detections="detections"
@@ -23,7 +23,7 @@
       />
     </v-card>
     <v-dialog v-model="avroDialogOpen" max-width="700px">
-      <alerce-full-avro-table :avro="avro">
+      <tables-full-avro-table :avro="avro">
         <template v-if="avroLoading" v-slot:table>
           <v-progress-linear indeterminate></v-progress-linear>
         </template>
@@ -35,7 +35,7 @@
             >
           </v-card-actions>
         </template>
-      </alerce-full-avro-table>
+      </tables-full-avro-table>
     </v-dialog>
   </v-col>
 </template>

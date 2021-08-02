@@ -13,18 +13,18 @@
           {{ error }}
         </v-alert>
       </v-card-text>
-      <v-card-text v-else>
-        <alerce-basic-information :information="information" />
+      <v-card-text class="pa-1" v-else>
+        <tables-basic-information :information="information" />
         <v-row justify="center" wrap>
           <v-col cols="6">
-            <alerce-finding-chart-button
+            <buttons-finding-chart-button
               :oid="information.oid"
               :candid="candid"
               :useIcon="false"
             />
           </v-col>
           <v-col cols="6">
-            <alerce-catalogs-buttons
+            <buttons-catalogs-buttons
               :ra="information.meanra"
               :dec="information.meandec"
               title="Catalogs"
@@ -32,11 +32,14 @@
           </v-col>
         </v-row>
 
-        <alerce-tns-information
+        <tables-tns-information
           :loading="tns.loading"
           :type="tns.type"
           :name="tns.name"
           :redshift="tns.redshift"
+          :discoverer="tns.discoverer"
+          :reporter="tns.reporter"
+          :instrument="tns.instrument"
         />
       </v-card-text>
     </v-card>
@@ -45,8 +48,7 @@
 
 <script>
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-
-@Component
+@Component()
 export default class CardBasicInformation extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
 
@@ -72,9 +74,12 @@ export default class CardBasicInformation extends Vue {
   }
 
   get information() {
-    return this.$store.state.object.object
+    const nonDetections = this.$store.state.lightcurve.nonDetections
+    const info = this.$store.state.object.object
       ? this.$store.state.object.object
       : {}
+    info['Non Detections'] = nonDetections ? nonDetections.length : null
+    return info
   }
 
   get tns() {

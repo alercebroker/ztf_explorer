@@ -4,23 +4,25 @@
       v-if="showDrawer"
       app
       expand-on-hover
+      mini-variant-width="150"
+      width="150"
       @transitionend="onTransition"
     >
       <object-list>
-        <template v-if="drawerMini" v-slot:header> Object List </template>
-        <template v-else v-slot:header>
-          <h1>Object List</h1>
-        </template>
         <template v-slot:pagination="page">
           <simple-pagination
-            v-if="!drawerMini"
             :value="page.page"
             @input="page.onInput"
+            :disable-next="disableNext"
           />
         </template>
       </object-list>
     </v-navigation-drawer>
-    <alerce-a-header title="ALeRCE ZTF Explorer" :items="items" />
+    <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
+      <template v-slot:menu>
+        <misc-theme-selector />
+      </template>
+    </misc-a-header>
     <v-main>
       <nuxt />
     </v-main>
@@ -46,6 +48,13 @@ export default class DefaultLayout extends Vue {
 
   get showDrawer() {
     return this.$store.state.objects.list.length > 0
+  }
+
+  get disableNext() {
+    return (
+      this.$store.state.objects.list.length <
+      this.$store.state.pagination.perPage
+    )
   }
 
   onTransition() {
