@@ -11,7 +11,6 @@ env:
   AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME_PROD }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   NODE_ENV: production
   APP_TITLE: ALeRCE Explorer
