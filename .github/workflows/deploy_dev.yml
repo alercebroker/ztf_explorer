@@ -19,7 +19,6 @@ env:
   TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL }}
   ZTF_API_BASE_URL: ${{ secrets.ZTF_API_BASE_URL }}
   ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL }}
-  ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
