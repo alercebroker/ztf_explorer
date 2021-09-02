@@ -20,7 +20,7 @@
               <v-list-item class="pl-4">
                 <v-list-item-content>
                   <validation-provider
-                    rules="ndet|class|oidFormat|oidLength|probability"
+                    rules="ndet|oidFormat|oidLength|probability"
                     :bails="false"
                     v-slot="{ failedRules }"
                   >
