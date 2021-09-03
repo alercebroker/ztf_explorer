@@ -165,8 +165,9 @@ export default class ObjectView extends Vue {
 <style>
 .grid-card {
   height: 100%;
+  width: 100%;
 }
 *[class^='col-'] {
-  padding-top: 0;
+  padding-top: 15px;
 }
 </style>

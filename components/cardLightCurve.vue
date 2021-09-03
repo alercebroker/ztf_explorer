@@ -14,8 +14,8 @@
         </v-alert>
       </v-card-text>
     </v-card>
-    <v-card v-else :class="cardClass">
-      <v-card-text class="pb-0 px-1">
+    <v-card v-else :class="cardClass" width="100%">
+      <v-card-text>
         <select-lightcurve :selected="selected">
           <plots-light-curve-plot
             slot="difference"
