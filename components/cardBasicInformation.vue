@@ -27,7 +27,7 @@
             <buttons-catalogs-buttons
               :ra="information.meanra"
               :dec="information.meandec"
-              title="Catalogs"
+              title="External archives"
             />
           </v-col>
         </v-row>

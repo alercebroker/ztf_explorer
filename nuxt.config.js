@@ -66,10 +66,10 @@ export default {
     process.env.NODE_ENV !== 'production'
       ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
       : [
-          '@nuxtjs/vuetify',
-          '@alerce/components/nuxt',
-          '@nuxtjs/google-analytics',
-        ],
+        '@nuxtjs/vuetify',
+        '@alerce/components/nuxt',
+        '@nuxtjs/google-analytics',
+      ],
   /*
    ** Nuxt.js modules
    */
@@ -95,7 +95,7 @@ export default {
       process.env.CATSHTM_API_BASE_URL || 'https://catshtm.alerce.online',
     tnsApiBaseUrl: process.env.TNS_API_BASE_URL || 'https://tns.alerce.online',
     drApiBaseUrl:
-      process.env.ZTF_DR_API_BASE_URL || 'https://api.alerce.online/ztf/dr5/v1',
+      process.env.ZTF_DR_API_BASE_URL || 'https://api.alerce.online/ztf/dr/v1',
     ztfApiBaseUrl:
       process.env.ZTF_API_BASE_URL || 'https://dev.api.alerce.online',
     googleAnalytics: {
@@ -171,6 +171,6 @@ export default {
         )
       }
     },
-    transpile: ['vuex-module-decorators'],
+    transpile: ['vuex-module-decorators', 'vue-echarts', 'resize-detector'],
   },
 }
