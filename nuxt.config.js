@@ -97,7 +97,7 @@ export default {
     drApiBaseUrl:
       process.env.ZTF_DR_API_BASE_URL || 'https://api.alerce.online/ztf/dr/v1',
     ztfApiBaseUrl:
-      process.env.ZTF_API_BASE_URL || 'https://dev.api.alerce.online',
+      process.env.ZTF_API_BASE_URL || 'http://dev.api.alerce.online/alerts/v1/',
     googleAnalytics: {
       id:
         process.env.NODE_ENV === 'production'
