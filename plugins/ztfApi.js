@@ -69,9 +69,10 @@ export default function ({ $axios, $config }, inject) {
     )
   }
 
-  ztfApi.getLightCurve = (objectId, request = null) => {
+  ztfApi.getLightCurve = (objectId, surveyId, request = null) => {
     return ztfApi.get(
       `objects/${objectId}/lightcurve`,
+      { params: { survey_id: surveyId } },
       request ? { cancelToken: request.token } : {}
     )
   }
