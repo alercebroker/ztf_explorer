@@ -14,11 +14,11 @@ env:
   NODE_ENV: staging
   APP_TITLE: ALeRCE Explorer - Staging Build
 
-  AVRO_API_BASE_URL: ${{ secrets.AVRO_API_BASE_URL }}
-  CATSHTM_API_BASE_URL: ${{ secrets.CATSHTM_API_BASE_URL }}
-  TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL }}
-  ZTF_API_BASE_URL: ${{ secrets.ZTF_API_BASE_URL }}
-  ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL }}
+  AVRO_API_BASE_URL: ${{ secrets.AVRO_API_BASE_URL_DEV }}
+  CATSHTM_API_BASE_URL: ${{ secrets.CATSHTM_API_BASE_URL_DEV }}
+  TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL_DEV }}
+  ZTF_API_BASE_URL: ${{ secrets.ZTF_API_BASE_URL_DEV }}
+  ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL_DEV }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
