@@ -100,7 +100,7 @@ export default class LightCurveStore extends VuexModule {
       this.setLoading(false)
     } catch (error) {
       if (!error.message.startsWith('Cancel request')) {
-        this.setError(error)
+        console.error(error)
       }
     }
   }
