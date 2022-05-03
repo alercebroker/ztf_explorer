@@ -12,15 +12,29 @@
         <template v-slot:pagination="page">
           <simple-pagination
             :value="page.page"
-            @input="page.onInput"
             :disable-next="disableNext"
+            @input="page.onInput"
           />
         </template>
       </object-list>
     </v-navigation-drawer>
     <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
       <template v-slot:menu>
-        <misc-theme-selector />
+        <v-list>
+          <v-list-item>
+            <misc-theme-selector />
+          </v-list-item>
+          <v-list-item-group>
+            <v-list-item @click="onLoginClick">
+              <v-list-item-icon>
+                <v-icon>mdi-account</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>{{ loginText }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
       </template>
     </misc-a-header>
     <v-main>
@@ -31,6 +45,7 @@
 
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
+import { userStore } from '~/store'
 @Component
 export default class DefaultLayout extends Vue {
   items = [
@@ -59,6 +74,13 @@ export default class DefaultLayout extends Vue {
 
   onTransition() {
     this.drawerMini = !this.drawerMini
+  }
+
+  get loginText() {
+    if (userStore.logged) {
+      return 'Logout'
+    }
+    return 'Login'
   }
 }
 </script>

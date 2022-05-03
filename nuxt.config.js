@@ -53,6 +53,7 @@ export default {
     '@/plugins/avro.js',
     '@/plugins/validation.js',
     '@/plugins/dataReleaseApi.js',
+    '@/plugins/users.js',
   ],
   /*
    ** Auto import components
@@ -66,10 +67,10 @@ export default {
     process.env.NODE_ENV !== 'production'
       ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
       : [
-        '@nuxtjs/vuetify',
-        '@alerce/components/nuxt',
-        '@nuxtjs/google-analytics',
-      ],
+          '@nuxtjs/vuetify',
+          '@alerce/components/nuxt',
+          '@nuxtjs/google-analytics',
+        ],
   /*
    ** Nuxt.js modules
    */
@@ -97,7 +98,10 @@ export default {
     drApiBaseUrl:
       process.env.ZTF_DR_API_BASE_URL || 'https://api.alerce.online/ztf/dr/v1',
     ztfApiBaseUrl:
-      process.env.ZTF_API_BASE_URL || 'https://dev.api.alerce.online/alerts/v1/',
+      process.env.ZTF_API_BASE_URL ||
+      'https://dev.api.alerce.online/alerts/v1/',
+    usersApiBaseUrl:
+      process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleAnalytics: {
       id:
         process.env.NODE_ENV === 'production'
