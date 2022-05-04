@@ -65,7 +65,7 @@
                 :loading="isLoading"
                 :disabled="isLoading"
                 color="primary"
-                class="ma-2 white--text"
+                class="white--text"
                 block
                 @click="onGoogleClick"
               >
