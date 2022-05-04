@@ -21,5 +21,9 @@ export default function ({ $axios, $config }, inject) {
     return usersApi.post('/refresh/', { refresh: refreshToken })
   }
 
+  usersApi.register = (payload) => {
+    return usersApi.post('/', payload)
+  }
+
   inject('usersApi', usersApi)
 }
