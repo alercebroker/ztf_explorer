@@ -4,7 +4,7 @@
       <error-404 />
     </h1>
     <h1 v-else>
-      {{ error.messages }}
+      {{ error.message }}
     </h1>
   </v-app>
 </template>
