@@ -6,7 +6,9 @@
           <div v-if="logged">
             <v-list-item>
               <v-list-item-avatar>
-                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                <v-avatar size="36px" :color="randomColor">
+                  <span class="white--text headline">{{ userInitials }}</span>
+                </v-avatar>
               </v-list-item-avatar>
             </v-list-item>
 
@@ -80,6 +82,17 @@ export default class DefaultLayout extends Vue {
 
   get userData() {
     return userStore.userData || {}
+  }
+
+  get randomColor() {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16)
+  }
+
+  get userInitials() {
+    if (!this.logged) {
+      return
+    }
+    return this.userData.name[0] + this.userData.last_name[0]
   }
 }
 </script>

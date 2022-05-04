@@ -55,6 +55,9 @@ export default {
     '@/plugins/dataReleaseApi.js',
     '@/plugins/users.js',
   ],
+  router: {
+    middleware: 'auth',
+  },
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -67,10 +70,10 @@ export default {
     process.env.NODE_ENV !== 'production'
       ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
       : [
-          '@nuxtjs/vuetify',
-          '@alerce/components/nuxt',
-          '@nuxtjs/google-analytics',
-        ],
+        '@nuxtjs/vuetify',
+        '@alerce/components/nuxt',
+        '@nuxtjs/google-analytics',
+      ],
   /*
    ** Nuxt.js modules
    */

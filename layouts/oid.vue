@@ -21,6 +21,26 @@
     <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
       <template v-slot:menu>
         <v-list>
+          <div v-if="logged">
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-avatar size="36px" :color="randomColor">
+                  <span class="white--text headline">{{ userInitials }}</span>
+                </v-avatar>
+              </v-list-item-avatar>
+            </v-list-item>
+
+            <v-list-item link>
+              <v-list-item-content>
+                <v-list-item-title class="text-h6">
+                  {{ userData.name }} {{ userData.last_name }}
+                </v-list-item-title>
+                <v-list-item-subtitle>{{
+                  userData.email
+                }}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
           <v-list-item>
             <misc-theme-selector />
           </v-list-item>
@@ -81,6 +101,32 @@ export default class DefaultLayout extends Vue {
       return 'Logout'
     }
     return 'Login'
+  }
+
+  get logged() {
+    return userStore.logged
+  }
+
+  get userData() {
+    return userStore.userData || {}
+  }
+
+  get randomColor() {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16)
+  }
+
+  get userInitials() {
+    if (!this.logged) {
+      return
+    }
+    return this.userData.name[0] + this.userData.last_name[0]
+  }
+
+  onLoginClick() {
+    if (userStore.logged) {
+      userStore.logout()
+    }
+    this.$router.push({ path: '/login' })
   }
 }
 </script>
