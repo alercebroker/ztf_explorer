@@ -67,12 +67,26 @@ export default class UserStore extends VuexModule {
           )
           this.setUserData(userData.data)
           this.setLogged(true)
+          this.setError(null)
           localStorage.setItem('access_token', tokens.data.access)
         }
       } else {
         this.setError(error)
         this.logout()
       }
+    }
+    this.setLoading(false)
+  }
+
+  @VuexAction({ rawError: true })
+  async register(userDataPayload) {
+    this.setLoading(true)
+    try {
+      const userData = await this.store.$usersApi.register(userDataPayload)
+      this.setUserData(userData)
+      this.setError(null)
+    } catch (error) {
+      this.setError(error)
     }
     this.setLoading(false)
   }
