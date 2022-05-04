@@ -32,7 +32,7 @@
               <v-alert icon="mdi-email" color="blue-grey" dismissible>
                 Registered user successfully. Check the email we sent to
                 <strong>{{ userData.email }}</strong> to activate the account.
-                <br />Enjoy ALeRCE Watchlist.
+                <br />Enjoy ALeRCE Explorer.
               </v-alert>
             </v-col>
           </v-row>
