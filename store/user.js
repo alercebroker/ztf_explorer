@@ -79,6 +79,40 @@ export default class UserStore extends VuexModule {
   }
 
   @VuexAction({ rawError: true })
+  async getGoogleUrl() {
+    this.setLoading(true)
+    try {
+      const googleUrl = await this.store.$usersApi.getGoogleUrl()
+      this.setError(null)
+      this.setLoading(false)
+      return googleUrl.data
+    } catch (error) {
+      this.setError(error)
+      this.setLoading(false)
+      return null
+    }
+  }
+
+  @VuexAction({ rawError: true })
+  async loginGoogle(payload) {
+    this.setLoading(true)
+    try {
+      const tokens = await this.store.$usersApi.loginGoogle(payload)
+      if (tokens.status === 200 || tokens.status === 201) {
+        const userData = await this.store.$usersApi.current(tokens.data.access)
+        this.setUserData(userData.data)
+        this.setLogged(true)
+        localStorage.setItem('access_token', tokens.data.access)
+        localStorage.setItem('refresh_token', tokens.data.refresh)
+      }
+      this.setError(null)
+    } catch (error) {
+      this.setError(null)
+    }
+    this.setLoading(false)
+  }
+
+  @VuexAction({ rawError: true })
   async register(userDataPayload) {
     this.setLoading(true)
     try {

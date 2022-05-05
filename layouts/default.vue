@@ -2,41 +2,14 @@
   <v-app dark>
     <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
       <template v-slot:menu>
-        <v-list>
-          <div v-if="logged">
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-avatar size="36px" :color="randomColor">
-                  <span class="white--text headline">{{ userInitials }}</span>
-                </v-avatar>
-              </v-list-item-avatar>
-            </v-list-item>
-
-            <v-list-item link>
-              <v-list-item-content>
-                <v-list-item-title class="text-h6">
-                  {{ userData.name }} {{ userData.last_name }}
-                </v-list-item-title>
-                <v-list-item-subtitle>{{
-                  userData.email
-                }}</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </div>
-          <v-list-item>
-            <misc-theme-selector />
-          </v-list-item>
-          <v-list-item-group>
-            <v-list-item @click="onLoginClick">
-              <v-list-item-icon>
-                <v-icon>mdi-account</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title>{{ loginText }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-item-group>
-        </v-list>
+        <misc-navbar-menu
+          :logged="logged"
+          :user-data="userData"
+          :user-initials="userInitials"
+          :login-text="loginText"
+          :random-color="randomColor"
+          @loginClick="onLoginClick"
+        />
       </template>
     </misc-a-header>
     <v-main>
@@ -81,7 +54,15 @@ export default class DefaultLayout extends Vue {
   }
 
   get userData() {
-    return userStore.userData || {}
+    if (userStore.userData) {
+      const data = {
+        ...userStore.userData,
+      }
+      data.name = data.name || data.username
+      data.last_name = data.last_name || ''
+      return data
+    }
+    return {}
   }
 
   get randomColor() {
@@ -92,7 +73,7 @@ export default class DefaultLayout extends Vue {
     if (!this.logged) {
       return
     }
-    return this.userData.name[0] + this.userData.last_name[0]
+    return this.userData.name[0] + (this.userData.last_name[0] || '')
   }
 }
 </script>
