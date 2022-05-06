@@ -57,7 +57,13 @@ export default {
   ],
   router: {
     middleware: 'auth',
-    mode: 'history',
+    extendRoutes(routes, resolve) {
+      routes.forEach((route) => {
+        if (route.path.includes('oauth')) {
+          route.props = (r) => ({ state: r.query.state, code: r.query.code })
+        }
+      })
+    },
   },
   /*
    ** Auto import components
@@ -71,10 +77,10 @@ export default {
     process.env.NODE_ENV !== 'production'
       ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
       : [
-          '@nuxtjs/vuetify',
-          '@alerce/components/nuxt',
-          '@nuxtjs/google-analytics',
-        ],
+        '@nuxtjs/vuetify',
+        '@alerce/components/nuxt',
+        '@nuxtjs/google-analytics',
+      ],
   /*
    ** Nuxt.js modules
    */
