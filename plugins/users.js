@@ -1,6 +1,7 @@
 export default function ({ $axios, $config }, inject) {
   const usersApi = $axios.create({
     baseURL: $config.usersApiBaseUrl,
+    withCredentials: true,
   })
 
   usersApi.login = (username, password) => {
@@ -13,8 +14,21 @@ export default function ({ $axios, $config }, inject) {
     })
   }
 
-  usersApi.googleLogin = () => {
-    return usersApi.get('login/')
+  usersApi.getGoogleUrl = () => {
+    return usersApi.get(
+      '/social/o/google-oauth2/?redirect_uri=' + $config.googleRedirectUri
+    )
+  }
+
+  usersApi.loginGoogle = ({ code, state }) => {
+    const data = new URLSearchParams()
+    data.append('code', code)
+    data.append('state', state)
+    return usersApi.post('/social/o/google-oauth2/', data, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
   }
 
   usersApi.refresh = (refreshToken) => {

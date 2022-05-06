@@ -124,8 +124,13 @@ export default class LoginForm extends Vue {
     }
   }
 
-  onGoogleClick() {
-    userStore.googleLogin()
+  async onGoogleClick() {
+    const googleUrl = await userStore.getGoogleUrl()
+    if (googleUrl) {
+      const loginWindow = window.open('', '_self')
+      loginWindow.location.href = googleUrl.authorization_url
+      this.$emit('loginClick')
+    }
   }
 }
 </script>

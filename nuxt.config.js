@@ -70,10 +70,10 @@ export default {
     process.env.NODE_ENV !== 'production'
       ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
       : [
-        '@nuxtjs/vuetify',
-        '@alerce/components/nuxt',
-        '@nuxtjs/google-analytics',
-      ],
+          '@nuxtjs/vuetify',
+          '@alerce/components/nuxt',
+          '@nuxtjs/google-analytics',
+        ],
   /*
    ** Nuxt.js modules
    */
@@ -105,6 +105,8 @@ export default {
       'https://dev.api.alerce.online/alerts/v1/',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
+    googleRedirectUri:
+      process.env.GOOGLE_REDIRECT_URI || 'https://dev.alerce.online/oauth',
     googleAnalytics: {
       id:
         process.env.NODE_ENV === 'production'
