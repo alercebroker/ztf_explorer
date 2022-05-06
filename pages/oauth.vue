@@ -9,16 +9,14 @@
 </template>
 
 <script>
-import { Vue, Component, Watch } from 'nuxt-property-decorator'
+import { Vue, Component, Watch, Prop } from 'nuxt-property-decorator'
 import { userStore } from '~/store'
 @Component
 export default class Oauth extends Vue {
-  code = ''
-  state = ''
+  @Prop(String) code
+  @Prop(String) state
 
   mounted() {
-    this.code = this.$route.query.code
-    this.state = this.$route.query.state
     userStore.loginGoogle({ code: this.code, state: this.state })
   }
 
