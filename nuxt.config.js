@@ -57,6 +57,7 @@ export default {
   ],
   router: {
     middleware: 'auth',
+    mode: 'history',
   },
   /*
    ** Auto import components
@@ -70,10 +71,10 @@ export default {
     process.env.NODE_ENV !== 'production'
       ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
       : [
-          '@nuxtjs/vuetify',
-          '@alerce/components/nuxt',
-          '@nuxtjs/google-analytics',
-        ],
+        '@nuxtjs/vuetify',
+        '@alerce/components/nuxt',
+        '@nuxtjs/google-analytics',
+      ],
   /*
    ** Nuxt.js modules
    */
@@ -106,7 +107,7 @@ export default {
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
-      process.env.GOOGLE_REDIRECT_URI || 'https://dev.alerce.online/oauth',
+      process.env.GOOGLE_REDIRECT_URI || 'https://localhost:3000/oauth',
     googleAnalytics: {
       id:
         process.env.NODE_ENV === 'production'
