@@ -5,7 +5,7 @@ export default {
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
    */
-  mode: 'spa',
+  ssr: false,
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target
@@ -57,6 +57,13 @@ export default {
   ],
   router: {
     middleware: 'auth',
+    extendRoutes(routes, resolve) {
+      routes.forEach((route) => {
+        if (route.path.includes('oauth')) {
+          route.props = (r) => ({ state: r.query.state, code: r.query.code })
+        }
+      })
+    },
   },
   /*
    ** Auto import components
@@ -106,7 +113,7 @@ export default {
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
-      process.env.GOOGLE_REDIRECT_URI || 'https://dev.alerce.online/oauth',
+      process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth/',
     googleAnalytics: {
       id:
         process.env.NODE_ENV === 'production'
