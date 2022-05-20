@@ -70,11 +70,17 @@ export default function ({ $axios, $config }, inject) {
   }
 
   ztfApi.getLightCurve = (objectId, surveyId, request = null) => {
-    return ztfApi.get(
-      `objects/${objectId}/lightcurve`,
-      { params: { survey_id: surveyId } },
-      request ? { cancelToken: request.token } : {}
-    )
+    const token = localStorage.getItem('access_token')
+    const config = { params: { survey_id: surveyId } }
+    if (request) {
+      config.cancelToken = request.token
+    }
+    if (token) {
+      config.headers = {
+        'AUTH-TOKEN': token,
+      }
+    }
+    return ztfApi.get(`objects/${objectId}/lightcurve`, config)
   }
 
   ztfApi.getStats = (oid, request = null) => {
