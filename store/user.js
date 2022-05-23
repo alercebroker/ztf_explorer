@@ -52,6 +52,26 @@ export default class UserStore extends VuexModule {
   }
 
   @VuexAction({ rawError: true })
+  async refreshToken(refreshToken) {
+    try {
+      const tokens = await this.store.$usersApi.refresh(refreshToken)
+      if (tokens.status === 200) {
+        const userData = await this.store.$usersApi.current(tokens.data.access)
+        this.setUserData(userData.data)
+        this.setLogged(true)
+        this.setError(null)
+        localStorage.setItem('access_token', tokens.data.access)
+      }
+    } catch (error) {
+      if (error.response.status === 401) {
+        this.logout()
+      }
+      this.setError(error)
+      this.setLoading(false)
+    }
+  }
+
+  @VuexAction({ rawError: true })
   async getCurrentUser({ accessToken, refreshToken }) {
     this.setLoading(true)
     try {
@@ -60,24 +80,7 @@ export default class UserStore extends VuexModule {
       this.setLogged(true)
     } catch (error) {
       if (error.response.status === 401) {
-        try {
-          const tokens = await this.store.$usersApi.refresh(refreshToken)
-          if (tokens.status === 200) {
-            const userData = await this.store.$usersApi.current(
-              tokens.data.access
-            )
-            this.setUserData(userData.data)
-            this.setLogged(true)
-            this.setError(null)
-            localStorage.setItem('access_token', tokens.data.access)
-          }
-        } catch (error) {
-          if (error.response.status === 401) {
-            this.logout()
-          }
-          this.setError(error)
-          this.setLoading(false)
-        }
+        this.refreshToken(refreshToken)
       } else {
         this.setError(error)
         this.logout()

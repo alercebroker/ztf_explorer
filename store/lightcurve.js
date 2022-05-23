@@ -75,6 +75,14 @@ export default class LightCurveStore extends VuexModule {
       this.setError(null)
       this.setLoading(false)
     } catch (error) {
+      if (error.response.status === 401) {
+        const refreshToken = localStorage.getItem('refresh_token')
+        await this.context.dispatch('user/refreshToken', refreshToken, {
+          root: true,
+        })
+        this.getLightCurve(val)
+        return
+      }
       if (!error.message.startsWith('Cancel request')) {
         this.setError(error)
         this.setLoading(false)
@@ -99,9 +107,18 @@ export default class LightCurveStore extends VuexModule {
       this.setError(null)
       this.setLoading(false)
     } catch (error) {
-      if (!error.message.startsWith('Cancel request')) {
-        console.error(error)
+      if (error.response.status === 401) {
+        const refreshToken = localStorage.getItem('refresh_token')
+        await this.context.dispatch('user/refreshToken', refreshToken, {
+          root: true,
+        })
+        this.getLightCurve(val)
+        return
       }
+      if (!error.message.startsWith('Cancel request')) {
+        this.setError(error)
+      }
+      this.setLoading(false)
     }
   }
 }
