@@ -16,7 +16,6 @@ const config = {
   // Optional
   deleteOldVersions: false, // NOT FOR PRODUCTION
   distribution: process.env.AWS_CLOUDFRONT, // CloudFront distribution ID
-  region: process.env.AWS_DEFAULT_REGION,
   headers: {
     /* 'Cache-Control': 'max-age=315360000, no-transform, public', */
   },
@@ -29,7 +28,7 @@ const config = {
   wait: true, // wait for CloudFront invalidation to complete (about 30-60 seconds)
 }
 
-gulp.task('deploy', function() {
+gulp.task('deploy', function  () {
   // create a new publisher using S3 options
   // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/S3.html#constructor-property
   const publisher = awspublish.create(config)

@@ -1,9 +1,5 @@
-# This is a basic workflow to help you get started with Actions
-
 name: S3DeployProd
 
-# Controls when the action will run. Triggers the workflow on push
-# events but only for the main branch
 on:
   push:
     branches: [ main ]
@@ -11,26 +7,25 @@ env:
   AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME_PROD }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
   NODE_ENV: production
   APP_TITLE: ALeRCE Explorer
 
-  AVRO_API_BASE_URL: ${{ secrets.AVRO_API_BASE_URL }}
-  CATSHTM_API_BASE_URL: ${{ secrets.CATSHTM_API_BASE_URL }}
-  TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL }}
-  ZTF_API_BASE_URL: ${{ secrets.ZTF_API_BASE_URL }}
-  ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL }}
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   publish:
     runs-on: ubuntu-latest
     environment: production
+    env:
+      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      AVRO_API_BASE_URL: ${{ secrets.AVRO_API_BASE_URL }}
+      CATSHTM_API_BASE_URL: ${{ secrets.CATSHTM_API_BASE_URL }}
+      TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL }}
+      ZTF_API_BASE_URL: ${{ secrets.ZTF_API_BASE_URL }}
+      ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL }}
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: 15
+          node-version: 16
       - run: npm install
       - run: npm run generate
       - run: npm run deploy
