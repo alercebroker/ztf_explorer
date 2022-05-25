@@ -52,14 +52,20 @@ export default class LightCurveStore extends VuexModule {
   @VuexAction({ rawError: true })
   async getLightCurve(val) {
     this.setLoading(true)
+    this.setDetections([])
+    this.setNonDetections([])
+
+    // making zrf sync request
     if (this.activeRequest) {
       this.activeRequest.cancel('Cancel request due to new request sent')
       this.setActiveRequest(null)
     }
     this.setActiveRequest(this.store.$axios.CancelToken.source())
+
     try {
       const lightCurve = await this.store.$ztfApi.getLightCurve(
         val,
+        'ztf',
         this.activeRequest
       )
       this.setActiveRequest(null)
@@ -69,10 +75,50 @@ export default class LightCurveStore extends VuexModule {
       this.setError(null)
       this.setLoading(false)
     } catch (error) {
+      if (error.response.status === 401) {
+        const refreshToken = localStorage.getItem('refresh_token')
+        await this.context.dispatch('user/refreshToken', refreshToken, {
+          root: true,
+        })
+        this.getLightCurve(val)
+        return
+      }
       if (!error.message.startsWith('Cancel request')) {
         this.setError(error)
         this.setLoading(false)
       }
+    }
+
+    // making atlas sync request
+    if (this.activeRequest) {
+      this.activeRequest.cancel('Cancel request due to new request sent')
+      this.setActiveRequest(null)
+    }
+    this.setActiveRequest(this.store.$axios.CancelToken.source())
+
+    try {
+      const lightCurve = await this.store.$ztfApi.getLightCurve(
+        val,
+        'atlas',
+        this.activeRequest
+      )
+      this.setActiveRequest(null)
+      this.setDetections(this.detections.concat(lightCurve.data.detections))
+      this.setError(null)
+      this.setLoading(false)
+    } catch (error) {
+      if (error.response.status === 401) {
+        const refreshToken = localStorage.getItem('refresh_token')
+        await this.context.dispatch('user/refreshToken', refreshToken, {
+          root: true,
+        })
+        this.getLightCurve(val)
+        return
+      }
+      if (!error.message.startsWith('Cancel request')) {
+        this.setError(error)
+      }
+      this.setLoading(false)
     }
   }
 }

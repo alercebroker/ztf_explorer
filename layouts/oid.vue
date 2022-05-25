@@ -12,15 +12,22 @@
         <template v-slot:pagination="page">
           <simple-pagination
             :value="page.page"
-            @input="page.onInput"
             :disable-next="disableNext"
+            @input="page.onInput"
           />
         </template>
       </object-list>
     </v-navigation-drawer>
     <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
       <template v-slot:menu>
-        <misc-theme-selector />
+        <misc-navbar-menu
+          :logged="logged"
+          :user-data="userData"
+          :user-initials="userInitials"
+          :login-text="loginText"
+          :random-color="randomColor"
+          @loginClick="onLoginClick"
+        />
       </template>
     </misc-a-header>
     <v-main>
@@ -30,9 +37,10 @@
 </template>
 
 <script>
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Component } from 'nuxt-property-decorator'
+import DefaultLayout from './default.vue'
 @Component
-export default class DefaultLayout extends Vue {
+export default class OidLayout extends DefaultLayout {
   items = [
     {
       title: 'ALeRCE Main Page',
