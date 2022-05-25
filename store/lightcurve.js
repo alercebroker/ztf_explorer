@@ -85,8 +85,8 @@ export default class LightCurveStore extends VuexModule {
       }
       if (!error.message.startsWith('Cancel request')) {
         this.setError(error)
-        this.setLoading(false)
       }
+      this.setLoading(false)
     }
 
     // making atlas sync request
@@ -115,7 +115,10 @@ export default class LightCurveStore extends VuexModule {
         this.getLightCurve(val)
         return
       }
-      if (!error.message.startsWith('Cancel request')) {
+      if (
+        !error.message.startsWith('Cancel request') &&
+        error.response.status !== 404
+      ) {
         this.setError(error)
       }
       this.setLoading(false)
