@@ -117,7 +117,8 @@ export default class LightCurveStore extends VuexModule {
       }
       if (
         !error.message.startsWith('Cancel request') &&
-        error.response.status !== 404
+        error.response.status !== 404 &&
+        error.response.status !== 403
       ) {
         this.setError(error)
       }
