@@ -79,8 +79,10 @@ export default class UserStore extends VuexModule {
       this.setUserData(userData.data)
       this.setLogged(true)
     } catch (error) {
-      if (error.response.status === 401) {
-        this.refreshToken(refreshToken)
+      if (error.response) {
+        if (error.response.status === 401) {
+          this.refreshToken(refreshToken)
+        }
       } else {
         this.setError(error)
         this.logout()
