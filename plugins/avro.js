@@ -7,9 +7,9 @@ export default function ({ $axios, $config }, inject) {
     },
   })
 
-  avroApi.getAvroInfo = (oid, candid, request = null) => {
+  avroApi.getAvroInfo = (oid, candid, survey_id, request = null) => {
     return avroApi.get('get_avro_info', {
-      params: { oid, candid },
+      params: { oid, candid, survey_id },
       cancelToken: request ? request.token : null,
     })
   }
