@@ -100,7 +100,7 @@ export default class CardStamps extends Vue {
     this.$store.dispatch('avro/getAvro', {
       oid: this.oid,
       candid: detection.candid,
-      survey_id: detection.tid
+      survey_id: detection.tid,
     })
   }
 }
