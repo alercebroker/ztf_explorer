@@ -16,6 +16,7 @@
       <cards-stamps-card
         v-else
         v-model="selectedDetection"
+        :baseURL="$config.avroApiBaseUrl"
         :detections="detections"
         :object="oid"
         :cross-hair-space="crossHairSpace"
