@@ -16,6 +16,7 @@
       <cards-stamps-card
         v-else
         v-model="selectedDetection"
+        :baseURL="$config.avroApiBaseUrl"
         :detections="detections"
         :object="oid"
         :cross-hair-space="crossHairSpace"
@@ -100,7 +101,7 @@ export default class CardStamps extends Vue {
     this.$store.dispatch('avro/getAvro', {
       oid: this.oid,
       candid: detection.candid,
-      survey_id: detection.tid
+      survey_id: detection.tid,
     })
   }
 }
