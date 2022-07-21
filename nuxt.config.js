@@ -101,7 +101,7 @@ export default {
    */
   publicRuntimeConfig: {
     avroApiBaseUrl:
-      process.env.AVRO_API_BASE_URL || 'https://avro.alerce.online',
+      process.env.AVRO_API_BASE_URL || 'https://dev.avro.alerce.online',
     catshtmApiBaseUrl:
       process.env.CATSHTM_API_BASE_URL || 'https://catshtm.alerce.online',
     tnsApiBaseUrl: process.env.TNS_API_BASE_URL || 'https://tns.alerce.online',
