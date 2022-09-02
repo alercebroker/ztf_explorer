@@ -27,10 +27,10 @@ export default class AvroStore extends VuexModule {
   }
 
   @VuexAction({ rawError: true })
-  async getAvro({ oid, candid }) {
+  async getAvro({ oid, candid, surveyId }) {
     this.setLoading(true)
     try {
-      const avro = await this.store.$avroApi.getAvroInfo(oid, candid)
+      const avro = await this.store.$avroApi.getAvroInfo(oid, candid, surveyId)
       this.setAvro(avro.data)
       this.setError(null)
     } catch (error) {
