@@ -115,6 +115,13 @@ export default class ResultTableWrapper extends Vue {
       text: 'DeltaMJD (days)',
       show: true,
     },
+
+    {
+      value: 'oid',
+      sortable: false,
+      text: 'Target Name',
+      show: true,
+    },
     {
       value: 'meandec',
       text: 'Dec (degrees)',

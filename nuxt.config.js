@@ -80,6 +80,7 @@ export default {
           '@nuxtjs/vuetify',
           '@alerce/components/nuxt',
           '@nuxtjs/google-analytics',
+          
         ],
   /*
    ** Nuxt.js modules
@@ -137,16 +138,16 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
-          accent: colors.grey.darken3,
+          primary: colors.red.darken2,
+          accent: colors.blue.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
-          success: colors.green.accent3,
-        },
-      },
-    },
+          success: colors.green.accent3
+        }
+      }
+    }
   },
   pwa: {
     icon: {
