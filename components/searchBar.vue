@@ -60,30 +60,16 @@
             <v-list-group no-action> <!--INICIO panel CONESEARCH-->
 
               <template v-slot:activator>
-                <v-list-item-title>CONESEARHC</v-list-item-title> <!--titulo-->
+                <v-list-item-title>Conesearch</v-list-item-title> <!--titulo-->
               </template>
 
               <v-list-item class="pl-4">  <!--INICIO de los items del panel-->
                 <v-list-item-content>
-                  <v-row> <!--BOTÓN-->
-                    <v-col lg="8" md="12">
-                      <v-btn
-                        block
-                        :disabled="loading || invalid"
-                        @click="onSearchClicked"
-                        >Resolve</v-btn
-                      >
-                    </v-col>
-                  </v-row> <!--FIN BOTÓN-->
-                  <validation-provider
-                    rules="conesearch|radiusPositive"
-                    :bails="false"
-                    v-slot="{ failedRules }"
-                  >
-                    <inputs-coordinates-search
-                      v-model="conesearchFiltersSync"
-                      :validationErrors="failedRules"
-                    />
+                  <validation-provider rules="conesearch|radiusPositive" :bails="false" v-slot="{ failedRules }">
+                  <inputs-coordinates-search
+                    v-model="conesearchFiltersSync"
+                   :validationErrors="failedRules"
+                  />
                   </validation-provider>
                 </v-list-item-content>
               </v-list-item>  <!--FIN de los items del panel-->
@@ -92,7 +78,7 @@
             <v-list-item class="pl-4"> <!--INICIO sección botones SEARCH Y CLEAR-->
               <v-list-item-content>
                 <v-row>
-                  <v-col lg="8" md="12">
+                  <v-col lg="7" md="12">
                     <v-btn
                       color="primary"
                       block
@@ -101,7 +87,7 @@
                       >search</v-btn
                     >
                   </v-col>
-                  <v-col lg="4" md="12">
+                  <v-col lg="5" md="12">
                     <v-btn color="danger" block @click="onClearClicked"
                       >clear</v-btn
                     >
@@ -118,6 +104,9 @@
 
 <script>
 import { Vue, Component, PropSync, Prop } from 'nuxt-property-decorator'
+
+
+
 @Component
 export default class SearchBar extends Vue {
   @PropSync('generalFilters', { type: Object }) generalFiltersSync
