@@ -57,15 +57,15 @@
                 <v-flex class="d-flex flex-sm-row align-center pl-0 ml-0">
                   <v-list-item-title class="pl-0">
                     Conesearch
-                    <v-tooltip top>
+                    <v-tooltip right>
                       <template v-slot:activator="{ on }">
                         <v-icon v-on="on" dense>mdi-information</v-icon>
                       </template>
                       <span>
                         Conesearch is a coordinate search tool with a search
-                        radius. You can input RA/DEC manually or, optionally,
-                        give a target name and let Sesame fill in the
-                        coordinates.
+                        radius.
+                        <br />You can input RA/DEC manually or, optionally, give
+                        a target name and let Sesame fill in the coordinates.
                       </span>
                     </v-tooltip>
                   </v-list-item-title>
