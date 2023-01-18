@@ -20,9 +20,9 @@
               <v-list-item class="pl-4">
                 <v-list-item-content>
                   <validation-provider
+                    v-slot="{ failedRules }"
                     rules="ndet|oidFormat|oidLength|probability"
                     :bails="false"
-                    v-slot="{ failedRules }"
                   >
                     <inputs-default-search
                       v-model="generalFiltersSync"
@@ -42,7 +42,7 @@
               </template>
               <v-list-item class="pl-4">
                 <v-list-item-content>
-                  <validation-provider rules="date" v-slot="{ failedRules }">
+                  <validation-provider v-slot="{ failedRules }" rules="date">
                     <inputs-date-search
                       v-model="dateFiltersSync"
                       :validationErrors="failedRules"
@@ -54,14 +54,29 @@
             <v-divider></v-divider>
             <v-list-group no-action>
               <template v-slot:activator>
-                <v-list-item-title>Conesearch</v-list-item-title>
+                <v-flex class="d-flex flex-sm-row align-center pl-0 ml-0">
+                  <v-list-item-title class="pl-0">
+                    Conesearch
+                    <v-tooltip right>
+                      <template v-slot:activator="{ on }">
+                        <v-icon v-on="on" dense>mdi-information</v-icon>
+                      </template>
+                      <span>
+                        Conesearch is a coordinate search tool with a search
+                        radius.
+                        <br />You can input RA/DEC manually or, optionally, give
+                        a target name and let Sesame fill in the coordinates.
+                      </span>
+                    </v-tooltip>
+                  </v-list-item-title>
+                </v-flex>
               </template>
               <v-list-item class="pl-4">
                 <v-list-item-content>
                   <validation-provider
+                    v-slot="{ failedRules }"
                     rules="conesearch|radiusPositive"
                     :bails="false"
-                    v-slot="{ failedRules }"
                   >
                     <inputs-coordinates-search
                       v-model="conesearchFiltersSync"
@@ -74,7 +89,7 @@
             <v-list-item class="pl-4">
               <v-list-item-content>
                 <v-row>
-                  <v-col lg="8" md="12">
+                  <v-col lg="7" md="12">
                     <v-btn
                       color="primary"
                       block
