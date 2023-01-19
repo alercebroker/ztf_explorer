@@ -66,6 +66,9 @@
                         radius.
                         <br />You can input RA/DEC manually or, optionally, give
                         a target name and let Sesame fill in the coordinates.
+                        <br />
+                        Formats accepted for HMS/DMS: "23:14:56.3" or "23 14
+                        56.3".
                       </span>
                     </v-tooltip>
                   </v-list-item-title>
