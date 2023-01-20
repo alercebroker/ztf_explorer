@@ -20,6 +20,7 @@ const defaultState = {
   ra: null,
   dec: null,
   radius: null,
+  targetName: null,
   searching: false,
   error: null,
 }
@@ -173,6 +174,7 @@ export default class Filters extends VuexModule {
       ra: this.ra,
       dec: this.dec,
       radius: this.radius,
+      targetName: this.targetName,
     }
   }
 
@@ -181,6 +183,7 @@ export default class Filters extends VuexModule {
       ra: defaultState.ra,
       dec: defaultState.dec,
       radius: defaultState.radius,
+      targetName: defaultState.targetName,
     }
   }
 
@@ -189,6 +192,7 @@ export default class Filters extends VuexModule {
     this.ra = filters.ra
     this.dec = filters.dec
     this.radius = filters.radius
+    this.targetName = filters.targetName
   }
 
   @VuexMutation
@@ -287,6 +291,7 @@ export default class Filters extends VuexModule {
     this.ra = defaultState.ra
     this.dec = defaultState.dec
     this.radius = defaultState.radius
+    this.targetName = defaultState.targetName
     this.searching = defaultState.searching
     this.ranking = defaultState.ranking
   }
