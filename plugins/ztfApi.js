@@ -66,8 +66,8 @@ export default function ({ $axios, $config }, inject) {
   }
 
   ztfApi.getObject = (objectId, request = null) => {
-    return ztfApi.get(
-      `objects/${objectId}`,
+    return ztfApiv2.get(
+      `astroobject/object/${objectId}`,
       request ? { cancelToken: request.token } : {}
     )
   }
