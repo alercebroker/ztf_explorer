@@ -38,7 +38,7 @@ export default function ({ $axios, $config }, inject) {
   ztfApi.search = (searchParameters, request) => {
     searchParameters = renameFields(searchParameters)
     searchParameters.order_mode = convertOrderMode(searchParameters.order_mode)
-    return ztfApiv2.get('astroobject/objects', {
+    return ztfApiv2.get('astroobject/objects/', {
       params: searchParameters,
       paramsSerializer(params) {
         return qs.stringify(params, {
@@ -66,8 +66,8 @@ export default function ({ $axios, $config }, inject) {
   }
 
   ztfApi.getObject = (objectId, request = null) => {
-    return ztfApi.get(
-      `objects/${objectId}`,
+    return ztfApiv2.get(
+      `astroobject/object/${objectId}`,
       request ? { cancelToken: request.token } : {}
     )
   }
