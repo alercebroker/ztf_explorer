@@ -38,7 +38,7 @@ export default function ({ $axios, $config }, inject) {
   ztfApi.search = (searchParameters, request) => {
     searchParameters = renameFields(searchParameters)
     searchParameters.order_mode = convertOrderMode(searchParameters.order_mode)
-    return ztfApiv2.get('astroobject/objects/', {
+    return ztfApiv2.get('/astroobject/objects/', {
       params: searchParameters,
       paramsSerializer(params) {
         return qs.stringify(params, {
@@ -67,7 +67,7 @@ export default function ({ $axios, $config }, inject) {
 
   ztfApi.getObject = (objectId, request = null) => {
     return ztfApiv2.get(
-      `astroobject/object/${objectId}`,
+      `/astroobject/object/${objectId}`,
       request ? { cancelToken: request.token } : {}
     )
   }
@@ -83,7 +83,7 @@ export default function ({ $axios, $config }, inject) {
         'AUTH-TOKEN': token,
       }
     }
-    return ztfApi.get(`objects/${objectId}/lightcurve`, config)
+    return ztfApiv2.get(`/lightcurve/lightcurve/${objectId}`, config)
   }
 
   ztfApi.getStats = (oid, request = null) => {
