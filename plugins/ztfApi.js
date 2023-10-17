@@ -74,7 +74,7 @@ export default function ({ $axios, $config }, inject) {
 
   ztfApi.getLightCurveHTMX = (objectId, plotType, request = null) => {
     const token = localStorage.getItem('access_token')
-    const config = { params: {oid: objectId } }
+    const config = { params: { oid: objectId } }
     if (request) {
       config.cancelToken = request.token
     }
