@@ -16,31 +16,7 @@
     </v-card>
     <v-card v-else :class="cardClass" width="100%">
       <v-card-text>
-        <select-lightcurve :selected="selected">
-          <plots-light-curve-plot
-            slot="difference"
-            :detections="lightcurve.detections"
-            :non-detections="lightcurve.nonDetections"
-            type="difference"
-            :dark="isDark"
-            @detectionClick="onDetectionClick"
-          />
-          <plots-light-curve-plot
-            slot="apparent"
-            :detections="apparent"
-            type="apparent"
-            :dark="isDark"
-            @detectionClick="onDetectionClick"
-          />
-          <plots-light-curve-plot
-            slot="folded"
-            :detections="apparent"
-            :period="period"
-            type="folded"
-            :dark="isDark"
-            @detectionClick="onDetectionClick"
-          />
-        </select-lightcurve>
+        <plots-light-curve-plot :htmx="lightcurve.htmx" :dark="isDark" />
       </v-card-text>
       <!-- OPTIONS -->
       <v-card-actions class="py-0">
@@ -134,6 +110,10 @@ export default class CardLightCurve extends Vue {
     return this.$store.state.lightcurve.error
   }
 
+  get htmx() {
+    return this.$store.state.lightcurve.htmx
+  }
+
   get lightcurve() {
     return {
       detections: this.$store.state.lightcurve.detections,
@@ -147,10 +127,6 @@ export default class CardLightCurve extends Vue {
 
   get isLoadingDataRelease() {
     return this.$store.state.datarelease.loading
-  }
-
-  get apparent() {
-    return this.lightcurve.detections.concat(this.dataReleaseValues)
   }
 
   get objectInformation() {
@@ -205,6 +181,14 @@ export default class CardLightCurve extends Vue {
 
   onDetectionClick(val) {
     if (val) this.$store.dispatch('lightcurve/changeDetection', val.index)
+  }
+
+  get selected() {
+    return this.$store.state.lightcurve.selected
+  }
+
+  set selected(val) {
+    this.$store.commit('lightcurve/setSelected', val)
   }
 
   updatePlotSelected(event) {

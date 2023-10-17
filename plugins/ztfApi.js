@@ -72,6 +72,20 @@ export default function ({ $axios, $config }, inject) {
     )
   }
 
+  ztfApi.getLightCurveHTMX = (objectId, plotType, request = null) => {
+    const token = localStorage.getItem('access_token')
+    const config = { params: {oid: objectId } }
+    if (request) {
+      config.cancelToken = request.token
+    }
+    if (token) {
+      config.headers = {
+        'AUTH-TOKEN': token,
+      }
+    }
+    return ztfApiv2.get(`/lightcurve/htmx/plot/${plotType}`, config)
+  }
+
   ztfApi.getLightCurve = (objectId, surveyId, request = null) => {
     const token = localStorage.getItem('access_token')
     const config = { params: { survey_id: surveyId } }
