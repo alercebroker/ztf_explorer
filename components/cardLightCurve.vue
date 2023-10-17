@@ -16,7 +16,11 @@
     </v-card>
     <v-card v-else :class="cardClass" width="100%">
       <v-card-text>
-        <plots-light-curve-plot-htmx :htmx="lightcurve.htmx" :dark="isDark" />
+        <plots-light-curve-plot-htmx
+          :type="selected"
+          :object-id="objectId"
+          :dark="isDark"
+        />
       </v-card-text>
       <!-- OPTIONS -->
       <v-card-actions class="py-0">
@@ -110,10 +114,6 @@ export default class CardLightCurve extends Vue {
     return this.$store.state.lightcurve.error
   }
 
-  get htmx() {
-    return this.$store.state.lightcurve.htmx
-  }
-
   get lightcurve() {
     return {
       detections: this.$store.state.lightcurve.detections,
@@ -181,14 +181,6 @@ export default class CardLightCurve extends Vue {
 
   onDetectionClick(val) {
     if (val) this.$store.dispatch('lightcurve/changeDetection', val.index)
-  }
-
-  get selected() {
-    return this.$store.state.lightcurve.selected
-  }
-
-  set selected(val) {
-    this.$store.commit('lightcurve/setSelected', val)
   }
 
   updatePlotSelected(event) {

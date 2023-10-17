@@ -9,19 +9,13 @@ import {
 export default class LightCurveStore extends VuexModule {
   loading = false
   error = null
-  htmx = null
-  selected = ''
+  htmx = ''
   selectedDetection = null
   activeRequest = null
 
   @VuexMutation
   setHTMX(val) {
     this.htmx = val
-  }
-
-  @VuexMutation
-  setSelected(val) {
-    this.selected = val
   }
 
   @VuexMutation
@@ -39,14 +33,10 @@ export default class LightCurveStore extends VuexModule {
     this.activeRequest = req
   }
 
-  @VuexAction
-  changeSelected(req) {
-    this.selected = req
-    this.getLightCurveHTMX(this.$route.params.oid)
-  }
-
   @VuexAction({ rawError: true })
   async getLightCurveHTMX(val) {
+    const objectId = val.objectId
+    const type = val.type
     this.setLoading(true)
     this.setHTMX('')
 
@@ -59,8 +49,8 @@ export default class LightCurveStore extends VuexModule {
 
     try {
       const lightCurveHTMX = await this.store.$ztfApi.getLightCurveHTMX(
-        val,
-        this.selected,
+        objectId,
+        type,
         this.activeRequest
       )
       this.setActiveRequest(null)

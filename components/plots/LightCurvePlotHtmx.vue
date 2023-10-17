@@ -1,17 +1,25 @@
 <template>
   <div>
-    test!!
-    {{ htmx }}
+    <span v-html="htmx"></span>
   </div>
 </template>
 <script>
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Vue, Component, Watch, Prop } from 'nuxt-property-decorator'
 
 @Component
-export default class CardLightCurve extends Vue {
-  @Prop({ type: String }) htmx
+export default class LightCurvePlotHtmx extends Vue {
+  @Prop({ type: String }) type
+  @Prop({ type: String }) objectId
 
-  htmx = ''
+  get htmx() {
+    return this.$store.state.lightcurve.htmx
+  }
+
+  @Watch('type')
+  onTypeChange(newType) {
+    const plotConfig = { objectId: this.objectId, type: newType }
+    this.$store.dispatch('lightcurve/getLightCurveHTMX', plotConfig)
+  }
 }
 </script>
 
