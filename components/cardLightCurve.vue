@@ -16,7 +16,7 @@
     </v-card>
     <v-card v-else :class="cardClass" width="100%">
       <v-card-text>
-        <plots-light-curve-plot :htmx="lightcurve.htmx" :dark="isDark" />
+        <plots-light-curve-plot-htmx :htmx="lightcurve.htmx" :dark="isDark" />
       </v-card-text>
       <!-- OPTIONS -->
       <v-card-actions class="py-0">

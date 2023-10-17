@@ -1,5 +1,6 @@
 <template>
   <div>
+    test!!
     {{ htmx }}
   </div>
 </template>
