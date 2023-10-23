@@ -35,8 +35,6 @@ export default class LightCurveStore extends VuexModule {
 
   @VuexAction({ rawError: true })
   async getLightCurveHTMX(val) {
-    const objectId = val.objectId
-    const type = val.type
     this.setLoading(true)
     this.setHTMX('')
 
@@ -49,14 +47,14 @@ export default class LightCurveStore extends VuexModule {
 
     try {
       const lightCurveHTMX = await this.store.$ztfApi.getLightCurveHTMX(
-        objectId,
-        type,
+        val.objectId,
+        val.type,
         this.activeRequest
       )
       this.setActiveRequest(null)
       this.setHTMX(lightCurveHTMX.data)
-      this.setError(null)
       this.setLoading(false)
+      this.setError(null)
     } catch (error) {
       if (error.response.status === 401) {
         const refreshToken = localStorage.getItem('refresh_token')

@@ -17,7 +17,7 @@ export default class LightCurvePlotHtmx extends Vue {
 
   @Watch('type')
   onTypeChange(newType) {
-    const plotConfig = { objectId: this.objectId, type: newType }
+    const plotConfig = { objectId: this.objectId, type: this.type }
     this.$store.dispatch('lightcurve/getLightCurveHTMX', plotConfig)
   }
 }
