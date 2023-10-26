@@ -1,55 +1,45 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card v-if="isLoading || error" :class="cardClass">
-      <v-card-text v-if="isLoading">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching data for object {{ objectId }} ...
-      </v-card-text>
-      <v-card-text v-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">
-          {{ error }}
-        </v-alert>
-      </v-card-text>
-    </v-card>
-    <v-card v-else :class="cardClass" width="100%">
+    <v-card :class="cardClass">
       <v-card-text>
         <plots-light-curve-plot-htmx
           :type="selected"
           :object-id="objectId"
+          :loading="loading"
+          :error="error"
           :dark="isDark"
         />
       </v-card-text>
-      <!-- OPTIONS -->
-      <v-card-actions class="py-0">
-        <!--RADIO BUTTONS-->
-        <buttons-lightcurve-radio-buttons
-          v-model="selected"
-          :options="options"
-        />
-        <v-spacer />
-        <v-row>
-          <!-- LIGHTCURVE BUTTONS -->
-          <v-col class="py-1">
-            <buttons-display-data-release
-              v-model="dataReleaseValues"
-              :datarelease="dataRelease"
-              :loading="isLoadingDataRelease"
-              :plot="selected"
-              @update-plot="updatePlotSelected"
-            />
-          </v-col>
-          <v-col class="py-1">
-            <buttons-download-lightcurve-button
-              :oid="objectId"
-              :detections="lightcurve.detections"
-              :non-detections="lightcurve.nonDetections"
-            />
-          </v-col>
-        </v-row>
-      </v-card-actions>
+      <v-card width="100%">
+        <!-- OPTIONS -->
+        <v-card-actions class="py-0">
+          <!--RADIO BUTTONS-->
+          <buttons-lightcurve-radio-buttons
+            v-model="selected"
+            :options="options"
+          />
+          <v-spacer />
+          <v-row>
+            <!-- LIGHTCURVE BUTTONS -->
+            <v-col class="py-1">
+              <buttons-display-data-release
+                v-model="dataReleaseValues"
+                :datarelease="dataRelease"
+                :loading="isLoadingDataRelease"
+                :plot="selected"
+                @update-plot="updatePlotSelected"
+              />
+            </v-col>
+            <v-col class="py-1">
+              <buttons-download-lightcurve-button
+                :oid="objectId"
+                :detections="lightcurve.detections"
+                :non-detections="lightcurve.nonDetections"
+              />
+            </v-col>
+          </v-row>
+        </v-card-actions>
+      </v-card>
     </v-card>
   </v-col>
 </template>

@@ -35,7 +35,9 @@ export default class LightCurveStore extends VuexModule {
 
   @VuexAction({ rawError: true })
   async getLightCurveHTMX(val) {
-    this.setLoading(true)
+    const objectId = val.objectId
+    const type = val.type
+    this.setLoading(false)
     this.setHTMX('')
 
     // making ztf sync request
@@ -47,8 +49,8 @@ export default class LightCurveStore extends VuexModule {
 
     try {
       const lightCurveHTMX = await this.store.$ztfApi.getLightCurveHTMX(
-        val.objectId,
-        val.type,
+        objectId,
+        type,
         this.activeRequest
       )
       this.setActiveRequest(null)
