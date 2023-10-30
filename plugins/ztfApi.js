@@ -72,23 +72,6 @@ export default function ({ $axios, $config }, inject) {
     )
   }
 
-  ztfApi.getLightCurveHTMX = (objectId, plotType, request = null) => {
-    const token = localStorage.getItem('access_token')
-    const config = { params: { oid: objectId } }
-    if (request) {
-      config.cancelToken = request.token
-    }
-    if (token) {
-      config.headers = {
-        'AUTH-TOKEN': token,
-      }
-    }
-    const testApi = $axios.create({
-      baseURL: 'http://127.0.0.1:8080/',
-    })
-    return testApi.get(`/htmx/plot/${plotType}`, config)
-  }
-
   ztfApi.getLightCurve = (objectId, surveyId, request = null) => {
     const token = localStorage.getItem('access_token')
     const config = { params: { survey_id: surveyId } }

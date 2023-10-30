@@ -15,10 +15,6 @@ export default class LightCurvePlotHtmx extends Vue {
   @Prop({ type: String }) type
   @Prop({ type: String }) objectId
 
-  get url() {
-    return `http://127.0.0.1:8080/htmx/plot/${this.type}?oid=${this.objectId}`
-  }
-
   get isLoading() {
     return this.$store.state.lightcurve.loading
   }
@@ -31,14 +27,15 @@ export default class LightCurvePlotHtmx extends Vue {
     return { objectId: this.objectId, type: this.type }
   }
 
-  @Watch('url', { immediate: true })
+  @Watch('plotConfig', { immediate: true })
   onConfigChange(newConfig) {
-    if (this.objectId && this.type) {
+    if (newConfig.objectId && newConfig.type) {
+      const url = `http://127.0.0.1:8080/htmx/plot/${newConfig.type}?oid=${newConfig.objectId}`
       const myDiv = document.getElementById('lightcurve-container')
       if (myDiv) {
-        myDiv.innerHTML = `<div hx-get=${this.url} hx-trigger="doUpdate from:body"></div>`
+        myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body"></div>`
         process(myDiv)
-        document.body.dispatchEvent(new Event('doUpdate'))
+        document.body.dispatchEvent(new Event('updateLightcurve'))
       }
     }
   }

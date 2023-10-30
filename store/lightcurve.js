@@ -9,14 +9,8 @@ import {
 export default class LightCurveStore extends VuexModule {
   loading = false
   error = null
-  htmx = ''
   selectedDetection = null
   activeRequest = null
-
-  @VuexMutation
-  setHTMX(val) {
-    this.htmx = val
-  }
 
   @VuexMutation
   setLoading(val) {
@@ -31,46 +25,6 @@ export default class LightCurveStore extends VuexModule {
   @VuexMutation
   setActiveRequest(req) {
     this.activeRequest = req
-  }
-
-  @VuexAction({ rawError: true })
-  async getLightCurveHTMX(val) {
-    const objectId = val.objectId
-    const type = val.type
-    this.setLoading(false)
-    this.setHTMX('')
-
-    // making ztf sync request
-    if (this.activeRequest) {
-      this.activeRequest.cancel('Cancel request due to new request sent')
-      this.setActiveRequest(null)
-    }
-    this.setActiveRequest(this.store.$axios.CancelToken.source())
-
-    try {
-      const lightCurveHTMX = await this.store.$ztfApi.getLightCurveHTMX(
-        objectId,
-        type,
-        this.activeRequest
-      )
-      this.setActiveRequest(null)
-      this.setHTMX(lightCurveHTMX.data)
-      this.setLoading(false)
-      this.setError(null)
-    } catch (error) {
-      if (error.response.status === 401) {
-        const refreshToken = localStorage.getItem('refresh_token')
-        await this.context.dispatch('user/refreshToken', refreshToken, {
-          root: true,
-        })
-        this.getLightCurveHTMX(val)
-        return
-      }
-      if (!error.message.startsWith('Cancel request')) {
-        this.setError(error)
-      }
-      this.setLoading(false)
-    }
   }
 
   @VuexMutation
