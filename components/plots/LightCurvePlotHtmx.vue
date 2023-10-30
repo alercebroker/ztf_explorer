@@ -1,37 +1,46 @@
+<script
+  src="https://unpkg.com/htmx.org@1.9.6"
+  integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+  crossorigin="anonymous"
+></script>
 <template>
-  <v-card v-if="isLoading || error">
-    <v-card-text v-if="isLoading">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
-      Fetching data for object {{ objectId }} ...
-    </v-card-text>
-    <v-card-text v-if="error">
-      <v-alert text prominent type="error" icon="mdi-cloud-alert">
-        {{ error }}
-      </v-alert>
-    </v-card-text>
-  </v-card>
-  <v-card v-else width="100%">
-    <div>
-      <span v-html="htmx"></span>
-    </div>
-  </v-card>
+  <v-card id="lightcurve-container" width="100%"> </v-card>
 </template>
 <script>
 import { Vue, Component, Watch, Prop } from 'nuxt-property-decorator'
+import { process } from 'htmx.org'
 
 @Component
 export default class LightCurvePlotHtmx extends Vue {
   @Prop({ type: String }) type
   @Prop({ type: String }) objectId
 
-  get htmx() {
-    return this.$store.state.lightcurve.htmx
+  get url() {
+    return `http://127.0.0.1:8080/htmx/plot/${this.type}?oid=${this.objectId}`
   }
 
-  @Watch('type', { immediate: true })
-  onTypeChange(newType) {
-    const plotConfig = { objectId: this.objectId, type: newType }
-    this.$store.dispatch('lightcurve/getLightCurveHTMX', plotConfig)
+  get isLoading() {
+    return this.$store.state.lightcurve.loading
+  }
+
+  get error() {
+    return this.$store.state.lightcurve.error
+  }
+
+  get plotConfig() {
+    return { objectId: this.objectId, type: this.type }
+  }
+
+  @Watch('url', { immediate: true })
+  onConfigChange(newConfig) {
+    if (this.objectId && this.type) {
+      const myDiv = document.getElementById('lightcurve-container')
+      if (myDiv) {
+        myDiv.innerHTML = `<div hx-get=${this.url} hx-trigger="doUpdate from:body"></div>`
+        process(myDiv)
+        document.body.dispatchEvent(new Event('doUpdate'))
+      }
+    }
   }
 }
 </script>

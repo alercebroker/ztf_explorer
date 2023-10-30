@@ -83,10 +83,10 @@ export default function ({ $axios, $config }, inject) {
         'AUTH-TOKEN': token,
       }
     }
-    return {
-      data: `<h1> Test successful with type: ${plotType} and oid ${objectId} </h1>`,
-    }
-    /* return ztfApiv2.get(`/lightcurve/htmx/plot/${plotType}`, config) */
+    const testApi = $axios.create({
+      baseURL: 'http://127.0.0.1:8080/',
+    })
+    return testApi.get(`/htmx/plot/${plotType}`, config)
   }
 
   ztfApi.getLightCurve = (objectId, surveyId, request = null) => {

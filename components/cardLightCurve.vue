@@ -5,8 +5,6 @@
         <plots-light-curve-plot-htmx
           :type="selected"
           :object-id="objectId"
-          :loading="loading"
-          :error="error"
           :dark="isDark"
         />
       </v-card-text>
@@ -94,14 +92,6 @@ export default class CardLightCurve extends Vue {
 
   get isDark() {
     return this.$vuetify.theme.isDark
-  }
-
-  get isLoading() {
-    return this.$store.state.lightcurve.loading
-  }
-
-  get error() {
-    return this.$store.state.lightcurve.error
   }
 
   get lightcurve() {
