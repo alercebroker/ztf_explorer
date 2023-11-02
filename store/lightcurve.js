@@ -9,8 +9,20 @@ import {
 export default class LightCurveStore extends VuexModule {
   loading = false
   error = null
+  detections = []
+  nonDetections = []
   selectedDetection = null
   activeRequest = null
+
+  @VuexMutation
+  setDetections(val) {
+    this.detections = val
+  }
+
+  @VuexMutation
+  setNonDetections(val) {
+    this.nonDetections = val
+  }
 
   @VuexMutation
   setLoading(val) {
@@ -25,16 +37,6 @@ export default class LightCurveStore extends VuexModule {
   @VuexMutation
   setActiveRequest(req) {
     this.activeRequest = req
-  }
-
-  @VuexMutation
-  setDetections(val) {
-    this.detections = val
-  }
-
-  @VuexMutation
-  setNonDetections(val) {
-    this.nonDetections = val
   }
 
   @VuexMutation
@@ -88,6 +90,7 @@ export default class LightCurveStore extends VuexModule {
     }
 
     /*
+
     // making atlas sync request
     if (this.activeRequest) {
       this.activeRequest.cancel('Cancel request due to new request sent')
@@ -123,6 +126,6 @@ export default class LightCurveStore extends VuexModule {
       }
       this.setLoading(false)
     }
-    */
+  */
   }
 }
