@@ -6,22 +6,20 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card :class="cardClass">
-      <v-card>
-        <v-card id="lightcurve-container" width="100%"> </v-card>
-        <v-card v-if="isLoading || error">
-          <v-card-text v-if="isLoading">
-            <v-progress-circular
-              indeterminate
-              color="primary"
-            ></v-progress-circular>
-            Fetching data for object {{ objectId }} ...
-          </v-card-text>
-          <v-card-text v-if="error">
-            <v-alert text prominent type="error" icon="mdi-cloud-alert">
-              {{ error }}
-            </v-alert>
-          </v-card-text>
-        </v-card>
+      <v-card id="lightcurve-container" width="100%" height="100%"> </v-card>
+      <v-card v-if="isLoading || error">
+        <v-card-text v-if="isLoading">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          Fetching data for object {{ objectId }} ...
+        </v-card-text>
+        <v-card-text v-if="error">
+          <v-alert text prominent type="error" icon="mdi-cloud-alert">
+            {{ error }}
+          </v-alert>
+        </v-card-text>
       </v-card>
     </v-card>
   </v-col>
@@ -90,7 +88,7 @@ export default class CardLightCurve extends Vue {
       console.log(url)
       const myDiv = document.getElementById('lightcurve-container')
       if (myDiv) {
-        myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body"></div>`
+        myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body" hx-swap="outerHTML"></div>`
         htmx.process(myDiv)
         document.body.dispatchEvent(new Event('updateLightcurve'))
       }
