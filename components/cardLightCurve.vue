@@ -46,10 +46,6 @@ export default class CardLightCurve extends Vue {
   isLoading = true
   error = ''
 
-  get isDark() {
-    return this.$vuetify.theme.isDark
-  }
-
   get objectInformation() {
     return this.$store.state.object.object
   }
@@ -85,7 +81,6 @@ export default class CardLightCurve extends Vue {
     this.isLoading = true
     if (newId) {
       const url = `${this.$config.lightCurveApiv2Url}/htmx/lightcurve?oid=${newId}`
-      console.log(url)
       const myDiv = document.getElementById('lightcurve-container')
       if (myDiv) {
         myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body" hx-swap="outerHTML"></div>`
