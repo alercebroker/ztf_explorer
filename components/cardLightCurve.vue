@@ -1,12 +1,6 @@
-<script
-  src="https://unpkg.com/htmx.org@1.9.6"
-  integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
-  crossorigin="anonymous"
-></script>
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card :class="cardClass">
-      <v-card id="lightcurve-container" width="100%" height="100%"> </v-card>
       <v-card v-if="isLoading || error">
         <v-card-text v-if="isLoading">
           <v-progress-circular
@@ -21,6 +15,7 @@
           </v-alert>
         </v-card-text>
       </v-card>
+      <v-card id="lightcurve-container" width="100%" height="100%"> </v-card>
     </v-card>
   </v-col>
 </template>
@@ -69,10 +64,9 @@ export default class CardLightCurve extends Vue {
         this.isLoading = false
       }
     })
-  }
-
-  onDetectionClick(val) {
-    if (val) this.$store.dispatch('lightcurve/changeDetection', val.index)
+    document.body.addEventListener('onDetectionClick', (val) => {
+      if (val) this.$store.dispatch('lightcurve/changeDetection', val.detail)
+    })
   }
 
   @Watch('objectId', { immediate: true })
@@ -80,7 +74,8 @@ export default class CardLightCurve extends Vue {
     this.error = ''
     this.isLoading = true
     if (newId) {
-      const url = `${this.$config.lightCurveApiv2Url}/htmx/lightcurve?oid=${newId}`
+      const url = `${this.$config.ztfApiv2Url}/lightcurve/htmx/lightcurve?oid=${newId}`
+      console.log(url)
       const myDiv = document.getElementById('lightcurve-container')
       if (myDiv) {
         myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body" hx-swap="outerHTML"></div>`

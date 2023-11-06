@@ -110,8 +110,8 @@ export default {
     ztfApiBaseUrl:
       process.env.ZTF_API_BASE_URL ||
       'https://dev-api.alerce.online/alerts/v1/',
-    ztfApiv2Url: 'https://api.staging.alerce.online/v2',
-    lightCurveApiv2Url: 'http://127.0.0.1:8080',
+    ztfApiv2Url:
+      process.env.ZTF_V2_API_URL || 'https://api.staging.alerce.online/v2',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
