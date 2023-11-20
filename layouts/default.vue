@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import { userStore } from '~/store'
 @Component
 export default class DefaultLayout extends Vue {
@@ -74,6 +74,19 @@ export default class DefaultLayout extends Vue {
       return
     }
     return this.userData.name[0] + (this.userData.last_name[0] || '')
+  }
+
+  get isDark() {
+    return this.$vuetify.theme.isDark
+  }
+
+  @Watch('isDark', { immediate: true })
+  onIsDarkChange(newIsDark) {
+    if (newIsDark) {
+      document.body.classList.add('dark')
+    } else {
+      document.body.classList.remove('dark')
+    }
   }
 }
 </script>

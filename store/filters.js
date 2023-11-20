@@ -269,7 +269,7 @@ export default class Filters extends VuexModule {
   }
 
   @VuexAction({ rawError: true })
-  async getLimitValues() {
+  getLimitValues() {
     // let resp = await this.store.$ztfApi.getLimitValues()
     // resp = resp.data
     const limitNdet = [1, 30000]
