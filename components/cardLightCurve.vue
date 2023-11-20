@@ -15,7 +15,7 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card id="lightcurve-container" width="100%" height="100%"> </v-card>
+      <v-card id="lightcurve-container" width="100%" :height="height"> </v-card>
     </v-card>
   </v-col>
 </template>
@@ -40,6 +40,7 @@ export default class CardLightCurve extends Vue {
 
   isLoading = true
   error = ''
+  height = '0%'
 
   get objectInformation() {
     return this.$store.state.object.object
@@ -62,6 +63,7 @@ export default class CardLightCurve extends Vue {
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
+        this.height = '100%'
       }
     })
     document.body.addEventListener('onDetectionClick', (val) => {
