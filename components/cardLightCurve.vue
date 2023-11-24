@@ -40,7 +40,7 @@ export default class CardLightCurve extends Vue {
 
   isLoading = true
   error = ''
-  height = '0%'
+  height = '0vh'
 
   get objectInformation() {
     return this.$store.state.object.object
@@ -48,6 +48,10 @@ export default class CardLightCurve extends Vue {
 
   get objectId() {
     return this.$store.state.object.objectId
+  }
+
+  get isDark() {
+    return this.$vuetify.theme.isDark
   }
 
   updatePlotSelected(event) {
@@ -63,7 +67,8 @@ export default class CardLightCurve extends Vue {
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
-        this.height = '100%'
+        this.height = '50vh'
+        this.onIsDarkChange(this.isDark)
       }
     })
     document.body.addEventListener('onDetectionClick', (val) => {
@@ -85,5 +90,18 @@ export default class CardLightCurve extends Vue {
       }
     }
   }
+
+  @Watch('isDark', { immediate: true })
+  onIsDarkChange(newIsDark) {
+    const container = document.getElementById('lightcurve-htmx-container')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
+  }
 }
 </script>
+<style></style>
