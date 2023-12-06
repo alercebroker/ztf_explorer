@@ -14,6 +14,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     environment: development
+    permissions:
+      id-token: write
+      contents: read
     env:
       GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
       AVRO_API_BASE_URL: ${{ secrets.AVRO_API_BASE_URL }}
