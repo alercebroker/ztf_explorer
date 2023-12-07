@@ -5,8 +5,6 @@ on:
     branches: [ develop ]
 
 env:
-  AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME_DEV }}
-  AWS_CLOUDFRONT: ${{ secrets.AWS_CLOUDFRONT_ID_DEV }}
   NODE_ENV: staging
   APP_TITLE: ALeRCE Explorer - Staging Build
 
@@ -18,24 +16,26 @@ jobs:
       id-token: write
       contents: read
     env:
-      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+      AWS_CLOUDFRONT: ${{ secrets.AWS_CLOUDFRONT_ID }}
       AVRO_API_BASE_URL: ${{ secrets.AVRO_API_BASE_URL }}
       CATSHTM_API_BASE_URL: ${{ secrets.CATSHTM_API_BASE_URL }}
+      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
       TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL }}
+      USERS_API_BASE_URL: ${{ secrets.USERS_API_BASE_URL }}
       ZTF_API_BASE_URL: ${{ secrets.ZTF_API_BASE_URL }}
       ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL }}
-      USERS_API_BASE_URL: ${{ secrets.USERS_API_BASE_URL }}
     steps:
       - name: Configure AWS credentials
         id: creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_STAGING }}
+          role-to-assume: ${{ secrets.AWS_ROLE }}
           aws-region: us-east-1
           output-credentials: true
           unset-current-credentials: true
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 16
       - run: npm install
