@@ -59,6 +59,8 @@ export default class CardLightCurve extends Vue {
   }
 
   mounted() {
+    const _oid = this.objectId || this.$route.params.oid
+    this._loadHtmx(_oid)
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -76,18 +78,23 @@ export default class CardLightCurve extends Vue {
     })
   }
 
+  _loadHtmx(objectId) {
+    const url = `${this.$config.ztfApiv2Url}/lightcurve/htmx/lightcurve?oid=${objectId}`
+    const myDiv = document.getElementById('lightcurve-container')
+    if (myDiv) {
+      myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body" hx-swap="outerHTML"></div>`
+      htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('updateLightcurve'))
+    }
+  }
+
   @Watch('objectId', { immediate: true })
   onIdChange(newId) {
+    console.log('Watching oid', newId)
     this.error = ''
     this.isLoading = true
     if (newId) {
-      const url = `${this.$config.ztfApiv2Url}/lightcurve/htmx/lightcurve?oid=${newId}`
-      const myDiv = document.getElementById('lightcurve-container')
-      if (myDiv) {
-        myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body" hx-swap="outerHTML"></div>`
-        htmx.process(myDiv)
-        document.body.dispatchEvent(new Event('updateLightcurve'))
-      }
+      this._loadHtmx(newId)
     }
   }
 
