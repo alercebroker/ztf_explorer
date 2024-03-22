@@ -90,7 +90,6 @@ export default class CardLightCurve extends Vue {
 
   @Watch('objectId', { immediate: true })
   onIdChange(newId) {
-    console.log('Watching oid', newId)
     this.error = ''
     this.isLoading = true
     if (newId) {
