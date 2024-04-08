@@ -111,7 +111,7 @@ export default {
       process.env.ZTF_API_BASE_URL ||
       'https://dev-api.alerce.online/alerts/v1/',
     ztfApiv2Url:
-      process.env.ZTF_V2_API_URL || 'https://api.staging.alerce.online/v2',
+      process.env.ZTF_V2_API_URL || 'https://api.alerce.online/v2',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
