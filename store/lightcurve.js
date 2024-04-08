@@ -35,6 +35,11 @@ export default class LightCurveStore extends VuexModule {
   }
 
   @VuexMutation
+  setActiveRequest(req) {
+    this.activeRequest = req
+  }
+
+  @VuexMutation
   setSelectedDetection(val) {
     this.selectedDetection = val
   }
@@ -44,18 +49,13 @@ export default class LightCurveStore extends VuexModule {
     this.setSelectedDetection(val)
   }
 
-  @VuexMutation
-  setActiveRequest(req) {
-    this.activeRequest = req
-  }
-
   @VuexAction({ rawError: true })
   async getLightCurve(val) {
     this.setLoading(true)
     this.setDetections([])
     this.setNonDetections([])
 
-    // making zrf sync request
+    // making ztf sync request
     if (this.activeRequest) {
       this.activeRequest.cancel('Cancel request due to new request sent')
       this.setActiveRequest(null)
@@ -88,6 +88,8 @@ export default class LightCurveStore extends VuexModule {
       }
       this.setLoading(false)
     }
+
+    /*
 
     // making atlas sync request
     if (this.activeRequest) {
@@ -124,5 +126,6 @@ export default class LightCurveStore extends VuexModule {
       }
       this.setLoading(false)
     }
+  */
   }
 }

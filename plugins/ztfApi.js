@@ -12,8 +12,8 @@ function convertOrderMode(orderDesc) {
 }
 
 function renameFields(params) {
-  renameField(params, 'selectedClass', 'class')
-  renameField(params, 'selectedClassifier', 'classifier')
+  renameField(params, 'selectedClass', 'class_name')
+  renameField(params, 'selectedClassifier', 'classifier_name')
   renameField(params, 'perPage', 'page_size')
   renameField(params, 'sortBy', 'order_by')
   renameField(params, 'sortDesc', 'order_mode')
@@ -31,11 +31,14 @@ export default function ({ $axios, $config }, inject) {
   const ztfApi = $axios.create({
     baseURL: $config.ztfApiBaseUrl,
   })
+  const ztfApiv2 = $axios.create({
+    baseURL: $config.ztfApiv2Url,
+  })
 
   ztfApi.search = (searchParameters, request) => {
     searchParameters = renameFields(searchParameters)
     searchParameters.order_mode = convertOrderMode(searchParameters.order_mode)
-    return ztfApi.get('objects/', {
+    return ztfApi.get('/objects/', {
       params: searchParameters,
       paramsSerializer(params) {
         return qs.stringify(params, {
@@ -64,7 +67,7 @@ export default function ({ $axios, $config }, inject) {
 
   ztfApi.getObject = (objectId, request = null) => {
     return ztfApi.get(
-      `objects/${objectId}`,
+      `/objects/${objectId}`,
       request ? { cancelToken: request.token } : {}
     )
   }
@@ -80,7 +83,7 @@ export default function ({ $axios, $config }, inject) {
         'AUTH-TOKEN': token,
       }
     }
-    return ztfApi.get(`objects/${objectId}/lightcurve`, config)
+    return ztfApiv2.get(`/lightcurve/lightcurve/${objectId}`, config)
   }
 
   ztfApi.getStats = (oid, request = null) => {

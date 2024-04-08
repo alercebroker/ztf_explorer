@@ -1,81 +1,28 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card v-if="isLoading || error" :class="cardClass">
-      <v-card-text v-if="isLoading">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching data for object {{ objectId }} ...
-      </v-card-text>
-      <v-card-text v-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">
-          {{ error }}
-        </v-alert>
-      </v-card-text>
-    </v-card>
-    <v-card v-else :class="cardClass" width="100%">
-      <v-card-text>
-        <select-lightcurve :selected="selected">
-          <plots-light-curve-plot
-            slot="difference"
-            :detections="lightcurve.detections"
-            :non-detections="lightcurve.nonDetections"
-            type="difference"
-            :dark="isDark"
-            @detectionClick="onDetectionClick"
-          />
-          <plots-light-curve-plot
-            slot="apparent"
-            :detections="apparent"
-            type="apparent"
-            :dark="isDark"
-            @detectionClick="onDetectionClick"
-          />
-          <plots-light-curve-plot
-            slot="folded"
-            :detections="apparent"
-            :period="period"
-            type="folded"
-            :dark="isDark"
-            @detectionClick="onDetectionClick"
-          />
-        </select-lightcurve>
-      </v-card-text>
-      <!-- OPTIONS -->
-      <v-card-actions class="py-0">
-        <!--RADIO BUTTONS-->
-        <buttons-lightcurve-radio-buttons
-          v-model="selected"
-          :options="options"
-        />
-        <v-spacer />
-        <v-row>
-          <!-- LIGHTCURVE BUTTONS -->
-          <v-col class="py-1">
-            <buttons-display-data-release
-              v-model="dataReleaseValues"
-              :datarelease="dataRelease"
-              :loading="isLoadingDataRelease"
-              :plot="selected"
-              @update-plot="updatePlotSelected"
-            />
-          </v-col>
-          <v-col class="py-1">
-            <buttons-download-lightcurve-button
-              :oid="objectId"
-              :detections="lightcurve.detections"
-              :non-detections="lightcurve.nonDetections"
-            />
-          </v-col>
-        </v-row>
-      </v-card-actions>
+    <v-card :class="cardClass">
+      <v-card v-if="isLoading || error">
+        <v-card-text v-if="isLoading">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          Fetching data for object {{ objectId }} ...
+        </v-card-text>
+        <v-card-text v-if="error">
+          <v-alert text prominent type="error" icon="mdi-cloud-alert">
+            {{ error }}
+          </v-alert>
+        </v-card-text>
+      </v-card>
+      <v-card id="lightcurve-container" width="100%" :height="height"> </v-card>
     </v-card>
   </v-col>
 </template>
 
 <script>
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+import * as htmx from 'htmx.org'
 
 @Component
 export default class CardLightCurve extends Vue {
@@ -87,71 +34,13 @@ export default class CardLightCurve extends Vue {
 
   @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Number, default: null }) period
-
   @Prop({ type: Boolean, default: true }) show
 
   @Prop({ type: String }) cardClass
 
-  selected = ''
-
-  dataReleaseValues = []
-
-  options = [
-    {
-      text: 'Difference Magnitude',
-      value: 'difference',
-      tooltip:
-        'The difference Magnitude light curve, is the absolute difference between a science and reference magnitudes.',
-      show: true,
-      default: true,
-    },
-    {
-      text: 'Apparent Magnitude',
-      value: 'apparent',
-      tooltip:
-        'Apparent magnitude light curve results from adding/subtracting the fluxes from the reference and difference in the same unit system and then converting to magnitudes.',
-      show: true,
-    },
-    {
-      text: 'Folded',
-      value: 'folded',
-      tooltip:
-        'The Period folded light curve, where time is transformed to time modulo the period (Phase).',
-      show: true,
-    },
-  ]
-
-  get isDark() {
-    return this.$vuetify.theme.isDark
-  }
-
-  get isLoading() {
-    return this.$store.state.lightcurve.loading
-  }
-
-  get error() {
-    return this.$store.state.lightcurve.error
-  }
-
-  get lightcurve() {
-    return {
-      detections: this.$store.state.lightcurve.detections,
-      nonDetections: this.$store.state.lightcurve.nonDetections,
-    }
-  }
-
-  get dataRelease() {
-    return this.$store.state.datarelease.dataReleaseLightCurve
-  }
-
-  get isLoadingDataRelease() {
-    return this.$store.state.datarelease.loading
-  }
-
-  get apparent() {
-    return this.lightcurve.detections.concat(this.dataReleaseValues)
-  }
+  isLoading = true
+  error = ''
+  height = '0vh'
 
   get objectInformation() {
     return this.$store.state.object.object
@@ -161,54 +50,64 @@ export default class CardLightCurve extends Vue {
     return this.$store.state.object.objectId
   }
 
-  @Watch('objectInformation')
-  onObjectInformation(val) {
-    this.options.forEach((x) => {
-      switch (x.value) {
-        case 'difference':
-          x.default = !val.corrected
-          break
-        case 'apparent':
-          x.show = val.corrected
-          x.default = val.corrected
-          break
-        case 'folded':
-          x.show = this.period !== null && val.corrected
-          break
-      }
-    })
-  }
-
-  @Watch('dataRelease')
-  onDataReleaseValues(val) {
-    this.options.forEach((x) => {
-      switch (x.value) {
-        case 'apparent':
-          x.show = this.objectInformation.corrected || val.length > 0
-          x.default = this.objectInformation.corrected
-          break
-        case 'folded':
-          x.show =
-            this.period !== null &&
-            (this.objectInformation.corrected || val.length > 0)
-          break
-      }
-    })
-  }
-
-  @Watch('period')
-  onPeriod(val) {
-    if (this.objectInformation) {
-      this.options[2].show = val !== null && this.objectInformation.corrected
-    }
-  }
-
-  onDetectionClick(val) {
-    if (val) this.$store.dispatch('lightcurve/changeDetection', val.index)
+  get isDark() {
+    return this.$vuetify.theme.isDark
   }
 
   updatePlotSelected(event) {
     this.selected = event
   }
+
+  mounted() {
+    const _oid = this.objectId || this.$route.params.oid
+    this._loadHtmx(_oid)
+    this.$el.addEventListener('htmx:responseError', (event) => {
+      this.error = event.detail.error
+      this.isLoading = false
+    })
+    this.$el.addEventListener('htmx:afterRequest', (event) => {
+      if (event.detail.successful) {
+        this.error = ''
+        this.isLoading = false
+        this.height = '50vh'
+        this.onIsDarkChange(this.isDark)
+      }
+    })
+    document.body.addEventListener('onDetectionClick', (val) => {
+      if (val) this.$store.dispatch('lightcurve/changeDetection', val.detail)
+    })
+  }
+
+  _loadHtmx(objectId) {
+    const url = `${this.$config.ztfApiv2Url}/lightcurve/htmx/lightcurve?oid=${objectId}`
+    const myDiv = document.getElementById('lightcurve-container')
+    if (myDiv) {
+      myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body" hx-swap="outerHTML"></div>`
+      htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('updateLightcurve'))
+    }
+  }
+
+  @Watch('objectId', { immediate: true })
+  onIdChange(newId) {
+    this.error = ''
+    this.isLoading = true
+    if (newId) {
+      this._loadHtmx(newId)
+    }
+  }
+
+  @Watch('isDark', { immediate: true })
+  onIsDarkChange(newIsDark) {
+    const container = document.getElementById('lightcurve-app')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
+  }
 }
 </script>
+<style></style>
