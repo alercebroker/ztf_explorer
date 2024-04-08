@@ -11,6 +11,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      id-token: write
+      contents: read
     env:
       AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
       AWS_CLOUDFRONT: ${{ secrets.AWS_CLOUDFRONT_ID }}
