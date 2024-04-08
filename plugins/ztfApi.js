@@ -12,8 +12,8 @@ function convertOrderMode(orderDesc) {
 }
 
 function renameFields(params) {
-  renameField(params, 'selectedClass', 'class_name')
-  renameField(params, 'selectedClassifier', 'classifier_name')
+  renameField(params, 'selectedClass', 'class')
+  renameField(params, 'selectedClassifier', 'classifier')
   renameField(params, 'perPage', 'page_size')
   renameField(params, 'sortBy', 'order_by')
   renameField(params, 'sortDesc', 'order_mode')
