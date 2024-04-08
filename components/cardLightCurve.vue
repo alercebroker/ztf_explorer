@@ -99,7 +99,7 @@ export default class CardLightCurve extends Vue {
 
   @Watch('isDark', { immediate: true })
   onIsDarkChange(newIsDark) {
-    const container = document.getElementById('lightcurve-htmx-container')
+    const container = document.getElementById('lightcurve-app')
     if (container) {
       if (newIsDark) {
         container.classList.add('tw-dark')
