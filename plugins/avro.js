@@ -9,7 +9,7 @@ export default function ({ $axios, $config }, inject) {
 
   avroApi.getAvroInfo = (oid, candid, surveyId, request = null) => {
     const token = localStorage.getItem('access_token')
-    const config = { params: { oid, candid, survey_id: surveyId } }
+    const config = { params: { oid, candid } }
     if (request) {
       config.cancelToken = request.token
     }
