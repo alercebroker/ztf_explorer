@@ -15,7 +15,7 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card id="lightcurve-container" width="100%" :height="height"> </v-card>
+      <v-card id="lightcurve-app" width="100%" :height="height"> </v-card>
     </v-card>
   </v-col>
 </template>
@@ -80,7 +80,7 @@ export default class CardLightCurve extends Vue {
 
   _loadHtmx(objectId) {
     const url = `${this.$config.ztfApiv2Url}/lightcurve/htmx/lightcurve?oid=${objectId}`
-    const myDiv = document.getElementById('lightcurve-container')
+    const myDiv = document.getElementById('lightcurve-app')
     if (myDiv) {
       myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve from:body" hx-swap="outerHTML"></div>`
       htmx.process(myDiv)
