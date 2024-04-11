@@ -69,7 +69,7 @@ export default class CardLightCurve extends Vue {
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
-        this.height = '50vh'
+        this.height = '28vh'
         this.onIsDarkChange(this.isDark)
       }
     })
