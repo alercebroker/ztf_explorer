@@ -52,6 +52,7 @@
 <script>
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import {
+  lightCurveStore,
   statsStore,
   probabilitiesStore,
   featuresStore,
@@ -71,6 +72,7 @@ export default class ObjectView extends Vue {
   async fetch() {
     let oid = this.$route.params.oid
     if (this.selectedObject) oid = this.selectedObject
+    lightCurveStore.getLightCurve(oid)
     statsStore.getStats(oid)
     probabilitiesStore.getProbabilities(oid)
     featuresStore.getFeatures(oid)
