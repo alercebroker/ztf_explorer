@@ -76,11 +76,7 @@ export default {
   buildModules:
     process.env.NODE_ENV !== 'production'
       ? ['@nuxtjs/vuetify', '@alerce/components/nuxt', '@nuxtjs/eslint-module']
-      : [
-          '@nuxtjs/vuetify',
-          '@alerce/components/nuxt',
-          '@nuxtjs/google-analytics',
-        ],
+      : ['@nuxtjs/vuetify', '@alerce/components/nuxt'],
   /*
    ** Nuxt.js modules
    */
@@ -90,12 +86,7 @@ export default {
     '@nuxtjs/toast',
     '@nuxtjs/pwa',
   ],
-  googleAnalytics: {
-    id:
-      process.env.NODE_ENV === 'production'
-        ? process.env.GOOGLE_ANALYTICS_ID
-        : '',
-  },
+
   /*
    ** Process runtime config
    */
@@ -110,18 +101,11 @@ export default {
     ztfApiBaseUrl:
       process.env.ZTF_API_BASE_URL ||
       'https://dev-api.alerce.online/alerts/v1/',
-    ztfApiv2Url:
-      process.env.ZTF_V2_API_URL || 'https://api.alerce.online/v2',
+    ztfApiv2Url: process.env.ZTF_V2_API_URL || 'https://api.alerce.online/v2',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
       process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth/',
-    googleAnalytics: {
-      id:
-        process.env.NODE_ENV === 'production'
-          ? process.env.GOOGLE_ANALYTICS_ID
-          : '',
-    },
   },
   privateRuntimeConfig: {},
   /*
