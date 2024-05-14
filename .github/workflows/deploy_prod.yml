@@ -20,6 +20,7 @@ jobs:
       AVRO_API_BASE_URL: ${{ secrets.AVRO_API_BASE_URL }}
       CATSHTM_API_BASE_URL: ${{ secrets.CATSHTM_API_BASE_URL }}
       GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      GOOGLE_TAG_ID: ${{ secrets.GOOGLE_TAG_ID }}
       TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL }}
       USERS_API_BASE_URL: ${{ secrets.USERS_API_BASE_URL }}
       ZTF_API_BASE_URL: ${{ secrets.ZTF_API_BASE_URL }}
