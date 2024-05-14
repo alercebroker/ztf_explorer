@@ -54,6 +54,7 @@ export default {
     '@/plugins/validation.js',
     '@/plugins/dataReleaseApi.js',
     '@/plugins/users.js',
+    '@/plugins/gtag.js',
   ],
   router: {
     middleware: 'auth',
@@ -106,6 +107,7 @@ export default {
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
       process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth/',
+    googleTagId: process.env.GOOGLE_TAG_ID,
   },
   privateRuntimeConfig: {},
   /*
