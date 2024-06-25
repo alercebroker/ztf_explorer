@@ -122,6 +122,14 @@ export default {
           ? process.env.GOOGLE_ANALYTICS_ID
           : '',
     },
+    lightCurveServiceUrl:
+      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8001/htmx/lightcurve',
+    objectServiceUrl:
+      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8002/htmx/object',
+    magStatsServiceUrl:
+      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8003/htmx/mag',
+    probabilityServiceUrl:
+      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8004/htmx/probability',
   },
   privateRuntimeConfig: {},
   /*
