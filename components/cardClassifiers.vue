@@ -1,144 +1,138 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card v-if="isLoading || error" :class="cardClass">
-      <v-card-text v-if="isLoading">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching data for object {{ $route.params.oid }} ...
-      </v-card-text>
-      <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
-          error
-        }}</v-alert>
-      </v-card-text>
-    </v-card>
-    <v-card v-else :class="cardClass">
-      <v-card-text v-if="plotData" style="height: 100%">
-        <v-select
-          v-model="selected"
-          :items="classifiers_"
-          item-value="index"
-          item-text="name"
-          prepend-icon="mdi-robot"
-          class="py-0 my-0"
-        />
-        <plots-radar-plot :data="plotData" />
-      </v-card-text>
-      <v-card-text v-else class="fill-height">
-        <v-row align="center" justify="center" class="fill-height" no-gutters>
-          <v-col align-self="center">
-            <v-alert icon="mdi-alert" border="left" outlined>
-              <p class="ma-0">
-                The object
-                <b>{{ objectId }}</b> has not been classified yet.
-              </p>
-            </v-alert>
-          </v-col>
-        </v-row>
-      </v-card-text>
+    <v-card :class="cardClass">
+      <v-card v-if="isLoading || error">
+        <v-card-text v-if="isLoading">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          Fetching data for object {{ objectId }} ...
+        </v-card-text>
+        <v-card-text v-if="error">
+          <v-alert text prominent type="error" icon="mdi-cloud-alert">
+            {{ error }}
+          </v-alert>
+        </v-card-text>
+      </v-card>
+      <v-card id="probability-app" width="100%" :height="height"></v-card>
     </v-card>
   </v-col>
 </template>
 
 <script>
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+import * as htmx from 'htmx.org'
 
 @Component
-export default class CardClassifiers extends Vue {
+export default class CardProbability extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
-
   @Prop({ type: Number | String, default: 12 }) lg
-
   @Prop({ type: Number | String, default: 12 }) md
-
   @Prop({ type: Number | String, default: 12 }) sm
-
+  @Prop({ type: Boolean, default: true }) show
   @Prop({ type: String }) cardClass
 
-  selected = 0
+  isLoading = true
+  error = ''
+  height = '0vh'
 
-  /*
-  Format probabilities of API to array of objects: { name: class_name, value: prob_of_class}
-  */
-  formatProbs(probs, version = null) {
-    if (version) {
-      probs = probs.filter((prob) => {
-        return prob.classifier_version === version
-      })
-    }
-    return probs.map((k) => {
-      return {
-        name: k.class_name,
-        value: k.probability,
-      }
-    })
-  }
-
-  formatClassifierName(name) {
-    name = name.replace(/[$-/:-?{-~!"^_`]/g, (c) => ' ')
-    return name.replace(/\b\w/g, (c) => c.toUpperCase())
-  }
-
-  groupBy(data, prop) {
-    return data.reduce((groups, item) => {
-      const val = item[prop]
-      groups[val] = groups[val] || []
-      groups[val].push(item)
-      return groups
-    }, {})
-  }
-
-  get plotData() {
-    return this.classifiers_.length > 0
-      ? this.classifiers_[this.selected].probs
-      : null
-  }
-
-  get classifiers_() {
-    const grouped = this.groupBy(this.classifiers, 'classifier_name')
-    const keys = Object.keys(grouped)
-    const res = []
-    keys.forEach((k, i) => {
-      const latestVersion = this.getLatestVersion(grouped[k])
-      res.push({
-        name: this.formatClassifierName(k),
-        probs: this.formatProbs(grouped[k], latestVersion),
-        index: i,
-      })
-    })
-    return res
-  }
-
-  getLatestVersion(classes) {
-    const uniqueVersions = Array.from(
-      new Set(classes.map((item) => item.classifier_version))
-    )
-    uniqueVersions.sort()
-    return uniqueVersions.slice(-1)[0]
-  }
-
-  get classifiers() {
-    return this.$store.state.probabilities.probabilities
-  }
-
-  get isLoading() {
-    return this.$store.state.probabilities.loading
-  }
-
-  get error() {
-    return this.$store.state.probabilities.error
+  get objectInformation() {
+    return this.$store.state.object.object
   }
 
   get objectId() {
     return this.$store.state.object.objectId
   }
+
+  get isDark() {
+    return this.$vuetify.theme.isDark
+  }
+
+  mounted() {
+    this.loadChartJS()
+    const _oid = this.objectId || this.$route.params.oid
+    this._loadHtmx(_oid)
+    this.$el.addEventListener('htmx:responseError', (event) => {
+      this.error = event.detail.error
+      this.isLoading = false
+    })
+    this.$el.addEventListener('htmx:afterRequest', (event) => {
+      if (event.detail.successful) {
+        this.error = ''
+        this.isLoading = false
+        this.width = '100%'
+        this.height = '100%'
+        this.onIsDarkChange(this.isDark)
+        this.$nextTick(() => {
+          this.initializeScripts()
+        })
+      }
+    })
+  }
+
+  loadChartJS() {
+    if (typeof Chart === 'undefined') {
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/chart.js'
+      script.async = true
+      script.onload = () => this.initializeScripts()
+      document.head.appendChild(script)
+    } else {
+      this.$nextTick(() => {
+        this.initializeScripts()
+      })
+    }
+  }
+
+  _loadHtmx(objectId) {
+    const url = `${this.$config.probabilityServiceUrl}/${objectId}`
+    const myDiv = document.getElementById('probability-app')
+    if (myDiv) {
+      myDiv.innerHTML = `<div hx-get="${url}" hx-trigger="updateProbability from:body" hx-swap="outerHTML"></div>`
+      htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('updateProbability'))
+    }
+  }
+
+  initializeScripts() {
+    const probabilityApp = document.getElementById('probability-app')
+    if (probabilityApp) {
+      const scripts = probabilityApp.getElementsByTagName('script')
+      Array.from(scripts).forEach((script) => {
+        this.executeScript(script.innerHTML)
+      })
+    }
+  }
+
+  executeScript(scriptContent) {
+    try {
+      // eslint-disable-next-line no-new-func
+      new Function(scriptContent)()
+    } catch (error) {
+      console.error('Error executing script:', error)
+    }
+  }
+
+  @Watch('objectId', { immediate: true })
+  onIdChange(newId) {
+    this.error = ''
+    this.isLoading = true
+    if (newId) {
+      this._loadHtmx(newId)
+    }
+  }
+
+  @Watch('isDark', { immediate: true })
+  onIsDarkChange(newIsDark) {
+    const container = document.getElementById('probability-app')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
+  }
 }
 </script>
-
-<style scoped>
-.v-input__slot {
-  margin-bottom: 0;
-}
-</style>

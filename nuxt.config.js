@@ -129,7 +129,7 @@ export default {
     magStatsServiceUrl:
       process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8003/htmx/mag',
     probabilityServiceUrl:
-      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8004/htmx/probability',
+      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8004/htmx/probabilities',
   },
   privateRuntimeConfig: {},
   /*

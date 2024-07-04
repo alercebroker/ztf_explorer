@@ -69,6 +69,7 @@ export default class CardBasicObject extends Vue {
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
+        this.width = '100%'
         this.height = '100%'
         this.onIsDarkChange(this.isDark)
       }
