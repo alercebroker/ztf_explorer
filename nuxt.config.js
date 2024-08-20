@@ -108,6 +108,8 @@ export default {
     googleRedirectUri:
       process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth/',
     googleTagId: process.env.GOOGLE_TAG_ID,
+    magStatsServiceUrl:
+      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8003/htmx/mag',
   },
   privateRuntimeConfig: {},
   /*
