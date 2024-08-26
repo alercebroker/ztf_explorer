@@ -92,3 +92,7 @@ sw.*
 # Deploy files
 deploy.sh
 .awspublish-*
+
+# Nix
+flake.lock
+flake.nix
