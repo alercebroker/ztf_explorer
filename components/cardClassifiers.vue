@@ -44,6 +44,7 @@
 
 <script>
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { filterSortClassifiers } from '../utils/classifier_sort'
 
 @Component
 export default class CardClassifiers extends Vue {
@@ -99,14 +100,18 @@ export default class CardClassifiers extends Vue {
   get classifiers_() {
     const grouped = this.groupBy(this.classifiers, 'classifier_name')
     const keys = Object.keys(grouped)
-    const res = []
-    keys.forEach((k, i) => {
+    let res = []
+    keys.forEach((k) => {
       const latestVersion = this.getLatestVersion(grouped[k])
       res.push({
-        name: this.formatClassifierName(k),
+        name: k,
         probs: this.formatProbs(grouped[k], latestVersion),
-        index: i,
       })
+    })
+    res = filterSortClassifiers(res)
+    res.map((r, idx) => {
+      r.name = this.formatClassifierName(r.name)
+      r.index = idx
     })
     return res
   }
