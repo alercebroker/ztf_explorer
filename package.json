@@ -34,7 +34,8 @@
     "nuxt-property-decorator": "^2.7.2",
     "qs": "^6.9.4",
     "vee-validate": "^3.4.5",
-    "vue-echarts": "^5.0.0-beta.0"
+    "vue-echarts": "^5.0.0-beta.0",
+    "vue-gtag": "^1.16.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^3.0.0",
