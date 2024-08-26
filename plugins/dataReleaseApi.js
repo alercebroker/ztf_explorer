@@ -1,6 +1,6 @@
 export default function ({ $axios, $config }, inject) {
   const dataReleaseApi = $axios.create({
-    baseURL: $config.drApiBaseUrl,
+    baseURL: new URL('/ztf/dr/v1', $config.alerceApiBaseUrl).toString(),
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',

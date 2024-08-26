@@ -93,16 +93,12 @@ export default {
    */
   publicRuntimeConfig: {
     avroApiBaseUrl:
-      process.env.AVRO_API_BASE_URL || 'https://dev.avro.alerce.online',
+      process.env.AVRO_API_BASE_URL || 'https://avro.alerce.online',
     catshtmApiBaseUrl:
       process.env.CATSHTM_API_BASE_URL || 'https://catshtm.alerce.online',
     tnsApiBaseUrl: process.env.TNS_API_BASE_URL || 'https://tns.alerce.online',
-    drApiBaseUrl:
-      process.env.ZTF_DR_API_BASE_URL || 'https://api.alerce.online/ztf/dr/v1',
-    ztfApiBaseUrl:
-      process.env.ZTF_API_BASE_URL ||
-      'https://dev-api.alerce.online/alerts/v1/',
-    ztfApiv2Url: process.env.ZTF_V2_API_URL || 'https://api.alerce.online/v2',
+    alerceApiBaseUrl:
+      process.env.ALERCE_API_BASE_URL || 'https://api.alerce.online/',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
