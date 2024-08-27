@@ -4,6 +4,7 @@ import {
   VuexMutation,
   VuexAction,
 } from 'nuxt-property-decorator'
+import { filterSortClassifiers } from '../utils/classifier_sort'
 import { objectsStore, paginationStore } from '~/store'
 const defaultState = {
   oid: [],
@@ -201,6 +202,7 @@ export default class Filters extends VuexModule {
       x.name = x.classifier_name
       return x
     })
+    this.classifiers = filterSortClassifiers(this.classifiers)
   }
 
   @VuexMutation

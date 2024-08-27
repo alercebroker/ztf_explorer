@@ -29,10 +29,10 @@ function filterFunc(prefix, value) {
 
 export default function ({ $axios, $config }, inject) {
   const ztfApi = $axios.create({
-    baseURL: $config.ztfApiBaseUrl,
+    baseURL: new URL('/alerts/v1', $config.alerceApiBaseUrl).toString(),
   })
-  const ztfApiv2 = $axios.create({
-    baseURL: $config.ztfApiv2Url,
+  const lightcurveApi = $axios.create({
+    baseURL: new URL('/v2/lightcurve', $config.alerceApiBaseUrl).toString(),
   })
 
   ztfApi.search = (searchParameters, request) => {
@@ -83,7 +83,7 @@ export default function ({ $axios, $config }, inject) {
         'AUTH-TOKEN': token,
       }
     }
-    return ztfApiv2.get(`/lightcurve/lightcurve/${objectId}`, config)
+    return lightcurveApi.get(`/lightcurve/${objectId}`, config)
   }
 
   ztfApi.getStats = (oid, request = null) => {
