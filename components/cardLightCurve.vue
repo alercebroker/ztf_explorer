@@ -79,10 +79,15 @@ export default class CardLightCurve extends Vue {
   }
 
   _loadHtmx(objectId) {
-    const url = `${this.$config.ztfApiv2Url}/lightcurve/htmx/lightcurve?oid=${objectId}`
+    const url = new URL(
+      '/v2/lightcurve/htmx/lightcurve',
+      this.$config.alerceApiBaseUrl
+    )
+    url.searchParams.append('oid', objectId)
+
     const myDiv = document.getElementById('lightcurve-app')
     if (myDiv) {
-      myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateLightcurve once from:body" hx-swap="outerHTML"></div>`
+      myDiv.innerHTML = `<div hx-get=${url.toString()} hx-trigger="updateLightcurve once from:body" hx-swap="outerHTML"></div>`
       htmx.process(myDiv)
       document.body.dispatchEvent(new Event('updateLightcurve'))
     }
