@@ -69,10 +69,14 @@ export default class CardMagStats extends Vue {
   }
 
   _loadHtmx(objectId) {
-    const url = `${this.$config.magStatsServiceUrl}/${objectId}`
+    const url = new URL(
+      `/v2/magstats/htmx/mag/${objectId}`,
+      this.$config.alerceApiBaseUrl
+    )
+
     const myDiv = document.getElementById('magstats-app')
     if (myDiv) {
-      myDiv.innerHTML = `<div hx-get=${url} hx-trigger="updateMagStats from:body" hx-swap="outerHTML"></div>`
+      myDiv.innerHTML = `<div hx-get=${url.toString()} hx-trigger="updateMagStats from:body" hx-swap="outerHTML"></div>`
       htmx.process(myDiv)
       document.body.dispatchEvent(new Event('updateMagStats'))
     }

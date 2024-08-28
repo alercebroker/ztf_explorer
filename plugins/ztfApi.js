@@ -29,7 +29,7 @@ function filterFunc(prefix, value) {
 
 export default function ({ $axios, $config }, inject) {
   const ztfApi = $axios.create({
-    baseURL: new URL('/alerts/v1', $config.alerceApiBaseUrl).toString(),
+    baseURL: new URL('/alerts/v1', $config.alerceApiBaseUrlOld).toString(),
   })
   const lightcurveApi = $axios.create({
     baseURL: new URL('/v2/lightcurve', $config.alerceApiBaseUrl).toString(),

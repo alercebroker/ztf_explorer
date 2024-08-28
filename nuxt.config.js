@@ -97,17 +97,15 @@ export default {
     catshtmApiBaseUrl:
       process.env.CATSHTM_API_BASE_URL || 'https://catshtm.alerce.online',
     tnsApiBaseUrl: process.env.TNS_API_BASE_URL || 'https://tns.alerce.online',
+    alerceApiBaseUrlOld:
+      process.env.ALERCE_API_BASE_URL_OLD || 'https://api.alerce.online/',
     alerceApiBaseUrl:
-      process.env.ALERCE_API_BASE_URL || 'https://api.alerce.online/',
+      process.env.ALERCE_API_BASE_URL || 'https://api.staging.alerce.online/',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
       process.env.GOOGLE_REDIRECT_URI || 'http://localhost:3000/oauth/',
     googleTagId: process.env.GOOGLE_TAG_ID,
-    objectServiceUrl:
-      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8002/htmx/object',
-    magStatsServiceUrl:
-      process.env.LIGHT_CURVE_SERVICE_URL || 'http://localhost:8003/htmx/mag',
   },
   privateRuntimeConfig: {},
   /*
