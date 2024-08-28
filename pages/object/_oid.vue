@@ -142,14 +142,7 @@ export default class ObjectView extends Vue {
   }
 
   get period() {
-    const periods = this.$store.state.features.features.filter(
-      (x) => x.name === 'Multiband_period'
-    )
-    if (periods.length === 0) {
-      return null
-    } else {
-      return periods[0].value
-    }
+    return null
   }
 
   @Watch('selectedObject')
