@@ -55,6 +55,7 @@ export default {
     '@/plugins/dataReleaseApi.js',
     '@/plugins/users.js',
     '@/plugins/gtag.js',
+    '@/plugins/htmx.js',
   ],
   router: {
     middleware: 'auth',

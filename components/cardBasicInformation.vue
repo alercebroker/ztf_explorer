@@ -15,14 +15,19 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card id="basicObject-app" width="100%" :height="height"> </v-card>
+      <v-card
+        id="basicObject-app"
+        width="100%"
+        :height="height"
+        hx-trigger="update-basic-object from:body"
+      >
+      </v-card>
     </v-card>
   </v-col>
 </template>
 
 <script>
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
-import * as htmx from 'htmx.org'
 
 @Component
 export default class CardMagStats extends Vue {
@@ -76,16 +81,14 @@ export default class CardMagStats extends Vue {
 
     const myDiv = document.getElementById('basicObject-app')
     if (myDiv) {
-      myDiv.innerHTML = `<div hx-get=${url.toString()} hx-trigger="updateBasicObject from:body" hx-swap="outerHTML"></div>`
-      htmx.process(myDiv)
-      document.body.dispatchEvent(new Event('updateBasicObject'))
+      myDiv.setAttribute('hx-get', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-basic-object'))
     }
   }
 
   @Watch('objectId', { immediate: true })
   onIdChange(newId) {
-    this.error = ''
-    this.isLoading = true
     if (newId) {
       this._loadHtmx(newId)
     }
