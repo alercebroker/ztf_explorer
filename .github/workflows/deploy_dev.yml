@@ -24,6 +24,7 @@ jobs:
       TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL }}
       USERS_API_BASE_URL: ${{ secrets.USERS_API_BASE_URL }}
       ALERCE_API_BASE_URL: ${{ secrets.ALERCE_API_BASE_URL }}
+      ALERCE_API_BASE_URL_OLD: ${{ secrets.ALERCE_API_BASE_URL_OLD }}
       ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL }}
     steps:
       - name: Configure AWS credentials
