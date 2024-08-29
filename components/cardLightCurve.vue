@@ -100,7 +100,7 @@ export default class CardLightCurve extends Vue {
 
   @Watch('objectId', { immediate: true })
   onIdChange(newId) {
-    if (newId) {
+    if (this.isLoading) {
       this._loadHtmx(newId)
     }
   }
