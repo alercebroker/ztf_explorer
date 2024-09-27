@@ -15,14 +15,19 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card id="magstats-app" width="100%" :height="height"> </v-card>
+      <v-card
+        id="magstats-app"
+        width="100%"
+        :height="height"
+        hx-trigger="update-mag-stats from:body"
+      >
+      </v-card>
     </v-card>
   </v-col>
 </template>
 
 <script>
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
-import * as htmx from 'htmx.org'
 
 @Component
 export default class CardMagStats extends Vue {
@@ -75,18 +80,16 @@ export default class CardMagStats extends Vue {
     )
 
     const myDiv = document.getElementById('magstats-app')
-    if (myDiv) {
-      myDiv.innerHTML = `<div hx-get=${url.toString()} hx-trigger="updateMagStats from:body" hx-swap="outerHTML"></div>`
-      htmx.process(myDiv)
-      document.body.dispatchEvent(new Event('updateMagStats'))
+    if (myDiv && this.isLoading) {
+      myDiv.setAttribute('hx-get', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-mag-stats'))
     }
   }
 
   @Watch('objectId', { immediate: true })
   onIdChange(newId) {
-    this.error = ''
-    this.isLoading = true
-    if (newId) {
+    if (this.isLoading) {
       this._loadHtmx(newId)
     }
   }

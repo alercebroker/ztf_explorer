@@ -27,7 +27,7 @@
     "gulp": "^4.0.2",
     "gulp-awspublish": "^4.1.2",
     "gulp-cloudfront-invalidate-aws-publish": "^1.0.0",
-    "htmx.org": "^1.9.6",
+    "htmx.org": "^2.0.0",
     "julian": "^0.2.0",
     "lodash.debounce": "^4.0.8",
     "nuxt": "^2.15.0",
