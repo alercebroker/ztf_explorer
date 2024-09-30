@@ -1,50 +1,34 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card v-if="isLoading || error" :class="cardClass">
-      <v-card-text v-if="isLoading">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching data for object {{ $route.params.oid }} ...
-      </v-card-text>
-      <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
-          error
-        }}</v-alert>
-      </v-card-text>
-    </v-card>
-    <v-card v-else :class="cardClass">
-      <v-card-text v-if="plotData" style="height: 100%">
-        <v-select
-          v-model="selected"
-          :items="classifiers_"
-          item-value="index"
-          item-text="name"
-          prepend-icon="mdi-robot"
-          class="py-0 my-0"
-        />
-        <plots-radar-plot :data="plotData" />
-      </v-card-text>
-      <v-card-text v-else class="fill-height">
-        <v-row align="center" justify="center" class="fill-height" no-gutters>
-          <v-col align-self="center">
-            <v-alert icon="mdi-alert" border="left" outlined>
-              <p class="ma-0">
-                The object
-                <b>{{ objectId }}</b> has not been classified yet.
-              </p>
-            </v-alert>
-          </v-col>
-        </v-row>
-      </v-card-text>
+    <v-card :class="cardClass">
+      <v-card v-if="isLoading || error">
+        <v-card-text v-if="isLoading">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          Fetching data for object {{ objectId }} ...
+        </v-card-text>
+        <v-card-text v-if="error">
+          <v-alert text prominent type="error" icon="mdi-cloud-alert">
+            {{ error }}
+          </v-alert>
+        </v-card-text>
+      </v-card>
+      <v-card
+        id="probabilities-app"
+        width="100%"
+        :height="height"
+        hx-trigger="update-probabilities from:body"
+      >
+      </v-card>
     </v-card>
   </v-col>
 </template>
 
 <script>
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import { filterSortClassifiers } from '../utils/classifier_sort'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+// import { filterSortClassifiers } from '../utils/classifier_sort'
 
 @Component
 export default class CardClassifiers extends Vue {
@@ -59,10 +43,15 @@ export default class CardClassifiers extends Vue {
   @Prop({ type: String }) cardClass
 
   selected = 0
+  isLoading = true
+  error = ''
+  height = '0vh'
 
   /*
   Format probabilities of API to array of objects: { name: class_name, value: prob_of_class}
   */
+
+  /*
   formatProbs(probs, version = null) {
     if (version) {
       probs = probs.filter((prob) => {
@@ -127,23 +116,69 @@ export default class CardClassifiers extends Vue {
   get classifiers() {
     return this.$store.state.probabilities.probabilities
   }
-
-  get isLoading() {
-    return this.$store.state.probabilities.loading
-  }
-
-  get error() {
-    return this.$store.state.probabilities.error
-  }
+  */
 
   get objectId() {
     return this.$store.state.object.objectId
   }
+
+  get isDark() {
+    return this.$vuetify.theme.isDark
+  }
+
+  mounted() {
+    const _oid = this.objectId || this.$route.params.oid
+    this._loadHtmx(_oid)
+    this.$el.addEventListener('htmx:responseError', (event) => {
+      this.error = event.detail.error
+      this.isLoading = false
+    })
+    this.$el.addEventListener('htmx:afterRequest', (event) => {
+      if (event.detail.successful) {
+        this.error = ''
+        this.isLoading = false
+        this.width = '100%'
+        this.height = '100%'
+        this.onIsDarkChange(this.isDark)
+      }
+    })
+  }
+
+  _loadHtmx(objectId) {
+    /*
+    const url = new URL(
+      `/v2/object_details/htmx/object/${objectId}`,
+      this.$config.alerceApiBaseUrl
+    )
+    */
+    const url = new URL(`http://localhost:8004/htmx/probabilities/${objectId}`)
+    const myDiv = document.getElementById('probabilities-app')
+    if (myDiv) {
+      myDiv.setAttribute('hx-get', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-probabilities'))
+    }
+  }
+
+  @Watch('objectId', { immediate: true })
+  onIdChange(newId) {
+    if (this.isLoading) {
+      this._loadHtmx(newId)
+    }
+  }
+
+  @Watch('isDark', { immediate: true })
+  onIsDarkChange(newIsDark) {
+    const container = document.getElementById('probabilities-app')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
+  }
 }
 </script>
 
-<style scoped>
-.v-input__slot {
-  margin-bottom: 0;
-}
-</style>
+<style></style>
