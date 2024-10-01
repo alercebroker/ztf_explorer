@@ -19,8 +19,7 @@
         id="crossmatch-app"
         width="100%"
         :height="height"
-        :hx-get="crossmatchUrl"
-        hx-trigger="load"
+        hx-trigger="update-cross-match from:body"
       >
       </v-card>
     </v-card>
@@ -75,13 +74,16 @@ export default class CardCrossMatches extends Vue {
   }
 
   _loadHtmx(objectId) {
-    const url = new URL(`/htmx/crossmatch/${objectId}`, 'http://localhost:8005')
+    const url = new URL(
+      `/htmx/crossmatch/${objectId}`,
+      'http://127.0.0.1:8005/'
+    )
 
     const myDiv = document.getElementById('crossmatch-app')
     if (myDiv && this.isLoading) {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
-      document.body.dispatchEvent(new Event('update-crossmatch'))
+      document.body.dispatchEvent(new Event('update-cross-match'))
     }
   }
 
