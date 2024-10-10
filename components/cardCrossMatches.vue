@@ -74,9 +74,13 @@ export default class CardCrossMatches extends Vue {
   }
 
   _loadHtmx(objectId) {
+    console.log(
+      `_loadHtmx called with objectId: ${objectId} at ${new Date().toISOString()}
+      `
+    )
     const url = new URL(
       `/htmx/crossmatch/${objectId}`,
-      this.$config.alerceApiBaseUrl
+      'http://127.0.0.1:8005/'
     )
 
     const myDiv = document.getElementById('crossmatch-app')
@@ -87,9 +91,9 @@ export default class CardCrossMatches extends Vue {
     }
   }
 
-  @Watch('objectId', { immediate: true })
-  onIdChange(newId) {
-    if (this.isLoading) {
+  @Watch('objectId', {})
+  onIdChange(newId, oldId) {
+    if (oldId != null && this.isLoading) {
       this._loadHtmx(newId)
     }
   }
