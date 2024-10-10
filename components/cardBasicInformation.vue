@@ -88,8 +88,8 @@ export default class CardMagStats extends Vue {
   }
 
   @Watch('objectId', { immediate: true })
-  onIdChange(newId) {
-    if (this.isLoading) {
+  onIdChange(newId, oldId) {
+    if (oldId != null && this.isLoading) {
       this._loadHtmx(newId)
     }
   }
