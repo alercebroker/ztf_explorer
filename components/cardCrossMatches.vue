@@ -80,7 +80,7 @@ export default class CardCrossMatches extends Vue {
     )
     const url = new URL(
       `/htmx/crossmatch/${objectId}`,
-      'http://127.0.0.1:8005/'
+      this.$config.alerceApiBaseUrl
     )
 
     const myDiv = document.getElementById('crossmatch-app')
