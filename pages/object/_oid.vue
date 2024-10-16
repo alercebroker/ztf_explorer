@@ -59,12 +59,10 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import {
   lightCurveStore,
-  statsStore,
   probabilitiesStore,
   featuresStore,
   tnsStore,
   objectStore,
-  xmatchesStore,
   datareleaseStore,
 } from '~/store'
 @Component({ layout: 'oid' })
@@ -78,20 +76,14 @@ export default class ObjectView extends Vue {
   async fetch() {
     let oid = this.$route.params.oid
     if (this.selectedObject) oid = this.selectedObject
-    lightCurveStore.getLightCurve(oid)
-    statsStore.getStats(oid)
+    await lightCurveStore.getLightCurve(oid)
     probabilitiesStore.getProbabilities(oid)
     featuresStore.getFeatures(oid)
     tnsStore.setDefaultValues()
-    await objectStore.getObject(oid)
     datareleaseStore.getDataReleaseLightCurve({
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
       radius: 1.5,
-    })
-    xmatchesStore.getXmatch({
-      ra: this.objectInformation.meanra,
-      dec: this.objectInformation.meandec,
     })
 
     tnsStore.getTns({

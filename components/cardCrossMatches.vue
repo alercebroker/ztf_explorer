@@ -80,7 +80,7 @@ export default class CardCrossMatches extends Vue {
     )
     const url = new URL(
       `/htmx/crossmatch/${objectId}`,
-      this.$config.alerceApiBaseUrl
+      'http://127.0.0.1:8005/'
     )
 
     const myDiv = document.getElementById('crossmatch-app')
@@ -88,13 +88,6 @@ export default class CardCrossMatches extends Vue {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
       document.body.dispatchEvent(new Event('update-cross-match'))
-    }
-  }
-
-  @Watch('objectId', {})
-  onIdChange(newId, oldId) {
-    if (oldId != null && this.isLoading) {
-      this._loadHtmx(newId)
     }
   }
 
