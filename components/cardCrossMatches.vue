@@ -74,10 +74,6 @@ export default class CardCrossMatches extends Vue {
   }
 
   _loadHtmx(objectId) {
-    console.log(
-      `_loadHtmx called with objectId: ${objectId} at ${new Date().toISOString()}
-      `
-    )
     const url = new URL(
       `/htmx/crossmatch/${objectId}`,
       'http://127.0.0.1:8005/'
