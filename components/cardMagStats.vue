@@ -74,10 +74,13 @@ export default class CardMagStats extends Vue {
   }
 
   _loadHtmx(objectId) {
+    /*
     const url = new URL(
       `/v2/magstats/htmx/mag/${objectId}`,
       this.$config.alerceApiBaseUrl
-    )
+    ) */
+
+    const url = new URL(`http://localhost:8003/htmx/mag/${objectId}`)
 
     const myDiv = document.getElementById('magstats-app')
     if (myDiv && this.isLoading) {
