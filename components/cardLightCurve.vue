@@ -88,6 +88,7 @@ export default class CardLightCurve extends Vue {
       '/v2/lightcurve/htmx/lightcurve',
       this.$config.alerceApiBaseUrl
     )
+
     url.searchParams.append('oid', objectId)
 
     const myDiv = document.getElementById('lightcurve-app')
@@ -95,13 +96,6 @@ export default class CardLightCurve extends Vue {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
       document.body.dispatchEvent(new Event('update-lightcurve'))
-    }
-  }
-
-  @Watch('objectId', { immediate: true })
-  onIdChange(newId) {
-    if (this.isLoading) {
-      this._loadHtmx(newId)
     }
   }
 
