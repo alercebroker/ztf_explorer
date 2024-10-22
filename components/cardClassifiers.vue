@@ -74,13 +74,11 @@ export default class CardMagStats extends Vue {
   }
 
   _loadHtmx(objectId) {
-    /*
     const url = new URL(
-      `/v2/object_details/htmx/object/${objectId}`,
+      `/v2/probability/htmx/probabilities/${objectId}`,
       this.$config.alerceApiBaseUrl
-    ) */
+    )
 
-    const url = new URL(`http://localhost:8004/htmx/probabilities/${objectId}`)
     const myDiv = document.getElementById('probabilities-app')
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
