@@ -39,8 +39,6 @@ export default class CardMagStats extends Vue {
 
   @Prop({ type: Number | String, default: 12 }) sm
 
-  @Prop({ type: Boolean, default: true }) show
-
   @Prop({ type: String }) cardClass
 
   isLoading = true
