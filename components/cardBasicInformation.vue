@@ -1,36 +1,55 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card :class="cardClass">
-      <v-card v-if="isLoading || error">
-        <v-card-text v-if="isLoading">
-          <v-progress-circular
-            indeterminate
-            color="primary"
-          ></v-progress-circular>
-          Fetching data for object {{ objectId }} ...
-        </v-card-text>
-        <v-card-text v-if="error">
-          <v-alert text prominent type="error" icon="mdi-cloud-alert">
-            {{ error }}
-          </v-alert>
-        </v-card-text>
-      </v-card>
-      <v-card
-        id="basicObject-app"
-        width="100%"
-        :height="height"
-        hx-trigger="update-basic-object from:body"
-      >
-      </v-card>
+      <v-card-text v-if="isLoading">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching data for object {{ $route.params.oid }} ...
+      </v-card-text>
+      <v-card-text v-else-if="error">
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
+      </v-card-text>
+      <v-card-text class="pa-1" v-else>
+        <tables-basic-information :information="information" />
+        <v-row justify="center" wrap>
+          <v-col cols="6">
+            <buttons-finding-chart-button
+              :oid="information.oid"
+              :candid="candid"
+              :useIcon="false"
+            />
+          </v-col>
+          <v-col cols="6">
+            <buttons-catalogs-buttons
+              :ra="information.meanra"
+              :dec="information.meandec"
+              title="Other archives"
+            />
+          </v-col>
+        </v-row>
+
+        <tables-tns-information
+          :loading="tns.loading"
+          :type="tns.type"
+          :name="tns.name"
+          :redshift="tns.redshift"
+          :discoverer="tns.discoverer"
+          :reporter="tns.reporter"
+          :instrument="tns.instrument"
+        />
+      </v-card-text>
     </v-card>
   </v-col>
 </template>
 
 <script>
-import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
-
-@Component
-export default class CardMagStats extends Vue {
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
+@Component()
+export default class CardBasicInformation extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
 
   @Prop({ type: Number | String, default: 12 }) lg
@@ -43,60 +62,35 @@ export default class CardMagStats extends Vue {
 
   @Prop({ type: String }) cardClass
 
-  isLoading = true
-  error = ''
-  height = '0vh'
+  @Prop({ type: String }) object
 
-  get objectId() {
-    return this.$store.state.object.objectId
+  get isLoading() {
+    return this.$store.state.object.loading
   }
 
-  get isDark() {
-    return this.$vuetify.theme.isDark
+  get error() {
+    const error = this.$store.state.object.error
+    return error
   }
 
-  mounted() {
-    const _oid = this.objectId || this.$route.params.oid
-    this._loadHtmx(_oid)
-    this.$el.addEventListener('htmx:responseError', (event) => {
-      this.error = event.detail.error
-      this.isLoading = false
-    })
-    this.$el.addEventListener('htmx:afterRequest', (event) => {
-      if (event.detail.successful) {
-        this.error = ''
-        this.isLoading = false
-        this.width = '100%'
-        this.height = '100%'
-        this.onIsDarkChange(this.isDark)
-      }
-    })
+  get information() {
+    const nonDetections = this.$store.state.lightcurve.nonDetections
+    const info = this.$store.state.object.object
+      ? this.$store.state.object.object
+      : {}
+    info['Non Detections'] = nonDetections ? nonDetections.length : null
+    return info
   }
 
-  _loadHtmx(objectId) {
-    const url = new URL(
-      `/v2/object_details/htmx/object/${objectId}`,
-      this.$config.alerceApiBaseUrl
+  get tns() {
+    return this.$store.state.tns
+  }
+
+  get candid() {
+    const detection = this.$store.state.lightcurve.detections.find(
+      (x) => x.has_stamp
     )
-
-    const myDiv = document.getElementById('basicObject-app')
-    if (myDiv) {
-      myDiv.setAttribute('hx-get', url)
-      window.htmx.process(myDiv)
-      document.body.dispatchEvent(new Event('update-basic-object'))
-    }
-  }
-
-  @Watch('isDark', { immediate: true })
-  onIsDarkChange(newIsDark) {
-    const container = document.getElementById('basicObject-app')
-    if (container) {
-      if (newIsDark) {
-        container.classList.add('tw-dark')
-      } else {
-        container.classList.remove('tw-dark')
-      }
-    }
+    return detection ? detection.candid : null
   }
 }
 </script>
