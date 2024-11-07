@@ -1,47 +1,34 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card v-if="isLoading || error" :class="cardClass">
-      <v-card-text v-if="isLoading">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching data for object {{ $route.params.oid }} ...
-      </v-card-text>
-      <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
-          error
-        }}</v-alert>
-      </v-card-text>
-    </v-card>
-    <v-card v-else :class="cardClass">
-      <v-card-title>
-        Magnitude Statistics
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <v-icon v-on="on">mdi-information</v-icon>
-          </template>
-          <span>
-            Magnitudes shown are the corrected version if corrected is true. For
-            more information on correction visit
-            http://alerce.science/alerce-pipeline/
-          </span>
-        </v-tooltip>
-      </v-card-title>
-      <v-card-text>
-        <tables-mag-stats
-          :stats="localStats"
-          :hide-default-footer="false"
-          :items-per-page="5"
-          dense
-        />
-      </v-card-text>
+    <v-card :class="cardClass">
+      <v-card v-if="isLoading || error">
+        <v-card-text v-if="isLoading">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          Fetching data for object {{ objectId }} ...
+        </v-card-text>
+        <v-card-text v-if="error">
+          <v-alert text prominent type="error" icon="mdi-cloud-alert">
+            {{ error }}
+          </v-alert>
+        </v-card-text>
+      </v-card>
+      <v-card
+        id="magstats-app"
+        width="100%"
+        :height="height"
+        hx-trigger="update-mag-stats from:body"
+      >
+      </v-card>
     </v-card>
   </v-col>
 </template>
 
 <script>
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+
 @Component
 export default class CardMagStats extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
@@ -52,59 +39,64 @@ export default class CardMagStats extends Vue {
 
   @Prop({ type: Number | String, default: 12 }) sm
 
+  @Prop({ type: Boolean, default: true }) show
+
   @Prop({ type: String }) cardClass
 
-  localStats = []
+  isLoading = true
+  error = ''
+  height = '0vh'
 
-  beforeMount() {
-    if (this.stats.length) this.formatStats(this.stats)
+  get objectId() {
+    return this.$store.state.object.objectId
   }
 
-  get stats() {
-    return this.$store.state.stats.stats
+  get isDark() {
+    return this.$vuetify.theme.isDark
   }
 
-  get bandMap() {
-    return this.$store.state.object.bandMap
-  }
-
-  get isLoading() {
-    return this.$store.state.stats.loading
-  }
-
-  get error() {
-    return this.$store.state.stats.error
-  }
-
-  formatStats(stats) {
-    this.localStats = []
-    const bands = this.stats.map((x) => {
-      return this.bandMap[x.fid]
+  mounted() {
+    const _oid = this.objectId || this.$route.params.oid
+    this._loadHtmx(_oid)
+    this.$el.addEventListener('htmx:responseError', (event) => {
+      this.error = event.detail.error
+      this.isLoading = false
     })
-    Object.keys(this.stats[0]).forEach((stat) => {
-      if (stat !== 'fid') {
-        const obj = {
-          stat,
-        }
-        bands.forEach((band, i) => {
-          const val = this.formatStatValue(stat, this.stats[i][stat])
-          obj[band] = val
-        })
-        this.localStats.push(obj)
+    this.$el.addEventListener('htmx:afterRequest', (event) => {
+      if (event.detail.successful) {
+        this.error = ''
+        this.isLoading = false
+        this.width = '100%'
+        this.height = '100%'
+        this.onIsDarkChange(this.isDark)
       }
     })
   }
 
-  formatStatValue(stat, val) {
-    if (!stat.includes('mjd') && Number(val) === val && val % 1 !== 0) {
-      return val.toFixed(3)
+  _loadHtmx(objectId) {
+    const url = new URL(
+      `/v2/magstats/htmx/mag/${objectId}`,
+      this.$config.alerceApiBaseUrl
+    )
+
+    const myDiv = document.getElementById('magstats-app')
+    if (myDiv && this.isLoading) {
+      myDiv.setAttribute('hx-get', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-mag-stats'))
     }
-    return val
   }
 
-  @Watch('stats')
-  onStatsChange(newVal) {
-    this.formatStats(newVal)
+  @Watch('isDark', { immediate: true })
+  onIsDarkChange(newIsDark) {
+    const container = document.getElementById('magstats-app')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
   }
 }
 </script>
