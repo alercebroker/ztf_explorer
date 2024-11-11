@@ -15,14 +15,19 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card id="lightcurve-app" width="100%" :height="height"> </v-card>
+      <v-card
+        id="lightcurve-app"
+        width="100%"
+        :height="height"
+        hx-trigger="update-lightcurve from:body"
+      >
+      </v-card>
     </v-card>
   </v-col>
 </template>
 
 <script>
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
-import * as htmx from 'htmx.org'
 
 @Component
 export default class CardLightCurve extends Vue {
@@ -83,22 +88,14 @@ export default class CardLightCurve extends Vue {
       '/v2/lightcurve/htmx/lightcurve',
       this.$config.alerceApiBaseUrl
     )
+
     url.searchParams.append('oid', objectId)
 
     const myDiv = document.getElementById('lightcurve-app')
     if (myDiv) {
-      myDiv.innerHTML = `<div hx-get=${url.toString()} hx-trigger="updateLightcurve once from:body" hx-swap="outerHTML"></div>`
-      htmx.process(myDiv)
-      document.body.dispatchEvent(new Event('updateLightcurve'))
-    }
-  }
-
-  @Watch('objectId', { immediate: true })
-  onIdChange(newId) {
-    this.error = ''
-    this.isLoading = true
-    if (newId) {
-      this._loadHtmx(newId)
+      myDiv.setAttribute('hx-get', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-lightcurve'))
     }
   }
 
