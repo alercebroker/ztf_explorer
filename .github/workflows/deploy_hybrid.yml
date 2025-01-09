@@ -1,0 +1,43 @@
+name: S3DeployProd
+
+on: workflow_dispatch
+
+env:
+  NODE_ENV: hybrid
+  APP_TITLE: ALeRCE Explorer
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: hybrid
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
+      AWS_CLOUDFRONT: ${{ secrets.AWS_CLOUDFRONT_ID }}
+      AVRO_API_BASE_URL: ${{ secrets.AVRO_API_BASE_URL }}
+      CATSHTM_API_BASE_URL: ${{ secrets.CATSHTM_API_BASE_URL }}
+      GOOGLE_REDIRECT_URI: ${{ secrets.GOOGLE_REDIRECT_URI }}
+      GOOGLE_TAG_ID: ${{ secrets.GOOGLE_TAG_ID }}
+      TNS_API_BASE_URL: ${{ secrets.TNS_API_BASE_URL }}
+      USERS_API_BASE_URL: ${{ secrets.USERS_API_BASE_URL }}
+      ALERCE_API_BASE_URL: ${{ secrets.ALERCE_API_BASE_URL }}
+      ALERCE_API_BASE_URL_OLD: ${{ secrets.ALERCE_API_BASE_URL_OLD }}
+      ZTF_DR_API_BASE_URL: ${{ secrets.ZTF_DR_API_BASE_URL }}
+    steps:
+      - name: Configure AWS credentials
+        id: creds
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE }}
+          aws-region: us-east-1
+          output-credentials: true
+          unset-current-credentials: true
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16
+      - run: npm install
+      - run: npm run generate
+      - run: npm run deploy
