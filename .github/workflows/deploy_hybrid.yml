@@ -1,4 +1,4 @@
-name: S3DeployProd
+name: S3DeployHybrid
 
 on: workflow_dispatch
 
