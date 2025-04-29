@@ -56,7 +56,6 @@ import {
   statsStore,
   probabilitiesStore,
   featuresStore,
-  tnsStore,
   objectStore,
   xmatchesStore,
   datareleaseStore,
@@ -76,7 +75,6 @@ export default class ObjectView extends Vue {
     statsStore.getStats(oid)
     probabilitiesStore.getProbabilities(oid)
     featuresStore.getFeatures(oid)
-    tnsStore.setDefaultValues()
     await objectStore.getObject(oid)
     datareleaseStore.getDataReleaseLightCurve({
       ra: this.objectInformation.meanra,
@@ -84,11 +82,6 @@ export default class ObjectView extends Vue {
       radius: 1.5,
     })
     xmatchesStore.getXmatch({
-      ra: this.objectInformation.meanra,
-      dec: this.objectInformation.meandec,
-    })
-
-    tnsStore.getTns({
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
     })
