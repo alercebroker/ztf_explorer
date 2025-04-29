@@ -48,7 +48,6 @@ export default {
   plugins: [
     '@/plugins/echarts.js',
     '@/plugins/ztfApi.js',
-    '@/plugins/tnsApi.js',
     '@/plugins/catsHtmApi.js',
     '@/plugins/avro.js',
     '@/plugins/validation.js',
