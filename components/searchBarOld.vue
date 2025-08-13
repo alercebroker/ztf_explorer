@@ -81,6 +81,7 @@
                     rules="conesearch|radiusPositive"
                     :bails="false"
                   >
+                    <div>hola2</div>
                     <inputs-coordinates-search
                       v-model="conesearchFiltersSync"
                       :validationErrors="failedRules"

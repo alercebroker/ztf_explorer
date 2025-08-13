@@ -17,7 +17,7 @@
       </validation-observer>
     </v-col>
     <v-col xs="12" sm="12" md="9" lg="9" xl="9" cols="12">
-      <results-table
+      <!-- <results-table
         :items="items"
         :page.sync="page"
         :per-page="perPage"
@@ -28,7 +28,8 @@
         @rowClicked="onRowClicked"
         @pageChangeClick="debouncedSearch"
         @sortChangeClick="debouncedSearch"
-      />
+      /> -->
+      <side-bar></side-bar>
     </v-col>
   </v-row>
 </template>

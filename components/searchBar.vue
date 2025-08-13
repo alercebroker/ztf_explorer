@@ -44,6 +44,8 @@ export default class SearchBar extends Vue {
       this.isLoading = false
     })
     this.$el.addEventListener('htmx:afterRequest', (event) => {
+      console.log('hola desde searchbar')
+      console.log(event.detail.pathInfo.finalRequestPath)
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
