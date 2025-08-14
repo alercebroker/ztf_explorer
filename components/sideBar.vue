@@ -19,6 +19,7 @@ export default class ResultTableWrapper extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
+  observer = ''
 
   get isDark() {
     return this.$vuetify.theme.dark
@@ -40,6 +41,10 @@ export default class ResultTableWrapper extends Vue {
     })
   }
 
+  beforeDestroy() {
+    this.observer.disconnect()
+  }
+
   _loadHtmx() {
     const myDiv = document.getElementById('sidebar')
 
@@ -52,28 +57,41 @@ export default class ResultTableWrapper extends Vue {
 
   _loadObserver() {
     const target = document.querySelector('#sidebar-container')
-    console.log(target)
+
     if (target) {
-      const observer = new MutationObserver((mutations) => {
-        // mutations.forEach(function (mutation) {
-        //   console.log(mutation)
-        // })
+      this.observer = new MutationObserver((mutations) => {
         this._loadEventManager()
       })
 
       const config = { childList: true, subtree: true }
 
-      observer.observe(target, config)
+      this.observer.observe(target, config)
     }
   }
 
   _loadEventManager() {
     const rowsElements = document.getElementsByName('sidebar-row-element')
+    const nextPage = document.getElementsByName('next_page_sidebar')
+    const prevPage = document.getElementsByName('prev_page_sidebar')
 
     rowsElements.forEach((element) => {
-      console.log(element)
-      window.htmx.on(element, 'htmx:beforeRequest', function (evt) {
-        console.log(evt)
+      window.htmx.on(element, 'htmx:afterRequest', (evt) => {
+        const paramsEventDict = evt.detail.requestConfig.parameters
+        this.$router.push({ path: '/', query: { ...paramsEventDict } })
+      })
+    })
+
+    nextPage.forEach((element) => {
+      window.htmx.on(element, 'htmx:afterRequest', (evt) => {
+        const paramsEventDict = evt.detail.requestConfig.parameters
+        this.$router.push({ path: '/', query: { ...paramsEventDict } })
+      })
+    })
+
+    prevPage.forEach((element) => {
+      window.htmx.on(element, 'htmx:afterRequest', (evt) => {
+        const paramsEventDict = evt.detail.requestConfig.parameters
+        this.$router.push({ path: '/', query: { ...paramsEventDict } })
       })
     })
   }

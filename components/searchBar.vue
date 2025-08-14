@@ -1,6 +1,6 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card :class="cardClass">
+    <v-card id="form-vue-container" :class="cardClass">
       <v-card
         id="form-search-app"
         width="100%"
@@ -32,6 +32,7 @@ export default class SearchBar extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
+  observer = ''
 
   get isDark() {
     return this.$vuetify.theme.isDark
@@ -44,8 +45,6 @@ export default class SearchBar extends Vue {
       this.isLoading = false
     })
     this.$el.addEventListener('htmx:afterRequest', (event) => {
-      console.log('hola desde searchbar')
-      console.log(event.detail.pathInfo.finalRequestPath)
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
@@ -53,6 +52,10 @@ export default class SearchBar extends Vue {
         this.onIsDarkChange(this.isDark)
       }
     })
+  }
+
+  beforeDestroy() {
+    this.observer.disconnect()
   }
 
   _loadHtmx() {
@@ -63,7 +66,50 @@ export default class SearchBar extends Vue {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
       document.body.dispatchEvent(new Event('update-form'))
+      this._loadObserver()
     }
+  }
+
+  _loadObserver() {
+    const target = document.querySelector('#form-vue-container')
+    if (target) {
+      this.observer = new MutationObserver((mutations) => {
+        this._loadEventManager()
+      })
+
+      const config = { childList: true, subtree: true }
+
+      this.observer.observe(target, config)
+    }
+  }
+
+  _loadEventManager() {
+    const searchBtn = document.getElementById('search_btn')
+    window.htmx.on(searchBtn, 'htmx:afterRequest', (event) => {
+      const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
+      const paramsDict = this._getParamsUrl(requestUrl)
+
+      this._changeUrlDocument(paramsDict)
+    })
+  }
+
+  _getParamsUrl(requestUrl) {
+    const params = new URLSearchParams(requestUrl.search)
+    const paramsDict = {}
+
+    params.forEach((value, key) => {
+      if (key === 'oid') {
+        paramsDict[key] = params.getAll('oid')
+      } else {
+        paramsDict[key] = value
+      }
+    })
+
+    return paramsDict
+  }
+
+  _changeUrlDocument(eventQueryParams) {
+    this.$router.push({ path: '/', query: { ...eventQueryParams } })
   }
 
   @Watch('isDark', { immediate: true })
