@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card id="objects_table_vue">
     <v-card
       id="objects_table"
       width="100%"
@@ -19,6 +19,7 @@ export default class ResultTableWrapper extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
+  observer = ''
 
   get isDark() {
     return this.$vuetify.theme.isDark
@@ -40,13 +41,45 @@ export default class ResultTableWrapper extends Vue {
     })
   }
 
+  beforeDestroy() {
+    this.observer.disconnect()
+  }
+
   _loadHtmx() {
     const myDiv = document.getElementById('objects_table')
 
     if (myDiv) {
       window.htmx.process(myDiv)
       document.body.dispatchEvent(new Event('update-table-objects'))
+      this._loadObserver()
     }
+  }
+
+  _loadObserver() {
+    const target = document.querySelector('#objects_table_vue')
+
+    if (target) {
+      this.observer = new MutationObserver((mutations) => {
+        this._loadEventManager()
+      })
+
+      const config = { childList: true, subtree: true }
+
+      this.observer.observe(target, config)
+    }
+  }
+
+  _loadEventManager() {
+    const rowsElements = document.getElementsByName('object_row_element')
+
+    rowsElements.forEach((element) => {
+      window.htmx.on(element, 'click', (event) => {
+        for (let i = 0; i <= element.children.length; i++) {
+          console.log(element.children[i].textContent)
+          console.log(element.children[i].getAttribute('name'))
+        }
+      })
+    })
   }
 }
 </script>

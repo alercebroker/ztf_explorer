@@ -29,7 +29,8 @@
         @pageChangeClick="debouncedSearch"
         @sortChangeClick="debouncedSearch"
       /> -->
-      <side-bar></side-bar>
+      <!-- <side-bar></side-bar> -->
+      <results-table></results-table>
     </v-col>
   </v-row>
 </template>

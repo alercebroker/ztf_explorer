@@ -75,23 +75,29 @@ export default class ResultTableWrapper extends Vue {
     const prevPage = document.getElementsByName('prev_page_sidebar')
 
     rowsElements.forEach((element) => {
-      window.htmx.on(element, 'htmx:afterRequest', (evt) => {
-        const paramsEventDict = evt.detail.requestConfig.parameters
-        this.$router.push({ path: '/', query: { ...paramsEventDict } })
+      window.htmx.on(element, 'htmx:afterRequest', (event) => {
+        if (event.detail.successful) {
+          const paramsEventDict = event.detail.requestConfig.parameters
+          this.$router.push({ path: '/', query: { ...paramsEventDict } })
+        }
       })
     })
 
     nextPage.forEach((element) => {
-      window.htmx.on(element, 'htmx:afterRequest', (evt) => {
-        const paramsEventDict = evt.detail.requestConfig.parameters
-        this.$router.push({ path: '/', query: { ...paramsEventDict } })
+      window.htmx.on(element, 'htmx:afterRequest', (event) => {
+        if (event.detail.successful) {
+          const paramsEventDict = event.detail.requestConfig.parameters
+          this.$router.push({ path: '/', query: { ...paramsEventDict } })
+        }
       })
     })
 
     prevPage.forEach((element) => {
-      window.htmx.on(element, 'htmx:afterRequest', (evt) => {
-        const paramsEventDict = evt.detail.requestConfig.parameters
-        this.$router.push({ path: '/', query: { ...paramsEventDict } })
+      window.htmx.on(element, 'htmx:afterRequest', (event) => {
+        if (event.detail.successful) {
+          const paramsEventDict = event.detail.requestConfig.parameters
+          this.$router.push({ path: '/', query: { ...paramsEventDict } })
+        }
       })
     })
   }
