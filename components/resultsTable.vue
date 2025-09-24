@@ -36,7 +36,7 @@ export default class ResultTableWrapper extends Vue {
         this.error = ''
         this.isLoading = false
         this.height = '100%'
-        this.onIsDarkChange(this.isDark)
+        // this.onIsDarkChange(this.isDark)
       }
     })
   }
@@ -63,7 +63,7 @@ export default class ResultTableWrapper extends Vue {
         this._loadEventManager()
       })
 
-      const config = { childList: true, subtree: true }
+      const config = { childList: true }
 
       this.observer.observe(target, config)
     }
@@ -73,11 +73,13 @@ export default class ResultTableWrapper extends Vue {
     const rowsElements = document.getElementsByName('object_row_element')
 
     rowsElements.forEach((element) => {
+      window.htmx.off(element, 'click')
+
       window.htmx.on(element, 'click', (event) => {
-        for (let i = 0; i <= element.children.length; i++) {
-          console.log(element.children[i].textContent)
-          console.log(element.children[i].getAttribute('name'))
-        }
+        this.$router.push({
+          path: '/object/123',
+          query: { ...this.$route.query },
+        })
       })
     })
   }

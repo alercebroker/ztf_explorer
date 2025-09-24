@@ -56,8 +56,10 @@ export default class CardMagStats extends Vue {
   }
 
   mounted() {
+    const params = { ...this.$route.query }
     const _oid = this.objectId || this.$route.params.oid
-    this._loadHtmx(_oid)
+
+    this._loadHtmx(_oid, params)
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -73,10 +75,14 @@ export default class CardMagStats extends Vue {
     })
   }
 
-  _loadHtmx(objectId) {
+  _loadHtmx(objectId, params) {
+    // const url = new URL(
+    //   `/v2/object_details/htmx/object/${objectId}`,
+    //   this.$config.alerceApiBaseUrl
+    // )
+
     const url = new URL(
-      `/v2/object_details/htmx/object/${objectId}`,
-      this.$config.alerceApiBaseUrl
+      `http://127.0.0.1:8000/htmx/object?oid=${objectId}&survey_id=${params.survey}`
     )
 
     const myDiv = document.getElementById('basicObject-app')
