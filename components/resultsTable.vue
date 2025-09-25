@@ -4,7 +4,6 @@
       id="objects_table"
       width="100%"
       :height="height"
-      hx-get="http://127.0.0.1:8000/table"
       hx-trigger="update-table-objects from:body"
     >
     </v-card>
@@ -19,14 +18,17 @@ export default class ResultTableWrapper extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
-  observer = ''
+  observer = null
+  QueryParams = null
 
   get isDark() {
     return this.$vuetify.theme.isDark
   }
 
   mounted() {
+    this._checkQueryParams()
     this._loadHtmx()
+
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -36,6 +38,7 @@ export default class ResultTableWrapper extends Vue {
         this.error = ''
         this.isLoading = false
         this.height = '100%'
+        this._loadEventManager()
         // this.onIsDarkChange(this.isDark)
       }
     })
@@ -43,12 +46,43 @@ export default class ResultTableWrapper extends Vue {
 
   beforeDestroy() {
     this.observer.disconnect()
+    this.observer = null
+  }
+
+  _checkQueryParams() {
+    const params = this.$route.query
+    this.QueryParams = params
+  }
+
+  _getParamsUrl(requestUrl) {
+    const params = new URLSearchParams(requestUrl.search)
+    const paramsDict = {}
+
+    params.forEach((value, key) => {
+      if (key === 'oid') {
+        paramsDict[key] = params.getAll('oid')
+      } else {
+        paramsDict[key] = value
+      }
+    })
+
+    return paramsDict
+  }
+
+  _changeUrlDocument(eventQueryParams) {
+    this.$router.push({ path: '/', query: { ...eventQueryParams } })
   }
 
   _loadHtmx() {
     const myDiv = document.getElementById('objects_table')
+    const url = new URL('http://127.0.0.1:8000/htmx/list_objects')
+
+    for (const [key, value] of Object.entries(this.QueryParams)) {
+      url.searchParams.append(key, value)
+    }
 
     if (myDiv) {
+      myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
       document.body.dispatchEvent(new Event('update-table-objects'))
       this._loadObserver()
@@ -59,9 +93,11 @@ export default class ResultTableWrapper extends Vue {
     const target = document.querySelector('#objects_table_vue')
 
     if (target) {
-      this.observer = new MutationObserver((mutations) => {
+      const mutationCallBackFunc = (mutationsList, observer) => {
         this._loadEventManager()
-      })
+      }
+
+      this.observer = new MutationObserver(mutationCallBackFunc)
 
       const config = { childList: true }
 
@@ -71,15 +107,30 @@ export default class ResultTableWrapper extends Vue {
 
   _loadEventManager() {
     const rowsElements = document.getElementsByName('object_row_element')
+    const btnsTable = document.getElementsByName('objects_table_btn_page')
 
     rowsElements.forEach((element) => {
       window.htmx.off(element, 'click')
 
       window.htmx.on(element, 'click', (event) => {
+        const oid = element.children[0].textContent
         this.$router.push({
-          path: '/object/123',
+          path: `/object/${oid}`,
           query: { ...this.$route.query },
         })
+      })
+    })
+
+    btnsTable.forEach((btn) => {
+      window.htmx.off(btn, 'htmx:afterRequest')
+
+      window.htmx.on(btn, 'htmx:afterRequest', (event) => {
+        if (event.detail.successful) {
+          const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
+          const paramsDict = this._getParamsUrl(requestUrl)
+
+          this._changeUrlDocument(paramsDict)
+        }
       })
     })
   }

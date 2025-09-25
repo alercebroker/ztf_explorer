@@ -82,7 +82,7 @@ export default class CardMagStats extends Vue {
     // )
 
     const url = new URL(
-      `http://127.0.0.1:8000/htmx/object?oid=${objectId}&survey_id=${params.survey}`
+      `http://127.0.0.1:8000/htmx/object_information?oid=${objectId}&survey_id=${params.survey}`
     )
 
     const myDiv = document.getElementById('basicObject-app')

@@ -32,7 +32,7 @@ export default class SearchBar extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
-  observer = ''
+  observer = null
 
   get isDark() {
     return this.$vuetify.theme.isDark
@@ -56,10 +56,11 @@ export default class SearchBar extends Vue {
 
   beforeDestroy() {
     this.observer.disconnect()
+    this.observer = null
   }
 
   _loadHtmx() {
-    const url = new URL('http://127.0.0.1:8000/form')
+    const url = new URL('http://127.0.0.1:8000/htmx/search_objects/')
 
     const myDiv = document.getElementById('form-search-app')
     if (myDiv) {

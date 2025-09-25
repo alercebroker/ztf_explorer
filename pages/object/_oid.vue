@@ -9,22 +9,22 @@
         sm="12"
       />
 
-      <card-light-curve
+      <!-- <card-light-curve
         :period="period"
         :oid="selectedObject"
         card-class="grid-card"
         lg="6"
         md="6"
         sm="12"
-      />
+      /> -->
 
-      <card-aladin
+      <!-- <card-aladin
         v-model="selectedObject"
         card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
-      />
+      /> -->
 
       <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" />
 
@@ -36,15 +36,15 @@
         sm="12"
       />
 
-      <card-stamps
+      <!-- <card-stamps
         :oid="selectedObject"
         :cross-hair-space="25"
         card-class="grid-card"
         lg="5"
         md="6"
-      />
+      /> -->
 
-      <card-cross-matches cols="12" lg="12" md="12" sm="12" />
+      <!-- <card-cross-matches cols="12" lg="12" md="12" sm="12" /> -->
     </v-row>
   </v-container>
 </template>
@@ -53,11 +53,11 @@
 import { Vue, Component, Watch } from 'nuxt-property-decorator'
 import {
   lightCurveStore,
-  statsStore,
-  probabilitiesStore,
-  featuresStore,
+  // statsStore,
+  // probabilitiesStore,
+  // featuresStore,
   objectStore,
-  xmatchesStore,
+  // xmatchesStore,
   datareleaseStore,
 } from '~/store'
 @Component({ layout: 'oid' })
@@ -72,19 +72,19 @@ export default class ObjectView extends Vue {
     let oid = this.$route.params.oid
     if (this.selectedObject) oid = this.selectedObject
     lightCurveStore.getLightCurve(oid)
-    statsStore.getStats(oid)
-    probabilitiesStore.getProbabilities(oid)
-    featuresStore.getFeatures(oid)
+    // statsStore.getStats(oid)
+    // probabilitiesStore.getProbabilities(oid)
+    // featuresStore.getFeatures(oid)
     await objectStore.getObject(oid)
     datareleaseStore.getDataReleaseLightCurve({
       ra: this.objectInformation.meanra,
       dec: this.objectInformation.meandec,
       radius: 1.5,
     })
-    xmatchesStore.getXmatch({
-      ra: this.objectInformation.meanra,
-      dec: this.objectInformation.meandec,
-    })
+    // xmatchesStore.getXmatch({
+    //   ra: this.objectInformation.meanra,
+    //   dec: this.objectInformation.meandec,
+    // })
   }
 
   created() {
