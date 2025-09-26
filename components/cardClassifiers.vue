@@ -81,7 +81,7 @@ export default class CardMagStats extends Vue {
     //   this.$config.alerceApiBaseUrl
     // )
 
-    const url = new URL(`http://127.0.0.1:8004/probabilities/${objectId}`)
+    const url = new URL(`http://127.0.0.1:8004/htmx/probabilities/${objectId}`)
 
     const myDiv = document.getElementById('probabilities-app')
     if (myDiv) {

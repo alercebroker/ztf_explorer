@@ -4,7 +4,6 @@
       id="sidebar"
       width="100%"
       :height="height"
-      hx-get="http://127.0.0.1:8000/sidebar"
       hx-trigger="update-sidebar from:body"
     >
     </v-card>
@@ -15,10 +14,10 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component
-export default class ResultTableWrapper extends Vue {
+export default class sideListWrapper extends Vue {
   isLoading = true
   error = ''
-  height = '0vh'
+  height = '0%'
   observer = ''
 
   get isDark() {
@@ -26,6 +25,7 @@ export default class ResultTableWrapper extends Vue {
   }
 
   mounted() {
+    this._checkQueryParams()
     this._loadHtmx()
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
@@ -45,10 +45,21 @@ export default class ResultTableWrapper extends Vue {
     this.observer.disconnect()
   }
 
+  _checkQueryParams() {
+    const params = this.$route.query
+    this.QueryParams = params
+  }
+
   _loadHtmx() {
     const myDiv = document.getElementById('sidebar')
+    const url = new URL('http://127.0.0.1:8000/htmx/side_objects')
+
+    for (const [key, value] of Object.entries(this.QueryParams)) {
+      url.searchParams.append(key, value)
+    }
 
     if (myDiv) {
+      myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
       document.body.dispatchEvent(new Event('update-sidebar'))
       this._loadObserver()
@@ -71,32 +82,17 @@ export default class ResultTableWrapper extends Vue {
 
   _loadEventManager() {
     const rowsElements = document.getElementsByName('sidebar-row-element')
-    const nextPage = document.getElementsByName('next_page_sidebar')
-    const prevPage = document.getElementsByName('prev_page_sidebar')
+
+    this.$emit('show-side-bar', rowsElements.length)
 
     rowsElements.forEach((element) => {
       window.htmx.on(element, 'htmx:afterRequest', (event) => {
         if (event.detail.successful) {
           const paramsEventDict = event.detail.requestConfig.parameters
-          this.$router.push({ path: '/', query: { ...paramsEventDict } })
-        }
-      })
-    })
-
-    nextPage.forEach((element) => {
-      window.htmx.on(element, 'htmx:afterRequest', (event) => {
-        if (event.detail.successful) {
-          const paramsEventDict = event.detail.requestConfig.parameters
-          this.$router.push({ path: '/', query: { ...paramsEventDict } })
-        }
-      })
-    })
-
-    prevPage.forEach((element) => {
-      window.htmx.on(element, 'htmx:afterRequest', (event) => {
-        if (event.detail.successful) {
-          const paramsEventDict = event.detail.requestConfig.parameters
-          this.$router.push({ path: '/', query: { ...paramsEventDict } })
+          this.$router.push({
+            path: `/object/${paramsEventDict.selected_oid}`,
+            query: { ...paramsEventDict },
+          })
         }
       })
     })

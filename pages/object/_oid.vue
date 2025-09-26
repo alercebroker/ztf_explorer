@@ -18,13 +18,13 @@
         sm="12"
       /> -->
 
-      <!-- <card-aladin
+      <card-aladin
         v-model="selectedObject"
         card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
-      /> -->
+      />
 
       <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" />
 
@@ -36,15 +36,15 @@
         sm="12"
       />
 
-      <!-- <card-stamps
+      <card-stamps
         :oid="selectedObject"
         :cross-hair-space="25"
         card-class="grid-card"
         lg="5"
         md="6"
-      /> -->
+      />
 
-      <!-- <card-cross-matches cols="12" lg="12" md="12" sm="12" /> -->
+      <card-cross-matches cols="12" lg="12" md="12" sm="12" />
     </v-row>
   </v-container>
 </template>
