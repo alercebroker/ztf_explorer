@@ -113,7 +113,7 @@ export default class ResultTableWrapper extends Vue {
       window.htmx.off(element, 'click')
 
       window.htmx.on(element, 'click', (event) => {
-        const oid = element.children[0].textContent
+        const oid = element.querySelector('[name="oid"]').textContent
         this.$router.push({
           path: `/object/${oid}`,
           query: { ...this.$route.query },
