@@ -88,17 +88,17 @@ export default class CardMagStats extends Vue {
   }
 
   @Watch('isDark', { immediate: true })
-  onIsDarkChange(newIsDark) {
-    this.$nextTick(() => {
-      const container = document.getElementById('basicObject-app')
-      if (container) {
-        if (newIsDark) {
-          container.classList.add('tw-dark')
-        } else {
-          container.classList.remove('tw-dark')
-        }
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
+
+    const container = document.getElementById('basicObject-app')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
       }
-    })
+    }
   }
 }
 </script>
