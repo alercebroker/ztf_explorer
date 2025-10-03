@@ -8,7 +8,7 @@
       width="150"
       @transitionend="onTransition"
     >
-      <object-list>
+      <!-- <object-list>
         <template v-slot:pagination="page">
           <simple-pagination
             :value="page.page"
@@ -16,7 +16,9 @@
             @input="page.onInput"
           />
         </template>
-      </object-list>
+      </object-list> -->
+
+      <side-bar @show-side-bar="_showSideObjects"></side-bar>
     </v-navigation-drawer>
     <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
       <template v-slot:menu>
@@ -52,17 +54,25 @@ export default class OidLayout extends DefaultLayout {
     },
   ]
 
+  showDrawer = true
   drawerMini = true
 
-  get showDrawer() {
-    return this.$store.state.objects.list.length > 0
-  }
+  // get showDrawer() {
+  //   // return this.$store.state.objects.list.length > 0
+  //   return true
+  // }
 
-  get disableNext() {
-    return (
-      this.$store.state.objects.list.length <
-      this.$store.state.pagination.perPage
-    )
+  // get disableNext() {
+  //   return (
+  //     this.$store.state.objects.list.length <
+  //     this.$store.state.pagination.perPage
+  //   )
+  // }
+
+  _showSideObjects(listLen) {
+    if (listLen <= 0) {
+      this.showDrawer = false
+    }
   }
 
   onTransition() {

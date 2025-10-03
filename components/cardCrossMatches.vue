@@ -72,10 +72,12 @@ export default class CardMagStats extends Vue {
   }
 
   _loadHtmx(objectId) {
-    const url = new URL(
-      `/v2/xmatch/htmx/crossmatch/${objectId}`,
-      this.$config.alerceApiBaseUrl
-    )
+    // const url = new URL(
+    //   `/v2/xmatch/htmx/crossmatch/${objectId}`,
+    //   this.$config.alerceApiBaseUrl
+    // )
+
+    const url = new URL(`http://127.0.0.1:8005/htmx/crossmatch?oid=${objectId}`)
 
     const myDiv = document.getElementById('crossmatch-app')
     if (myDiv) {

@@ -2,7 +2,7 @@
   <v-row>
     <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12">
       <validation-observer ref="filters" v-slot="{ invalid }">
-        <search-bar
+        <!-- <search-bar
           :panels.sync="panels"
           :general-filters.sync="generalFilters"
           :date-filters.sync="dateFilters"
@@ -13,11 +13,12 @@
           :invalid="invalid"
           @search="onSearchClicked"
           @clear="onClearClicked"
-        />
+        /> -->
+        <search-bar :invalid="invalid" />
       </validation-observer>
     </v-col>
     <v-col xs="12" sm="12" md="9" lg="9" xl="9" cols="12">
-      <results-table
+      <!-- <results-table
         :items="items"
         :page.sync="page"
         :per-page="perPage"
@@ -28,7 +29,9 @@
         @rowClicked="onRowClicked"
         @pageChangeClick="debouncedSearch"
         @sortChangeClick="debouncedSearch"
-      />
+      /> -->
+      <!-- <side-bar></side-bar> -->
+      <results-table></results-table>
     </v-col>
   </v-row>
 </template>
@@ -121,7 +124,7 @@ export default class Index extends Vue {
 
   @Watch('querystring')
   onQueryStringChange(qstr) {
-    this.$router.replace(`?${qstr}`)
+    // this.$router.replace(`?${qstr}`)
   }
 
   get classifiers() {
@@ -223,7 +226,7 @@ export default class Index extends Vue {
     filtersStore.clearFilters()
   }
 
-  onRowClicked(item) {
+  onRowCliked(item) {
     this.$store.dispatch('object/changeObjectId', item.oid)
     this.$router.push({ path: `/object/${item.oid}` })
   }
