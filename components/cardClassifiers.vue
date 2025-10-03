@@ -88,7 +88,9 @@ export default class CardMagStats extends Vue {
   }
 
   @Watch('isDark', { immediate: true })
-  onIsDarkChange(newIsDark) {
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
+
     const container = document.getElementById('probabilities-app')
     if (container) {
       if (newIsDark) {
