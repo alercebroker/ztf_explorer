@@ -116,7 +116,9 @@ export default class SearchBar extends Vue {
   }
 
   @Watch('isDark', { immediate: true })
-  onIsDarkChange(newIsDark) {
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
+
     const container = document.getElementById('form-search-app')
     if (container) {
       if (newIsDark) {

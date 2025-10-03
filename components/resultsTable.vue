@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 @Component
 export default class ResultTableWrapper extends Vue {
@@ -39,8 +39,11 @@ export default class ResultTableWrapper extends Vue {
         this.isLoading = false
         this.height = '100%'
         this._loadEventManager()
-        // this.onIsDarkChange(this.isDark)
       }
+    })
+
+    this.$el.addEventListener('htmx:afterSettle', (event) => {
+      this.onIsDarkChange(this.isDark)
     })
   }
 
@@ -95,6 +98,7 @@ export default class ResultTableWrapper extends Vue {
     if (target) {
       const mutationCallBackFunc = (mutationsList, observer) => {
         this._loadEventManager()
+        this.onIsDarkChange(this.isDark)
       }
 
       this.observer = new MutationObserver(mutationCallBackFunc)
@@ -133,6 +137,20 @@ export default class ResultTableWrapper extends Vue {
         }
       })
     })
+  }
+
+  @Watch('isDark', { immediate: true })
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
+
+    const container = document.getElementById('objects_table')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
   }
 }
 </script>
