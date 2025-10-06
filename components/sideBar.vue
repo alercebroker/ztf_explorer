@@ -1,7 +1,7 @@
 <template>
   <v-card id="sidebar-container">
     <v-card
-      id="sidebar"
+      id="sidebar-objects-htmx"
       width="100%"
       :height="height"
       hx-trigger="update-sidebar from:body"
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { Vue, Component } from 'nuxt-property-decorator'
+import { Vue, Component, Watch } from 'nuxt-property-decorator'
 
 @Component
 export default class sideListWrapper extends Vue {
@@ -36,9 +36,13 @@ export default class sideListWrapper extends Vue {
         this.error = ''
         this.isLoading = false
         this.height = '100%'
-        // this.onIsDarkChange(this.isDark)
       }
     })
+
+    this.$el.addEventListener(
+      'htmx:afterSwap',
+      this.onIsDarkChange(this.isDark)
+    )
   }
 
   beforeDestroy() {
@@ -50,8 +54,15 @@ export default class sideListWrapper extends Vue {
     this.QueryParams = params
   }
 
+  _displayObjectsBar() {
+    const numberOfObjects = document.getElementsByName(
+      'sidebar-row-element'
+    ).length
+    this.$emit('show-side-bar', numberOfObjects)
+  }
+
   _loadHtmx() {
-    const myDiv = document.getElementById('sidebar')
+    const myDiv = document.getElementById('sidebar-objects-htmx')
     const url = new URL('http://127.0.0.1:8000/htmx/side_objects')
 
     for (const [key, value] of Object.entries(this.QueryParams)) {
@@ -71,6 +82,8 @@ export default class sideListWrapper extends Vue {
 
     if (target) {
       this.observer = new MutationObserver((mutations) => {
+        this.onIsDarkChange(this.isDark)
+        this._displayObjectsBar()
         this._loadEventManager()
       })
 
@@ -83,8 +96,6 @@ export default class sideListWrapper extends Vue {
   _loadEventManager() {
     const rowsElements = document.getElementsByName('sidebar-row-element')
 
-    this.$emit('show-side-bar', rowsElements.length)
-
     rowsElements.forEach((element) => {
       window.htmx.on(element, 'htmx:afterRequest', (event) => {
         if (event.detail.successful) {
@@ -96,6 +107,20 @@ export default class sideListWrapper extends Vue {
         }
       })
     })
+  }
+
+  @Watch('isDark', { immediate: true })
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
+
+    const container = document.getElementById('sidebar-objects-htmx')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
   }
 }
 </script>
