@@ -4,7 +4,7 @@
       <card-basic-information
         :object="$route.params.oid"
         card-class="grid-card"
-        lg="3"
+        lg="4"
         md="6"
         sm="12"
       />
@@ -13,7 +13,7 @@
         :period="period"
         :oid="selectedObject"
         card-class="grid-card"
-        lg="6"
+        lg="8"
         md="6"
         sm="12"
       />
@@ -25,8 +25,6 @@
         md="6"
         sm="12"
       />
-
-      <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" />
 
       <card-classifiers
         card-class="grid-card"
@@ -46,6 +44,25 @@
 
       <card-cross-matches cols="12" lg="12" md="12" sm="12" />
     </v-row>
+    <v-dialog v-model="showModal" max-width="800px" @click:outside="closeModal">
+      <v-card>
+        <v-card-title class="d-flex justify-space-between align-center">
+          <span>Magnitude Statistics</span>
+          <v-btn icon @click="closeModal">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-card-title>
+
+        <v-card-text>
+          <div id="magstats-modal-content"></div>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="closeModal">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -60,8 +77,11 @@ import {
   xmatchesStore,
   datareleaseStore,
 } from '~/store'
+
 @Component({ layout: 'oid' })
 export default class ObjectView extends Vue {
+  showModal = false
+
   head() {
     return {
       title: this.selectedObject ? this.selectedObject : this.$route.params.oid,
@@ -89,10 +109,12 @@ export default class ObjectView extends Vue {
 
   created() {
     document.addEventListener('keyup', this.keyboardEvents)
+    window.addEventListener('openMagstatsModal', this.openModal)
   }
 
   destroyed() {
     document.removeEventListener('keyup', this.keyboardEvents)
+    window.removeEventListener('openMagstatsModal', this.openModal)
   }
 
   keyboardEvents(evt) {
@@ -110,6 +132,54 @@ export default class ObjectView extends Vue {
     if (this.objects !== null || this.objects.length !== 0) {
       await objectStore.changeItem(n)
       this.$router.push(this.selectedObject)
+    }
+  }
+
+  closeModal() {
+    this.showModal = false
+  }
+
+  openModal() {
+    this.showModal = true
+    this.$nextTick(() => {
+      this.loadMagstatsContent()
+    })
+  }
+
+  loadMagstatsContent() {
+    const objectId = this.selectedObject || this.$route.params.oid
+    const url = new URL(
+      `/v2/magstats/htmx/mag/${objectId}`,
+      this.$config.alerceApiBaseUrl
+    )
+
+    const container = document.getElementById('magstats-modal-content')
+    if (container) {
+      const handleAfterSwap = () => {
+        this.applyThemeToModal()
+        container.removeEventListener('htmx:afterSwap', handleAfterSwap)
+      }
+      container.addEventListener('htmx:afterSwap', handleAfterSwap)
+
+      window.htmx.ajax('GET', url.toString(), {
+        target: '#magstats-modal-content',
+      })
+    }
+  }
+
+  applyThemeToModal() {
+    const container = document.getElementById('magstats-modal-content')
+    if (container) {
+      const magstatsApp = container.querySelector('#magstats-app')
+      if (magstatsApp) {
+        if (this.$vuetify.theme.isDark) {
+          container.classList.add('tw-dark')
+          magstatsApp.classList.add('tw-dark')
+        } else {
+          container.classList.remove('tw-dark')
+          magstatsApp.classList.remove('tw-dark')
+        }
+      }
     }
   }
 
@@ -141,6 +211,11 @@ export default class ObjectView extends Vue {
   @Watch('selectedObject')
   onSelectedObjectChange(val) {
     this.$router.push(val)
+  }
+
+  @Watch('$vuetify.theme.isDark')
+  onThemeChange(isDark) {
+    this.applyThemeToModal()
   }
 
   get doFluid() {
