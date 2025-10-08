@@ -91,6 +91,12 @@ export default class CardMagStats extends Vue {
     }
   }
 
+  _switchRadarTheme() {
+    if (window.switch_theme_probability) {
+      window.switch_theme_probability()
+    }
+  }
+
   @Watch('isDark', { immediate: true })
   async onIsDarkChange(newIsDark) {
     await this.$nextTick()
@@ -99,8 +105,10 @@ export default class CardMagStats extends Vue {
     if (container) {
       if (newIsDark) {
         container.classList.add('tw-dark')
+        this._switchRadarTheme()
       } else {
         container.classList.remove('tw-dark')
+        this._switchRadarTheme()
       }
     }
   }

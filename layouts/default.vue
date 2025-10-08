@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <misc-a-header title="ALeRCE ZTF Explorer" :items="items">
+    <misc-a-header title="ALeRCE LSST Explorer" :items="items">
       <template v-slot:menu>
         <misc-navbar-menu
           :logged="logged"
@@ -25,6 +25,10 @@ import { userStore } from '~/store'
 @Component
 export default class DefaultLayout extends Vue {
   items = [
+    {
+      title: 'Explorer ZTF',
+      to: 'http://alerce.online',
+    },
     {
       title: 'ALeRCE Main Page',
       to: 'http://alerce.science',
