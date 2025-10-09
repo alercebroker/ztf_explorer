@@ -100,7 +100,8 @@ export default {
     alerceApiBaseUrlOld:
       process.env.ALERCE_API_BASE_URL_OLD || 'https://api.alerce.online/',
     alerceApiBaseUrl:
-      process.env.ALERCE_API_BASE_URL || 'https://api.staging.alerce.online/',
+      process.env.ALERCE_API_BASE_URL ||
+      'https://api.staging.alerce.online/multisurvey/',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:

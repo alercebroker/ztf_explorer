@@ -1,5 +1,19 @@
 <template>
   <v-card id="objects_table_vue">
+    <v-card v-if="isLoading || error">
+      <v-card-text v-if="isLoading" class="text-center">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching table ...
+      </v-card-text>
+      <v-card-text v-if="error">
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
+      </v-card-text>
+    </v-card>
     <v-card
       id="objects_table"
       width="100%"
@@ -77,12 +91,16 @@ export default class ResultTableWrapper extends Vue {
   }
 
   _loadHtmx() {
-    const myDiv = document.getElementById('objects_table')
-    const url = new URL('http://127.0.0.1:8000/htmx/list_objects')
+    const url = new URL(
+      'object_api/htmx/list_objects',
+      this.$config.alerceApiBaseUrl
+    )
 
     for (const [key, value] of Object.entries(this.QueryParams)) {
       url.searchParams.append(key, value)
     }
+
+    const myDiv = document.getElementById('objects_table')
 
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
@@ -132,7 +150,6 @@ export default class ResultTableWrapper extends Vue {
         if (event.detail.successful) {
           const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
           const paramsDict = this._getParamsUrl(requestUrl)
-
           this._changeUrlDocument(paramsDict)
         }
       })
