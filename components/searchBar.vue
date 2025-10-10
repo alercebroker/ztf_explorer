@@ -1,5 +1,19 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
+    <v-card v-if="isLoading || error">
+      <v-card-text v-if="isLoading" class="text-center">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching form ...
+      </v-card-text>
+      <v-card-text v-if="error">
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
+      </v-card-text>
+    </v-card>
     <v-card id="form-vue-container" :class="cardClass">
       <v-card
         id="form-search-app"
@@ -60,7 +74,10 @@ export default class SearchBar extends Vue {
   }
 
   _loadHtmx() {
-    const url = new URL('http://127.0.0.1:8000/htmx/search_objects/')
+    const url = new URL(
+      'object_api/htmx/search_objects/',
+      this.$config.alerceApiBaseUrl
+    )
 
     const myDiv = document.getElementById('form-search-app')
     if (myDiv) {

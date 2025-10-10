@@ -62,12 +62,16 @@ export default class sideListWrapper extends Vue {
   }
 
   _loadHtmx() {
-    const myDiv = document.getElementById('sidebar-objects-htmx')
-    const url = new URL('http://127.0.0.1:8000/htmx/side_objects')
+    const url = new URL(
+      'object_api/htmx/side_objects',
+      this.$config.alerceApiBaseUrl
+    )
 
     for (const [key, value] of Object.entries(this.QueryParams)) {
       url.searchParams.append(key, value)
     }
+
+    const myDiv = document.getElementById('sidebar-objects-htmx')
 
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
