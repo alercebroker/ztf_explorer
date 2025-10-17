@@ -58,14 +58,17 @@ export default class sideListWrapper extends Vue {
     const numberOfObjects = document.getElementsByName(
       'sidebar-row-element'
     ).length
+
     this.$emit('show-side-bar', numberOfObjects)
   }
 
   _loadHtmx() {
-    const url = new URL(
-      'object_api/htmx/side_objects',
-      this.$config.alerceApiBaseUrl
-    )
+    // const url = new URL(
+    //   'object_api/htmx/side_objects',
+    //   this.$config.alerceApiBaseUrl
+    // )
+
+    const url = new URL(`http://127.0.0.1:8000/htmx/side_objects`)
 
     for (const [key, value] of Object.entries(this.QueryParams)) {
       url.searchParams.append(key, value)

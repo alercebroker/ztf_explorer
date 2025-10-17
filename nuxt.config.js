@@ -27,7 +27,7 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    script: [],
+    script: [{ src: 'https://unpkg.com/htmx-ext-form-json', defer: true }],
     link: [
       {
         rel: 'icon',

@@ -8,16 +8,6 @@
       width="150"
       @transitionend="onTransition"
     >
-      <!-- <object-list>
-        <template v-slot:pagination="page">
-          <simple-pagination
-            :value="page.page"
-            :disable-next="disableNext"
-            @input="page.onInput"
-          />
-        </template>
-      </object-list> -->
-
       <side-bar @show-side-bar="_showSideObjects"></side-bar>
     </v-navigation-drawer>
     <misc-a-header title="ALeRCE LSST Explorer" :items="items">

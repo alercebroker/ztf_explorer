@@ -70,10 +70,12 @@ export default class CardCrossMatch extends Vue {
   }
 
   _loadHtmx(objectId) {
-    const url = new URL(
-      `crossmatch_api/htmx/crossmatch?oid=${objectId}`,
-      this.$config.alerceApiBaseUrl
-    )
+    // const url = new URL(
+    //   `crossmatch_api/htmx/crossmatch?oid=${objectId}`,
+    //   this.$config.alerceApiBaseUrl
+    // )
+
+    const url = new URL(`http://127.0.0.1:8005/htmx/crossmatch?oid=${objectId}`)
 
     const myDiv = document.getElementById('crossmatch-app')
     if (myDiv) {

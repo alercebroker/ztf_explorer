@@ -1,6 +1,14 @@
 <template>
   <v-container :fluid="doFluid">
     <v-row align="stretch">
+      <card-light-curve
+        :period="period"
+        :oid="selectedObject"
+        card-class="grid-card"
+        lg="9"
+        md="12"
+        sm="12"
+      />
       <card-basic-information
         :object="$route.params.oid"
         card-class="grid-card"
@@ -9,24 +17,15 @@
         sm="12"
       />
 
-      <!-- <card-light-curve
-        :period="period"
-        :oid="selectedObject"
-        card-class="grid-card"
-        lg="6"
-        md="6"
-        sm="12"
-      /> -->
-
-      <!-- <card-aladin
+      <card-aladin
         v-model="selectedObject"
         card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
-      /> -->
+      />
 
-      <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" />
+      <!-- <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" /> -->
 
       <card-classifiers
         card-class="grid-card"
@@ -36,13 +35,13 @@
         sm="12"
       />
 
-      <!-- <card-stamps
+      <card-stamps
         :oid="selectedObject"
         :cross-hair-space="25"
         card-class="grid-card"
         lg="5"
         md="6"
-      /> -->
+      />
 
       <card-cross-matches cols="12" lg="12" md="12" sm="12" />
     </v-row>
