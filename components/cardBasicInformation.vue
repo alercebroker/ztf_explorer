@@ -80,7 +80,7 @@ export default class CardObject extends Vue {
     // )
 
     const url = new URL(
-      `http://127.0.0.1:8000/htmx/object_information?oid=3245230435995&survey_id=lsst`,
+      `http://127.0.0.1:8000/htmx/object_information?oid=${objectId}&survey_id=${params.survey}`,
       this.$config.alerceApiBaseUrl
     )
 

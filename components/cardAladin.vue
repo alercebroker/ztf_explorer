@@ -14,18 +14,21 @@
         }}</v-alert>
       </v-card-text>
     </v-card>
-    <misc-aladin
-      v-else
-      v-model="object"
-      :objects="objects"
-      :class="cardClass"
-      :fov="0.01"
-    />
+    <v-card
+      id="aladin-app"
+      width="100%"
+      :height="height"
+      hx-ext="json-enc"
+      hx-encoding="json"
+      hx-vals="js:{objects_arr: ''}"
+      hx-trigger="update-aladin from:body"
+    >
+    </v-card>
   </v-col>
 </template>
 
 <script>
-import { Vue, Component, Prop, Model, Watch } from 'nuxt-property-decorator'
+import { Vue, Component, Prop, Model } from 'nuxt-property-decorator'
 
 @Component
 export default class CardAladin extends Vue {
@@ -46,44 +49,74 @@ export default class CardAladin extends Vue {
   @Prop({ type: String }) cardClass
 
   object = {}
+  objectsList = null
+  isLoading = true
+  error = null
+  height = '0vh'
 
-  beforeMount() {
-    if (!this.objectData) return
-    this.object = {
-      oid: this.objectData.oid,
-      meanra: this.objectData.meanra,
-      meandec: this.objectData.meandec,
+  mounted() {
+    setTimeout(() => {
+      const oid = this.$route.params.oid
+      this._loadObjectStore()
+      this._loadHtmx(oid)
+
+      this.$el.addEventListener('htmx:responseError', (event) => {
+        this.error = event.detail.error
+        this.isLoading = false
+      })
+      this.$el.addEventListener('htmx:afterRequest', (event) => {
+        if (event.detail.successful) {
+          this.error = ''
+          this.isLoading = false
+          this.width = '100%'
+          this.height = '100%'
+        }
+      })
+    }, 5000)
+  }
+
+  _loadObjectStore() {
+    const objectsStore = document.getElementById('objects-store')
+
+    if (objectsStore) {
+      this.objectsList = this.parsePythonData(objectsStore.dataset.objects)
     }
   }
 
-  get objectData() {
-    return this.$store.state.object.object
-      ? this.$store.state.object.object
-      : {}
-  }
+  _loadHtmx(objectId) {
+    const url = new URL(`http://127.0.0.1:8006/htmx/aladin?oid=${objectId}`)
 
-  get objects() {
-    return this.$store.state.objects.list
-  }
+    const myDiv = document.getElementById('aladin-app')
 
-  get isLoading() {
-    return this.$store.state.object.loading
-  }
+    if (myDiv) {
+      myDiv.setAttribute('hx-post', url)
+      window.htmx.process(myDiv)
+      window.htmx.on(myDiv, 'htmx:configRequest', (evt) => {
+        evt.detail.parameters.objects_arr = this.stringifyObjectsData()
+      })
 
-  get error() {
-    return this.$store.state.object.error
-  }
-
-  @Watch('objectData')
-  onObjectDataChange(val) {
-    this.object = {
-      oid: val.oid,
-      meanra: val.meanra,
-      meandec: val.meandec,
+      document.body.dispatchEvent(new Event('update-aladin'))
     }
+  }
+
+  parsePythonData(objectsDict) {
+    const fixed = objectsDict
+      .replace(/'/g, '"')
+      .replace(/None/g, 'null')
+      .replace(/False/g, 'false')
+      .replace(/True/g, 'true')
+
+    return JSON.parse(fixed)
+  }
+
+  stringifyObjectsData() {
+    if (this.objectsList == null) return []
+
+    const objectsStringify = this.objectsList.map((object) => {
+      return JSON.stringify(object)
+    })
+
+    return objectsStringify
   }
 }
 </script>
-<style>
-@import 'https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css';
-</style>

@@ -1,7 +1,7 @@
 <template>
   <v-container :fluid="doFluid">
     <v-row align="stretch">
-      <card-light-curve
+      <!-- <card-light-curve
         :period="period"
         :oid="selectedObject"
         card-class="grid-card"
@@ -15,7 +15,7 @@
         lg="3"
         md="6"
         sm="12"
-      />
+      /> -->
 
       <card-aladin
         v-model="selectedObject"
@@ -27,7 +27,7 @@
 
       <!-- <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" /> -->
 
-      <card-classifiers
+      <!-- <card-classifiers
         card-class="grid-card"
         cols="12"
         lg="4"
@@ -41,9 +41,9 @@
         card-class="grid-card"
         lg="5"
         md="6"
-      />
+      /> -->
 
-      <card-cross-matches cols="12" lg="12" md="12" sm="12" />
+      <!-- <card-cross-matches cols="12" lg="12" md="12" sm="12" /> -->
     </v-row>
   </v-container>
 </template>
