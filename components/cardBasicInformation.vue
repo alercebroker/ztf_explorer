@@ -73,11 +73,6 @@ export default class CardObject extends Vue {
   }
 
   _loadHtmx(objectId, params) {
-    // const url = new URL(
-    //   `object_api/htmx/object_information?oid=${objectId}&survey_id=${params.survey}`,
-    //   this.$config.alerceApiBaseUrl
-    // )
-
     const url = new URL(
       `htmx/object_information?oid=${objectId}&survey_id=${params.survey}`,
       this.$config.objectApiBaseUrl
