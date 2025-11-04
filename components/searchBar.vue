@@ -74,12 +74,10 @@ export default class SearchBar extends Vue {
   }
 
   _loadHtmx() {
-    // const url = new URL(
-    //   'object_api/htmx/search_objects/',
-    //   this.$config.alerceApiBaseUrl
-    // )
-
-    const url = new URL('http://127.0.0.1:8000/htmx/search_objects/')
+    const url = new URL(
+      'object_api/htmx/search_objects/',
+      this.$config.alerceApiBaseUrl
+    )
 
     const myDiv = document.getElementById('form-search-app')
     if (myDiv) {

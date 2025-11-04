@@ -79,13 +79,8 @@ export default class CardLightCurve extends Vue {
   }
 
   _loadHtmx(objectId, survey) {
-    // const url = new URL(
-    //   `lightcurve_api/htmx/lightcurve?oid=${objectId}&survey_id=${survey}`,
-    //   this.$config.alerceApiBaseUrl
-    // )
-
     const url = new URL(
-      `http://127.0.0.1:8001/htmx/lightcurve?oid=${objectId}&survey_id=${survey}`,
+      `lightcurve_api/htmx/lightcurve?oid=${objectId}&survey_id=${survey}`,
       this.$config.alerceApiBaseUrl
     )
 
