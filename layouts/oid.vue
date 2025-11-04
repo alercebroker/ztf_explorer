@@ -4,8 +4,8 @@
       v-if="showDrawer"
       app
       expand-on-hover
-      mini-variant-width="150"
-      width="150"
+      mini-variant-width="170"
+      width="170"
       @transitionend="onTransition"
     >
       <side-bar @show-side-bar="_showSideObjects"></side-bar>

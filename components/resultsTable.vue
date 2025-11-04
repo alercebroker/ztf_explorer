@@ -96,6 +96,10 @@ export default class ResultTableWrapper extends Vue {
       this.$config.alerceApiBaseUrl
     )
 
+    // const url = new URL(
+    //   'https://api.staging.alerce.online/multisurvey/object_api/htmx/list_objects'
+    // )
+
     for (const [key, value] of Object.entries(this.QueryParams)) {
       url.searchParams.append(key, value)
     }
@@ -138,7 +142,7 @@ export default class ResultTableWrapper extends Vue {
         const oid = element.querySelector('[name="oid"]').textContent
         this.$router.push({
           path: `/object/${oid}`,
-          query: { ...this.$route.query },
+          query: { ...this.$route.query, selected_oid: `${oid}` },
         })
       })
     })
