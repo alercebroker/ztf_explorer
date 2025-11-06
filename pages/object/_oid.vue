@@ -33,7 +33,7 @@
         lg="5"
         md="6"
       /> -->
-      <!-- 
+
       <card-cross-matches cols="12" lg="12" md="12" sm="12" /> -->
     </v-row>
   </v-container>
