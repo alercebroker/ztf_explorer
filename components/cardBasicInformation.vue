@@ -15,13 +15,7 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card
-        id="basicObject-app"
-        width="100%"
-        :height="height"
-        hx-trigger="update-basic-object from:body"
-      >
-      </v-card>
+      <v-card id="basicObject-app" width="100%" :height="height"> </v-card>
     </v-card>
   </v-col>
 </template>
@@ -62,28 +56,57 @@ export default class CardObject extends Vue {
       this.error = event.detail.error
       this.isLoading = false
     })
-    this.$el.addEventListener('htmx:afterRequest', (event) => {
-      if (event.detail.successful) {
+
+    window.htmx.on('#basicObject-app', 'htmx:afterSwap', (event) => {
+      if (
+        event.detail.successful &&
+        event.detail.elt.id === 'basicObject-app'
+      ) {
         this.error = ''
         this.isLoading = false
         this.width = '100%'
         this.height = '100%'
+        this._loadMagstatsTemplate(_oid)
         this.onIsDarkChange(this.isDark)
       }
     })
   }
 
+  beforeDestroy() {
+    window.htmx.off('htmx:afterSwap')
+  }
+
   _loadHtmx(objectId, params) {
+    // const url = new URL(
+    //   `object_api/htmx/object_information?oid=${objectId}&survey_id=${params.survey}`,
+    //   this.$config.alerceApiBaseUrl
+    // )
+
     const url = new URL(
-      `object_api/htmx/object_information?oid=${objectId}&survey_id=${params.survey}`,
-      this.$config.alerceApiBaseUrl
+      `http://127.0.0.1:8000/htmx/object_information?oid=169298433200881680&survey_id=lsst`
     )
 
     const myDiv = document.getElementById('basicObject-app')
+
     if (myDiv) {
-      myDiv.setAttribute('hx-get', url)
-      window.htmx.process(myDiv)
+      window.htmx.ajax('GET', `${url}`, {
+        target: '#basicObject-app',
+        swap: 'innerHTML',
+      })
       document.body.dispatchEvent(new Event('update-basic-object'))
+    }
+  }
+
+  _loadMagstatsTemplate(objectId) {
+    const magstatsUrl = new URL(
+      `http://127.0.0.1:8002/htmx/mag?oid=${objectId}&survey_id=lsst`
+    )
+    const magstatsDiv = document.getElementById('magstats-modal')
+
+    if (magstatsDiv) {
+      magstatsDiv.setAttribute('hx-get', `${magstatsUrl}`)
+      window.htmx.process(magstatsDiv)
+      document.body.dispatchEvent(new Event('update-magstats-modal'))
     }
   }
 
