@@ -92,6 +92,8 @@ export default {
    ** Process runtime config
    */
   publicRuntimeConfig: {
+    objectApiBaseUrl:
+      process.env.OBJECT_API_BASE_URL || 'http://127.0.0.1:8000',
     avroApiBaseUrl:
       process.env.AVRO_API_BASE_URL || 'https://avro.alerce.online',
     catshtmApiBaseUrl:

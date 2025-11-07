@@ -96,7 +96,7 @@ export default class ResultTableWrapper extends Vue {
     //   this.$config.alerceApiBaseUrl
     // )
 
-    const url = new URL(`http://127.0.0.1:8000/htmx/list_objects`)
+    const url = new URL('http://127.0.0.1:8000/htmx/list_objects')
 
     for (const [key, value] of Object.entries(this.QueryParams)) {
       url.searchParams.append(key, value)
