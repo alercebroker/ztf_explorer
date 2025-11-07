@@ -63,10 +63,7 @@ export default class sideListWrapper extends Vue {
   }
 
   _loadHtmx() {
-    const url = new URL(
-      'object_api/htmx/side_objects',
-      this.$config.alerceApiBaseUrl
-    )
+    const url = new URL('htmx/side_objects', this.$config.objectApiBaseUrl)
 
     for (const [key, value] of Object.entries(this.QueryParams)) {
       url.searchParams.append(key, value)
