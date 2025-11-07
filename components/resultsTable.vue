@@ -91,14 +91,12 @@ export default class ResultTableWrapper extends Vue {
   }
 
   _loadHtmx() {
-    const url = new URL(
-      'object_api/htmx/list_objects',
-      this.$config.alerceApiBaseUrl
-    )
-
     // const url = new URL(
-    //   'https://api.staging.alerce.online/multisurvey/object_api/htmx/list_objects'
+    //   'object_api/htmx/list_objects',
+    //   this.$config.alerceApiBaseUrl
     // )
+
+    const url = new URL('http://127.0.0.1:8000/htmx/list_objects')
 
     for (const [key, value] of Object.entries(this.QueryParams)) {
       url.searchParams.append(key, value)
