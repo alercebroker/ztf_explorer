@@ -73,10 +73,12 @@ export default class CardProbabilities extends Vue {
   }
 
   _loadHtmx(objectId) {
-    const url = new URL(
-      `probability_api/htmx/probabilities/${objectId}`,
-      this.$config.alerceApiBaseUrl
-    )
+    // const url = new URL(
+    //   `probability_api/htmx/probabilities/${objectId}`,
+    //   this.$config.alerceApiBaseUrl
+    // )
+
+    const url = new URL(`http://127.0.0.1:8004/htmx/probabilities/${objectId}`)
 
     const myDiv = document.getElementById('probabilities-app')
     if (myDiv) {
