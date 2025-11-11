@@ -65,7 +65,7 @@ export default class CardAladin extends Vue {
 
   _loadHtmx(objectId) {
     const url = new URL(
-      `htmx/aladin?oid=${objectId}&survey_id=${params.survey}`,
+      `htmx/aladin?oid=${objectId}`,
       this.$config.aladinApiBaseUrl
     )
     const myDiv = document.getElementById('aladin-app')
