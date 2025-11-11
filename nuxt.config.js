@@ -94,6 +94,16 @@ export default {
   publicRuntimeConfig: {
     objectApiBaseUrl:
       process.env.OBJECT_API_BASE_URL || 'http://127.0.0.1:8000/',
+    lightcurveApiBaseUrl:
+      process.env.LIGHTCURVE_API_BASE_URL || 'http://127.0.0.1:8001/',
+    magstatsApiBaseUrl:
+      process.env.MAGSTATS_API_BASE_URL || 'http://127.0.0.1:8002/',
+    probabilitiesApiBaseUrl:
+      process.env.PROBABILITIES_API_BASE_URL || 'http://127.0.0.1:8004/',
+    crossmatchApiBaseUrl:
+      process.env.CROSSMATCH_API_BASE_URL || 'http://127.0.0.1:8005/',
+    aladinApiBaseUrl:
+      process.env.ALADIN_API_BASE_URL || 'http://127.0.0.1:8006/',
     avroApiBaseUrl:
       process.env.AVRO_API_BASE_URL || 'https://avro.alerce.online',
     catshtmApiBaseUrl:
