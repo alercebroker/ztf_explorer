@@ -80,8 +80,11 @@ export default class CardMagStats extends Vue {
     //   this.$config.alerceApiBaseUrl
     // )
 
-    const url = new URL(`http://127.0.0.1:8002/htmx/mag?oid=${objectId}`)
-
+    //const url = new URL(`http://127.0.0.1:8002/htmx/mag?oid=${objectId}`)
+    const url = new URL(
+      `htmx/mag?oid=${objectId}&survey_id=${params.survey}`,
+      this.$config.magstatsApiBaseUrl
+    )
     const myDiv = document.getElementById('magstats-app')
     if (myDiv && this.isLoading) {
       myDiv.setAttribute('hx-get', url)
