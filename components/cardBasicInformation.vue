@@ -66,22 +66,13 @@ export default class CardObject extends Vue {
         this.isLoading = false
         this.width = '100%'
         this.height = '100%'
-        this._loadMagstatsTemplate(_oid)
+        this._loadMagstatsTemplate(_oid, params)
         this.onIsDarkChange(this.isDark)
       }
     })
   }
 
-  beforeDestroy() {
-    window.htmx.off('htmx:afterSwap')
-  }
-
   _loadHtmx(objectId, params) {
-    // const url = new URL(
-    //   `object_api/htmx/object_information?oid=${objectId}&survey_id=${params.survey}`,
-    //   this.$config.alerceApiBaseUrl
-    // )
-
     const url = new URL(
       `htmx/object_information?oid=${objectId}&survey_id=${params.survey}`,
       this.$config.objectApiBaseUrl
@@ -98,9 +89,10 @@ export default class CardObject extends Vue {
     }
   }
 
-  _loadMagstatsTemplate(objectId) {
+  _loadMagstatsTemplate(objectId, params) {
     const magstatsUrl = new URL(
-      `http://127.0.0.1:8002/htmx/mag?oid=${objectId}&survey_id=lsst`
+      `htmx/mag?oid=${objectId}&survey_id=${params.survey}`,
+      this.$config.magstatsApiBaseUrl
     )
     const magstatsDiv = document.getElementById('magstats-modal')
 
