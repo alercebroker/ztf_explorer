@@ -3,7 +3,6 @@
     <v-row align="stretch">
       <card-light-curve
         :period="period"
-        :oid="selectedObject"
         card-class="grid-card"
         lg="9"
         md="12"
@@ -41,52 +40,12 @@
 </template>
 
 <script>
-import { Vue, Component, Watch } from 'nuxt-property-decorator'
-import { lightCurveStore, objectStore, datareleaseStore } from '~/store'
+import { Vue, Component } from 'nuxt-property-decorator'
 @Component({ layout: 'oid' })
 export default class ObjectView extends Vue {
   head() {
     return {
-      title: this.selectedObject ? this.selectedObject : this.$route.params.oid,
-    }
-  }
-
-  async fetch() {
-    let oid = this.$route.params.oid
-    if (this.selectedObject) oid = this.selectedObject
-    lightCurveStore.getLightCurve(oid)
-
-    await objectStore.getObject(oid)
-    datareleaseStore.getDataReleaseLightCurve({
-      ra: this.objectInformation.meanra,
-      dec: this.objectInformation.meandec,
-      radius: 1.5,
-    })
-  }
-
-  created() {
-    document.addEventListener('keyup', this.keyboardEvents)
-  }
-
-  destroyed() {
-    document.removeEventListener('keyup', this.keyboardEvents)
-  }
-
-  keyboardEvents(evt) {
-    switch (evt.keyCode) {
-      case 39:
-        this.changeObject(1)
-        break
-      case 37:
-        this.changeObject(-1)
-        break
-    }
-  }
-
-  async changeObject(n) {
-    if (this.objects !== null || this.objects.length !== 0) {
-      await objectStore.changeItem(n)
-      this.$router.push(this.selectedObject)
+      title: this.$route.params.oid,
     }
   }
 
@@ -94,34 +53,8 @@ export default class ObjectView extends Vue {
     return this.$store.state.asyncComponents.sideBarLoaded
   }
 
-  get objects() {
-    return this.$store.state.objects.list
-  }
-
-  get selectedObject() {
-    return this.$store.state.object.objectId
-  }
-
-  set selectedObject(val) {}
-
-  get objectInformation() {
-    return this.$store.state.object.object
-  }
-
-  get error() {
-    const error = this.$store.state.object.error
-    if (error.response.status === 404)
-      this.$nuxt.error({ statusCode: 404, messages: 'Object not found.' })
-    return error
-  }
-
   get period() {
     return null
-  }
-
-  @Watch('selectedObject')
-  onSelectedObjectChange(val) {
-    this.$router.push(val)
   }
 
   get doFluid() {
