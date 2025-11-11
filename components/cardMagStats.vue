@@ -75,12 +75,6 @@ export default class CardMagStats extends Vue {
   }
 
   _loadHtmx(objectId, params) {
-    // const url = new URL(
-    //   `/v2/magstats/htmx/mag/${objectId}`,
-    //   this.$config.alerceApiBaseUrl
-    // )
-
-    //const url = new URL(`http://127.0.0.1:8002/htmx/mag?oid=${objectId}`)
     const url = new URL(
       `htmx/mag?oid=${objectId}&survey_id=${params.survey}`,
       this.$config.magstatsApiBaseUrl

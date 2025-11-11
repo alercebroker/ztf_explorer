@@ -15,13 +15,7 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card
-        id="basicObject-app"
-        width="100%"
-        :height="height"
-        hx-trigger="update-basic-object from:body"
-      >
-      </v-card>
+      <v-card id="basicObject-app" width="100%" :height="height"> </v-card>
     </v-card>
   </v-col>
 </template>
@@ -62,12 +56,17 @@ export default class CardObject extends Vue {
       this.error = event.detail.error
       this.isLoading = false
     })
-    this.$el.addEventListener('htmx:afterRequest', (event) => {
-      if (event.detail.successful) {
+
+    window.htmx.on('#basicObject-app', 'htmx:afterSwap', (event) => {
+      if (
+        event.detail.successful &&
+        event.detail.elt.id === 'basicObject-app'
+      ) {
         this.error = ''
         this.isLoading = false
         this.width = '100%'
         this.height = '100%'
+        this._loadMagstatsTemplate(_oid, params)
         this.onIsDarkChange(this.isDark)
       }
     })
@@ -80,10 +79,27 @@ export default class CardObject extends Vue {
     )
 
     const myDiv = document.getElementById('basicObject-app')
+
     if (myDiv) {
-      myDiv.setAttribute('hx-get', url)
-      window.htmx.process(myDiv)
+      window.htmx.ajax('GET', `${url}`, {
+        target: '#basicObject-app',
+        swap: 'innerHTML',
+      })
       document.body.dispatchEvent(new Event('update-basic-object'))
+    }
+  }
+
+  _loadMagstatsTemplate(objectId, params) {
+    const magstatsUrl = new URL(
+      `htmx/mag?oid=${objectId}&survey_id=${params.survey}`,
+      this.$config.magstatsApiBaseUrl
+    )
+    const magstatsDiv = document.getElementById('magstats-modal')
+
+    if (magstatsDiv) {
+      magstatsDiv.setAttribute('hx-get', `${magstatsUrl}`)
+      window.htmx.process(magstatsDiv)
+      document.body.dispatchEvent(new Event('update-magstats-modal'))
     }
   }
 

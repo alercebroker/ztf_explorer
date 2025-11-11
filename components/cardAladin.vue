@@ -14,21 +14,12 @@
         }}</v-alert>
       </v-card-text>
     </v-card>
-    <v-card
-      id="aladin-app"
-      width="100%"
-      :height="height"
-      hx-ext="json-enc"
-      hx-encoding="json"
-      hx-vals="js:{objects_arr: ''}"
-      hx-trigger="update-aladin from:body"
-    >
-    </v-card>
+    <v-card id="aladin-app" width="100%" :height="height"> </v-card>
   </v-col>
 </template>
 
 <script>
-import { Vue, Component, Prop, Model } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class CardAladin extends Vue {
@@ -44,8 +35,6 @@ export default class CardAladin extends Vue {
   @Prop({ type: Number | String, default: 12 })
   sm
 
-  @Model('objectSelected', { type: String }) selectedObject
-
   @Prop({ type: String }) cardClass
 
   object = {}
@@ -55,24 +44,15 @@ export default class CardAladin extends Vue {
   height = '0vh'
 
   mounted() {
-    setTimeout(() => {
-      const oid = this.$route.params.oid
-      this._loadObjectStore()
-      this._loadHtmx(oid)
+    const oid = this.$route.params.oid
 
-      this.$el.addEventListener('htmx:responseError', (event) => {
-        this.error = event.detail.error
-        this.isLoading = false
-      })
-      this.$el.addEventListener('htmx:afterRequest', (event) => {
-        if (event.detail.successful) {
-          this.error = ''
-          this.isLoading = false
-          this.width = '100%'
-          this.height = '100%'
-        }
-      })
-    }, 5000)
+    this.$el.addEventListener('htmx:responseError', (event) => {
+      this.error = event.detail.error
+      this.isLoading = false
+    })
+
+    this._loadObjectStore()
+    this._loadHtmx(oid)
   }
 
   _loadObjectStore() {
@@ -85,19 +65,24 @@ export default class CardAladin extends Vue {
 
   _loadHtmx(objectId) {
     const url = new URL(
-      `htmx/aladin?oid=${objectId}&survey_id=${params.survey}`,
+      `htmx/aladin?oid=${objectId}`,
       this.$config.aladinApiBaseUrl
     )
     const myDiv = document.getElementById('aladin-app')
 
     if (myDiv) {
-      myDiv.setAttribute('hx-post', url)
-      window.htmx.process(myDiv)
-      window.htmx.on(myDiv, 'htmx:configRequest', (evt) => {
-        evt.detail.parameters.objects_arr = this.stringifyObjectsData()
-      })
-
-      document.body.dispatchEvent(new Event('update-aladin'))
+      window.htmx
+        .ajax('POST', `${url}`, {
+          target: '#aladin-app',
+          swap: 'innerHTML',
+          values: { objects_arr: this.stringifyObjectsData() },
+        })
+        .then(() => {
+          this.error = ''
+          this.isLoading = false
+          this.width = '100%'
+          this.height = '100%'
+        })
     }
   }
 
