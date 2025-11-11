@@ -24,25 +24,27 @@ export default class sideListWrapper extends Vue {
     return this.$vuetify.theme.dark
   }
 
+  get sideBarLoad() {
+    return this.$store.state.asyncComponents.sideBarLoaded
+  }
+
   mounted() {
     this._checkQueryParams()
     this._loadHtmx()
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
+      this.$store.dispatch('asyncComponents/setSideBarLoadingAction', false)
     })
     this.$el.addEventListener('htmx:afterRequest', (event) => {
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
         this.height = '100%'
+        this.onIsDarkChange(this.isDark)
+        this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
       }
     })
-
-    this.$el.addEventListener(
-      'htmx:afterSwap',
-      this.onIsDarkChange(this.isDark)
-    )
   }
 
   beforeDestroy() {

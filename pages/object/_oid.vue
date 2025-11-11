@@ -1,5 +1,5 @@
 <template>
-  <v-container :fluid="doFluid">
+  <v-container v-if="sideBarLoad" :fluid="doFluid">
     <v-row align="stretch">
       <card-light-curve
         :period="period"
@@ -17,15 +17,7 @@
         sm="12"
       />
 
-      <card-aladin
-        v-model="selectedObject"
-        card-class="grid-card"
-        lg="3"
-        md="6"
-        sm="12"
-      />
-
-      <!-- <card-mag-stats card-class="grid-card" lg="3" md="6" sm="12" /> -->
+      <lazy-card-aladin card-class="grid-card" lg="3" md="6" sm="12" />
 
       <card-classifiers
         card-class="grid-card"
@@ -42,8 +34,8 @@
         lg="5"
         md="6"
       /> -->
-
-      <card-cross-matches cols="12" lg="12" md="12" sm="12" />
+      <!-- 
+      <card-cross-matches cols="12" lg="12" md="12" sm="12" /> -->
     </v-row>
   </v-container>
 </template>
@@ -96,6 +88,10 @@ export default class ObjectView extends Vue {
       await objectStore.changeItem(n)
       this.$router.push(this.selectedObject)
     }
+  }
+
+  get sideBarLoad() {
+    return this.$store.state.asyncComponents.sideBarLoaded
   }
 
   get objects() {
