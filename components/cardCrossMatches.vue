@@ -51,9 +51,12 @@ export default class CardCrossMatch extends Vue {
   }
 
   mounted() {
-    this.loadingText = this.$route.params.oid
     const _oid = this.$route.params.oid
-    this._loadHtmx(_oid)
+    const _params = { ...this.$route.query }
+
+    this.loadingText = this.$route.params.oid
+    this._loadHtmx(_oid, _params)
+
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -69,9 +72,9 @@ export default class CardCrossMatch extends Vue {
     })
   }
 
-  _loadHtmx(objectId) {
+  _loadHtmx(objectId, _params) {
     const url = new URL(
-      `htmx/crossmatch?oid=${objectId}`,
+      `htmx/crossmatch?oid=${objectId}&survey_id=${_params.survey}`,
       this.$config.crossmatchApiBaseUrl
     )
 
