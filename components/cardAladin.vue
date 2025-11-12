@@ -14,7 +14,12 @@
         }}</v-alert>
       </v-card-text>
     </v-card>
-    <v-card id="aladin-app" width="100%" :height="height"> </v-card>
+    <v-card
+      id="aladin-app"
+      width="100%"
+      :height="height"
+      style="z-index: 9999"
+    ></v-card>
   </v-col>
 </template>
 
