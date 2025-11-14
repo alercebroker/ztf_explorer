@@ -56,11 +56,11 @@ export default class CardLightCurve extends Vue {
   }
 
   mounted() {
-    const _oid = '169298433200881680'
-    const survey = 'lsst'
+    const _oid = this.$route.params.oid
+    const _params = { ...this.$route.query }
     this.objectId = this.$route.params.oid
 
-    this._loadHtmx(_oid, survey)
+    this._loadHtmx(_oid, _params)
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -72,15 +72,19 @@ export default class CardLightCurve extends Vue {
         this.height = '100%'
         this.onIsDarkChange(this.isDark)
       }
+
+      if (event.detail.error) {
+        this.isLoading = false
+      }
     })
     document.body.addEventListener('onDetectionClick', (val) => {
       if (val) this.$store.dispatch('lightcurve/changeDetection', val.detail)
     })
   }
 
-  _loadHtmx(objectId, survey) {
+  _loadHtmx(objectId, _params) {
     const url = new URL(
-      `htmx/lightcurve?oid=${objectId}&survey_id=${survey}`,
+      `htmx/lightcurve?oid=${objectId}&survey_id=${_params.survey}`,
       this.$config.lightcurveApiBaseUrl
     )
 
