@@ -21,13 +21,20 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'htmx-config', content: '{"selfRequestsOnly": false}' },
       {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || '',
       },
     ],
-    script: [{ src: 'https://unpkg.com/htmx-ext-form-json', defer: true }],
+    script: [
+      { src: 'https://unpkg.com/htmx-ext-form-json', defer: true },
+      {
+        src: 'https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js',
+        defer: true,
+      },
+    ],
     link: [
       {
         rel: 'icon',
