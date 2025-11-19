@@ -15,7 +15,7 @@
       </v-card-text>
     </v-card>
     <v-card
-      id="aladin-app"
+      id="aladin-vue-app"
       width="100%"
       :height="height"
       style="z-index: 9999"
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
 @Component
 export default class CardAladin extends Vue {
@@ -48,6 +48,10 @@ export default class CardAladin extends Vue {
   error = null
   height = '0vh'
 
+  get isDark() {
+    return this.$vuetify.theme.isDark
+  }
+
   mounted() {
     const oid = this.$route.params.oid
 
@@ -64,7 +68,7 @@ export default class CardAladin extends Vue {
     const objectsStore = document.getElementById('objects-store')
 
     if (objectsStore) {
-      this.objectsList = this.parsePythonData(objectsStore.dataset.objects)
+      this.objectsList = objectsStore.dataset.objects
     }
   }
 
@@ -73,42 +77,37 @@ export default class CardAladin extends Vue {
       `htmx/aladin?oid=${objectId}`,
       this.$config.aladinApiBaseUrl
     )
-    const myDiv = document.getElementById('aladin-app')
+    const myDiv = document.getElementById('aladin-vue-app')
 
     if (myDiv) {
       window.htmx
         .ajax('POST', `${url}`, {
-          target: '#aladin-app',
+          target: '#aladin-vue-app',
           swap: 'innerHTML',
-          values: { objects_arr: this.stringifyObjectsData() },
+          values: { objects_arr: this.objectsList },
         })
         .then(() => {
           this.error = ''
           this.isLoading = false
           this.width = '100%'
           this.height = '100%'
+          this.onIsDarkChange(this.isDark)
         })
     }
   }
 
-  parsePythonData(objectsDict) {
-    const fixed = objectsDict
-      .replace(/'/g, '"')
-      .replace(/None/g, 'null')
-      .replace(/False/g, 'false')
-      .replace(/True/g, 'true')
+  @Watch('isDark', { immediate: true })
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
 
-    return JSON.parse(fixed)
-  }
-
-  stringifyObjectsData() {
-    if (this.objectsList == null) return []
-
-    const objectsStringify = this.objectsList.map((object) => {
-      return JSON.stringify(object)
-    })
-
-    return objectsStringify
+    const container = document.getElementById('aladin-app')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
   }
 }
 </script>
