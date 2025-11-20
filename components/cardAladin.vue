@@ -17,7 +17,7 @@
     <v-card
       id="aladin-vue-app"
       width="100%"
-      :height="height"
+      height="100%"
       style="z-index: 9999"
     ></v-card>
   </v-col>
