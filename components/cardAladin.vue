@@ -1,13 +1,7 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card v-if="isLoading || error">
-      <v-card-text v-if="isLoading">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching data for object {{ $route.params.oid }} ...
-      </v-card-text>
+      <v-card-text v-if="isLoading"> Fetching aladin ... </v-card-text>
       <v-card-text v-if="error">
         <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
           error
@@ -17,7 +11,7 @@
     <v-card
       id="aladin-vue-app"
       width="100%"
-      height="100%"
+      :height="height"
       style="z-index: 9999"
     ></v-card>
   </v-col>
@@ -46,7 +40,10 @@ export default class CardAladin extends Vue {
   objectsList = null
   isLoading = true
   error = null
-  height = '0vh'
+
+  get height() {
+    return this.$vuetify.breakpoint.name === 'md' ? 535 : 400
+  }
 
   get isDark() {
     return this.$vuetify.theme.isDark
@@ -90,7 +87,6 @@ export default class CardAladin extends Vue {
           this.error = ''
           this.isLoading = false
           this.width = '100%'
-          this.height = '100%'
           this.onIsDarkChange(this.isDark)
         })
     }
