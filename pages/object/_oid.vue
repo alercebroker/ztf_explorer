@@ -16,7 +16,7 @@
         sm="12"
       />
 
-      <lazy-card-aladin card-class="grid-card" lg="3" md="6" sm="12" />
+      <card-aladin card-class="grid-card" lg="3" md="6" sm="12" />
 
       <card-classifiers
         card-class="grid-card"
