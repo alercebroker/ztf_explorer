@@ -39,20 +39,6 @@ export default class CardStamps extends Vue {
 
   @Prop({ type: String }) cardClass
 
-  avroDialogOpen = false
-
-  get detections() {
-    return this.$store.state.lightcurve.detections
-  }
-
-  get isLoading() {
-    return this.$store.state.lightcurve.loading
-  }
-
-  get error() {
-    return this.$store.state.lightcurve.error
-  }
-
   mounted() {
     const params = { ...this.$route.query }
     const _oid = this.$route.params.oid
@@ -62,17 +48,6 @@ export default class CardStamps extends Vue {
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
-    })
-
-    window.htmx.on('#stamp-app', 'htmx:afterSwap', (event) => {
-      if (event.detail.successful && event.detail.elt.id === 'stamp-app') {
-        this.error = ''
-        this.isLoading = false
-        this.width = '100%'
-        this.height = '100%'
-        this._loadMagstatsTemplate(_oid, params)
-        this.onIsDarkChange(this.isDark)
-      }
     })
   }
 
@@ -91,36 +66,6 @@ export default class CardStamps extends Vue {
       })
       document.body.dispatchEvent(new Event('update-stamp'))
     }
-  }
-
-  get selectedDetection() {
-    if (this.$store.state.lightcurve.selectedDetection != null)
-      return this.$store.state.lightcurve.selectedDetection
-    const detection = this.$store.state.lightcurve.detections.findIndex(
-      (x) => x.has_stamp
-    )
-    return detection
-  }
-
-  set selectedDetection(val) {
-    this.$store.dispatch('lightcurve/changeDetection', val)
-  }
-
-  get avroLoading() {
-    return this.$store.state.avro.loading
-  }
-
-  get avro() {
-    return this.$store.state.avro.avro.candidate
-  }
-
-  onAvroClick(payload) {
-    this.avroDialogOpen = true
-    const detection = this.detections[payload]
-    this.$store.dispatch('avro/getAvro', {
-      oid: this.oid,
-      candid: detection.candid,
-    })
   }
 }
 </script>
