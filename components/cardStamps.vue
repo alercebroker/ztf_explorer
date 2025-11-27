@@ -1,43 +1,22 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card :class="cardClass">
-      <v-card-text v-if="isLoading">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching data for object {{ $route.params.oid }} ...
-      </v-card-text>
-      <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
-          error
-        }}</v-alert>
-      </v-card-text>
-      <cards-stamps-card
-        v-else
-        v-model="selectedDetection"
-        :baseURL="$config.avroApiBaseUrl"
-        :detections="detections"
-        :object="oid"
-        :cross-hair-space="crossHairSpace"
-        @avroClick="onAvroClick"
-      />
+      <v-card v-if="isLoading || error">
+        <v-card-text v-if="isLoading">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          Fetching data for object {{ this.loadingText }} ...
+        </v-card-text>
+        <v-card-text v-if="error">
+          <v-alert text prominent type="error" icon="mdi-cloud-alert">
+            {{ error }}
+          </v-alert>
+        </v-card-text>
+      </v-card>
+      <v-card id="stamp-app" width="100%" :height="height"> </v-card>
     </v-card>
-    <v-dialog v-model="avroDialogOpen" max-width="700px">
-      <tables-full-avro-table :avro="avro">
-        <template v-if="avroLoading" v-slot:table>
-          <v-progress-linear indeterminate></v-progress-linear>
-        </template>
-        <template v-slot:actions>
-          <v-card-actions>
-            <div class="flex-grow-1"></div>
-            <v-btn color="primary darken-1" text @click="avroDialogOpen = false"
-              >Close</v-btn
-            >
-          </v-card-actions>
-        </template>
-      </tables-full-avro-table>
-    </v-dialog>
   </v-col>
 </template>
 
@@ -72,6 +51,46 @@ export default class CardStamps extends Vue {
 
   get error() {
     return this.$store.state.lightcurve.error
+  }
+
+  mounted() {
+    const params = { ...this.$route.query }
+    const _oid = this.$route.params.oid
+    this.loadingText = this.$route.params.oid
+
+    this._loadHtmx(_oid, params)
+    this.$el.addEventListener('htmx:responseError', (event) => {
+      this.error = event.detail.error
+      this.isLoading = false
+    })
+
+    window.htmx.on('#stamp-app', 'htmx:afterSwap', (event) => {
+      if (event.detail.successful && event.detail.elt.id === 'stamp-app') {
+        this.error = ''
+        this.isLoading = false
+        this.width = '100%'
+        this.height = '100%'
+        this._loadMagstatsTemplate(_oid, params)
+        this.onIsDarkChange(this.isDark)
+      }
+    })
+  }
+
+  _loadHtmx(objectId, params) {
+    const url = new URL(
+      `htmx/stamp_card?oid=${objectId}&survey_id=${params.survey}`,
+      this.$config.stampApiBaseUrl
+    )
+
+    const myDiv = document.getElementById('stamp-app')
+
+    if (myDiv) {
+      window.htmx.ajax('GET', `${url}`, {
+        target: '#stamp-app',
+        swap: 'innerHTML',
+      })
+      document.body.dispatchEvent(new Event('update-stamp'))
+    }
   }
 
   get selectedDetection() {
