@@ -8,11 +8,6 @@
         ></v-progress-circular>
         Fetching form ...
       </v-card-text>
-      <v-card-text v-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">
-          {{ error }}
-        </v-alert>
-      </v-card-text>
     </v-card>
     <v-card id="form-vue-container" :class="cardClass">
       <v-card

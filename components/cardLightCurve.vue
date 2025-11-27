@@ -74,6 +74,7 @@ export default class CardLightCurve extends Vue {
       }
 
       if (event.detail.error) {
+        this.error = event.detail.error
         this.isLoading = false
       }
     })

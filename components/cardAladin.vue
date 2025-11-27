@@ -13,6 +13,7 @@
       width="100%"
       :height="height"
       style="z-index: 9999"
+      hx-trigger="update-aladin from:body"
     ></v-card>
   </v-col>
 </template>
@@ -51,10 +52,29 @@ export default class CardAladin extends Vue {
 
   mounted() {
     const oid = this.$route.params.oid
+    const aladinCard = document.getElementById('aladin-vue-app')
 
-    this.$el.addEventListener('htmx:responseError', (event) => {
+    aladinCard.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
+    })
+
+    aladinCard.addEventListener('htmx:afterRequest', (event) => {
+      if (event.detail.successful) {
+        this.error = ''
+        this.isLoading = false
+        this.width = '100%'
+        this.onIsDarkChange(this.isDark)
+      }
+
+      if (event.detail.error) {
+        this.error = event.detail.error
+        this.isLoading = false
+      }
+    })
+
+    aladinCard.addEventListener('htmx:configRequest', (event) => {
+      event.detail.parameters.objects_arr = this.objectsList
     })
 
     this._loadObjectStore()
@@ -77,18 +97,9 @@ export default class CardAladin extends Vue {
     const myDiv = document.getElementById('aladin-vue-app')
 
     if (myDiv) {
-      window.htmx
-        .ajax('POST', `${url}`, {
-          target: '#aladin-vue-app',
-          swap: 'innerHTML',
-          values: { objects_arr: this.objectsList },
-        })
-        .then(() => {
-          this.error = ''
-          this.isLoading = false
-          this.width = '100%'
-          this.onIsDarkChange(this.isDark)
-        })
+      myDiv.setAttribute('hx-post', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-aladin'))
     }
   }
 
