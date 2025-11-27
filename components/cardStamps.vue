@@ -64,7 +64,6 @@ export default class CardStamps extends Vue {
         target: '#stamp-app',
         swap: 'innerHTML',
       })
-      document.body.dispatchEvent(new Event('update-stamp'))
     }
   }
 }
