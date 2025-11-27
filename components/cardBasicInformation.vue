@@ -15,7 +15,13 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card id="basicObject-app" width="100%" :height="height"> </v-card>
+      <v-card
+        id="basicObject-app"
+        width="100%"
+        :height="height"
+        hx-trigger="update-basic-information from:body"
+      >
+      </v-card>
     </v-card>
   </v-col>
 </template>
@@ -49,15 +55,17 @@ export default class CardObject extends Vue {
   mounted() {
     const params = { ...this.$route.query }
     const _oid = this.$route.params.oid
-    this.loadingText = this.$route.params.oid
+    const basicObjectCard = document.getElementById('basicObject-app')
 
+    this.loadingText = this.$route.params.oid
     this._loadHtmx(_oid, params)
-    this.$el.addEventListener('htmx:responseError', (event) => {
+
+    basicObjectCard.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
     })
 
-    window.htmx.on('#basicObject-app', 'htmx:afterSwap', (event) => {
+    basicObjectCard.addEventListener('htmx:afterRequest', (event) => {
       if (
         event.detail.successful &&
         event.detail.elt.id === 'basicObject-app'
@@ -68,6 +76,11 @@ export default class CardObject extends Vue {
         this.height = '100%'
         this._loadMagstatsTemplate(_oid, params)
         this.onIsDarkChange(this.isDark)
+      }
+
+      if (event.detail.error) {
+        this.error = event.detail.error
+        this.isLoading = false
       }
     })
   }
@@ -81,11 +94,9 @@ export default class CardObject extends Vue {
     const myDiv = document.getElementById('basicObject-app')
 
     if (myDiv) {
-      window.htmx.ajax('GET', `${url}`, {
-        target: '#basicObject-app',
-        swap: 'innerHTML',
-      })
-      document.body.dispatchEvent(new Event('update-basic-object'))
+      myDiv.setAttribute('hx-get', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-basic-information'))
     }
   }
 
