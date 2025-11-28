@@ -1,7 +1,13 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card v-if="isLoading || error">
-      <v-card-text v-if="isLoading"> Fetching aladin ... </v-card-text>
+      <v-card-text v-if="isLoading">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching aladin ...
+      </v-card-text>
       <v-card-text v-if="error">
         <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
           error
@@ -77,16 +83,18 @@ export default class CardAladin extends Vue {
       event.detail.parameters.objects_arr = this.objectsList
     })
 
-    this._loadObjectStore()
-    this._loadHtmx(oid)
+    this._loadObjectStore().then(() => this._loadHtmx(oid))
   }
 
   _loadObjectStore() {
-    const objectsStore = document.getElementById('objects-store')
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const objectsStore = document.getElementById('objects-store')
 
-    if (objectsStore) {
-      this.objectsList = objectsStore.dataset.objects
-    }
+        this.objectsList = objectsStore.dataset.objects
+        resolve()
+      }, 1000)
+    })
   }
 
   _loadHtmx(objectId) {
