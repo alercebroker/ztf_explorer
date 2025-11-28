@@ -15,7 +15,9 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card id="stamp-app" width="100%" :height="height"> </v-card>
+      <v-card :class="cardClass">
+        <div id="stamp-card-container" style="width: 100%; height: 100%"></div>
+      </v-card>
     </v-card>
   </v-col>
 </template>
@@ -57,11 +59,11 @@ export default class CardStamps extends Vue {
       this.$config.stampApiBaseUrl
     )
 
-    const myDiv = document.getElementById('stamp-app')
+    const myDiv = document.getElementById('stamp-card-container')
 
     if (myDiv) {
       window.htmx.ajax('GET', `${url}`, {
-        target: '#stamp-app',
+        target: '#stamp-card-container',
         swap: 'innerHTML',
       })
     }
