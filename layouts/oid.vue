@@ -35,7 +35,7 @@ import DefaultLayout from './default.vue'
 export default class OidLayout extends DefaultLayout {
   items = [
     {
-      title: 'Explorer ZTF',
+      title: 'ALeRCE ZTF Explorer',
       to: 'http://alerce.online',
     },
     {
