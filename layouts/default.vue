@@ -26,7 +26,7 @@ import { userStore } from '~/store'
 export default class DefaultLayout extends Vue {
   items = [
     {
-      title: 'Explorer ZTF',
+      title: 'ALeRCE ZTF Explorer',
       to: 'http://alerce.online',
     },
     {
