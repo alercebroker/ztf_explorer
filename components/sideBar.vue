@@ -42,12 +42,13 @@ export default class sideListWrapper extends Vue {
         this.isLoading = false
         this.height = '100%'
         this.onIsDarkChange(this.isDark)
-        this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
+        // this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
       }
     })
 
-    this.$el.addEventListener('htmx:afterSwap', (event) => {
+    this.$el.addEventListener('htmx:afterSwap', async (event) => {
       if (event.detail.successful) {
+        await this.$nextTick()
         this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
       }
     })

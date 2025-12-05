@@ -44,7 +44,7 @@ export default class CardAladin extends Vue {
   @Prop({ type: String }) cardClass
 
   object = {}
-  objectsList = null
+  objectsList = ''
   isLoading = true
   error = null
 
@@ -91,7 +91,10 @@ export default class CardAladin extends Vue {
       setTimeout(() => {
         const objectsStore = document.getElementById('objects-store')
 
-        this.objectsList = objectsStore.dataset.objects
+        if (objectsStore) {
+          this.objectsList = objectsStore.dataset.objects
+        }
+
         resolve()
       }, 1000)
     })
