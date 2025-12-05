@@ -1,18 +1,19 @@
 <template>
   <v-container v-if="sideBarLoad" :fluid="doFluid">
     <v-row align="stretch">
-      <card-light-curve
-        :period="period"
-        card-class="grid-card"
-        lg="9"
-        md="12"
-        sm="12"
-      />
       <card-basic-information
         :object="$route.params.oid"
         card-class="grid-card"
         lg="3"
         md="6"
+        sm="12"
+      />
+
+      <card-light-curve
+        :period="period"
+        card-class="grid-card"
+        lg="9"
+        md="12"
         sm="12"
       />
 
