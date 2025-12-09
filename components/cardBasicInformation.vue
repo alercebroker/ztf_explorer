@@ -20,6 +20,7 @@
         width="100%"
         :height="height"
         hx-trigger="update-basic-information from:body"
+        style="overflow-x: auto; overflow-y: auto"
       >
       </v-card>
     </v-card>
