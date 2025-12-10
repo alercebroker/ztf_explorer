@@ -62,6 +62,7 @@ export default {
     '@/plugins/users.js',
     '@/plugins/gtag.js',
     '@/plugins/htmx.js',
+    '@/plugins/queryParams.js',
   ],
   router: {
     middleware: 'auth',

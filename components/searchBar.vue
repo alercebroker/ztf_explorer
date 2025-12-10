@@ -98,26 +98,11 @@ export default class SearchBar extends Vue {
     window.htmx.on(searchBtn, 'htmx:afterRequest', (event) => {
       if (event.detail.successful) {
         const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
-        const paramsDict = this._getParamsUrl(requestUrl)
+        const paramsDict = this.$_getParamsUrl(requestUrl)
 
         this._changeUrlDocument(paramsDict)
       }
     })
-  }
-
-  _getParamsUrl(requestUrl) {
-    const params = new URLSearchParams(requestUrl.search)
-    const paramsDict = {}
-
-    params.forEach((value, key) => {
-      if (key === 'oid') {
-        paramsDict[key] = params.getAll('oid')
-      } else {
-        paramsDict[key] = value
-      }
-    })
-
-    return paramsDict
   }
 
   _changeUrlDocument(eventQueryParams) {

@@ -71,33 +71,15 @@ export default class ResultTableWrapper extends Vue {
     this.QueryParams = params
   }
 
-  _getParamsUrl(requestUrl) {
-    const params = new URLSearchParams(requestUrl.search)
-    const paramsDict = {}
-
-    params.forEach((value, key) => {
-      if (key === 'oid') {
-        paramsDict[key] = params.getAll('oid')
-      } else {
-        paramsDict[key] = value
-      }
-    })
-
-    return paramsDict
-  }
-
   _changeUrlDocument(eventQueryParams) {
     this.$router.push({ path: '/', query: { ...eventQueryParams } })
   }
 
   _loadHtmx() {
-    const url = new URL('htmx/list_objects', this.$config.objectApiBaseUrl)
-
-    for (const [key, value] of Object.entries(this.QueryParams)) {
-      url.searchParams.append(key, value)
-    }
-
     const myDiv = document.getElementById('objects_table')
+    let url = new URL('htmx/list_objects', this.$config.objectApiBaseUrl)
+
+    url = this.$appendParamsInUrl(url, this.QueryParams)
 
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
@@ -133,7 +115,7 @@ export default class ResultTableWrapper extends Vue {
       window.htmx.on(element, 'htmx:afterRequest', (event) => {
         if (event.detail.successful) {
           const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
-          const paramsDict = this._getParamsUrl(requestUrl)
+          const paramsDict = this.$_getParamsUrl(requestUrl)
           this._changeUrlDocument(paramsDict)
         }
       })
@@ -144,6 +126,7 @@ export default class ResultTableWrapper extends Vue {
 
       window.htmx.on(element, 'click', (event) => {
         const oid = element.querySelector('[name="oid"]').textContent
+
         this.$router.push({
           path: `/object/${oid}`,
           query: { ...this.$route.query, selected_oid: `${oid}` },
@@ -157,7 +140,7 @@ export default class ResultTableWrapper extends Vue {
       window.htmx.on(btn, 'htmx:afterRequest', (event) => {
         if (event.detail.successful) {
           const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
-          const paramsDict = this._getParamsUrl(requestUrl)
+          const paramsDict = this.$_getParamsUrl(requestUrl)
           this._changeUrlDocument(paramsDict)
         }
       })

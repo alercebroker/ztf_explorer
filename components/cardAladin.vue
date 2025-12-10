@@ -18,7 +18,7 @@
       id="aladin-vue-app"
       width="100%"
       :height="height"
-      style="z-index: 9999"
+      style="z-index: 50"
       hx-trigger="update-aladin from:body"
     ></v-card>
   </v-col>
