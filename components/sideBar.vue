@@ -19,6 +19,7 @@ export default class sideListWrapper extends Vue {
   error = ''
   height = '0%'
   observer = ''
+  QueryParams = null
 
   get isDark() {
     return this.$vuetify.theme.dark
@@ -42,12 +43,13 @@ export default class sideListWrapper extends Vue {
         this.isLoading = false
         this.height = '100%'
         this.onIsDarkChange(this.isDark)
-        this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
+        // this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
       }
     })
 
-    this.$el.addEventListener('htmx:afterSwap', (event) => {
+    this.$el.addEventListener('htmx:afterSwap', async (event) => {
       if (event.detail.successful) {
+        await this.$nextTick()
         this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
       }
     })
@@ -71,13 +73,10 @@ export default class sideListWrapper extends Vue {
   }
 
   _loadHtmx() {
-    const url = new URL('htmx/side_objects', this.$config.objectApiBaseUrl)
-
-    for (const [key, value] of Object.entries(this.QueryParams)) {
-      url.searchParams.append(key, value)
-    }
-
     const myDiv = document.getElementById('sidebar-objects-htmx')
+    let url = new URL('htmx/side_objects', this.$config.objectApiBaseUrl)
+
+    url = this.$appendParamsInUrl(url, this.QueryParams)
 
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
@@ -110,6 +109,7 @@ export default class sideListWrapper extends Vue {
       window.htmx.on(element, 'htmx:afterRequest', (event) => {
         if (event.detail.successful) {
           const paramsEventDict = event.detail.requestConfig.parameters
+
           this.$router.push({
             path: `/object/${paramsEventDict.selected_oid}`,
             query: { ...paramsEventDict },
