@@ -41,6 +41,11 @@ export default class CardStamps extends Vue {
 
   @Prop({ type: String }) cardClass
 
+  isLoading = false
+  error = ''
+  height = '0vh'
+  loadingText = ''
+
   mounted() {
     const params = { ...this.$route.query }
     const _oid = this.$route.params.oid
