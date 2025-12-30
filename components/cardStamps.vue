@@ -16,14 +16,18 @@
         </v-card-text>
       </v-card>
       <v-card :class="cardClass">
-        <div id="stamp-card-container" style="width: 100%; height: 100%"></div>
+        <div
+          id="stamp-card-container"
+          style="width: 100%; height: 100%"
+          hx-trigger="update-stamp-card from:body"
+        ></div>
       </v-card>
     </v-card>
   </v-col>
 </template>
 
 <script>
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
 @Component
 export default class CardStamps extends Vue {
@@ -46,6 +50,10 @@ export default class CardStamps extends Vue {
   height = '0vh'
   loadingText = ''
 
+  get isDark() {
+    return this.$vuetify.theme.isDark
+  }
+
   mounted() {
     const params = { ...this.$route.query }
     const _oid = this.$route.params.oid
@@ -67,10 +75,23 @@ export default class CardStamps extends Vue {
     const myDiv = document.getElementById('stamp-card-container')
 
     if (myDiv) {
-      window.htmx.ajax('GET', `${url}`, {
-        target: '#stamp-card-container',
-        swap: 'innerHTML',
-      })
+      myDiv.setAttribute('hx-get', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-stamp-card'))
+    }
+  }
+
+  @Watch('isDark', { immediate: true })
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
+
+    const container = document.getElementById('stamp-card-container')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
     }
   }
 }
