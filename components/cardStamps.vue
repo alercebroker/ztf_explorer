@@ -85,7 +85,7 @@ export default class CardStamps extends Vue {
   async onIsDarkChange(newIsDark) {
     await this.$nextTick()
 
-    const container = document.getElementById('stamp-card-container')
+    const container = document.getElementById('stamp-container')
     if (container) {
       if (newIsDark) {
         container.classList.add('tw-dark')
