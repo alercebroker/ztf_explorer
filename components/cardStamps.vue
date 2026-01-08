@@ -18,6 +18,7 @@
       <v-card :class="cardClass">
         <div
           id="stamp-card-container"
+          :class="{ 'tw-dark': isDark }"
           style="width: 100%; height: 100%"
           hx-trigger="update-stamp-card from:body"
         ></div>
@@ -27,7 +28,7 @@
 </template>
 
 <script>
-import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
 
 @Component
 export default class CardStamps extends Vue {
@@ -78,20 +79,6 @@ export default class CardStamps extends Vue {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
       document.body.dispatchEvent(new Event('update-stamp-card'))
-    }
-  }
-
-  @Watch('isDark', { immediate: true })
-  async onIsDarkChange(newIsDark) {
-    await this.$nextTick()
-
-    const container = document.getElementById('stamp-card-container')
-    if (container) {
-      if (newIsDark) {
-        container.classList.add('tw-dark')
-      } else {
-        container.classList.remove('tw-dark')
-      }
     }
   }
 }
