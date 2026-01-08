@@ -15,12 +15,12 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <v-card :class="cardClass">
-        <div
-          id="stamp-card-container"
-          style="width: 100%; height: 100%"
-          hx-trigger="update-stamp-card from:body"
-        ></div>
+      <v-card
+        id="stamp-card-container"
+        :class="cardClass"
+        width="100%"
+        hx-trigger="update-stamp-card from:body"
+      >
       </v-card>
     </v-card>
   </v-col>
@@ -85,7 +85,7 @@ export default class CardStamps extends Vue {
   async onIsDarkChange(newIsDark) {
     await this.$nextTick()
 
-    const container = document.getElementById('stamp-container')
+    const container = document.getElementById('stamp-card-container')
     if (container) {
       if (newIsDark) {
         container.classList.add('tw-dark')
