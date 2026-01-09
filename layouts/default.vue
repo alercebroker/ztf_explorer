@@ -1,7 +1,20 @@
 <template>
   <v-app dark>
-    <misc-a-header title="ALeRCE LSST Explorer" :items="items">
-      <template v-slot:menu>
+    <v-app-bar app dense>
+      <v-img :src="headerLogo" max-width="40px" class="mr-4" />
+      <v-toolbar-title class="mr-4">ALeRCE LSST Explorer</v-toolbar-title>
+      <v-spacer />
+      <v-toolbar-items v-if="items">
+        <v-btn v-for="item in items" :key="item.to" :href="item.to" text>
+          {{ item.title }}
+        </v-btn>
+      </v-toolbar-items>
+      <v-menu offset-y right bottom :close-on-content-click="false">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
         <misc-navbar-menu
           :logged="logged"
           :user-data="userData"
@@ -10,8 +23,8 @@
           :random-color="randomColor"
           @loginClick="onLoginClick"
         />
-      </template>
-    </misc-a-header>
+      </v-menu>
+    </v-app-bar>
     <v-main>
       <nuxt />
     </v-main>
@@ -78,6 +91,12 @@ export default class DefaultLayout extends Vue {
       return
     }
     return this.userData.name[0] + (this.userData.last_name[0] || '')
+  }
+
+  get headerLogo() {
+    return this.$vuetify.theme.isDark
+      ? 'https://alerce-static.s3.amazonaws.com/logos/footerAlerceWhite.png'
+      : 'https://alerce-static.s3.amazonaws.com/logos/footerAlerce.png'
   }
 }
 </script>
