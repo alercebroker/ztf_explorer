@@ -11,7 +11,7 @@
       <side-bar @show-side-bar="_showSideObjects"></side-bar>
     </v-navigation-drawer>
     <v-app-bar app dense>
-      <a style="cursor: pointer" @click="goBack">
+      <a style="cursor: pointer" @click="goToForm">
         <v-img :src="headerLogo" max-width="40px" class="mr-4" />
       </a>
       <v-toolbar-title class="mr-4">ALeRCE LSST Explorer</v-toolbar-title>
@@ -46,6 +46,7 @@
 <script>
 import { Component } from 'nuxt-property-decorator'
 import DefaultLayout from './default.vue'
+
 @Component
 export default class OidLayout extends DefaultLayout {
   items = [
@@ -88,8 +89,11 @@ export default class OidLayout extends DefaultLayout {
     this.drawerMini = !this.drawerMini
   }
 
-  goBack() {
-    this.$router.go(-1)
+  goToForm() {
+    this.$router.push({
+      path: '/',
+      query: this.$route.query,
+    })
   }
 
   get headerLogo() {
