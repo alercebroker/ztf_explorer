@@ -1,9 +1,7 @@
 <template>
   <v-app dark>
     <v-app-bar app dense>
-      <a style="cursor: pointer" @click="goToForm">
-        <v-img :src="headerLogo" max-width="40px" class="mr-4" />
-      </a>
+      <v-img :src="headerLogo" max-width="40px" class="mr-4" />
       <v-toolbar-title class="mr-4">ALeRCE LSST Explorer</v-toolbar-title>
       <v-spacer />
       <v-toolbar-items v-if="items">
@@ -53,13 +51,6 @@ export default class DefaultLayout extends Vue {
       to: 'https://snhunter.alerce.online',
     },
   ]
-
-  goToForm() {
-    this.$router.push({
-      path: '/',
-      query: this.$route.query,
-    })
-  }
 
   onLoginClick() {
     if (userStore.logged) {
