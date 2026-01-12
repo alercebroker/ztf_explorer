@@ -61,6 +61,12 @@ export default class sideListWrapper extends Vue {
 
   _checkQueryParams() {
     const params = this.$route.query
+    const oidSelected = this.$route.params.oid
+
+    if (!params.oid) {
+      params.oid = oidSelected
+    }
+
     this.QueryParams = params
   }
 
