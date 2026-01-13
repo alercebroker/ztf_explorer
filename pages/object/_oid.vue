@@ -1,13 +1,13 @@
 <template>
   <v-container v-if="sideBarLoad" :fluid="doFluid">
     <v-row align="stretch">
-      <!-- <card-basic-information
+      <card-basic-information
         :object="$route.params.oid"
         card-class="grid-card"
         lg="3"
         md="6"
         sm="12"
-      /> -->
+      />
 
       <card-light-curve
         :period="period"
@@ -17,7 +17,7 @@
         sm="12"
       />
 
-      <!-- <card-aladin card-class="grid-card" lg="3" md="6" sm="12" />
+      <card-aladin card-class="grid-card" lg="3" md="6" sm="12" />
 
       <card-classifiers
         card-class="grid-card"
@@ -33,7 +33,7 @@
         md="6"
       />
 
-      <card-cross-matches cols="12" lg="12" md="12" sm="12" /> -->
+      <card-cross-matches cols="12" lg="12" md="12" sm="12" />
     </v-row>
   </v-container>
 </template>
