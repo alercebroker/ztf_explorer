@@ -43,13 +43,13 @@ export default class sideListWrapper extends Vue {
         this.isLoading = false
         this.height = '100%'
         this.onIsDarkChange(this.isDark)
-        // this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
       }
     })
 
     this.$el.addEventListener('htmx:afterSwap', async (event) => {
       if (event.detail.successful) {
         await this.$nextTick()
+        this._displayObjectsBar()
         this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
       }
     })
@@ -61,13 +61,26 @@ export default class sideListWrapper extends Vue {
 
   _checkQueryParams() {
     const params = this.$route.query
-    const oidSelected = this.$route.params.oid
 
-    if (!params.oid) {
-      params.oid = oidSelected
+    this.QueryParams = this._checkSingleSearch(params)
+  }
+
+  _checkSingleSearch(params) {
+    if (this._checkConditionsForSingleSearch(params)) {
+      params.oid = this.$route.params.oid
     }
 
-    this.QueryParams = params
+    return params
+  }
+
+  _checkConditionsForSingleSearch(params) {
+    const paramsLenght = Object.keys(params).length
+
+    if (!params.oid && paramsLenght <= 1) {
+      return true
+    }
+
+    return false
   }
 
   _displayObjectsBar() {
@@ -98,7 +111,6 @@ export default class sideListWrapper extends Vue {
     if (target) {
       this.observer = new MutationObserver((mutations) => {
         this.onIsDarkChange(this.isDark)
-        this._displayObjectsBar()
         this._loadEventManager()
       })
 
