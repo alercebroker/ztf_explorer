@@ -112,8 +112,7 @@ export default {
       process.env.CROSSMATCH_API_BASE_URL || 'http://127.0.0.1:8005/',
     aladinApiBaseUrl:
       process.env.ALADIN_API_BASE_URL || 'http://127.0.0.1:8006/',
-    stampApiBaseUrl:
-      process.env.STAMP_API_BASE_URL || 'http://127.0.0.1:8007/',
+    stampApiBaseUrl: process.env.STAMP_API_BASE_URL || 'http://127.0.0.1:8007/',
     avroApiBaseUrl:
       process.env.AVRO_API_BASE_URL || 'https://avro.alerce.online',
     catshtmApiBaseUrl:

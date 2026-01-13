@@ -67,20 +67,8 @@ export default class OidLayout extends DefaultLayout {
   showDrawer = true
   drawerMini = true
 
-  // get showDrawer() {
-  //   // return this.$store.state.objects.list.length > 0
-  //   return true
-  // }
-
-  // get disableNext() {
-  //   return (
-  //     this.$store.state.objects.list.length <
-  //     this.$store.state.pagination.perPage
-  //   )
-  // }
-
   _showSideObjects(listLen) {
-    if (listLen <= 0) {
+    if (listLen <= 1) {
       this.showDrawer = false
     }
   }
