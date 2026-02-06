@@ -6,7 +6,7 @@
           indeterminate
           color="primary"
         ></v-progress-circular>
-        Fetching data for object {{ $route.params.oid }} ...
+        Fetching aladin ...
       </v-card-text>
       <v-card-text v-if="error">
         <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
@@ -14,18 +14,18 @@
         }}</v-alert>
       </v-card-text>
     </v-card>
-    <misc-aladin
-      v-else
-      v-model="object"
-      :objects="objects"
-      :class="cardClass"
-      :fov="0.01"
-    />
+    <v-card
+      id="aladin-vue-app"
+      width="100%"
+      :height="height"
+      style="z-index: 50"
+      hx-trigger="update-aladin from:body"
+    ></v-card>
   </v-col>
 </template>
 
 <script>
-import { Vue, Component, Prop, Model, Watch } from 'nuxt-property-decorator'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
 @Component
 export default class CardAladin extends Vue {
@@ -41,49 +41,91 @@ export default class CardAladin extends Vue {
   @Prop({ type: Number | String, default: 12 })
   sm
 
-  @Model('objectSelected', { type: String }) selectedObject
-
   @Prop({ type: String }) cardClass
 
   object = {}
+  objectsList = ''
+  isLoading = true
+  error = null
 
-  beforeMount() {
-    if (!this.objectData) return
-    this.object = {
-      oid: this.objectData.oid,
-      meanra: this.objectData.meanra,
-      meandec: this.objectData.meandec,
+  get height() {
+    return this.$vuetify.breakpoint.name === 'md' ? 535 : 400
+  }
+
+  get isDark() {
+    return this.$vuetify.theme.isDark
+  }
+
+  mounted() {
+    const oid = this.$route.params.oid
+    const aladinCard = document.getElementById('aladin-vue-app')
+
+    aladinCard.addEventListener('htmx:responseError', (event) => {
+      this.error = event.detail.error
+      this.isLoading = false
+    })
+
+    aladinCard.addEventListener('htmx:afterRequest', (event) => {
+      if (event.detail.successful) {
+        this.error = ''
+        this.isLoading = false
+        this.width = '100%'
+        this.onIsDarkChange(this.isDark)
+      }
+
+      if (event.detail.error) {
+        this.error = event.detail.error
+        this.isLoading = false
+      }
+    })
+
+    aladinCard.addEventListener('htmx:configRequest', (event) => {
+      event.detail.parameters.objects_arr = this.objectsList
+    })
+
+    this._loadObjectStore().then(() => this._loadHtmx(oid))
+  }
+
+  _loadObjectStore() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const objectsStore = document.getElementById('objects-store')
+
+        if (objectsStore) {
+          this.objectsList = objectsStore.dataset.objects
+        }
+
+        resolve()
+      }, 1000)
+    })
+  }
+
+  _loadHtmx(objectId) {
+    const url = new URL(
+      `htmx/aladin?oid=${objectId}`,
+      this.$config.aladinApiBaseUrl
+    )
+    const myDiv = document.getElementById('aladin-vue-app')
+
+    if (myDiv) {
+      myDiv.setAttribute('hx-post', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-aladin'))
     }
   }
 
-  get objectData() {
-    return this.$store.state.object.object
-      ? this.$store.state.object.object
-      : {}
-  }
+  @Watch('isDark', { immediate: true })
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
 
-  get objects() {
-    return this.$store.state.objects.list
-  }
-
-  get isLoading() {
-    return this.$store.state.object.loading
-  }
-
-  get error() {
-    return this.$store.state.object.error
-  }
-
-  @Watch('objectData')
-  onObjectDataChange(val) {
-    this.object = {
-      oid: val.oid,
-      meanra: val.meanra,
-      meandec: val.meandec,
+    const container = document.getElementById('aladin-app')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
     }
   }
 }
 </script>
-<style>
-@import 'https://aladin.u-strasbg.fr/AladinLite/api/v2/latest/aladin.min.css';
-</style>

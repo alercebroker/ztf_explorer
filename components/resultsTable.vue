@@ -1,5 +1,19 @@
 <template>
   <v-card id="objects_table_vue">
+    <v-card v-if="isLoading || error">
+      <v-card-text v-if="isLoading" class="text-center">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching table ...
+      </v-card-text>
+      <v-card-text v-if="error">
+        <v-alert text prominent type="error" icon="mdi-cloud-alert">
+          {{ error }}
+        </v-alert>
+      </v-card-text>
+    </v-card>
     <v-card
       id="objects_table"
       width="100%"
@@ -57,32 +71,15 @@ export default class ResultTableWrapper extends Vue {
     this.QueryParams = params
   }
 
-  _getParamsUrl(requestUrl) {
-    const params = new URLSearchParams(requestUrl.search)
-    const paramsDict = {}
-
-    params.forEach((value, key) => {
-      if (key === 'oid') {
-        paramsDict[key] = params.getAll('oid')
-      } else {
-        paramsDict[key] = value
-      }
-    })
-
-    return paramsDict
-  }
-
   _changeUrlDocument(eventQueryParams) {
     this.$router.push({ path: '/', query: { ...eventQueryParams } })
   }
 
   _loadHtmx() {
     const myDiv = document.getElementById('objects_table')
-    const url = new URL('http://127.0.0.1:8000/htmx/list_objects')
+    let url = new URL('htmx/list_objects', this.$config.objectApiBaseUrl)
 
-    for (const [key, value] of Object.entries(this.QueryParams)) {
-      url.searchParams.append(key, value)
-    }
+    url = this.$appendParamsInUrl(url, this.QueryParams)
 
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
@@ -111,16 +108,28 @@ export default class ResultTableWrapper extends Vue {
 
   _loadEventManager() {
     const rowsElements = document.getElementsByName('object_row_element')
+    const columnsName = document.getElementsByName('object_column_name')
     const btnsTable = document.getElementsByName('objects_table_btn_page')
+
+    columnsName.forEach((element) => {
+      window.htmx.on(element, 'htmx:afterRequest', (event) => {
+        if (event.detail.successful) {
+          const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
+          const paramsDict = this.$_getParamsUrl(requestUrl)
+          this._changeUrlDocument(paramsDict)
+        }
+      })
+    })
 
     rowsElements.forEach((element) => {
       window.htmx.off(element, 'click')
 
       window.htmx.on(element, 'click', (event) => {
         const oid = element.querySelector('[name="oid"]').textContent
+
         this.$router.push({
           path: `/object/${oid}`,
-          query: { ...this.$route.query },
+          query: { ...this.$route.query, selected_oid: `${oid}` },
         })
       })
     })
@@ -131,8 +140,7 @@ export default class ResultTableWrapper extends Vue {
       window.htmx.on(btn, 'htmx:afterRequest', (event) => {
         if (event.detail.successful) {
           const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
-          const paramsDict = this._getParamsUrl(requestUrl)
-
+          const paramsDict = this.$_getParamsUrl(requestUrl)
           this._changeUrlDocument(paramsDict)
         }
       })

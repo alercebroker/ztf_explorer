@@ -21,13 +21,20 @@ export default {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'htmx-config', content: '{"selfRequestsOnly": false}' },
       {
         hid: 'description',
         name: 'description',
         content: process.env.npm_package_description || '',
       },
     ],
-    script: [],
+    script: [
+      { src: 'https://unpkg.com/htmx-ext-form-json', defer: true },
+      {
+        src: 'https://cdn.jsdelivr.net/npm/echarts@6.0.0/dist/echarts.min.js',
+        defer: true,
+      },
+    ],
     link: [
       {
         rel: 'icon',
@@ -55,6 +62,7 @@ export default {
     '@/plugins/users.js',
     '@/plugins/gtag.js',
     '@/plugins/htmx.js',
+    '@/plugins/queryParams.js',
   ],
   router: {
     middleware: 'auth',
@@ -92,6 +100,19 @@ export default {
    ** Process runtime config
    */
   publicRuntimeConfig: {
+    objectApiBaseUrl:
+      process.env.OBJECT_API_BASE_URL || 'http://127.0.0.1:8000/',
+    lightcurveApiBaseUrl:
+      process.env.LIGHTCURVE_API_BASE_URL || 'http://127.0.0.1:8001/',
+    magstatsApiBaseUrl:
+      process.env.MAGSTATS_API_BASE_URL || 'http://127.0.0.1:8002/',
+    probabilitiesApiBaseUrl:
+      process.env.PROBABILITIES_API_BASE_URL || 'http://127.0.0.1:8004/',
+    crossmatchApiBaseUrl:
+      process.env.CROSSMATCH_API_BASE_URL || 'http://127.0.0.1:8005/',
+    aladinApiBaseUrl:
+      process.env.ALADIN_API_BASE_URL || 'http://127.0.0.1:8006/',
+    stampApiBaseUrl: process.env.STAMP_API_BASE_URL || 'http://127.0.0.1:8007/',
     avroApiBaseUrl:
       process.env.AVRO_API_BASE_URL || 'https://avro.alerce.online',
     catshtmApiBaseUrl:
@@ -100,7 +121,8 @@ export default {
     alerceApiBaseUrlOld:
       process.env.ALERCE_API_BASE_URL_OLD || 'https://api.alerce.online/',
     alerceApiBaseUrl:
-      process.env.ALERCE_API_BASE_URL || 'https://api.staging.alerce.online/',
+      process.env.ALERCE_API_BASE_URL ||
+      'https://api.staging.alerce.online/multisurvey/',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:

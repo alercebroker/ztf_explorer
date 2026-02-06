@@ -7,7 +7,7 @@
             indeterminate
             color="primary"
           ></v-progress-circular>
-          Fetching data for object {{ objectId }} ...
+          Fetching data for object {{ this.loadingText }} ...
         </v-card-text>
         <v-card-text v-if="error">
           <v-alert text prominent type="error" icon="mdi-cloud-alert">
@@ -19,7 +19,7 @@
         id="basicObject-app"
         width="100%"
         :height="height"
-        hx-trigger="update-basic-object from:body"
+        hx-trigger="update-basic-information from:body"
       >
       </v-card>
     </v-card>
@@ -30,7 +30,7 @@
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
 @Component
-export default class CardMagStats extends Vue {
+export default class CardObject extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
 
   @Prop({ type: Number | String, default: 12 }) lg
@@ -46,10 +46,7 @@ export default class CardMagStats extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
-
-  get objectId() {
-    return this.$store.state.object.objectId
-  }
+  loadingText = ''
 
   get isDark() {
     return this.$vuetify.theme.isDark
@@ -57,39 +54,63 @@ export default class CardMagStats extends Vue {
 
   mounted() {
     const params = { ...this.$route.query }
-    const _oid = this.objectId || this.$route.params.oid
+    const _oid = this.$route.params.oid
+    const basicObjectCard = document.getElementById('basicObject-app')
 
+    this.loadingText = this.$route.params.oid
     this._loadHtmx(_oid, params)
-    this.$el.addEventListener('htmx:responseError', (event) => {
+
+    basicObjectCard.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
     })
-    this.$el.addEventListener('htmx:afterRequest', (event) => {
-      if (event.detail.successful) {
+
+    basicObjectCard.addEventListener('htmx:afterRequest', (event) => {
+      if (
+        event.detail.successful &&
+        event.detail.elt.id === 'basicObject-app'
+      ) {
         this.error = ''
         this.isLoading = false
         this.width = '100%'
         this.height = '100%'
+        this._loadMagstatsTemplate(_oid, params)
         this.onIsDarkChange(this.isDark)
+      }
+
+      if (event.detail.error) {
+        this.error = event.detail.error
+        this.isLoading = false
       }
     })
   }
 
   _loadHtmx(objectId, params) {
-    // const url = new URL(
-    //   `/v2/object_details/htmx/object/${objectId}`,
-    //   this.$config.alerceApiBaseUrl
-    // )
-
     const url = new URL(
-      `http://127.0.0.1:8000/htmx/object_information?oid=${objectId}&survey_id=${params.survey}`
+      `htmx/object_information?oid=${objectId}&survey_id=${params.survey}`,
+      this.$config.objectApiBaseUrl
     )
 
     const myDiv = document.getElementById('basicObject-app')
+
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
-      document.body.dispatchEvent(new Event('update-basic-object'))
+      document.body.dispatchEvent(new Event('update-basic-information'))
+    }
+  }
+
+  _loadMagstatsTemplate(objectId, params) {
+    const magstatsUrl = new URL(
+      `htmx/mag?oid=${objectId}&survey_id=${params.survey}`,
+      this.$config.magstatsApiBaseUrl
+    )
+    const magstatsDiv = document.getElementById('magstats-modal')
+
+    if (magstatsDiv) {
+      magstatsDiv.setAttribute('hx-get', `${magstatsUrl}`)
+      window.htmx.process(magstatsDiv)
+      document.body.dispatchEvent(new Event('update-magstats-modal'))
     }
   }
 

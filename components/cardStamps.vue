@@ -1,48 +1,33 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
     <v-card :class="cardClass">
-      <v-card-text v-if="isLoading">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching data for object {{ $route.params.oid }} ...
-      </v-card-text>
-      <v-card-text v-else-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">{{
-          error
-        }}</v-alert>
-      </v-card-text>
-      <cards-stamps-card
-        v-else
-        v-model="selectedDetection"
-        :baseURL="$config.avroApiBaseUrl"
-        :detections="detections"
-        :object="oid"
-        :cross-hair-space="crossHairSpace"
-        @avroClick="onAvroClick"
-      />
+      <v-card v-if="isLoading || error">
+        <v-card-text v-if="isLoading">
+          <v-progress-circular
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+          Fetching data for object {{ this.loadingText }} ...
+        </v-card-text>
+        <v-card-text v-if="error">
+          <v-alert text prominent type="error" icon="mdi-cloud-alert">
+            {{ error }}
+          </v-alert>
+        </v-card-text>
+      </v-card>
+      <v-card
+        id="stamp-card-container"
+        :class="cardClass"
+        width="100%"
+        hx-trigger="update-stamp-card from:body"
+      >
+      </v-card>
     </v-card>
-    <v-dialog v-model="avroDialogOpen" max-width="700px">
-      <tables-full-avro-table :avro="avro">
-        <template v-if="avroLoading" v-slot:table>
-          <v-progress-linear indeterminate></v-progress-linear>
-        </template>
-        <template v-slot:actions>
-          <v-card-actions>
-            <div class="flex-grow-1"></div>
-            <v-btn color="primary darken-1" text @click="avroDialogOpen = false"
-              >Close</v-btn
-            >
-          </v-card-actions>
-        </template>
-      </tables-full-avro-table>
-    </v-dialog>
   </v-col>
 </template>
 
 <script>
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
 @Component
 export default class CardStamps extends Vue {
@@ -60,48 +45,54 @@ export default class CardStamps extends Vue {
 
   @Prop({ type: String }) cardClass
 
-  avroDialogOpen = false
+  isLoading = false
+  error = ''
+  height = '0vh'
+  loadingText = ''
 
-  get detections() {
-    return this.$store.state.lightcurve.detections
+  get isDark() {
+    return this.$vuetify.theme.isDark
   }
 
-  get isLoading() {
-    return this.$store.state.lightcurve.loading
-  }
+  mounted() {
+    const params = { ...this.$route.query }
+    const _oid = this.$route.params.oid
+    this.loadingText = this.$route.params.oid
 
-  get error() {
-    return this.$store.state.lightcurve.error
-  }
-
-  get selectedDetection() {
-    if (this.$store.state.lightcurve.selectedDetection != null)
-      return this.$store.state.lightcurve.selectedDetection
-    const detection = this.$store.state.lightcurve.detections.findIndex(
-      (x) => x.has_stamp
-    )
-    return detection
-  }
-
-  set selectedDetection(val) {
-    this.$store.dispatch('lightcurve/changeDetection', val)
-  }
-
-  get avroLoading() {
-    return this.$store.state.avro.loading
-  }
-
-  get avro() {
-    return this.$store.state.avro.avro.candidate
-  }
-
-  onAvroClick(payload) {
-    this.avroDialogOpen = true
-    const detection = this.detections[payload]
-    this.$store.dispatch('avro/getAvro', {
-      oid: this.oid,
-      candid: detection.candid,
+    this._loadHtmx(_oid, params)
+    this.$el.addEventListener('htmx:responseError', (event) => {
+      this.error = event.detail.error
+      this.isLoading = false
     })
+  }
+
+  _loadHtmx(objectId, params) {
+    const url = new URL(
+      `htmx/stamp_card?oid=${objectId}&survey_id=${params.survey}`,
+      this.$config.stampApiBaseUrl
+    )
+
+    const myDiv = document.getElementById('stamp-card-container')
+
+    if (myDiv) {
+      myDiv.setAttribute('hx-get', url)
+      window.htmx.process(myDiv)
+      document.body.dispatchEvent(new Event('update-stamp-card'))
+    }
+  }
+
+  @Watch('isDark', { immediate: true })
+  async onIsDarkChange(newIsDark) {
+    await this.$nextTick()
+
+    const container = document.getElementById('stamp-card-container')
+    if (container) {
+      if (newIsDark) {
+        container.classList.add('tw-dark')
+      } else {
+        container.classList.remove('tw-dark')
+      }
+    }
   }
 }
 </script>

@@ -19,9 +19,14 @@ export default class sideListWrapper extends Vue {
   error = ''
   height = '0%'
   observer = ''
+  QueryParams = null
 
   get isDark() {
     return this.$vuetify.theme.dark
+  }
+
+  get sideBarLoad() {
+    return this.$store.state.asyncComponents.sideBarLoaded
   }
 
   mounted() {
@@ -30,19 +35,24 @@ export default class sideListWrapper extends Vue {
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
+      this.$store.dispatch('asyncComponents/setSideBarLoadingAction', false)
     })
     this.$el.addEventListener('htmx:afterRequest', (event) => {
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
         this.height = '100%'
+        this.onIsDarkChange(this.isDark)
       }
     })
 
-    this.$el.addEventListener(
-      'htmx:afterSwap',
-      this.onIsDarkChange(this.isDark)
-    )
+    this.$el.addEventListener('htmx:afterSwap', async (event) => {
+      if (event.detail.successful) {
+        await this.$nextTick()
+        this._displayObjectsBar()
+        this.$store.dispatch('asyncComponents/setSideBarLoadingAction', true)
+      }
+    })
   }
 
   beforeDestroy() {
@@ -51,23 +61,41 @@ export default class sideListWrapper extends Vue {
 
   _checkQueryParams() {
     const params = this.$route.query
-    this.QueryParams = params
+
+    this.QueryParams = this._checkSingleSearch(params)
+  }
+
+  _checkSingleSearch(params) {
+    if (this._checkConditionsForSingleSearch(params)) {
+      params.oid = this.$route.params.oid
+    }
+
+    return params
+  }
+
+  _checkConditionsForSingleSearch(params) {
+    const paramsLenght = Object.keys(params).length
+
+    if (!params.oid && paramsLenght <= 1) {
+      return true
+    }
+
+    return false
   }
 
   _displayObjectsBar() {
     const numberOfObjects = document.getElementsByName(
       'sidebar-row-element'
     ).length
+
     this.$emit('show-side-bar', numberOfObjects)
   }
 
   _loadHtmx() {
     const myDiv = document.getElementById('sidebar-objects-htmx')
-    const url = new URL('http://127.0.0.1:8000/htmx/side_objects')
+    let url = new URL('htmx/side_objects', this.$config.objectApiBaseUrl)
 
-    for (const [key, value] of Object.entries(this.QueryParams)) {
-      url.searchParams.append(key, value)
-    }
+    url = this.$appendParamsInUrl(url, this.QueryParams)
 
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
@@ -83,7 +111,6 @@ export default class sideListWrapper extends Vue {
     if (target) {
       this.observer = new MutationObserver((mutations) => {
         this.onIsDarkChange(this.isDark)
-        this._displayObjectsBar()
         this._loadEventManager()
       })
 
@@ -100,6 +127,7 @@ export default class sideListWrapper extends Vue {
       window.htmx.on(element, 'htmx:afterRequest', (event) => {
         if (event.detail.successful) {
           const paramsEventDict = event.detail.requestConfig.parameters
+
           this.$router.push({
             path: `/object/${paramsEventDict.selected_oid}`,
             query: { ...paramsEventDict },

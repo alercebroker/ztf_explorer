@@ -1,5 +1,14 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
+    <v-card v-if="isLoading || error">
+      <v-card-text v-if="isLoading" class="text-center">
+        <v-progress-circular
+          indeterminate
+          color="primary"
+        ></v-progress-circular>
+        Fetching form ...
+      </v-card-text>
+    </v-card>
     <v-card id="form-vue-container" :class="cardClass">
       <v-card
         id="form-search-app"
@@ -60,7 +69,7 @@ export default class SearchBar extends Vue {
   }
 
   _loadHtmx() {
-    const url = new URL('http://127.0.0.1:8000/htmx/search_objects/')
+    const url = new URL('htmx/search_objects/', this.$config.objectApiBaseUrl)
 
     const myDiv = document.getElementById('form-search-app')
     if (myDiv) {
@@ -89,26 +98,11 @@ export default class SearchBar extends Vue {
     window.htmx.on(searchBtn, 'htmx:afterRequest', (event) => {
       if (event.detail.successful) {
         const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
-        const paramsDict = this._getParamsUrl(requestUrl)
+        const paramsDict = this.$_getParamsUrl(requestUrl)
 
         this._changeUrlDocument(paramsDict)
       }
     })
-  }
-
-  _getParamsUrl(requestUrl) {
-    const params = new URLSearchParams(requestUrl.search)
-    const paramsDict = {}
-
-    params.forEach((value, key) => {
-      if (key === 'oid') {
-        paramsDict[key] = params.getAll('oid')
-      } else {
-        paramsDict[key] = value
-      }
-    })
-
-    return paramsDict
   }
 
   _changeUrlDocument(eventQueryParams) {
