@@ -1,12 +1,6 @@
 <template>
   <v-container v-if="sideBarLoad" :fluid="doFluid">
     <v-row v-if="globalLoading" justify="center" align="center" class="py-2">
-      <v-progress-circular
-        indeterminate
-        color="primary"
-        size="32"
-        width="3"
-      ></v-progress-circular>
       <span class="ml-3 primary--text font-weight-medium">
         Loading object {{ loadingOid || $route.params.oid }}...
       </span>
@@ -19,7 +13,7 @@
         md="6"
         sm="12"
       />
-      <!-- <card-light-curve
+      <card-light-curve
         :period="period"
         card-class="grid-card"
         lg="9"
@@ -40,7 +34,7 @@
         lg="5"
         md="6"
       />
-      <card-cross-matches cols="12" lg="12" md="12" sm="12" /> -->
+      <card-cross-matches cols="12" lg="12" md="12" sm="12" />
     </v-row>
   </v-container>
 </template>
