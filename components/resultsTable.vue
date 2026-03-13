@@ -122,8 +122,6 @@ export default class ResultTableWrapper extends Vue {
     })
 
     rowsElements.forEach((element) => {
-      window.htmx.off(element, 'click')
-
       window.htmx.on(element, 'click', (event) => {
         const oid = element.querySelector('[name="oid"]').textContent
 
@@ -135,8 +133,6 @@ export default class ResultTableWrapper extends Vue {
     })
 
     btnsTable.forEach((btn) => {
-      window.htmx.off(btn, 'htmx:afterRequest')
-
       window.htmx.on(btn, 'htmx:afterRequest', (event) => {
         if (event.detail.successful) {
           const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)

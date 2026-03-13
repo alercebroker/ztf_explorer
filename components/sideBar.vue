@@ -110,25 +110,24 @@ export default class sideListWrapper extends Vue {
   _loadEventManager() {
     const rowsElements = document.getElementsByName('sidebar-row-element')
     rowsElements.forEach((element) => {
-      window.htmx.off(element, 'htmx:beforeRequest')
-      window.htmx.on(element, 'htmx:beforeRequest', (event) => {
+      window.htmx.on(element, 'click', (event) => {
         // Obtenemos el OID del elemento clickeado
-        const oid = event.detail.elt.dataset.oid
-        if (oid) {
-          this.$store.dispatch('asyncComponents/setLoadingOidAction', oid)
-        }
-        this.$store.dispatch('asyncComponents/setGlobalLoadingAction', true)
-      })
+        const selectedOid = element.textContent.trim()
+        this.QueryParams.selected_oid = selectedOid
 
-      window.htmx.off(element, 'htmx:afterRequest')
-      window.htmx.on(element, 'htmx:afterRequest', (event) => {
-        if (event.detail.successful) {
-          const paramsEventDict = event.detail.requestConfig.parameters
-          this.$router.push({
-            path: `/object/${paramsEventDict.selected_oid}`,
-            query: { ...paramsEventDict },
-          })
+        if (selectedOid) {
+          this.$store.dispatch(
+            'asyncComponents/setLoadingOidAction',
+            selectedOid
+          )
+
+          this.$store.dispatch('asyncComponents/setGlobalLoadingAction', true)
         }
+
+        this.$router.push({
+          path: `/object/${selectedOid}`,
+          query: { ...this.QueryParams },
+        })
       })
     })
   }
