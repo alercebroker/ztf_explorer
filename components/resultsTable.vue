@@ -125,6 +125,12 @@ export default class ResultTableWrapper extends Vue {
       window.htmx.on(element, 'click', (event) => {
         const oid = element.querySelector('[name="oid"]').textContent
 
+        if (oid) {
+          this.$store.dispatch('asyncComponents/setLoadingOidAction', oid)
+
+          this.$store.dispatch('asyncComponents/setGlobalLoadingAction', true)
+        }
+
         this.$router.push({
           path: `/object/${oid}`,
           query: { ...this.$route.query, selected_oid: `${oid}` },
