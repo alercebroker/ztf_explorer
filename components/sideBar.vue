@@ -56,12 +56,11 @@ export default class sideListWrapper extends Vue {
   }
 
   beforeDestroy() {
-    this.observer.disconnect()
+    if (this.observer) this.observer.disconnect()
   }
 
   _checkQueryParams() {
     const params = this.$route.query
-
     this.QueryParams = this._checkSingleSearch(params)
   }
 
@@ -69,17 +68,12 @@ export default class sideListWrapper extends Vue {
     if (this._checkConditionsForSingleSearch(params)) {
       params.oid = this.$route.params.oid
     }
-
     return params
   }
 
   _checkConditionsForSingleSearch(params) {
     const paramsLenght = Object.keys(params).length
-
-    if (!params.oid && paramsLenght <= 1) {
-      return true
-    }
-
+    if (!params.oid && paramsLenght <= 1) return true
     return false
   }
 
@@ -87,16 +81,13 @@ export default class sideListWrapper extends Vue {
     const numberOfObjects = document.getElementsByName(
       'sidebar-row-element'
     ).length
-
     this.$emit('show-side-bar', numberOfObjects)
   }
 
   _loadHtmx() {
     const myDiv = document.getElementById('sidebar-objects-htmx')
     let url = new URL('htmx/side_objects', this.$config.objectApiBaseUrl)
-
     url = this.$appendParamsInUrl(url, this.QueryParams)
-
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
@@ -107,32 +98,36 @@ export default class sideListWrapper extends Vue {
 
   _loadObserver() {
     const target = document.querySelector('#sidebar-container')
-
     if (target) {
-      this.observer = new MutationObserver((mutations) => {
+      this.observer = new MutationObserver(() => {
         this.onIsDarkChange(this.isDark)
         this._loadEventManager()
       })
-
-      const config = { childList: true, subtree: true }
-
-      this.observer.observe(target, config)
+      this.observer.observe(target, { childList: true, subtree: true })
     }
   }
 
   _loadEventManager() {
     const rowsElements = document.getElementsByName('sidebar-row-element')
-
     rowsElements.forEach((element) => {
-      window.htmx.on(element, 'htmx:afterRequest', (event) => {
-        if (event.detail.successful) {
-          const paramsEventDict = event.detail.requestConfig.parameters
+      window.htmx.on(element, 'click', (event) => {
+        // Obtenemos el OID del elemento clickeado
+        const selectedOid = element.textContent.trim()
+        this.QueryParams.selected_oid = selectedOid
 
-          this.$router.push({
-            path: `/object/${paramsEventDict.selected_oid}`,
-            query: { ...paramsEventDict },
-          })
+        if (selectedOid) {
+          this.$store.dispatch(
+            'asyncComponents/setLoadingOidAction',
+            selectedOid
+          )
+
+          this.$store.dispatch('asyncComponents/setGlobalLoadingAction', true)
         }
+
+        this.$router.push({
+          path: `/object/${selectedOid}`,
+          query: { ...this.QueryParams },
+        })
       })
     })
   }
@@ -140,14 +135,10 @@ export default class sideListWrapper extends Vue {
   @Watch('isDark', { immediate: true })
   async onIsDarkChange(newIsDark) {
     await this.$nextTick()
-
     const container = document.getElementById('sidebar-objects-htmx')
     if (container) {
-      if (newIsDark) {
-        container.classList.add('tw-dark')
-      } else {
-        container.classList.remove('tw-dark')
-      }
+      if (newIsDark) container.classList.add('tw-dark')
+      else container.classList.remove('tw-dark')
     }
   }
 }

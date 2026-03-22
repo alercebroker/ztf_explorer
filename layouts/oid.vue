@@ -38,6 +38,14 @@
       </v-menu>
     </v-app-bar>
     <v-main>
+      <v-progress-linear
+        v-if="globalLoading"
+        indeterminate
+        absolute
+        color="primary"
+        height="4"
+        style="z-index: 10"
+      ></v-progress-linear>
       <nuxt />
     </v-main>
   </v-app>
@@ -66,6 +74,27 @@ export default class OidLayout extends DefaultLayout {
 
   showDrawer = true
   drawerMini = true
+
+  get globalLoading() {
+    return this.$store.state.asyncComponents.globalLoading
+  }
+
+  mounted() {
+    document.addEventListener('htmx:afterRequest', this.handleHtmxComplete)
+  }
+
+  beforeDestroy() {
+    document.removeEventListener('htmx:afterRequest', this.handleHtmxComplete)
+  }
+
+  handleHtmxComplete(event) {
+    if (
+      event.detail.pathInfo &&
+      event.detail.pathInfo.requestPath.includes('htmx/object_information')
+    ) {
+      this.$store.dispatch('asyncComponents/setGlobalLoadingAction', false)
+    }
+  }
 
   _showSideObjects(listLen) {
     if (listLen <= 1) {
