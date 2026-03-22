@@ -158,7 +158,7 @@ export default {
   },
   pwa: {
     icon: {
-      source: '~/assests/explorer.png',
+      source: '~/assets/explorer.png',
       fileName: 'explorer.png',
     },
     manifest: {

@@ -32,13 +32,13 @@ export default class Error404 extends Vue {
       class: 'Supernova',
       adjective: 'cool',
       url: 'https://alerce.online/object/ZTF20aaelulu',
-      image: require('@/assets/img/taxonomy/SNIa.png'),
+      image: require('@/assets/img/taxonomy/SNIa.webp'),
     },
     {
       class: 'Blazar',
       adjective: 'cool',
       url: 'https://alerce.online/object/ZTF18acurdfi',
-      image: require('@/assets/img/taxonomy/Blazar.png'),
+      image: require('@/assets/img/taxonomy/Blazar.webp'),
     },
   ]
 
