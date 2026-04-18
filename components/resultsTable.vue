@@ -14,13 +14,12 @@
         </v-alert>
       </v-card-text>
     </v-card>
-    <v-card
+    <div
       id="objects_table"
-      width="100%"
+      width="80%"
       :height="height"
       hx-trigger="update-table-objects from:body"
-    >
-    </v-card>
+    ></div>
   </v-card>
 </template>
 
@@ -51,7 +50,7 @@ export default class ResultTableWrapper extends Vue {
       if (event.detail.successful) {
         this.error = ''
         this.isLoading = false
-        this.height = '100%'
+        this.height = '80%'
         this._loadEventManager()
       }
     })

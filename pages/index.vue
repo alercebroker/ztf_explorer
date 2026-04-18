@@ -1,9 +1,9 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12">
       <search-bar />
     </v-col>
-    <v-col xs="12" sm="12" md="9" lg="9" xl="9" cols="12">
+    <v-col xs="12" md="9">
       <results-table></results-table>
     </v-col>
   </v-row>
