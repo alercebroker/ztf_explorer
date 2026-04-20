@@ -1,5 +1,5 @@
 <template>
-  <v-row>
+  <v-row no-gutters>
     <v-col xl="3" lg="3" md="3" sm="12" xs="12" cols="12">
       <search-bar />
     </v-col>
