@@ -113,21 +113,25 @@ export default class sideListWrapper extends Vue {
       window.htmx.on(element, 'click', (event) => {
         // Obtenemos el OID del elemento clickeado
         const selectedOid = element.textContent.trim()
-        this.QueryParams.selected_oid = selectedOid
+
+        if (selectedOid === this.$route.params.oid) {
+          return
+        }
 
         if (selectedOid) {
           this.$store.dispatch(
             'asyncComponents/setLoadingOidAction',
             selectedOid
           )
-
           this.$store.dispatch('asyncComponents/setGlobalLoadingAction', true)
-        }
 
-        this.$router.push({
-          path: `/object/${selectedOid}`,
-          query: { ...this.QueryParams },
-        })
+          this.QueryParams.selected_oid = selectedOid
+
+          this.$router.push({
+            path: `/object/${selectedOid}`,
+            query: { ...this.QueryParams },
+          })
+        }
       })
     })
   }
