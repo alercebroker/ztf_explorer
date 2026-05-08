@@ -7,7 +7,7 @@
             indeterminate
             color="primary"
           ></v-progress-circular>
-          Fetching data for object {{ this.loadingText }} ...
+          Fetching data for object {{ loadingText }} ...
         </v-card-text>
         <v-card-text v-if="error">
           <v-alert text prominent type="error" icon="mdi-cloud-alert">

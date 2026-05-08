@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-btn icon @click="prev" :disabled="value <= 1">
+    <v-btn icon :disabled="value <= 1" @click="prev">
       <v-icon>mdi-arrow-left</v-icon>
     </v-btn>
     <v-btn icon x-small>{{ value }}</v-btn>
-    <v-btn icon @click="next" :disabled="disableNext">
+    <v-btn icon :disabled="disableNext" @click="next">
       <v-icon>mdi-arrow-right</v-icon>
     </v-btn>
   </div>
