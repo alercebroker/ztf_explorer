@@ -55,8 +55,9 @@ export default class CardProbabilities extends Vue {
   mounted() {
     this.loadingText = this.$route.params.oid
     const _oid = this.$route.params.oid
+    const params = { ...this.$route.query }
 
-    this._loadHtmx(_oid)
+    this._loadHtmx(_oid, params.survey)
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -72,9 +73,9 @@ export default class CardProbabilities extends Vue {
     })
   }
 
-  _loadHtmx(objectId) {
+  _loadHtmx(objectId, survey) {
     const url = new URL(
-      `htmx/probabilities/${objectId}`,
+      `htmx/probabilities/${objectId}?survey=${survey}`,
       this.$config.probabilitiesApiBaseUrl
     )
 
