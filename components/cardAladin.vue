@@ -58,6 +58,7 @@ export default class CardAladin extends Vue {
 
   mounted() {
     const oid = this.$route.params.oid
+    const params = { ...this.$route.query }
     const aladinCard = document.getElementById('aladin-vue-app')
 
     aladinCard.addEventListener('htmx:responseError', (event) => {
@@ -83,7 +84,7 @@ export default class CardAladin extends Vue {
       event.detail.parameters.objects_arr = this.objectsList
     })
 
-    this._loadObjectStore().then(() => this._loadHtmx(oid))
+    this._loadObjectStore().then(() => this._loadHtmx(oid, params.survey))
   }
 
   _loadObjectStore() {
@@ -100,9 +101,9 @@ export default class CardAladin extends Vue {
     })
   }
 
-  _loadHtmx(objectId) {
+  _loadHtmx(objectId, survey) {
     const url = new URL(
-      `htmx/aladin?oid=${objectId}`,
+      `htmx/aladin?oid=${objectId}&&survey=${survey}`,
       this.$config.aladinApiBaseUrl
     )
     const myDiv = document.getElementById('aladin-vue-app')
