@@ -54,11 +54,7 @@ export default {
    */
   plugins: [
     '@/plugins/echarts.js',
-    '@/plugins/ztfApi.js',
-    '@/plugins/catsHtmApi.js',
-    '@/plugins/avro.js',
     '@/plugins/validation.js',
-    '@/plugins/dataReleaseApi.js',
     '@/plugins/users.js',
     '@/plugins/gtag.js',
     '@/plugins/htmx.js',
@@ -113,16 +109,6 @@ export default {
     aladinApiBaseUrl:
       process.env.ALADIN_API_BASE_URL || 'http://127.0.0.1:8006/',
     stampApiBaseUrl: process.env.STAMP_API_BASE_URL || 'http://127.0.0.1:8007/',
-    avroApiBaseUrl:
-      process.env.AVRO_API_BASE_URL || 'https://avro.alerce.online',
-    catshtmApiBaseUrl:
-      process.env.CATSHTM_API_BASE_URL || 'https://catshtm.alerce.online',
-    tnsApiBaseUrl: process.env.TNS_API_BASE_URL || 'https://tns.alerce.online',
-    alerceApiBaseUrlOld:
-      process.env.ALERCE_API_BASE_URL_OLD || 'https://api.alerce.online/',
-    alerceApiBaseUrl:
-      process.env.ALERCE_API_BASE_URL ||
-      'https://api.staging.alerce.online/multisurvey/',
     usersApiBaseUrl:
       process.env.USERS_API_BASE_URL || 'https://dev.users.alerce.online/users',
     googleRedirectUri:
