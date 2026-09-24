@@ -7,7 +7,7 @@
             indeterminate
             color="primary"
           ></v-progress-circular>
-          Fetching data for object {{ this.loadingText }} ...
+          Fetching data for object {{ objectId }} ...
         </v-card-text>
         <v-card-text v-if="error">
           <v-alert text prominent type="error" icon="mdi-cloud-alert">
@@ -30,7 +30,7 @@
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
 @Component
-export default class CardProbabilities extends Vue {
+export default class CardMagStats extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
 
   @Prop({ type: Number | String, default: 12 }) lg
@@ -46,18 +46,18 @@ export default class CardProbabilities extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
-  loadingText = ''
+
+  get objectId() {
+    return this.$store.state.object.objectId
+  }
 
   get isDark() {
     return this.$vuetify.theme.isDark
   }
 
   mounted() {
-    this.loadingText = this.$route.params.oid
-    const _oid = this.$route.params.oid
-    const params = { ...this.$route.query }
-
-    this._loadHtmx(_oid, params.survey)
+    const _oid = this.objectId || this.$route.params.oid
+    this._loadHtmx(_oid)
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -73,10 +73,10 @@ export default class CardProbabilities extends Vue {
     })
   }
 
-  _loadHtmx(objectId, survey) {
+  _loadHtmx(objectId) {
     const url = new URL(
-      `htmx/probabilities/${objectId}?survey=${survey}`,
-      this.$config.probabilitiesApiBaseUrl
+      `/v2/probability/htmx/probabilities/${objectId}`,
+      this.$config.alerceApiBaseUrl
     )
 
     const myDiv = document.getElementById('probabilities-app')
@@ -84,12 +84,6 @@ export default class CardProbabilities extends Vue {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
       document.body.dispatchEvent(new Event('update-probabilities'))
-    }
-  }
-
-  _switchRadarTheme() {
-    if (window.switch_theme_probability) {
-      window.switch_theme_probability()
     }
   }
 
@@ -101,10 +95,8 @@ export default class CardProbabilities extends Vue {
     if (container) {
       if (newIsDark) {
         container.classList.add('tw-dark')
-        this._switchRadarTheme()
       } else {
         container.classList.remove('tw-dark')
-        this._switchRadarTheme()
       }
     }
   }

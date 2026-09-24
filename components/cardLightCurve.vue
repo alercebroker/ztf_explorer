@@ -1,6 +1,6 @@
 <template>
   <v-col :cols="cols" :lg="lg" :md="md" :sm="sm">
-    <v-card>
+    <v-card :class="cardClass">
       <v-card v-if="isLoading || error">
         <v-card-text v-if="isLoading">
           <v-progress-circular
@@ -15,12 +15,13 @@
           </v-alert>
         </v-card-text>
       </v-card>
-      <div
-        id="main-app-nuxt"
-        :height="height"
+      <v-card
+        id="lightcurve-app"
         width="100%"
+        :height="height"
         hx-trigger="update-lightcurve from:body"
-      ></div>
+      >
+      </v-card>
     </v-card>
   </v-col>
 </template>
@@ -45,7 +46,14 @@ export default class CardLightCurve extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
-  objectId = ''
+
+  get objectInformation() {
+    return this.$store.state.object.object
+  }
+
+  get objectId() {
+    return this.$store.state.object.objectId
+  }
 
   get isDark() {
     return this.$vuetify.theme.isDark
@@ -56,11 +64,8 @@ export default class CardLightCurve extends Vue {
   }
 
   mounted() {
-    const _oid = this.$route.params.oid
-    const _params = { ...this.$route.query }
-    this.objectId = this.$route.params.oid
-
-    this._loadHtmx(_oid, _params)
+    const _oid = this.objectId || this.$route.params.oid
+    this._loadHtmx(_oid)
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -72,26 +77,21 @@ export default class CardLightCurve extends Vue {
         this.height = '100%'
         this.onIsDarkChange(this.isDark)
       }
-
-      if (event.detail.error) {
-        this.error = event.detail.error
-        this.isLoading = false
-      }
     })
     document.body.addEventListener('onDetectionClick', (val) => {
       if (val) this.$store.dispatch('lightcurve/changeDetection', val.detail)
     })
   }
 
-  _loadHtmx(objectId, _params) {
+  _loadHtmx(objectId) {
     const url = new URL(
-      `htmx/lightcurve?oid=${objectId}&survey_id=${_params.survey}`,
-      this.$config.lightcurveApiBaseUrl
+      '/v2/lightcurve/htmx/lightcurve',
+      this.$config.alerceApiBaseUrl
     )
 
     url.searchParams.append('oid', objectId)
 
-    const myDiv = document.getElementById('main-app-nuxt')
+    const myDiv = document.getElementById('lightcurve-app')
     if (myDiv) {
       myDiv.setAttribute('hx-get', url)
       window.htmx.process(myDiv)
@@ -100,20 +100,14 @@ export default class CardLightCurve extends Vue {
   }
 
   @Watch('isDark', { immediate: true })
-  async onIsDarkChange(newIsDark) {
-    await this.$nextTick()
-
-    const container = document.getElementById('main-app')
-    const toggleTheme = document.getElementById('toggle-theme-lc')
-
+  onIsDarkChange(newIsDark) {
+    const container = document.getElementById('lightcurve-app')
     if (container) {
       if (newIsDark) {
         container.classList.add('tw-dark')
       } else {
         container.classList.remove('tw-dark')
       }
-
-      toggleTheme.dispatchEvent(new Event('click'))
     }
   }
 }
