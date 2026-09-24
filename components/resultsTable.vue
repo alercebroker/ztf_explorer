@@ -1,160 +1,198 @@
 <template>
-  <v-card id="objects_table_vue">
-    <v-card v-if="isLoading || error">
-      <v-card-text v-if="isLoading" class="text-center">
-        <v-progress-circular
-          indeterminate
-          color="primary"
-        ></v-progress-circular>
-        Fetching table ...
-      </v-card-text>
-      <v-card-text v-if="error">
-        <v-alert text prominent type="error" icon="mdi-cloud-alert">
-          {{ error }}
-        </v-alert>
-      </v-card-text>
-    </v-card>
-    <v-card
-      id="objects_table"
-      width="100%"
-      :height="height"
-      hx-trigger="update-table-objects from:body"
-    >
-    </v-card>
-  </v-card>
+  <tables-result-table
+    :pagination-options="paginationOptions"
+    :items="tableItems"
+    :total="total"
+    :loading="loading"
+    :column-options="selectedColumnOptions"
+    :no-data-text="noDataText"
+    @rowClicked="onRowClicked"
+    @pageChange="onPageChange"
+    @sortByChange="onSortChange"
+  />
 </template>
 
 <script>
-import { Vue, Component, Watch } from 'nuxt-property-decorator'
-
+import { Vue, Component, Prop, PropSync, Emit } from 'nuxt-property-decorator'
+import { objectsStore } from '~/store'
 @Component
 export default class ResultTableWrapper extends Vue {
-  isLoading = true
-  error = ''
-  height = '0vh'
-  observer = null
-  QueryParams = null
+  @Prop({ type: Array }) items
 
-  get isDark() {
-    return this.$vuetify.theme.isDark
-  }
+  @Prop({ type: Number }) perPage
 
-  mounted() {
-    this._checkQueryParams()
-    this._loadHtmx()
+  @PropSync('page', { type: Number }) pageSync
 
-    this.$el.addEventListener('htmx:responseError', (event) => {
-      this.error = event.detail.error
-      this.isLoading = false
-    })
-    this.$el.addEventListener('htmx:afterRequest', (event) => {
-      if (event.detail.successful) {
-        this.error = ''
-        this.isLoading = false
-        this.height = '100%'
-        this._loadEventManager()
-      }
-    })
+  @PropSync('sortBy', { type: String }) sortBySync
 
-    this.$el.addEventListener('htmx:afterSettle', (event) => {
-      this.onIsDarkChange(this.isDark)
-    })
-  }
+  @PropSync('sortDesc', { type: Boolean }) sortDescSync
 
-  beforeDestroy() {
-    this.observer.disconnect()
-    this.observer = null
-  }
+  @Prop({ type: Number }) total
 
-  _checkQueryParams() {
-    const params = this.$route.query
-    this.QueryParams = params
-  }
+  @Prop({ type: Boolean }) loading
 
-  _changeUrlDocument(eventQueryParams) {
-    this.$router.push({ path: '/', query: { ...eventQueryParams } })
-  }
+  selectedColumnOptions = [
+    {
+      value: 'oid',
+      sortable: false,
+      text: 'Object ID',
+      show: true,
+    },
+    {
+      value: 'ndet',
+      sortable: true,
+      text: 'Number of detections',
+      show: true,
+    },
+    {
+      value: 'ndethist',
+      sortable: true,
+      text: 'Number of detections history',
+      show: false,
+    },
+    {
+      value: 'ncovhist',
+      sortable: true,
+      text: 'ncovhist',
+      show: false,
+    },
+    {
+      value: 'jdstarthist',
+      sortable: true,
+      text: 'jdstarthist',
+      show: false,
+    },
+    {
+      value: 'jdendhist',
+      sortable: true,
+      text: 'jdendhist',
+      show: false,
+    },
+    {
+      value: 'corrected',
+      sortable: true,
+      text: 'jdendhist',
+      show: false,
+    },
+    {
+      value: 'stellar',
+      sortable: true,
+      text: 'stellar',
+      show: false,
+    },
+    {
+      value: 'firstmjd',
+      text: 'FirstMJD',
+      sortable: true,
+      show: true,
+    },
+    {
+      value: 'lastmjd',
+      sortable: true,
+      text: 'LastMJD',
+      show: true,
+    },
+    {
+      value: 'radec',
+      text: 'RA/Dec (degrees)',
+      sortable: false,
+      show: true,
+    },
+    {
+      value: 'class',
+      sortable: false,
+      text: 'Highest Probability Class',
+      show: true,
+    },
+    {
+      value: 'probability',
+      sortable: true,
+      text: 'Highest Probability',
+      show: true,
+    },
+    {
+      value: 'deltajd',
+      text: 'DeltaMJD (days)',
+      show: true,
+    },
+    {
+      value: 'meandec',
+      text: 'Dec (degrees)',
+      sortable: false,
+      show: false,
+    },
+    {
+      value: 'meanra',
+      text: 'RA (degrees)',
+      sortable: false,
+      show: false,
+    },
+    {
+      value: 'sigmara',
+      text: 'Sigma RA',
+      sortable: false,
+      show: false,
+    },
+    {
+      value: 'sigmadec',
+      text: 'Sigma DEC',
+      sortable: false,
+      show: false,
+    },
+  ]
 
-  _loadHtmx() {
-    const myDiv = document.getElementById('objects_table')
-    let url = new URL('htmx/list_objects', this.$config.objectApiBaseUrl)
-
-    url = this.$appendParamsInUrl(url, this.QueryParams)
-
-    if (myDiv) {
-      myDiv.setAttribute('hx-get', url)
-      window.htmx.process(myDiv)
-      document.body.dispatchEvent(new Event('update-table-objects'))
-      this._loadObserver()
+  get paginationOptions() {
+    return {
+      itemsPerPage: this.perPage,
+      page: this.pageSync,
+      sortBy: this.sortBySync ? [this.sortBySync] : [],
+      sortDesc: this.sortDescSync ? [this.sortDescSync] : [],
     }
   }
 
-  _loadObserver() {
-    const target = document.querySelector('#objects_table_vue')
-
-    if (target) {
-      const mutationCallBackFunc = (mutationsList, observer) => {
-        this._loadEventManager()
-        this.onIsDarkChange(this.isDark)
-      }
-
-      this.observer = new MutationObserver(mutationCallBackFunc)
-
-      const config = { childList: true }
-
-      this.observer.observe(target, config)
-    }
-  }
-
-  _loadEventManager() {
-    const rowsElements = document.getElementsByName('object_row_element')
-    const columnsName = document.getElementsByName('object_column_name')
-    const btnsTable = document.getElementsByName('objects_table_btn_page')
-
-    columnsName.forEach((element) => {
-      window.htmx.on(element, 'htmx:afterRequest', (event) => {
-        if (event.detail.successful) {
-          const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
-          const paramsDict = this.$_getParamsUrl(requestUrl)
-          this._changeUrlDocument(paramsDict)
-        }
-      })
-    })
-
-    rowsElements.forEach((element) => {
-      window.htmx.on(element, 'click', (event) => {
-        const oid = element.querySelector('[name="oid"]').textContent
-
-        this.$router.push({
-          path: `/object/${oid}`,
-          query: { ...this.$route.query, selected_oid: `${oid}` },
+  get tableItems() {
+    if (this.items && this.items.length) {
+      const keys = Object.keys(this.items[0])
+      return this.items.map((obj) => {
+        const objCopy = Object.assign({}, obj)
+        keys.forEach((key) => {
+          if (typeof obj[key] === 'number' && !Number.isInteger(obj[key])) {
+            objCopy[key] = objCopy[key].toFixed(3)
+          }
         })
+        objCopy.radec =
+          objCopy.meanra && objCopy.meandec
+            ? `${objCopy.meanra},\t ${objCopy.meandec}`
+            : ''
+        return objCopy
       })
-    })
-
-    btnsTable.forEach((btn) => {
-      window.htmx.on(btn, 'htmx:afterRequest', (event) => {
-        if (event.detail.successful) {
-          const requestUrl = new URL(event.detail.pathInfo.finalRequestPath)
-          const paramsDict = this.$_getParamsUrl(requestUrl)
-          this._changeUrlDocument(paramsDict)
-        }
-      })
-    })
+    }
+    return []
   }
 
-  @Watch('isDark', { immediate: true })
-  async onIsDarkChange(newIsDark) {
-    await this.$nextTick()
+  @Emit('rowClicked')
+  onRowClicked(item) {
+    return item
+  }
 
-    const container = document.getElementById('objects_table')
-    if (container) {
-      if (newIsDark) {
-        container.classList.add('tw-dark')
-      } else {
-        container.classList.remove('tw-dark')
-      }
+  @Emit('pageChangeClick')
+  onPageChange(val) {
+    this.pageSync = val
+    return val
+  }
+
+  @Emit('sortChangeClick')
+  onSortChange(val) {
+    this.sortBySync = val.sortBy.length ? val.sortBy[0] : null
+    this.sortDescSync = val.sortDesc.length ? val.sortDesc[0] : null
+    return {
+      sortBy: val.sortBy.length ? val.sortBy[0] : null,
+      sortDesc: val.sortDesc.length ? val.sortDesc[0] : null,
     }
+  }
+
+  get noDataText() {
+    return objectsStore.noDataText
   }
 }
 </script>

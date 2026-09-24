@@ -7,7 +7,7 @@
             indeterminate
             color="primary"
           ></v-progress-circular>
-          Fetching data for object {{ this.loadingText }} ...
+          Fetching data for object {{ objectId }} ...
         </v-card-text>
         <v-card-text v-if="error">
           <v-alert text prominent type="error" icon="mdi-cloud-alert">
@@ -30,7 +30,7 @@
 import { Vue, Component, Prop, Watch } from 'nuxt-property-decorator'
 
 @Component
-export default class CardCrossMatch extends Vue {
+export default class CardMagStats extends Vue {
   @Prop({ type: Number | String, default: 12 }) cols
 
   @Prop({ type: Number | String, default: 12 }) lg
@@ -44,19 +44,18 @@ export default class CardCrossMatch extends Vue {
   isLoading = true
   error = ''
   height = '0vh'
-  loadingText = ''
+
+  get objectId() {
+    return this.$store.state.object.objectId
+  }
 
   get isDark() {
     return this.$vuetify.theme.isDark
   }
 
   mounted() {
-    const _oid = this.$route.params.oid
-    const _params = { ...this.$route.query }
-
-    this.loadingText = this.$route.params.oid
-    this._loadHtmx(_oid, _params)
-
+    const _oid = this.objectId || this.$route.params.oid
+    this._loadHtmx(_oid)
     this.$el.addEventListener('htmx:responseError', (event) => {
       this.error = event.detail.error
       this.isLoading = false
@@ -72,10 +71,10 @@ export default class CardCrossMatch extends Vue {
     })
   }
 
-  _loadHtmx(objectId, _params) {
+  _loadHtmx(objectId) {
     const url = new URL(
-      `htmx/crossmatch?oid=${objectId}&survey_id=${_params.survey}`,
-      this.$config.crossmatchApiBaseUrl
+      `/v2/xmatch/htmx/crossmatch/${objectId}`,
+      this.$config.alerceApiBaseUrl
     )
 
     const myDiv = document.getElementById('crossmatch-app')
